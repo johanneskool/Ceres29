@@ -1,7 +1,9 @@
 function setup() {
-  // put setup code here
+    createCanvas(window.innerWidth, window.innerHeight);
 }
 
 function draw() {
-  // put drawing code here
+    if (mouseIsPressed) {
+        ellipse(mouseX, mouseY, 80, 80);
+    }
 }
