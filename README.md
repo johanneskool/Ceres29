@@ -8,7 +8,7 @@
        virtualenv -p python3 venv
        source venv/bin/activate
        
-       pip3 install backend/requirements.txt
+       pip3 install -r backend/requirements.txt
 
 ##### Development
        
