@@ -1,0 +1,15 @@
+PRESENT: 
+	All
+TODO:
+	0. Setup collaboration
+	1. Decide on backend
+	2. Decide on frontend
+	3. Setup backend
+	4. Setup frontend
+	5. Visualisation
+EVALUATION:
+	-
+DECISIONS: 
+	Decided on Trello
+	Listed goals
+	Decided on github and slack for collaboration
