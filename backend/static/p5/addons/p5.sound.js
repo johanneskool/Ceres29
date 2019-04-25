@@ -1912,8 +1912,8 @@ soundfile = function () {
       var percentComplete = evt.loaded / evt.total * 0.99;
       this._whileLoading(percentComplete, evt);
     } else {
-      // Unable to compute progress information since the total size is unknown
-      this._whileLoading('size unknown');
+      // Unable to compute progress information since the total SIZE is unknown
+      this._whileLoading('SIZE unknown');
     }
   };
   /**
@@ -2481,13 +2481,13 @@ soundfile = function () {
    * Returns an array of amplitude peaks in a p5.SoundFile that can be
    * used to draw a static waveform. Scans through the p5.SoundFile's
    * audio buffer to find the greatest amplitudes. Accepts one
-   * parameter, 'length', which determines size of the array.
+   * parameter, 'length', which determines SIZE of the array.
    * Larger arrays result in more precise waveform visualizations.
    *
    * Inspired by Wavesurfer.js.
    *
    * @method  getPeaks
-   * @params {Number} [length] length is the size of the returned array.
+   * @params {Number} [length] length is the SIZE of the returned array.
    *                          Larger length results in more precision.
    *                          Defaults to 5*width of the browser window.
    * @returns {Float32Array} Array of peaks.
@@ -3210,8 +3210,8 @@ amplitude = function () {
    *    background(0);
    *    fill(255);
    *    var level = amplitude.getLevel();
-   *    var size = map(level, 0, 1, 0, 200);
-   *    ellipse(width/2, height/2, size, size);
+   *    var SIZE = map(level, 0, 1, 0, 200);
+   *    ellipse(width/2, height/2, SIZE, SIZE);
    *  }
    *
    *  </code></div>
@@ -3280,8 +3280,8 @@ amplitude = function () {
    *    background(0);
    *    fill(255);
    *    var level = amplitude.getLevel();
-   *    var size = map(level, 0, 1, 0, 200);
-   *    ellipse(width/2, height/2, size, size);
+   *    var SIZE = map(level, 0, 1, 0, 200);
+   *    ellipse(width/2, height/2, SIZE, SIZE);
    *  }
    *  function mouseClicked(){
    *    sound1.stop();
@@ -3381,8 +3381,8 @@ amplitude = function () {
    *    background(0);
    *    fill(255);
    *    var level = amplitude.getLevel();
-   *    var size = map(level, 0, 1, 0, 200);
-   *    ellipse(width/2, height/2, size, size);
+   *    var SIZE = map(level, 0, 1, 0, 200);
+   *    ellipse(width/2, height/2, SIZE, SIZE);
    *  }
    *  function mouseClicked(){
    *    sound.stop();
@@ -3478,7 +3478,7 @@ fft = function () {
    *  to as <code>bins</code>. The array is 1024 bins long by default.
    *  You can change the bin array length, but it must be a power of 2
    *  between 16 and 1024 in order for the FFT algorithm to function
-   *  correctly. The actual size of the FFT buffer is twice the
+   *  correctly. The actual SIZE of the FFT buffer is twice the
    *  number of bins, so given a standard sample rate, the buffer is
    *  2048/44100 seconds long.</p>
    *
@@ -8909,7 +8909,7 @@ eq = function () {
    */
   p5.EQ = function (_eqsize) {
     Effect.call(this);
-    //p5.EQ can be of size (3) or (8), defaults to 3
+    //p5.EQ can be of SIZE (3) or (8), defaults to 3
     _eqsize = _eqsize === 3 || _eqsize === 8 ? _eqsize : 3;
     var factor;
     _eqsize === 3 ? factor = Math.pow(2, 3) : factor = 2;
@@ -8958,7 +8958,7 @@ eq = function () {
   };
   //  /**
   //   * Set the frequency and gain of each band in the EQ. This method should be
-  //   * called with 3 or 8 frequency and gain pairs, depending on the size of the EQ.
+  //   * called with 3 or 8 frequency and gain pairs, depending on the SIZE of the EQ.
   //   * ex. eq.set(freq0, gain0, freq1, gain1, freq2, gain2);
   //   *
   //   * @method  set

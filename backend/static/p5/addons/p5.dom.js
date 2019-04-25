@@ -125,7 +125,7 @@
    *   var buttons = selectAll('button');
    *
    *   for (var i = 0; i < buttons.length; i++) {
-   *     buttons[i].size(100, 100);
+   *     buttons[i].SIZE(100, 100);
    *   }
    * }
    * </code></div>
@@ -489,7 +489,7 @@
 
   /**
    * Creates a slider &lt;input&gt;&lt;/input&gt; element in the DOM.
-   * Use .size() to set the display length of the slider.
+   * Use .SIZE() to set the display length of the slider.
    * Appends to the container node if one is specified, otherwise
    * appends to body.
    *
@@ -497,7 +497,7 @@
    * @param  {Number} min minimum value of the slider
    * @param  {Number} max maximum value of the slider
    * @param  {Number} [value] default value of the slider
-   * @param  {Number} [step] step size for each tick of the slider (if step is set to 0, the slider will move continuously from the minimum to the maximum value)
+   * @param  {Number} [step] step SIZE for each tick of the slider (if step is set to 0, the slider will move continuously from the minimum to the maximum value)
    * @return {p5.Element} pointer to <a href="#/p5.Element">p5.Element</a> holding created node
    * @example
    * <div><code>
@@ -546,7 +546,7 @@
 
   /**
    * Creates a &lt;button&gt;&lt;/button&gt; element in the DOM.
-   * Use .size() to set the display size of the button.
+   * Use .SIZE() to set the display SIZE of the button.
    * Use .mousePressed() to specify behavior on press.
    * Appends to the container node if one is specified, otherwise
    * appends to body.
@@ -966,7 +966,7 @@
 
   /**
    * Creates an &lt;input&gt;&lt;/input&gt; element in the DOM for text input.
-   * Use .<a href="#/p5.Element/size">size()</a> to set the display length of the box.
+   * Use .<a href="#/p5.Element/SIZE">SIZE()</a> to set the display length of the box.
    * Appends to the container node if one is specified, otherwise
    * appends to body.
    *
@@ -1141,7 +1141,7 @@
    *     vidLoad
    *   );
    *
-   *   vid.size(100, 100);
+   *   vid.SIZE(100, 100);
    * }
    *
    * // This function is called when the video loads
@@ -1585,7 +1585,7 @@
    * @example
    * <div><code>
    * function setup() {
-   *   var div = createDiv('').size(10, 10);
+   *   var div = createDiv('').SIZE(10, 10);
    *   div.style('background-color', 'orange');
    *   div.center();
    * }
@@ -1639,11 +1639,11 @@
    * @returns {String} the inner HTML of the element
    * @example
    * <div class='norender'><code>
-   * var div = createDiv('').size(100, 100);
+   * var div = createDiv('').SIZE(100, 100);
    * div.html('hi');
    * </code></div>
    * <div class='norender'><code>
-   * var div = createDiv('Hello ').size(100, 100);
+   * var div = createDiv('Hello ').SIZE(100, 100);
    * div.html('World', true);
    * </code></div>
    */
@@ -1772,7 +1772,7 @@
    * @example
    * <div><code class='norender'>
    * var myDiv = createDiv('I like pandas.');
-   * myDiv.style('font-size', '18px');
+   * myDiv.style('font-SIZE', '18px');
    * myDiv.style('color', '#ff0000');
    * </code></div>
    * <div><code class='norender'>
@@ -1790,7 +1790,7 @@
    * }
    *
    * function draw() {
-   *   myDiv.style('font-size', mouseX + 'px');
+   *   myDiv.style('font-SIZE', mouseX + 'px');
    * }
    * </code></div>
    */
@@ -2025,19 +2025,19 @@
    * elements which need to be loaded, such as images, it is recommended
    * to call the function after the element has finished loading.
    *
-   * @method size
+   * @method SIZE
    * @return {Object} the width and height of the element in an object
    * @example
    * <div class='norender'><code>
    * let div = createDiv('this is a div');
-   * div.size(100, 100);
+   * div.SIZE(100, 100);
    * let img = createImg('assets/laDefense.jpg', () => {
-   *   img.size(10, AUTO);
+   *   img.SIZE(10, AUTO);
    * });
    * </code></div>
    */
   /**
-   * @method size
+   * @method SIZE
    * @param  {Number|Constant} w    width of the element, either AUTO, or a number
    * @param  {Number|Constant} [h] height of the element, either AUTO, or a number
    * @chainable
@@ -3368,7 +3368,7 @@
      */
     this.name = file.name;
     /**
-     * File size
+     * File SIZE
      *
      * @property size
      */

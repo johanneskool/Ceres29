@@ -2133,7 +2133,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nlet v1 = createVector(40, 50);\nlet v2 = createVector(40, 50);\n\nellipse(v1.x, v1.y, 50, 50);\nellipse(v2.x, v2.y, 50, 50);\nv1.add(v2);\nellipse(v1.x, v1.y, 50, 50);\n</code>\n</div>"
             ],
-            "alt": "2 white ellipses. One center-left the other bottom right and off canvas"
+            "alt": "2 white Circles. One center-left the other bottom right and off canvas"
         },
         "p5.Font": {
             "name": "p5.Font",
@@ -2377,7 +2377,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nvar sound, amplitude, cnv;\n\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  cnv = createCanvas(100,100);\n  amplitude = new p5.Amplitude();\n\n  // start / stop the sound when canvas is clicked\n  cnv.mouseClicked(function() {\n    if (sound.isPlaying() ){\n      sound.stop();\n    } else {\n      sound.play();\n    }\n  });\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\n\n</code></div>"
+                "\n<div><code>\nvar sound, amplitude, cnv;\n\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  cnv = createCanvas(100,100);\n  amplitude = new p5.Amplitude();\n\n  // start / stop the sound when canvas is clicked\n  cnv.mouseClicked(function() {\n    if (sound.isPlaying() ){\n      sound.stop();\n    } else {\n      sound.play();\n    }\n  });\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var SIZE = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, SIZE, SIZE);\n}\n\n</code></div>"
             ]
         },
         "p5.FFT": {
@@ -2393,7 +2393,7 @@ module.exports={
             "namespace": "",
             "file": "lib/addons/p5.sound.js",
             "line": 3458,
-            "description": "<p>FFT (Fast Fourier Transform) is an analysis algorithm that\nisolates individual\n<a href=\"https://en.wikipedia.org/wiki/Audio_frequency\">\naudio frequencies</a> within a waveform.</p>\n\n<p>Once instantiated, a p5.FFT object can return an array based on\ntwo types of analyses: <br> • <code>FFT.waveform()</code> computes\namplitude values along the time domain. The array indices correspond\nto samples across a brief moment in time. Each value represents\namplitude of the waveform at that sample of time.<br>\n• <code>FFT.analyze() </code> computes amplitude values along the\nfrequency domain. The array indices correspond to frequencies (i.e.\npitches), from the lowest to the highest that humans can hear. Each\nvalue represents amplitude at that slice of the frequency spectrum.\nUse with <code>getEnergy()</code> to measure amplitude at specific\nfrequencies, or within a range of frequencies. </p>\n\n<p>FFT analyzes a very short snapshot of sound called a sample\nbuffer. It returns an array of amplitude measurements, referred\nto as <code>bins</code>. The array is 1024 bins long by default.\nYou can change the bin array length, but it must be a power of 2\nbetween 16 and 1024 in order for the FFT algorithm to function\ncorrectly. The actual size of the FFT buffer is twice the\nnumber of bins, so given a standard sample rate, the buffer is\n2048/44100 seconds long.</p>",
+            "description": "<p>FFT (Fast Fourier Transform) is an analysis algorithm that\nisolates individual\n<a href=\"https://en.wikipedia.org/wiki/Audio_frequency\">\naudio frequencies</a> within a waveform.</p>\n\n<p>Once instantiated, a p5.FFT object can return an array based on\ntwo types of analyses: <br> • <code>FFT.waveform()</code> computes\namplitude values along the time domain. The array indices correspond\nto samples across a brief moment in time. Each value represents\namplitude of the waveform at that sample of time.<br>\n• <code>FFT.analyze() </code> computes amplitude values along the\nfrequency domain. The array indices correspond to frequencies (i.e.\npitches), from the lowest to the highest that humans can hear. Each\nvalue represents amplitude at that slice of the frequency spectrum.\nUse with <code>getEnergy()</code> to measure amplitude at specific\nfrequencies, or within a range of frequencies. </p>\n\n<p>FFT analyzes a very short snapshot of sound called a sample\nbuffer. It returns an array of amplitude measurements, referred\nto as <code>bins</code>. The array is 1024 bins long by default.\nYou can change the bin array length, but it must be a power of 2\nbetween 16 and 1024 in order for the FFT algorithm to function\ncorrectly. The actual SIZE of the FFT buffer is twice the\nnumber of bins, so given a standard sample rate, the buffer is\n2048/44100 seconds long.</p>",
             "is_constructor": 1,
             "params": [
                 {
@@ -3917,7 +3917,7 @@ module.exports={
                     "params": [
                         {
                             "name": "image",
-                            "description": "<p>image created with <a href=\"#/p5/loadImage\">loadImage()</a> or <a href=\"#/p5/createImage\">createImage()</a>,\n                            to set as background\n                            (must be same size as the sketch window)</p>\n",
+                            "description": "<p>image created with <a href=\"#/p5/loadImage\">loadImage()</a> or <a href=\"#/p5/createImage\">createImage()</a>,\n                            to set as background\n                            (must be same SIZE as the sketch window)</p>\n",
                             "type": "p5.Image"
                         },
                         {
@@ -3941,7 +3941,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\n// Clear the screen on mouse press.\nfunction setup() {\n  createCanvas(100, 100);\n}\n\nfunction draw() {\n  ellipse(mouseX, mouseY, 20, 20);\n}\n\nfunction mousePressed() {\n  clear();\n}\n</code>\n</div>"
             ],
-            "alt": "20x20 white ellipses are continually drawn at mouse x and y coordinates.",
+            "alt": "20x20 white Circles are continually drawn at mouse x and y coordinates.",
             "class": "p5",
             "module": "Color",
             "submodule": "Setting"
@@ -4752,7 +4752,7 @@ module.exports={
         {
             "file": "src/core/shape/2d_primitives.js",
             "line": 541,
-            "description": "<p>Draws a square to the screen. A square is a four-sided shape with\nevery angle at ninety degrees, and equal side size.\nThis function is a special case of the rect() function, where the width and height are the same, and the parameter is called &quot;s&quot; for side size.\nBy default, the first two parameters set the location of the upper-left corner, the third sets the side size of the square.\nThe way these parameters are interpreted, however,\nmay be changed with the <a href=\"#/p5/rectMode\">rectMode()</a> function.\n<br><br>\nThe fourth, fifth, sixth and seventh parameters, if specified,\ndetermine corner radius for the top-left, top-right, lower-right and\nlower-left corners, respectively. An omitted corner radius parameter is set\nto the value of the previously specified radius value in the parameter list.</p>\n",
+            "description": "<p>Draws a square to the screen. A square is a four-sided shape with\nevery angle at ninety degrees, and equal side SIZE.\nThis function is a special case of the rect() function, where the width and height are the same, and the parameter is called &quot;s&quot; for side SIZE.\nBy default, the first two parameters set the location of the upper-left corner, the third sets the side SIZE of the square.\nThe way these parameters are interpreted, however,\nmay be changed with the <a href=\"#/p5/rectMode\">rectMode()</a> function.\n<br><br>\nThe fourth, fifth, sixth and seventh parameters, if specified,\ndetermine corner radius for the top-left, top-right, lower-right and\nlower-left corners, respectively. An omitted corner radius parameter is set\nto the value of the previously specified radius value in the parameter list.</p>\n",
             "itemtype": "method",
             "name": "square",
             "params": [
@@ -4768,7 +4768,7 @@ module.exports={
                 },
                 {
                     "name": "s",
-                    "description": "<p>side size of the square.</p>\n",
+                    "description": "<p>side SIZE of the square.</p>\n",
                     "type": "Number"
                 },
                 {
@@ -4798,7 +4798,7 @@ module.exports={
             ],
             "chainable": 1,
             "example": [
-                "\n<div>\n<code>\n// Draw a square at location (30, 20) with a side size of 55.\nsquare(30, 20, 55);\n</code>\n</div>\n\n<div>\n<code>\n// Draw a square with rounded corners, each having a radius of 20.\nsquare(30, 20, 55, 20);\n</code>\n</div>\n\n<div>\n<code>\n// Draw a square with rounded corners having the following radii:\n// top-left = 20, top-right = 15, bottom-right = 10, bottom-left = 5.\nsquare(30, 20, 55, 20, 15, 10, 5);\n</code>\n</div>"
+                "\n<div>\n<code>\n// Draw a square at location (30, 20) with a side SIZE of 55.\nsquare(30, 20, 55);\n</code>\n</div>\n\n<div>\n<code>\n// Draw a square with rounded corners, each having a radius of 20.\nsquare(30, 20, 55, 20);\n</code>\n</div>\n\n<div>\n<code>\n// Draw a square with rounded corners having the following radii:\n// top-left = 20, top-right = 15, bottom-right = 10, bottom-left = 5.\nsquare(30, 20, 55, 20, 15, 10, 5);\n</code>\n</div>"
             ],
             "alt": "55x55 white square with black outline in mid-right of canvas.\n55x55 white square with black outline and rounded edges in mid-right of canvas.\n55x55 white square with black outline and rounded edges of different radii.",
             "class": "p5",
@@ -4855,7 +4855,7 @@ module.exports={
         {
             "file": "src/core/shape/attributes.js",
             "line": 14,
-            "description": "<p>Modifies the location from which ellipses are drawn by changing the way\nin which parameters given to <a href=\"#/p5/ellipse\">ellipse()</a> are interpreted.\n<br><br>\nThe default mode is ellipseMode(CENTER), which interprets the first two\nparameters of <a href=\"#/p5/ellipse\">ellipse()</a> as the shape&#39;s center point, while the third and\nfourth parameters are its width and height.\n<br><br>\nellipseMode(RADIUS) also uses the first two parameters of <a href=\"#/p5/ellipse\">ellipse()</a> as\nthe shape&#39;s center point, but uses the third and fourth parameters to\nspecify half of the shapes&#39;s width and height.\n<br><br>\nellipseMode(CORNER) interprets the first two parameters of <a href=\"#/p5/ellipse\">ellipse()</a> as\nthe upper-left corner of the shape, while the third and fourth parameters\nare its width and height.\n<br><br>\nellipseMode(CORNERS) interprets the first two parameters of <a href=\"#/p5/ellipse\">ellipse()</a> as\nthe location of one corner of the ellipse&#39;s bounding box, and the third\nand fourth parameters as the location of the opposite corner.\n<br><br>\nThe parameter must be written in ALL CAPS because Javascript is a\ncase-sensitive language.</p>\n",
+            "description": "<p>Modifies the location from which Circles are drawn by changing the way\nin which parameters given to <a href=\"#/p5/ellipse\">ellipse()</a> are interpreted.\n<br><br>\nThe default mode is ellipseMode(CENTER), which interprets the first two\nparameters of <a href=\"#/p5/ellipse\">ellipse()</a> as the shape&#39;s center point, while the third and\nfourth parameters are its width and height.\n<br><br>\nellipseMode(RADIUS) also uses the first two parameters of <a href=\"#/p5/ellipse\">ellipse()</a> as\nthe shape&#39;s center point, but uses the third and fourth parameters to\nspecify half of the shapes&#39;s width and height.\n<br><br>\nellipseMode(CORNER) interprets the first two parameters of <a href=\"#/p5/ellipse\">ellipse()</a> as\nthe upper-left corner of the shape, while the third and fourth parameters\nare its width and height.\n<br><br>\nellipseMode(CORNERS) interprets the first two parameters of <a href=\"#/p5/ellipse\">ellipse()</a> as\nthe location of one corner of the ellipse&#39;s bounding box, and the third\nand fourth parameters as the location of the opposite corner.\n<br><br>\nThe parameter must be written in ALL CAPS because Javascript is a\ncase-sensitive language.</p>\n",
             "itemtype": "method",
             "name": "ellipseMode",
             "params": [
@@ -4884,7 +4884,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nbackground(0);\nnoStroke();\nsmooth();\nellipse(30, 48, 36, 36);\nnoSmooth();\nellipse(70, 48, 36, 36);\n</code>\n</div>"
             ],
-            "alt": "2 pixelated 36x36 white ellipses to left & right of center, black background",
+            "alt": "2 pixelated 36x36 white Circles to left & right of center, black background",
             "class": "p5",
             "module": "Shape",
             "submodule": "Attributes"
@@ -4921,7 +4921,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nbackground(0);\nnoStroke();\nsmooth();\nellipse(30, 48, 36, 36);\nnoSmooth();\nellipse(70, 48, 36, 36);\n</code>\n</div>"
             ],
-            "alt": "2 pixelated 36x36 white ellipses one left one right of center. On black.",
+            "alt": "2 pixelated 36x36 white Circles one left one right of center. On black.",
             "class": "p5",
             "module": "Shape",
             "submodule": "Attributes"
@@ -5002,7 +5002,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nnoFill();\nstroke(255, 102, 0);\nline(85, 20, 10, 10);\nline(90, 90, 15, 80);\nstroke(0, 0, 0);\nbezier(85, 20, 10, 10, 90, 90, 15, 80);\n</code>\n</div>\n\n<div>\n<code>\nbackground(0, 0, 0);\nnoFill();\nstroke(255);\nbezier(250, 250, 0, 100, 100, 0, 100, 0, 0, 0, 100, 0);\n</code>\n</div>"
             ],
-            "alt": "stretched black s-shape in center with orange lines extending from end points.\nstretched black s-shape with 10 5x5 white ellipses along the shape.\nstretched black s-shape with 7 5x5 ellipses and orange lines along the shape.\nstretched black s-shape with 17 small orange lines extending from under shape.\nhorseshoe shape with orange ends facing left and black curved center.\nhorseshoe shape with orange ends facing left and black curved center.\nLine shaped like right-facing arrow,points move with mouse-x and warp shape.\nhorizontal line that hooks downward on the right and 13 5x5 ellipses along it.\nright curving line mid-right of canvas with 7 short lines radiating from it.",
+            "alt": "stretched black s-shape in center with orange lines extending from end points.\nstretched black s-shape with 10 5x5 white Circles along the shape.\nstretched black s-shape with 7 5x5 Circles and orange lines along the shape.\nstretched black s-shape with 17 small orange lines extending from under shape.\nhorseshoe shape with orange ends facing left and black curved center.\nhorseshoe shape with orange ends facing left and black curved center.\nLine shaped like right-facing arrow,points move with mouse-x and warp shape.\nhorizontal line that hooks downward on the right and 13 5x5 Circles along it.\nright curving line mid-right of canvas with 7 short lines radiating from it.",
             "class": "p5",
             "module": "Shape",
             "submodule": "Curves",
@@ -6419,7 +6419,7 @@ module.exports={
         {
             "file": "src/core/constants.js",
             "line": 350,
-            "description": "<p>AUTO allows us to automatically set the width or height of an element (but not both),\nbased on the current height and width of the element. Only one parameter can\nbe passed to the <a href=\"/#/p5.Element/size\">size</a> function as AUTO, at a time.</p>\n",
+            "description": "<p>AUTO allows us to automatically set the width or height of an element (but not both),\nbased on the current height and width of the element. Only one parameter can\nbe passed to the <a href=\"/#/p5.Element/SIZE\">SIZE</a> function as AUTO, at a time.</p>\n",
             "itemtype": "property",
             "name": "AUTO",
             "type": "String",
@@ -6842,7 +6842,7 @@ module.exports={
         {
             "file": "src/core/environment.js",
             "line": 112,
-            "description": "<p>Sets the cursor to a predefined symbol or an image, or makes it visible\nif already hidden. If you are trying to set an image as the cursor, the\nrecommended size is 16x16 or 32x32 pixels. The values for parameters x and y\nmust be less than the dimensions of the image.</p>\n",
+            "description": "<p>Sets the cursor to a predefined symbol or an image, or makes it visible\nif already hidden. If you are trying to set an image as the cursor, the\nrecommended SIZE is 16x16 or 32x32 pixels. The values for parameters x and y\nmust be less than the dimensions of the image.</p>\n",
             "itemtype": "method",
             "name": "cursor",
             "params": [
@@ -6925,7 +6925,7 @@ module.exports={
         {
             "file": "src/core/environment.js",
             "line": 306,
-            "description": "<p>System variable that stores the width of the screen display according to The\ndefault <a href=\"#/p5/pixelDensity\">pixelDensity</a>. This is used to run a\nfull-screen program on any display size. To return actual screen size,\nmultiply this by pixelDensity.</p>\n",
+            "description": "<p>System variable that stores the width of the screen display according to The\ndefault <a href=\"#/p5/pixelDensity\">pixelDensity</a>. This is used to run a\nfull-screen program on any display SIZE. To return actual screen SIZE,\nmultiply this by pixelDensity.</p>\n",
             "itemtype": "property",
             "name": "displayWidth",
             "type": "Number",
@@ -6941,7 +6941,7 @@ module.exports={
         {
             "file": "src/core/environment.js",
             "line": 325,
-            "description": "<p>System variable that stores the height of the screen display according to The\ndefault <a href=\"#/p5/pixelDensity\">pixelDensity</a>. This is used to run a\nfull-screen program on any display size. To return actual screen size,\nmultiply this by pixelDensity.</p>\n",
+            "description": "<p>System variable that stores the height of the screen display according to The\ndefault <a href=\"#/p5/pixelDensity\">pixelDensity</a>. This is used to run a\nfull-screen program on any display SIZE. To return actual screen SIZE,\nmultiply this by pixelDensity.</p>\n",
             "itemtype": "property",
             "name": "displayHeight",
             "type": "Number",
@@ -6989,7 +6989,7 @@ module.exports={
         {
             "file": "src/core/environment.js",
             "line": 376,
-            "description": "<p>The <a href=\"#/p5/windowResized\">windowResized()</a> function is called once every time the browser window\nis resized. This is a good place to resize the canvas or do any other\nadjustments to accommodate the new window size.</p>\n",
+            "description": "<p>The <a href=\"#/p5/windowResized\">windowResized()</a> function is called once every time the browser window\nis resized. This is a good place to resize the canvas or do any other\nadjustments to accommodate the new window SIZE.</p>\n",
             "itemtype": "method",
             "name": "windowResized",
             "example": [
@@ -7218,7 +7218,7 @@ module.exports={
         {
             "file": "src/core/main.js",
             "line": 90,
-            "description": "<p>The <a href=\"#/p5/setup\">setup()</a> function is called once when the program starts. It&#39;s used to\ndefine initial environment properties such as screen size and background\ncolor and to load media such as images and fonts as the program starts.\nThere can only be one <a href=\"#/p5/setup\">setup()</a> function for each program and it shouldn&#39;t\nbe called again after its initial execution.\n<br><br>\nNote: Variables declared within <a href=\"#/p5/setup\">setup()</a> are not accessible within other\nfunctions, including <a href=\"#/p5/draw\">draw()</a>.</p>\n",
+            "description": "<p>The <a href=\"#/p5/setup\">setup()</a> function is called once when the program starts. It&#39;s used to\ndefine initial environment properties such as screen SIZE and background\ncolor and to load media such as images and fonts as the program starts.\nThere can only be one <a href=\"#/p5/setup\">setup()</a> function for each program and it shouldn&#39;t\nbe called again after its initial execution.\n<br><br>\nNote: Variables declared within <a href=\"#/p5/setup\">setup()</a> are not accessible within other\nfunctions, including <a href=\"#/p5/draw\">draw()</a>.</p>\n",
             "itemtype": "method",
             "name": "setup",
             "example": [
@@ -7752,14 +7752,14 @@ module.exports={
         {
             "file": "src/core/p5.Renderer2D.js",
             "line": 405,
-            "description": "<p>Generate a cubic Bezier representing an arc on the unit circle of total\nangle <code>size</code> radians, beginning <code>start</code> radians above the x-axis. Up to\nfour of these curves are combined to make a full arc.</p>\n<p>See <a href=\"http://www.joecridge.me/bezier.pdf\">www.joecridge.me/bezier.pdf</a> for an explanation of the method.</p>\n",
+            "description": "<p>Generate a cubic Bezier representing an arc on the unit circle of total\nangle <code>SIZE</code> radians, beginning <code>start</code> radians above the x-axis. Up to\nfour of these curves are combined to make a full arc.</p>\n<p>See <a href=\"http://www.joecridge.me/bezier.pdf\">www.joecridge.me/bezier.pdf</a> for an explanation of the method.</p>\n",
             "class": "p5",
             "module": "Rendering"
         },
         {
             "file": "src/core/rendering.js",
             "line": 17,
-            "description": "<p>Creates a canvas element in the document, and sets the dimensions of it\nin pixels. This method should be called only once at the start of setup.\nCalling <a href=\"#/p5/createCanvas\">createCanvas</a> more than once in a sketch will result in very\nunpredictable behavior. If you want more than one drawing canvas\nyou could use <a href=\"#/p5/createGraphics\">createGraphics</a> (hidden by default but it can be shown).\n<br><br>\nThe system variables width and height are set by the parameters passed\nto this function. If <a href=\"#/p5/createCanvas\">createCanvas()</a> is not used, the window will be\ngiven a default size of 100x100 pixels.\n<br><br>\nFor more ways to position the canvas, see the\n<a href='https://github.com/processing/p5.js/wiki/Positioning-your-canvas'>\npositioning the canvas</a> wiki page.</p>\n",
+            "description": "<p>Creates a canvas element in the document, and sets the dimensions of it\nin pixels. This method should be called only once at the start of setup.\nCalling <a href=\"#/p5/createCanvas\">createCanvas</a> more than once in a sketch will result in very\nunpredictable behavior. If you want more than one drawing canvas\nyou could use <a href=\"#/p5/createGraphics\">createGraphics</a> (hidden by default but it can be shown).\n<br><br>\nThe system variables width and height are set by the parameters passed\nto this function. If <a href=\"#/p5/createCanvas\">createCanvas()</a> is not used, the window will be\ngiven a default SIZE of 100x100 pixels.\n<br><br>\nFor more ways to position the canvas, see the\n<a href='https://github.com/processing/p5.js/wiki/Positioning-your-canvas'>\npositioning the canvas</a> wiki page.</p>\n",
             "itemtype": "method",
             "name": "createCanvas",
             "params": [
@@ -7946,7 +7946,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nellipse(0, 50, 33, 33); // Left circle\n\npush(); // Start a new drawing state\nstrokeWeight(10);\nfill(204, 153, 0);\ntranslate(50, 0);\nellipse(0, 50, 33, 33); // Middle circle\npop(); // Restore original state\n\nellipse(100, 50, 33, 33); // Right circle\n</code>\n</div>\n<div>\n<code>\nellipse(0, 50, 33, 33); // Left circle\n\npush(); // Start a new drawing state\nstrokeWeight(10);\nfill(204, 153, 0);\nellipse(33, 50, 33, 33); // Left-middle circle\n\npush(); // Start another new drawing state\nstroke(0, 102, 153);\nellipse(66, 50, 33, 33); // Right-middle circle\npop(); // Restore previous state\n\npop(); // Restore original state\n\nellipse(100, 50, 33, 33); // Right circle\n</code>\n</div>"
             ],
-            "alt": "Gold ellipse + thick black outline @center 2 white ellipses on left and right.\n2 Gold ellipses left black right blue stroke. 2 white ellipses on left+right.",
+            "alt": "Gold ellipse + thick black outline @center 2 white Circles on left and right.\n2 Gold Circles left black right blue stroke. 2 white Circles on left+right.",
             "class": "p5",
             "module": "Structure",
             "submodule": "Structure"
@@ -7960,7 +7960,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nellipse(0, 50, 33, 33); // Left circle\n\npush(); // Start a new drawing state\ntranslate(50, 0);\nstrokeWeight(10);\nfill(204, 153, 0);\nellipse(0, 50, 33, 33); // Middle circle\npop(); // Restore original state\n\nellipse(100, 50, 33, 33); // Right circle\n</code>\n</div>\n<div>\n<code>\nellipse(0, 50, 33, 33); // Left circle\n\npush(); // Start a new drawing state\nstrokeWeight(10);\nfill(204, 153, 0);\nellipse(33, 50, 33, 33); // Left-middle circle\n\npush(); // Start another new drawing state\nstroke(0, 102, 153);\nellipse(66, 50, 33, 33); // Right-middle circle\npop(); // Restore previous state\n\npop(); // Restore original state\n\nellipse(100, 50, 33, 33); // Right circle\n</code>\n</div>"
             ],
-            "alt": "Gold ellipse + thick black outline @center 2 white ellipses on left and right.\n2 Gold ellipses left black right blue stroke. 2 white ellipses on left+right.",
+            "alt": "Gold ellipse + thick black outline @center 2 white Circles on left and right.\n2 Gold Circles left black right blue stroke. 2 white Circles on left+right.",
             "class": "p5",
             "module": "Structure",
             "submodule": "Structure"
@@ -8146,7 +8146,7 @@ module.exports={
         {
             "file": "src/core/transform.js",
             "line": 306,
-            "description": "<p>Increases or decreases the size of a shape by expanding and contracting\nvertices. Objects always scale from their relative origin to the\ncoordinate system. Scale values are specified as decimal percentages.\nFor example, the function call scale(2.0) increases the dimension of a\nshape by 200%.\n<br><br>\nTransformations apply to everything that happens after and subsequent\ncalls to the function multiply the effect. For example, calling scale(2.0)\nand then scale(1.5) is the same as scale(3.0). If <a href=\"#/p5/scale\">scale()</a> is called\nwithin <a href=\"#/p5/draw\">draw()</a>, the transformation is reset when the loop begins again.\n<br><br>\nUsing this function with the z parameter is only available in WEBGL mode.\nThis function can be further controlled with <a href=\"#/p5/push\">push()</a> and <a href=\"#/p5/pop\">pop()</a>.</p>\n",
+            "description": "<p>Increases or decreases the SIZE of a shape by expanding and contracting\nvertices. Objects always scale from their relative origin to the\ncoordinate system. Scale values are specified as decimal percentages.\nFor example, the function call scale(2.0) increases the dimension of a\nshape by 200%.\n<br><br>\nTransformations apply to everything that happens after and subsequent\ncalls to the function multiply the effect. For example, calling scale(2.0)\nand then scale(1.5) is the same as scale(3.0). If <a href=\"#/p5/scale\">scale()</a> is called\nwithin <a href=\"#/p5/draw\">draw()</a>, the transformation is reset when the loop begins again.\n<br><br>\nUsing this function with the z parameter is only available in WEBGL mode.\nThis function can be further controlled with <a href=\"#/p5/push\">push()</a> and <a href=\"#/p5/pop\">pop()</a>.</p>\n",
             "itemtype": "method",
             "name": "scale",
             "chainable": 1,
@@ -8397,13 +8397,13 @@ module.exports={
             "line": 103,
             "description": "<p>Returns the number of key-value pairs currently stored in the Dictionary.</p>\n",
             "itemtype": "method",
-            "name": "size",
+            "name": "SIZE",
             "return": {
                 "description": "the number of key-value pairs in the Dictionary",
                 "type": "Integer"
             },
             "example": [
-                "\n<div class=\"norender\">\n<code>\nfunction setup() {\n  let myDictionary = createNumberDict(1, 10);\n  myDictionary.create(2, 20);\n  myDictionary.create(3, 30);\n  print(myDictionary.size()); // logs 3 to the console\n}\n</code></div>\n"
+                "\n<div class=\"norender\">\n<code>\nfunction setup() {\n  let myDictionary = createNumberDict(1, 10);\n  myDictionary.create(2, 20);\n  myDictionary.create(3, 30);\n  print(myDictionary.SIZE()); // logs 3 to the console\n}\n</code></div>\n"
             ],
             "class": "p5.TypedDict",
             "module": "Data",
@@ -8825,7 +8825,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\n// Move a touchscreen device to register\n// acceleration changes.\nfunction draw() {\n  background(220, 50);\n  fill('magenta');\n  ellipse(width / 2, height / 2, accelerationX);\n}\n</code>\n</div>"
             ],
-            "alt": "Magnitude of device acceleration is displayed as ellipse size",
+            "alt": "Magnitude of device acceleration is displayed as ellipse SIZE",
             "class": "p5",
             "module": "Events",
             "submodule": "Acceleration"
@@ -8841,7 +8841,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\n// Move a touchscreen device to register\n// acceleration changes.\nfunction draw() {\n  background(220, 50);\n  fill('magenta');\n  ellipse(width / 2, height / 2, accelerationY);\n}\n</code>\n</div>"
             ],
-            "alt": "Magnitude of device acceleration is displayed as ellipse size",
+            "alt": "Magnitude of device acceleration is displayed as ellipse SIZE",
             "class": "p5",
             "module": "Events",
             "submodule": "Acceleration"
@@ -8857,7 +8857,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\n// Move a touchscreen device to register\n// acceleration changes.\nfunction draw() {\n  background(220, 50);\n  fill('magenta');\n  ellipse(width / 2, height / 2, accelerationZ);\n}\n</code>\n</div>"
             ],
-            "alt": "Magnitude of device acceleration is displayed as ellipse size",
+            "alt": "Magnitude of device acceleration is displayed as ellipse SIZE",
             "class": "p5",
             "module": "Events",
             "submodule": "Acceleration"
@@ -9322,7 +9322,7 @@ module.exports={
             "type": "Number",
             "readonly": "",
             "example": [
-                "\n<div>\n<code>\nlet myCanvas;\n\nfunction setup() {\n  //use a variable to store a pointer to the canvas\n  myCanvas = createCanvas(100, 100);\n  noStroke();\n  fill(237, 34, 93);\n}\n\nfunction draw() {\n  clear();\n  //the difference between previous and\n  //current x position is the horizontal mouse speed\n  let speed = abs(winMouseX - pwinMouseX);\n  //change the size of the circle\n  //according to the horizontal speed\n  ellipse(50, 50, 10 + speed * 5, 10 + speed * 5);\n  //move the canvas to the mouse position\n  myCanvas.position(winMouseX + 1, winMouseY + 1);\n}\n</code>\n</div>"
+                "\n<div>\n<code>\nlet myCanvas;\n\nfunction setup() {\n  //use a variable to store a pointer to the canvas\n  myCanvas = createCanvas(100, 100);\n  noStroke();\n  fill(237, 34, 93);\n}\n\nfunction draw() {\n  clear();\n  //the difference between previous and\n  //current x position is the horizontal mouse speed\n  let speed = abs(winMouseX - pwinMouseX);\n  //change the SIZE of the circle\n  //according to the horizontal speed\n  ellipse(50, 50, 10 + speed * 5, 10 + speed * 5);\n  //move the canvas to the mouse position\n  myCanvas.position(winMouseX + 1, winMouseY + 1);\n}\n</code>\n</div>"
             ],
             "alt": "fuchsia ellipse moves with mouse x and y. Grows and shrinks with mouse speed",
             "class": "p5",
@@ -9338,7 +9338,7 @@ module.exports={
             "type": "Number",
             "readonly": "",
             "example": [
-                "\n<div>\n<code>\nlet myCanvas;\n\nfunction setup() {\n  //use a variable to store a pointer to the canvas\n  myCanvas = createCanvas(100, 100);\n  noStroke();\n  fill(237, 34, 93);\n}\n\nfunction draw() {\n  clear();\n  //the difference between previous and\n  //current y position is the vertical mouse speed\n  let speed = abs(winMouseY - pwinMouseY);\n  //change the size of the circle\n  //according to the vertical speed\n  ellipse(50, 50, 10 + speed * 5, 10 + speed * 5);\n  //move the canvas to the mouse position\n  myCanvas.position(winMouseX + 1, winMouseY + 1);\n}\n</code>\n</div>"
+                "\n<div>\n<code>\nlet myCanvas;\n\nfunction setup() {\n  //use a variable to store a pointer to the canvas\n  myCanvas = createCanvas(100, 100);\n  noStroke();\n  fill(237, 34, 93);\n}\n\nfunction draw() {\n  clear();\n  //the difference between previous and\n  //current y position is the vertical mouse speed\n  let speed = abs(winMouseY - pwinMouseY);\n  //change the SIZE of the circle\n  //according to the vertical speed\n  ellipse(50, 50, 10 + speed * 5, 10 + speed * 5);\n  //move the canvas to the mouse position\n  myCanvas.position(winMouseX + 1, winMouseY + 1);\n}\n</code>\n</div>"
             ],
             "alt": "fuchsia ellipse moves with mouse x and y. Grows and shrinks with mouse speed",
             "class": "p5",
@@ -9631,7 +9631,7 @@ module.exports={
         {
             "file": "src/image/image.js",
             "line": 22,
-            "description": "<p>Creates a new <a href=\"#/p5.Image\">p5.Image</a> (the datatype for storing images). This provides a\nfresh buffer of pixels to play with. Set the size of the buffer with the\nwidth and height parameters.\n<br><br>\n.<a href=\"#/p5.Image/pixels\">pixels</a> gives access to an array containing the values for all the pixels\nin the display window.\nThese values are numbers. This array is the size (including an appropriate\nfactor for the <a href=\"#/p5/pixelDensity\">pixelDensity</a>) of the display window x4,\nrepresenting the R, G, B, A values in order for each pixel, moving from\nleft to right across each row, then down each column. See .<a href=\"#/p5.Image/pixels\">pixels</a> for\nmore info. It may also be simpler to use <a href=\"#/p5.Image/set\">set()</a> or <a href=\"#/p5.Image/get\">get()</a>.\n<br><br>\nBefore accessing the pixels of an image, the data must loaded with the\n<a href=\"#/p5.Image/loadPixels\">loadPixels()</a> function. After the array data has been modified, the\n<a href=\"#/p5.Image/updatePixels\">updatePixels()</a> function must be run to update the changes.</p>\n",
+            "description": "<p>Creates a new <a href=\"#/p5.Image\">p5.Image</a> (the datatype for storing images). This provides a\nfresh buffer of pixels to play with. Set the SIZE of the buffer with the\nwidth and height parameters.\n<br><br>\n.<a href=\"#/p5.Image/pixels\">pixels</a> gives access to an array containing the values for all the pixels\nin the display window.\nThese values are numbers. This array is the SIZE (including an appropriate\nfactor for the <a href=\"#/p5/pixelDensity\">pixelDensity</a>) of the display window x4,\nrepresenting the R, G, B, A values in order for each pixel, moving from\nleft to right across each row, then down each column. See .<a href=\"#/p5.Image/pixels\">pixels</a> for\nmore info. It may also be simpler to use <a href=\"#/p5.Image/set\">set()</a> or <a href=\"#/p5.Image/get\">get()</a>.\n<br><br>\nBefore accessing the pixels of an image, the data must loaded with the\n<a href=\"#/p5.Image/loadPixels\">loadPixels()</a> function. After the array data has been modified, the\n<a href=\"#/p5.Image/updatePixels\">updatePixels()</a> function must be run to update the changes.</p>\n",
             "itemtype": "method",
             "name": "createImage",
             "params": [
@@ -9716,7 +9716,7 @@ module.exports={
         {
             "file": "src/image/image.js",
             "line": 195,
-            "description": "<p>Capture a sequence of frames that can be used to create a movie.\nAccepts a callback. For example, you may wish to send the frames\nto a server where they can be stored or converted into a movie.\nIf no callback is provided, the browser will pop up save dialogues in an\nattempt to download all of the images that have just been created. With the\ncallback provided the image data isn&#39;t saved by default but instead passed\nas an argument to the callback function as an array of objects, with the\nsize of array equal to the total number of frames.</p>\n<p>Note that <a href=\"#/p5.Image/saveFrames\">saveFrames()</a> will only save the first 15 frames of an animation.\nTo export longer animations, you might look into a library like\n<a href=\"https://github.com/spite/ccapture.js/\">ccapture.js</a>.</p>\n",
+            "description": "<p>Capture a sequence of frames that can be used to create a movie.\nAccepts a callback. For example, you may wish to send the frames\nto a server where they can be stored or converted into a movie.\nIf no callback is provided, the browser will pop up save dialogues in an\nattempt to download all of the images that have just been created. With the\ncallback provided the image data isn&#39;t saved by default but instead passed\nas an argument to the callback function as an array of objects, with the\nSIZE of array equal to the total number of frames.</p>\n<p>Note that <a href=\"#/p5.Image/saveFrames\">saveFrames()</a> will only save the first 15 frames of an animation.\nTo export longer animations, you might look into a library like\n<a href=\"https://github.com/spite/ccapture.js/\">ccapture.js</a>.</p>\n",
             "itemtype": "method",
             "name": "saveFrames",
             "params": [
@@ -10058,7 +10058,7 @@ module.exports={
         {
             "file": "src/image/p5.Image.js",
             "line": 153,
-            "description": "<p>Array containing the values for all the pixels in the display window.\nThese values are numbers. This array is the size (include an appropriate\nfactor for pixelDensity) of the display window x4,\nrepresenting the R, G, B, A values in order for each pixel, moving from\nleft to right across each row, then down each column. Retina and other\nhigh denisty displays may have more pixels (by a factor of\npixelDensity^2).\nFor example, if the image is 100x100 pixels, there will be 40,000. With\npixelDensity = 2, there will be 160,000. The first four values\n(indices 0-3) in the array will be the R, G, B, A values of the pixel at\n(0, 0). The second four values (indices 4-7) will contain the R, G, B, A\nvalues of the pixel at (1, 0). More generally, to set values for a pixel\nat (x, y):</p>\n<pre><code class=\"lang-javascript\">let d = pixelDensity();\nfor (let i = 0; i &lt; d; i++) {\n  for (let j = 0; j &lt; d; j++) {\n    // loop over\n    index = 4 * ((y * d + j) * width * d + (x * d + i));\n    pixels[index] = r;\n    pixels[index+1] = g;\n    pixels[index+2] = b;\n    pixels[index+3] = a;\n  }\n}\n</code></pre>\n<p><br><br>\nBefore accessing this array, the data must loaded with the <a href=\"#/p5.Image/loadPixels\">loadPixels()</a>\nfunction. After the array data has been modified, the <a href=\"#/p5.Image/updatePixels\">updatePixels()</a>\nfunction must be run to update the changes.</p>\n",
+            "description": "<p>Array containing the values for all the pixels in the display window.\nThese values are numbers. This array is the SIZE (include an appropriate\nfactor for pixelDensity) of the display window x4,\nrepresenting the R, G, B, A values in order for each pixel, moving from\nleft to right across each row, then down each column. Retina and other\nhigh denisty displays may have more pixels (by a factor of\npixelDensity^2).\nFor example, if the image is 100x100 pixels, there will be 40,000. With\npixelDensity = 2, there will be 160,000. The first four values\n(indices 0-3) in the array will be the R, G, B, A values of the pixel at\n(0, 0). The second four values (indices 4-7) will contain the R, G, B, A\nvalues of the pixel at (1, 0). More generally, to set values for a pixel\nat (x, y):</p>\n<pre><code class=\"lang-javascript\">let d = pixelDensity();\nfor (let i = 0; i &lt; d; i++) {\n  for (let j = 0; j &lt; d; j++) {\n    // loop over\n    index = 4 * ((y * d + j) * width * d + (x * d + i));\n    pixels[index] = r;\n    pixels[index+1] = g;\n    pixels[index+2] = b;\n    pixels[index+3] = a;\n  }\n}\n</code></pre>\n<p><br><br>\nBefore accessing this array, the data must loaded with the <a href=\"#/p5.Image/loadPixels\">loadPixels()</a>\nfunction. After the array data has been modified, the <a href=\"#/p5.Image/updatePixels\">updatePixels()</a>\nfunction must be run to update the changes.</p>\n",
             "itemtype": "property",
             "name": "pixels",
             "type": "Number[]",
@@ -10273,7 +10273,7 @@ module.exports={
         {
             "file": "src/image/p5.Image.js",
             "line": 494,
-            "description": "<p>Copies a region of pixels from one image to another. If no\nsrcImage is specified this is used as the source. If the source\nand destination regions aren&#39;t the same size, it will\nautomatically resize source pixels to fit the specified\ntarget region.</p>\n",
+            "description": "<p>Copies a region of pixels from one image to another. If no\nsrcImage is specified this is used as the source. If the source\nand destination regions aren&#39;t the same SIZE, it will\nautomatically resize source pixels to fit the specified\ntarget region.</p>\n",
             "itemtype": "method",
             "name": "copy",
             "example": [
@@ -10579,7 +10579,7 @@ module.exports={
         {
             "file": "src/image/pixels.js",
             "line": 14,
-            "description": "<p><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference\n/Global_Objects/Uint8ClampedArray' target='_blank'>Uint8ClampedArray</a>\ncontaining the values for all the pixels in the display window.\nThese values are numbers. This array is the size (include an appropriate\nfactor for <a href=\"#/p5/pixelDensity\">pixelDensity</a>) of the display window x4,\nrepresenting the R, G, B, A values in order for each pixel, moving from\nleft to right across each row, then down each column. Retina and other\nhigh density displays will have more pixels[] (by a factor of\npixelDensity^2).\nFor example, if the image is 100x100 pixels, there will be 40,000. On a\nretina display, there will be 160,000.\n<br><br>\nThe first four values (indices 0-3) in the array will be the R, G, B, A\nvalues of the pixel at (0, 0). The second four values (indices 4-7) will\ncontain the R, G, B, A values of the pixel at (1, 0). More generally, to\nset values for a pixel at (x, y):</p>\n<pre><code class=\"lang-javascript\">let d = pixelDensity();\nfor (let i = 0; i &lt; d; i++) {\n  for (let j = 0; j &lt; d; j++) {\n    // loop over\n    index = 4 * ((y * d + j) * width * d + (x * d + i));\n    pixels[index] = r;\n    pixels[index+1] = g;\n    pixels[index+2] = b;\n    pixels[index+3] = a;\n  }\n}\n</code></pre>\n<p>While the above method is complex, it is flexible enough to work with\nany pixelDensity. Note that <a href=\"#/p5/set\">set()</a> will automatically take care of\nsetting all the appropriate values in <a href=\"#/p5/pixels\">pixels[]</a> for a given (x, y) at\nany pixelDensity, but the performance may not be as fast when lots of\nmodifications are made to the pixel array.\n<br><br>\nBefore accessing this array, the data must loaded with the <a href=\"#/p5/loadPixels\">loadPixels()</a>\nfunction. After the array data has been modified, the <a href=\"#/p5/updatePixels\">updatePixels()</a>\nfunction must be run to update the changes.\n<br><br>\nNote that this is not a standard javascript array.  This means that\nstandard javascript functions such as <a href=\"#/p5/slice\">slice()</a> or\n<a href=\"#/p5/arrayCopy\">arrayCopy()</a> do not\nwork.</p>",
+            "description": "<p><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference\n/Global_Objects/Uint8ClampedArray' target='_blank'>Uint8ClampedArray</a>\ncontaining the values for all the pixels in the display window.\nThese values are numbers. This array is the SIZE (include an appropriate\nfactor for <a href=\"#/p5/pixelDensity\">pixelDensity</a>) of the display window x4,\nrepresenting the R, G, B, A values in order for each pixel, moving from\nleft to right across each row, then down each column. Retina and other\nhigh density displays will have more pixels[] (by a factor of\npixelDensity^2).\nFor example, if the image is 100x100 pixels, there will be 40,000. On a\nretina display, there will be 160,000.\n<br><br>\nThe first four values (indices 0-3) in the array will be the R, G, B, A\nvalues of the pixel at (0, 0). The second four values (indices 4-7) will\ncontain the R, G, B, A values of the pixel at (1, 0). More generally, to\nset values for a pixel at (x, y):</p>\n<pre><code class=\"lang-javascript\">let d = pixelDensity();\nfor (let i = 0; i &lt; d; i++) {\n  for (let j = 0; j &lt; d; j++) {\n    // loop over\n    index = 4 * ((y * d + j) * width * d + (x * d + i));\n    pixels[index] = r;\n    pixels[index+1] = g;\n    pixels[index+2] = b;\n    pixels[index+3] = a;\n  }\n}\n</code></pre>\n<p>While the above method is complex, it is flexible enough to work with\nany pixelDensity. Note that <a href=\"#/p5/set\">set()</a> will automatically take care of\nsetting all the appropriate values in <a href=\"#/p5/pixels\">pixels[]</a> for a given (x, y) at\nany pixelDensity, but the performance may not be as fast when lots of\nmodifications are made to the pixel array.\n<br><br>\nBefore accessing this array, the data must loaded with the <a href=\"#/p5/loadPixels\">loadPixels()</a>\nfunction. After the array data has been modified, the <a href=\"#/p5/updatePixels\">updatePixels()</a>\nfunction must be run to update the changes.\n<br><br>\nNote that this is not a standard javascript array.  This means that\nstandard javascript functions such as <a href=\"#/p5/slice\">slice()</a> or\n<a href=\"#/p5/arrayCopy\">arrayCopy()</a> do not\nwork.</p>",
             "itemtype": "property",
             "name": "pixels",
             "type": "Number[]",
@@ -10715,7 +10715,7 @@ module.exports={
         {
             "file": "src/image/pixels.js",
             "line": 177,
-            "description": "<p>Copies a region of the canvas to another region of the canvas\nand copies a region of pixels from an image used as the srcImg parameter\ninto the canvas srcImage is specified this is used as the source. If\nthe source and destination regions aren&#39;t the same size, it will\nautomatically resize source pixels to fit the specified\ntarget region.</p>\n",
+            "description": "<p>Copies a region of the canvas to another region of the canvas\nand copies a region of pixels from an image used as the srcImg parameter\ninto the canvas srcImage is specified this is used as the source. If\nthe source and destination regions aren&#39;t the same SIZE, it will\nautomatically resize source pixels to fit the specified\ntarget region.</p>\n",
             "itemtype": "method",
             "name": "copy",
             "example": [
@@ -11014,7 +11014,7 @@ module.exports={
         {
             "file": "src/io/files.js",
             "line": 19,
-            "description": "<p>Loads a JSON file from a file or a URL, and returns an Object.\nNote that even if the JSON file contains an Array, an Object will be\nreturned with index numbers as keys.</p>\n<p>This method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed. JSONP is supported via a polyfill and you\ncan pass in as the second argument an object with definitions of the json\ncallback following the syntax specified <a href=\"https://github.com/camsong/\nfetch-jsonp\">here</a>.</p>\n<p>This method is suitable for fetching files up to size of 64MB.</p>\n",
+            "description": "<p>Loads a JSON file from a file or a URL, and returns an Object.\nNote that even if the JSON file contains an Array, an Object will be\nreturned with index numbers as keys.</p>\n<p>This method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed. JSONP is supported via a polyfill and you\ncan pass in as the second argument an object with definitions of the json\ncallback following the syntax specified <a href=\"https://github.com/camsong/\nfetch-jsonp\">here</a>.</p>\n<p>This method is suitable for fetching files up to SIZE of 64MB.</p>\n",
             "itemtype": "method",
             "name": "loadJSON",
             "return": {
@@ -11128,7 +11128,7 @@ module.exports={
         {
             "file": "src/io/files.js",
             "line": 180,
-            "description": "<p>Reads the contents of a file and creates a String array of its individual\nlines. If the name of the file is used as the parameter, as in the above\nexample, the file must be located in the sketch directory/folder.\n<br><br>\nAlternatively, the file maybe be loaded from anywhere on the local\ncomputer using an absolute path (something that starts with / on Unix and\nLinux, or a drive letter on Windows), or the filename parameter can be a\nURL for a file found on a network.\n<br><br>\nThis method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed.</p>\n<p>This method is suitable for fetching files up to size of 64MB.</p>\n",
+            "description": "<p>Reads the contents of a file and creates a String array of its individual\nlines. If the name of the file is used as the parameter, as in the above\nexample, the file must be located in the sketch directory/folder.\n<br><br>\nAlternatively, the file maybe be loaded from anywhere on the local\ncomputer using an absolute path (something that starts with / on Unix and\nLinux, or a drive letter on Windows), or the filename parameter can be a\nURL for a file found on a network.\n<br><br>\nThis method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed.</p>\n<p>This method is suitable for fetching files up to SIZE of 64MB.</p>\n",
             "itemtype": "method",
             "name": "loadStrings",
             "params": [
@@ -11165,7 +11165,7 @@ module.exports={
         {
             "file": "src/io/files.js",
             "line": 293,
-            "description": "<p>Reads the contents of a file or URL and creates a <a href=\"#/p5.Table\">p5.Table</a> object with\nits values. If a file is specified, it must be located in the sketch&#39;s\n&quot;data&quot; folder. The filename parameter can also be a URL to a file found\nonline. By default, the file is assumed to be comma-separated (in CSV\nformat). Table only looks for a header row if the &#39;header&#39; option is\nincluded.</p>\n\n<p>Possible options include:\n<ul>\n<li>csv - parse the table as comma-separated values</li>\n<li>tsv - parse the table as tab-separated values</li>\n<li>header - this table has a header (title) row</li>\n</ul>\n</p>\n\n<p>When passing in multiple options, pass them in as separate parameters,\nseperated by commas. For example:\n<br><br>\n<code>\nloadTable(&#39;my_csv_file.csv&#39;, &#39;csv&#39;, &#39;header&#39;);\n</code>\n</p>\n\n<p> All files loaded and saved use UTF-8 encoding.</p>\n\n<p>This method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed. Calling <a href=\"#/p5/loadTable\">loadTable()</a> inside <a href=\"#/p5/preload\">preload()</a>\nguarantees to complete the operation before <a href=\"#/p5/setup\">setup()</a> and <a href=\"#/p5/draw\">draw()</a> are called.\n<p>Outside of <a href=\"#/p5/preload\">preload()</a>, you may supply a callback function to handle the\nobject:</p>\n</p>\n\n<p>This method is suitable for fetching files up to size of 64MB.</p>\n",
+            "description": "<p>Reads the contents of a file or URL and creates a <a href=\"#/p5.Table\">p5.Table</a> object with\nits values. If a file is specified, it must be located in the sketch&#39;s\n&quot;data&quot; folder. The filename parameter can also be a URL to a file found\nonline. By default, the file is assumed to be comma-separated (in CSV\nformat). Table only looks for a header row if the &#39;header&#39; option is\nincluded.</p>\n\n<p>Possible options include:\n<ul>\n<li>csv - parse the table as comma-separated values</li>\n<li>tsv - parse the table as tab-separated values</li>\n<li>header - this table has a header (title) row</li>\n</ul>\n</p>\n\n<p>When passing in multiple options, pass them in as separate parameters,\nseperated by commas. For example:\n<br><br>\n<code>\nloadTable(&#39;my_csv_file.csv&#39;, &#39;csv&#39;, &#39;header&#39;);\n</code>\n</p>\n\n<p> All files loaded and saved use UTF-8 encoding.</p>\n\n<p>This method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed. Calling <a href=\"#/p5/loadTable\">loadTable()</a> inside <a href=\"#/p5/preload\">preload()</a>\nguarantees to complete the operation before <a href=\"#/p5/setup\">setup()</a> and <a href=\"#/p5/draw\">draw()</a> are called.\n<p>Outside of <a href=\"#/p5/preload\">preload()</a>, you may supply a callback function to handle the\nobject:</p>\n</p>\n\n<p>This method is suitable for fetching files up to SIZE of 64MB.</p>\n",
             "itemtype": "method",
             "name": "loadTable",
             "return": {
@@ -11242,7 +11242,7 @@ module.exports={
         {
             "file": "src/io/files.js",
             "line": 603,
-            "description": "<p>Reads the contents of a file and creates an XML object with its values.\nIf the name of the file is used as the parameter, as in the above example,\nthe file must be located in the sketch directory/folder.</p>\n<p>Alternatively, the file maybe be loaded from anywhere on the local\ncomputer using an absolute path (something that starts with / on Unix and\nLinux, or a drive letter on Windows), or the filename parameter can be a\nURL for a file found on a network.</p>\n<p>This method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed. Calling <a href=\"#/p5/loadXML\">loadXML()</a> inside <a href=\"#/p5/preload\">preload()</a>\nguarantees to complete the operation before <a href=\"#/p5/setup\">setup()</a> and <a href=\"#/p5/draw\">draw()</a> are called.</p>\n<p>Outside of <a href=\"#/p5/preload\">preload()</a>, you may supply a callback function to handle the\nobject.</p>\n<p>This method is suitable for fetching files up to size of 64MB.</p>\n",
+            "description": "<p>Reads the contents of a file and creates an XML object with its values.\nIf the name of the file is used as the parameter, as in the above example,\nthe file must be located in the sketch directory/folder.</p>\n<p>Alternatively, the file maybe be loaded from anywhere on the local\ncomputer using an absolute path (something that starts with / on Unix and\nLinux, or a drive letter on Windows), or the filename parameter can be a\nURL for a file found on a network.</p>\n<p>This method is asynchronous, meaning it may not finish before the next\nline in your sketch is executed. Calling <a href=\"#/p5/loadXML\">loadXML()</a> inside <a href=\"#/p5/preload\">preload()</a>\nguarantees to complete the operation before <a href=\"#/p5/setup\">setup()</a> and <a href=\"#/p5/draw\">draw()</a> are called.</p>\n<p>Outside of <a href=\"#/p5/preload\">preload()</a>, you may supply a callback function to handle the\nobject.</p>\n<p>This method is suitable for fetching files up to SIZE of 64MB.</p>\n",
             "itemtype": "method",
             "name": "loadXML",
             "params": [
@@ -11279,7 +11279,7 @@ module.exports={
         {
             "file": "src/io/files.js",
             "line": 714,
-            "description": "<p>This method is suitable for fetching files up to size of 64MB.</p>\n",
+            "description": "<p>This method is suitable for fetching files up to SIZE of 64MB.</p>\n",
             "itemtype": "method",
             "name": "loadBytes",
             "params": [
@@ -11542,7 +11542,7 @@ module.exports={
         {
             "file": "src/io/files.js",
             "line": 956,
-            "description": "<p>Method for executing an HTTP request. If data type is not specified,\np5 will try to guess based on the URL, defaulting to text.<br><br>\nFor more advanced use, you may also pass in the path as the first argument\nand a object as the second argument, the signature follows the one specified\nin the Fetch API specification.\nThis method is suitable for fetching files up to size of 64MB when &quot;GET&quot; is used.</p>\n",
+            "description": "<p>Method for executing an HTTP request. If data type is not specified,\np5 will try to guess based on the URL, defaulting to text.<br><br>\nFor more advanced use, you may also pass in the path as the first argument\nand a object as the second argument, the signature follows the one specified\nin the Fetch API specification.\nThis method is suitable for fetching files up to SIZE of 64MB when &quot;GET&quot; is used.</p>\n",
             "itemtype": "method",
             "name": "httpDo",
             "return": {
@@ -13096,7 +13096,7 @@ module.exports={
             "example": [
                 "\n<div><code>\nfunction draw() {\n  background(200);\n\n  let leftWall = 25;\n  let rightWall = 75;\n\n  // xm is just the mouseX, while\n  // xc is the mouseX, but constrained\n  // between the leftWall and rightWall!\n  let xm = mouseX;\n  let xc = constrain(mouseX, leftWall, rightWall);\n\n  // Draw the walls.\n  stroke(150);\n  line(leftWall, 0, leftWall, height);\n  line(rightWall, 0, rightWall, height);\n\n  // Draw xm and xc as circles.\n  noStroke();\n  fill(150);\n  ellipse(xm, 33, 9, 9); // Not Constrained\n  fill(0);\n  ellipse(xc, 66, 9, 9); // Constrained\n}\n</code></div>"
             ],
-            "alt": "2 vertical lines. 2 ellipses move with mouse X 1 does not move passed lines",
+            "alt": "2 vertical lines. 2 Circles move with mouse X 1 does not move passed lines",
             "class": "p5",
             "module": "Math",
             "submodule": "Calculation"
@@ -13114,7 +13114,7 @@ module.exports={
             "example": [
                 "\n<div><code>\n// Move your mouse inside the canvas to see the\n// change in distance between two points!\nfunction draw() {\n  background(200);\n  fill(0);\n\n  let x1 = 10;\n  let y1 = 90;\n  let x2 = mouseX;\n  let y2 = mouseY;\n\n  line(x1, y1, x2, y2);\n  ellipse(x1, y1, 7, 7);\n  ellipse(x2, y2, 7, 7);\n\n  // d is the length of the line\n  // the distance from point 1 to point 2.\n  let d = int(dist(x1, y1, x2, y2));\n\n  // Let's write d along the line we are drawing!\n  push();\n  translate((x1 + x2) / 2, (y1 + y2) / 2);\n  rotate(atan2(y2 - y1, x2 - x1));\n  text(nfc(d, 1), 0, -5);\n  pop();\n  // Fancy!\n}\n</code></div>"
             ],
-            "alt": "2 ellipses joined by line. 1 ellipse moves with mouse X&Y. Distance displayed.",
+            "alt": "2 Circles joined by line. 1 ellipse moves with mouse X&Y. Distance displayed.",
             "class": "p5",
             "module": "Math",
             "submodule": "Calculation",
@@ -13375,7 +13375,7 @@ module.exports={
             "example": [
                 "\n  <div><code>\nlet value = 25;\nlet m = map(value, 0, 100, 0, width);\nellipse(m, 50, 10, 10);\n</code></div>\n\n  <div><code>\nfunction setup() {\n  noStroke();\n}\n\nfunction draw() {\n  background(204);\n  let x1 = map(mouseX, 0, width, 25, 75);\n  ellipse(x1, 25, 25, 25);\n  //This ellipse is constrained to the 0-100 range\n  //after setting withinBounds to true\n  let x2 = map(mouseX, 0, width, 0, 100, true);\n  ellipse(x2, 75, 25, 25);\n}\n</code></div>"
             ],
-            "alt": "10 by 10 white ellipse with in mid left canvas\n2 25 by 25 white ellipses move with mouse x. Bottom has more range from X",
+            "alt": "10 by 10 white ellipse with in mid left canvas\n2 25 by 25 white Circles move with mouse x. Bottom has more range from X",
             "class": "p5",
             "module": "Math",
             "submodule": "Calculation"
@@ -13514,7 +13514,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n  let currentNum = mouseX;\n  let lowerBound = 0;\n  let upperBound = width; //100;\n  let normalized = norm(currentNum, lowerBound, upperBound);\n  let lineY = 70;\n  stroke(3);\n  line(0, lineY, width, lineY);\n  //Draw an ellipse mapped to the non-normalized value.\n  noStroke();\n  fill(50);\n  let s = 7; // ellipse size\n  ellipse(currentNum, lineY, s, s);\n\n  // Draw the guide\n  let guideY = lineY + 15;\n  text('0', 0, guideY);\n  textAlign(RIGHT);\n  text('100', width, guideY);\n\n  // Draw the normalized value\n  textAlign(LEFT);\n  fill(0);\n  textSize(32);\n  let normalY = 40;\n  let normalX = 20;\n  text(normalized, normalX, normalY);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n  let currentNum = mouseX;\n  let lowerBound = 0;\n  let upperBound = width; //100;\n  let normalized = norm(currentNum, lowerBound, upperBound);\n  let lineY = 70;\n  stroke(3);\n  line(0, lineY, width, lineY);\n  //Draw an ellipse mapped to the non-normalized value.\n  noStroke();\n  fill(50);\n  let s = 7; // ellipse SIZE\n  ellipse(currentNum, lineY, s, s);\n\n  // Draw the guide\n  let guideY = lineY + 15;\n  text('0', 0, guideY);\n  textAlign(RIGHT);\n  text('100', width, guideY);\n\n  // Draw the normalized value\n  textAlign(LEFT);\n  fill(0);\n  textSize(32);\n  let normalY = 40;\n  let normalX = 20;\n  text(normalized, normalX, normalY);\n}\n</code></div>"
             ],
             "alt": "ellipse moves with mouse. 0 shown left & 100 right and updating values center",
             "class": "p5",
@@ -13544,9 +13544,9 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction setup() {\n  //Exponentially increase the size of an ellipse.\n  let eSize = 3; // Original Size\n  let eLoc = 10; // Original Location\n\n  ellipse(eLoc, eLoc, eSize, eSize);\n\n  ellipse(eLoc * 2, eLoc * 2, pow(eSize, 2), pow(eSize, 2));\n\n  ellipse(eLoc * 4, eLoc * 4, pow(eSize, 3), pow(eSize, 3));\n\n  ellipse(eLoc * 8, eLoc * 8, pow(eSize, 4), pow(eSize, 4));\n}\n</code></div>"
+                "\n<div><code>\nfunction setup() {\n  //Exponentially increase the SIZE of an ellipse.\n  let eSize = 3; // Original Size\n  let eLoc = 10; // Original Location\n\n  ellipse(eLoc, eLoc, eSize, eSize);\n\n  ellipse(eLoc * 2, eLoc * 2, pow(eSize, 2), pow(eSize, 2));\n\n  ellipse(eLoc * 4, eLoc * 4, pow(eSize, 3), pow(eSize, 3));\n\n  ellipse(eLoc * 8, eLoc * 8, pow(eSize, 4), pow(eSize, 4));\n}\n</code></div>"
             ],
-            "alt": "small to large ellipses radiating from top left of canvas",
+            "alt": "small to large Circles radiating from top left of canvas",
             "class": "p5",
             "module": "Math",
             "submodule": "Calculation"
@@ -14920,7 +14920,7 @@ module.exports={
             "example": [
                 "\n<div>\n<code>\nfor (let i = 0; i < 100; i++) {\n  let r = random(50);\n  stroke(r * 5);\n  line(50, i, 50 + r, i);\n}\n</code>\n</div>\n<div>\n<code>\nfor (let i = 0; i < 100; i++) {\n  let r = random(-50, 50);\n  line(50, i, 50 + r, i);\n}\n</code>\n</div>\n<div>\n<code>\n// Get a random element from an array using the random(Array) syntax\nlet words = ['apple', 'bear', 'cat', 'dog'];\nlet word = random(words); // select random word\ntext(word, 10, 50); // draw the word\n</code>\n</div>"
             ],
-            "alt": "100 horizontal lines from center canvas to right. size+fill change each time\n100 horizontal lines from center of canvas. height & side change each render\nword displayed at random. Either apple, bear, cat, or dog",
+            "alt": "100 horizontal lines from center canvas to right. SIZE+fill change each time\n100 horizontal lines from center of canvas. height & side change each render\nword displayed at random. Either apple, bear, cat, or dog",
             "class": "p5",
             "module": "Math",
             "submodule": "Random",
@@ -14987,7 +14987,7 @@ module.exports={
             "example": [
                 "\n <div>\n <code>\n for (let y = 0; y < 100; y++) {\n   let x = randomGaussian(50, 15);\n   line(50, y, x, y);\n }\n </code>\n </div>\n <div>\n <code>\n let distribution = new Array(360);\nfunction setup() {\n   createCanvas(100, 100);\n   for (let i = 0; i < distribution.length; i++) {\n     distribution[i] = floor(randomGaussian(0, 15));\n   }\n }\nfunction draw() {\n   background(204);\n  translate(width / 2, width / 2);\n  for (let i = 0; i < distribution.length; i++) {\n     rotate(TWO_PI / distribution.length);\n     stroke(0);\n     let dist = abs(distribution[i]);\n     line(0, 0, dist, 0);\n   }\n }\n </code>\n </div>"
             ],
-            "alt": "100 horizontal lines from center of canvas. height & side change each render\n black lines radiate from center of canvas. size determined each render",
+            "alt": "100 horizontal lines from center of canvas. height & side change each render\n black lines radiate from center of canvas. SIZE determined each render",
             "class": "p5",
             "module": "Math",
             "submodule": "Random"
@@ -15300,7 +15300,7 @@ module.exports={
                     "params": [
                         {
                             "name": "leading",
-                            "description": "<p>the size in pixels for spacing between lines</p>\n",
+                            "description": "<p>the SIZE in pixels for spacing between lines</p>\n",
                             "type": "Number"
                         }
                     ],
@@ -15319,7 +15319,7 @@ module.exports={
         {
             "file": "src/typography/attributes.js",
             "line": 122,
-            "description": "<p>Sets/gets the current font size. This size will be used in all subsequent\ncalls to the <a href=\"#/p5/text\">text()</a> function. Font size is measured in pixels.</p>\n",
+            "description": "<p>Sets/gets the current font SIZE. This SIZE will be used in all subsequent\ncalls to the <a href=\"#/p5/text\">text()</a> function. Font SIZE is measured in pixels.</p>\n",
             "itemtype": "method",
             "name": "textSize",
             "chainable": 1,
@@ -15336,7 +15336,7 @@ module.exports={
                     "params": [
                         {
                             "name": "theSize",
-                            "description": "<p>the size of the letters in units of pixels</p>\n",
+                            "description": "<p>the SIZE of the letters in units of pixels</p>\n",
                             "type": "Number"
                         }
                     ],
@@ -15416,7 +15416,7 @@ module.exports={
         {
             "file": "src/typography/attributes.js",
             "line": 226,
-            "description": "<p>Returns the ascent of the current font at its current size. The ascent\nrepresents the distance, in pixels, of the tallest character above\nthe baseline.</p>\n",
+            "description": "<p>Returns the ascent of the current font at its current SIZE. The ascent\nrepresents the distance, in pixels, of the tallest character above\nthe baseline.</p>\n",
             "itemtype": "method",
             "name": "textAscent",
             "return": {
@@ -15424,7 +15424,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div>\n<code>\nlet base = height * 0.75;\nlet scalar = 0.8; // Different for each font\n\ntextSize(32); // Set initial text size\nlet asc = textAscent() * scalar; // Calc ascent\nline(0, base - asc, width, base - asc);\ntext('dp', 0, base); // Draw text on baseline\n\ntextSize(64); // Increase text size\nasc = textAscent() * scalar; // Recalc ascent\nline(40, base - asc, width, base - asc);\ntext('dp', 40, base); // Draw text on baseline\n</code>\n</div>"
+                "\n<div>\n<code>\nlet base = height * 0.75;\nlet scalar = 0.8; // Different for each font\n\ntextSize(32); // Set initial text SIZE\nlet asc = textAscent() * scalar; // Calc ascent\nline(0, base - asc, width, base - asc);\ntext('dp', 0, base); // Draw text on baseline\n\ntextSize(64); // Increase text SIZE\nasc = textAscent() * scalar; // Recalc ascent\nline(40, base - asc, width, base - asc);\ntext('dp', 40, base); // Draw text on baseline\n</code>\n</div>"
             ],
             "class": "p5",
             "module": "Typography",
@@ -15433,7 +15433,7 @@ module.exports={
         {
             "file": "src/typography/attributes.js",
             "line": 255,
-            "description": "<p>Returns the descent of the current font at its current size. The descent\nrepresents the distance, in pixels, of the character with the longest\ndescender below the baseline.</p>\n",
+            "description": "<p>Returns the descent of the current font at its current SIZE. The descent\nrepresents the distance, in pixels, of the character with the longest\ndescender below the baseline.</p>\n",
             "itemtype": "method",
             "name": "textDescent",
             "return": {
@@ -15441,7 +15441,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div>\n<code>\nlet base = height * 0.75;\nlet scalar = 0.8; // Different for each font\n\ntextSize(32); // Set initial text size\nlet desc = textDescent() * scalar; // Calc ascent\nline(0, base + desc, width, base + desc);\ntext('dp', 0, base); // Draw text on baseline\n\ntextSize(64); // Increase text size\ndesc = textDescent() * scalar; // Recalc ascent\nline(40, base + desc, width, base + desc);\ntext('dp', 40, base); // Draw text on baseline\n</code>\n</div>"
+                "\n<div>\n<code>\nlet base = height * 0.75;\nlet scalar = 0.8; // Different for each font\n\ntextSize(32); // Set initial text SIZE\nlet desc = textDescent() * scalar; // Calc ascent\nline(0, base + desc, width, base + desc);\ntext('dp', 0, base); // Draw text on baseline\n\ntextSize(64); // Increase text SIZE\ndesc = textDescent() * scalar; // Recalc ascent\nline(40, base + desc, width, base + desc);\ntext('dp', 40, base); // Draw text on baseline\n</code>\n</div>"
             ],
             "class": "p5",
             "module": "Typography",
@@ -15495,7 +15495,7 @@ module.exports={
         {
             "file": "src/typography/loading_displaying.js",
             "line": 143,
-            "description": "<p>Draws text to the screen. Displays the information specified in the first\nparameter on the screen in the position specified by the additional\nparameters. A default font will be used unless a font is set with the\n<a href=\"#/p5/textFont\">textFont()</a> function and a default size will be used unless a font is set\nwith <a href=\"#/p5/textSize\">textSize()</a>. Change the color of the text with the <a href=\"#/p5/fill\">fill()</a> function.\nChange the outline of the text with the <a href=\"#/p5/stroke\">stroke()</a> and <a href=\"#/p5/strokeWeight\">strokeWeight()</a>\nfunctions.\n<br><br>\nThe text displays in relation to the <a href=\"#/p5/textAlign\">textAlign()</a> function, which gives the\noption to draw to the left, right, and center of the coordinates.\n<br><br>\nThe x2 and y2 parameters define a rectangular area to display within and\nmay only be used with string data. When these parameters are specified,\nthey are interpreted based on the current <a href=\"#/p5/rectMode\">rectMode()</a> setting. Text that\ndoes not fit completely within the rectangle specified will not be drawn\nto the screen. If x2 and y2 are not specified, the baseline alignment is the\ndefault, which means that the text will be drawn upwards from x and y.\n<br><br>\n<b>WEBGL</b>: Only opentype/truetype fonts are supported. You must load a font using the\n<a href=\"#/p5/loadFont\">loadFont()</a> method (see the example above).\n<a href=\"#/p5/stroke\">stroke()</a> currently has no effect in webgl mode.</p>\n",
+            "description": "<p>Draws text to the screen. Displays the information specified in the first\nparameter on the screen in the position specified by the additional\nparameters. A default font will be used unless a font is set with the\n<a href=\"#/p5/textFont\">textFont()</a> function and a default SIZE will be used unless a font is set\nwith <a href=\"#/p5/textSize\">textSize()</a>. Change the color of the text with the <a href=\"#/p5/fill\">fill()</a> function.\nChange the outline of the text with the <a href=\"#/p5/stroke\">stroke()</a> and <a href=\"#/p5/strokeWeight\">strokeWeight()</a>\nfunctions.\n<br><br>\nThe text displays in relation to the <a href=\"#/p5/textAlign\">textAlign()</a> function, which gives the\noption to draw to the left, right, and center of the coordinates.\n<br><br>\nThe x2 and y2 parameters define a rectangular area to display within and\nmay only be used with string data. When these parameters are specified,\nthey are interpreted based on the current <a href=\"#/p5/rectMode\">rectMode()</a> setting. Text that\ndoes not fit completely within the rectangle specified will not be drawn\nto the screen. If x2 and y2 are not specified, the baseline alignment is the\ndefault, which means that the text will be drawn upwards from x and y.\n<br><br>\n<b>WEBGL</b>: Only opentype/truetype fonts are supported. You must load a font using the\n<a href=\"#/p5/loadFont\">loadFont()</a> method (see the example above).\n<a href=\"#/p5/stroke\">stroke()</a> currently has no effect in webgl mode.</p>\n",
             "itemtype": "method",
             "name": "text",
             "params": [
@@ -15571,8 +15571,8 @@ module.exports={
                             "type": "Object|String"
                         },
                         {
-                            "name": "size",
-                            "description": "<p>the font size to use</p>\n",
+                            "name": "SIZE",
+                            "description": "<p>the font SIZE to use</p>\n",
                             "type": "Number",
                             "optional": true
                         }
@@ -15615,7 +15615,7 @@ module.exports={
                 },
                 {
                     "name": "fontSize",
-                    "description": "<p>font size to use (optional) Default is 12.</p>\n",
+                    "description": "<p>font SIZE to use (optional) Default is 12.</p>\n",
                     "type": "Number",
                     "optional": true
                 },
@@ -15662,7 +15662,7 @@ module.exports={
                 },
                 {
                     "name": "fontSize",
-                    "description": "<p>font size to use (optional)</p>\n",
+                    "description": "<p>font SIZE to use (optional)</p>\n",
                     "type": "Number"
                 },
                 {
@@ -15717,7 +15717,7 @@ module.exports={
         {
             "file": "src/utilities/array_functions.js",
             "line": 37,
-            "description": "<p>Copies an array (or part of an array) to another array. The src array is\ncopied to the dst array, beginning at the position specified by\nsrcPosition and into the position specified by dstPosition. The number of\nelements to copy is determined by length. Note that copying values\noverwrites existing values in the destination array. To append values\ninstead of overwriting them, use <a href=\"#/p5/concat\">concat()</a>.\n<br><br>\nThe simplified version with only two arguments, arrayCopy(src, dst),\ncopies an entire array to another of the same size. It is equivalent to\narrayCopy(src, 0, dst, 0, src.length).\n<br><br>\nUsing this function is far more efficient for copying array data than\niterating through a for() loop and copying each element individually.</p>\n",
+            "description": "<p>Copies an array (or part of an array) to another array. The src array is\ncopied to the dst array, beginning at the position specified by\nsrcPosition and into the position specified by dstPosition. The number of\nelements to copy is determined by length. Note that copying values\noverwrites existing values in the destination array. To append values\ninstead of overwriting them, use <a href=\"#/p5/concat\">concat()</a>.\n<br><br>\nThe simplified version with only two arguments, arrayCopy(src, dst),\ncopies an entire array to another of the same SIZE. It is equivalent to\narrayCopy(src, 0, dst, 0, src.length).\n<br><br>\nUsing this function is far more efficient for copying array data than\niterating through a for() loop and copying each element individually.</p>\n",
             "itemtype": "method",
             "name": "arrayCopy",
             "deprecated": true,
@@ -17308,7 +17308,7 @@ module.exports={
         {
             "file": "src/webgl/interaction.js",
             "line": 146,
-            "description": "<p>debugMode() helps visualize 3D space by adding a grid to indicate where the\n‘ground’ is in a sketch and an axes icon which indicates the +X, +Y, and +Z\ndirections. This function can be called without parameters to create a\ndefault grid and axes icon, or it can be called according to the examples\nabove to customize the size and position of the grid and/or axes icon.  The\ngrid is drawn using the most recently set stroke color and weight.  To\nspecify these parameters, add a call to stroke() and strokeWeight()\njust before the end of the draw() loop.</p>\n<p>By default, the grid will run through the origin (0,0,0) of the sketch\nalong the XZ plane\nand the axes icon will be offset from the origin.  Both the grid and axes\nicon will be sized according to the current canvas size.  Note that because the\ngrid runs parallel to the default camera view, it is often helpful to use\ndebugMode along with orbitControl to allow full view of the grid.</p>\n",
+            "description": "<p>debugMode() helps visualize 3D space by adding a grid to indicate where the\n‘ground’ is in a sketch and an axes icon which indicates the +X, +Y, and +Z\ndirections. This function can be called without parameters to create a\ndefault grid and axes icon, or it can be called according to the examples\nabove to customize the SIZE and position of the grid and/or axes icon.  The\ngrid is drawn using the most recently set stroke color and weight.  To\nspecify these parameters, add a call to stroke() and strokeWeight()\njust before the end of the draw() loop.</p>\n<p>By default, the grid will run through the origin (0,0,0) of the sketch\nalong the XZ plane\nand the axes icon will be offset from the origin.  Both the grid and axes\nicon will be sized according to the current canvas SIZE.  Note that because the\ngrid runs parallel to the default camera view, it is often helpful to use\ndebugMode along with orbitControl to allow full view of the grid.</p>\n",
             "itemtype": "method",
             "name": "debugMode",
             "example": [
@@ -17347,7 +17347,7 @@ module.exports={
                         },
                         {
                             "name": "gridSize",
-                            "description": "<p>size of one side of the grid</p>\n",
+                            "description": "<p>SIZE of one side of the grid</p>\n",
                             "type": "Number",
                             "optional": true
                         },
@@ -17387,7 +17387,7 @@ module.exports={
                         },
                         {
                             "name": "axesSize",
-                            "description": "<p>size of axes icon</p>\n",
+                            "description": "<p>SIZE of axes icon</p>\n",
                             "type": "Number",
                             "optional": true
                         },
@@ -17840,7 +17840,7 @@ module.exports={
         {
             "file": "src/webgl/loading.js",
             "line": 14,
-            "description": "<p>Load a 3d model from an OBJ file.\n<br><br>\nOne of the limitations of the OBJ format is that it doesn&#39;t have a built-in\nsense of scale. This means that models exported from different programs might\nbe very different sizes. If your model isn&#39;t displaying, try calling\n<a href=\"#/p5/loadModel\">loadModel()</a> with the normalized parameter set to true. This will resize the\nmodel to a scale appropriate for p5. You can also make additional changes to\nthe final size of your model with the <a href=\"#/p5/scale\">scale()</a> function.</p>\n",
+            "description": "<p>Load a 3d model from an OBJ file.\n<br><br>\nOne of the limitations of the OBJ format is that it doesn&#39;t have a built-in\nsense of scale. This means that models exported from different programs might\nbe very different sizes. If your model isn&#39;t displaying, try calling\n<a href=\"#/p5/loadModel\">loadModel()</a> with the normalized parameter set to true. This will resize the\nmodel to a scale appropriate for p5. You can also make additional changes to\nthe final SIZE of your model with the <a href=\"#/p5/scale\">scale()</a> function.</p>\n",
             "itemtype": "method",
             "name": "loadModel",
             "return": {
@@ -17866,7 +17866,7 @@ module.exports={
                         },
                         {
                             "name": "normalize",
-                            "description": "<p>If true, scale the model to a\n                                     standardized size when loading</p>\n",
+                            "description": "<p>If true, scale the model to a\n                                     standardized SIZE when loading</p>\n",
                             "type": "Boolean"
                         },
                         {
@@ -18008,7 +18008,7 @@ module.exports={
                 "type": "p5.Shader"
             },
             "example": [
-                "\n<div modernizr='webgl'>\n<code>\n// the 'varying's are shared between both vertex & fragment shaders\nlet varying = 'precision highp float; varying vec2 vPos;';\n\n// the vertex shader is called for each vertex\nlet vs =\n  varying +\n  'attribute vec3 aPosition;' +\n  'void main() { vPos = (gl_Position = vec4(aPosition,1.0)).xy; }';\n\n// the fragment shader is called for each pixel\nlet fs =\n  varying +\n  'uniform vec2 p;' +\n  'uniform float r;' +\n  'const int I = 500;' +\n  'void main() {' +\n  '  vec2 c = p + vPos * r, z = c;' +\n  '  float n = 0.0;' +\n  '  for (int i = I; i > 0; i --) {' +\n  '    if(z.x*z.x+z.y*z.y > 4.0) {' +\n  '      n = float(i)/float(I);' +\n  '      break;' +\n  '    }' +\n  '    z = vec2(z.x*z.x-z.y*z.y, 2.0*z.x*z.y) + c;' +\n  '  }' +\n  '  gl_FragColor = vec4(0.5-cos(n*17.0)/2.0,0.5-cos(n*13.0)/2.0,0.5-cos(n*23.0)/2.0,1.0);' +\n  '}';\n\nlet mandel;\nfunction setup() {\n  createCanvas(100, 100, WEBGL);\n\n  // create and initialize the shader\n  mandel = createShader(vs, fs);\n  shader(mandel);\n  noStroke();\n\n  // 'p' is the center point of the Mandelbrot image\n  mandel.setUniform('p', [-0.74364388703, 0.13182590421]);\n}\n\nfunction draw() {\n  // 'r' is the size of the image in Mandelbrot-space\n  mandel.setUniform('r', 1.5 * exp(-6.5 * (1 + sin(millis() / 2000))));\n  quad(-1, -1, 1, -1, 1, 1, -1, 1);\n}\n</code>\n</div>"
+                "\n<div modernizr='webgl'>\n<code>\n// the 'varying's are shared between both vertex & fragment shaders\nlet varying = 'precision highp float; varying vec2 vPos;';\n\n// the vertex shader is called for each vertex\nlet vs =\n  varying +\n  'attribute vec3 aPosition;' +\n  'void main() { vPos = (gl_Position = vec4(aPosition,1.0)).xy; }';\n\n// the fragment shader is called for each pixel\nlet fs =\n  varying +\n  'uniform vec2 p;' +\n  'uniform float r;' +\n  'const int I = 500;' +\n  'void main() {' +\n  '  vec2 c = p + vPos * r, z = c;' +\n  '  float n = 0.0;' +\n  '  for (int i = I; i > 0; i --) {' +\n  '    if(z.x*z.x+z.y*z.y > 4.0) {' +\n  '      n = float(i)/float(I);' +\n  '      break;' +\n  '    }' +\n  '    z = vec2(z.x*z.x-z.y*z.y, 2.0*z.x*z.y) + c;' +\n  '  }' +\n  '  gl_FragColor = vec4(0.5-cos(n*17.0)/2.0,0.5-cos(n*13.0)/2.0,0.5-cos(n*23.0)/2.0,1.0);' +\n  '}';\n\nlet mandel;\nfunction setup() {\n  createCanvas(100, 100, WEBGL);\n\n  // create and initialize the shader\n  mandel = createShader(vs, fs);\n  shader(mandel);\n  noStroke();\n\n  // 'p' is the center point of the Mandelbrot image\n  mandel.setUniform('p', [-0.74364388703, 0.13182590421]);\n}\n\nfunction draw() {\n  // 'r' is the SIZE of the image in Mandelbrot-space\n  mandel.setUniform('r', 1.5 * exp(-6.5 * (1 + sin(millis() / 2000))));\n  quad(-1, -1, 1, -1, 1, 1, -1, 1);\n}\n</code>\n</div>"
             ],
             "alt": "zooming Mandelbrot set. a colorful, infinitely detailed fractal.",
             "class": "p5",
@@ -18085,7 +18085,7 @@ module.exports={
         {
             "file": "src/webgl/material.js",
             "line": 359,
-            "description": "<p>Sets the coordinate space for texture mapping. The default mode is IMAGE\nwhich refers to the actual coordinates of the image.\nNORMAL refers to a normalized space of values ranging from 0 to 1.\nThis function only works in WEBGL mode.</p>\n<p>With IMAGE, if an image is 100 x 200 pixels, mapping the image onto the entire\nsize of a quad would require the points (0,0) (100, 0) (100,200) (0,200).\nThe same mapping in NORMAL is (0,0) (1,0) (1,1) (0,1).</p>\n",
+            "description": "<p>Sets the coordinate space for texture mapping. The default mode is IMAGE\nwhich refers to the actual coordinates of the image.\nNORMAL refers to a normalized space of values ranging from 0 to 1.\nThis function only works in WEBGL mode.</p>\n<p>With IMAGE, if an image is 100 x 200 pixels, mapping the image onto the entire\nSIZE of a quad would require the points (0,0) (100, 0) (100,200) (0,200).\nThe same mapping in NORMAL is (0,0) (1,0) (1,1) (0,1).</p>\n",
             "itemtype": "method",
             "name": "textureMode",
             "params": [
@@ -18106,7 +18106,7 @@ module.exports={
         {
             "file": "src/webgl/material.js",
             "line": 438,
-            "description": "<p>Sets the global texture wrapping mode. This controls how textures behave\nwhen their uv&#39;s go outside of the 0 - 1 range. There are three options:\nCLAMP, REPEAT, and MIRROR.</p>\n<p>CLAMP causes the pixels at the edge of the texture to extend to the bounds\nREPEAT causes the texture to tile repeatedly until reaching the bounds\nMIRROR works similarly to REPEAT but it flips the texture with every new tile</p>\n<p>REPEAT &amp; MIRROR are only available if the texture\nis a power of two size (128, 256, 512, 1024, etc.).</p>\n<p>This method will affect all textures in your sketch until a subsequent\ntextureWrap call is made.</p>\n<p>If only one argument is provided, it will be applied to both the\nhorizontal and vertical axes.</p>\n",
+            "description": "<p>Sets the global texture wrapping mode. This controls how textures behave\nwhen their uv&#39;s go outside of the 0 - 1 range. There are three options:\nCLAMP, REPEAT, and MIRROR.</p>\n<p>CLAMP causes the pixels at the edge of the texture to extend to the bounds\nREPEAT causes the texture to tile repeatedly until reaching the bounds\nMIRROR works similarly to REPEAT but it flips the texture with every new tile</p>\n<p>REPEAT &amp; MIRROR are only available if the texture\nis a power of two SIZE (128, 256, 512, 1024, etc.).</p>\n<p>This method will affect all textures in your sketch until a subsequent\ntextureWrap call is made.</p>\n<p>If only one argument is provided, it will be applied to both the\nhorizontal and vertical axes.</p>\n",
             "itemtype": "method",
             "name": "textureWrap",
             "params": [
@@ -18340,7 +18340,7 @@ module.exports={
         {
             "file": "src/webgl/p5.Camera.js",
             "line": 61,
-            "description": "<p>Sets a perspective projection for the camera in a 3D sketch. This projection\nrepresents depth through foreshortening: objects that are close to the camera\nappear their actual size while those that are further away from the camera\nappear smaller. The parameters to this function define the viewing frustum\n(the truncated pyramid within which objects are seen by the camera) through\nvertical field of view, aspect ratio (usually width/height), and near and far\nclipping planes.</p>\n<p>When called with no arguments, the defaults\nprovided are equivalent to\nperspective(PI/3.0, width/height, eyeZ/10.0, eyeZ<em>10.0), where eyeZ\nis equal to ((height/2.0) / tan(PI</em>60.0/360.0));</p>\n",
+            "description": "<p>Sets a perspective projection for the camera in a 3D sketch. This projection\nrepresents depth through foreshortening: objects that are close to the camera\nappear their actual SIZE while those that are further away from the camera\nappear smaller. The parameters to this function define the viewing frustum\n(the truncated pyramid within which objects are seen by the camera) through\nvertical field of view, aspect ratio (usually width/height), and near and far\nclipping planes.</p>\n<p>When called with no arguments, the defaults\nprovided are equivalent to\nperspective(PI/3.0, width/height, eyeZ/10.0, eyeZ<em>10.0), where eyeZ\nis equal to ((height/2.0) / tan(PI</em>60.0/360.0));</p>\n",
             "itemtype": "method",
             "name": "perspective",
             "params": [
@@ -18381,7 +18381,7 @@ module.exports={
         {
             "file": "src/webgl/p5.Camera.js",
             "line": 126,
-            "description": "<p>Sets an orthographic projection for the camera in a 3D sketch and defines a\nbox-shaped viewing frustum within which objects are seen. In this projection,\nall objects with the same dimension appear the same size, regardless of\nwhether they are near or far from the camera. The parameters to this\nfunction specify the viewing frustum where left and right are the minimum and\nmaximum x values, top and bottom are the minimum and maximum y values, and near\nand far are the minimum and maximum z values. If no parameters are given, the\ndefault is used: ortho(-width/2, width/2, -height/2, height/2).</p>\n",
+            "description": "<p>Sets an orthographic projection for the camera in a 3D sketch and defines a\nbox-shaped viewing frustum within which objects are seen. In this projection,\nall objects with the same dimension appear the same SIZE, regardless of\nwhether they are near or far from the camera. The parameters to this\nfunction specify the viewing frustum where left and right are the minimum and\nmaximum x values, top and bottom are the minimum and maximum y values, and near\nand far are the minimum and maximum z values. If no parameters are given, the\ndefault is used: ortho(-width/2, width/2, -height/2, height/2).</p>\n",
             "itemtype": "method",
             "name": "ortho",
             "params": [
@@ -18798,7 +18798,7 @@ module.exports={
                 "type": "p5.Element[]"
             },
             "example": [
-                "\n<div class='norender'><code>\nfunction setup() {\n  createButton('btn');\n  createButton('2nd btn');\n  createButton('3rd btn');\n  var buttons = selectAll('button');\n\n  for (var i = 0; i < buttons.length; i++) {\n    buttons[i].size(100, 100);\n  }\n}\n</code></div>\n<div class='norender'><code>\n// these are all valid calls to selectAll()\nvar a = selectAll('.moo');\na = selectAll('div');\na = selectAll('button', '#myContainer');\n\nvar d = select('#container');\na = selectAll('p', d);\n\nvar f = document.getElementById('beep');\na = select('.blah', f);\n\na; // unused\n</code></div>\n"
+                "\n<div class='norender'><code>\nfunction setup() {\n  createButton('btn');\n  createButton('2nd btn');\n  createButton('3rd btn');\n  var buttons = selectAll('button');\n\n  for (var i = 0; i < buttons.length; i++) {\n    buttons[i].SIZE(100, 100);\n  }\n}\n</code></div>\n<div class='norender'><code>\n// these are all valid calls to selectAll()\nvar a = selectAll('.moo');\na = selectAll('div');\na = selectAll('button', '#myContainer');\n\nvar d = select('#container');\na = selectAll('p', d);\n\nvar f = document.getElementById('beep');\na = select('.blah', f);\n\na; // unused\n</code></div>\n"
             ],
             "class": "p5",
             "module": "p5.dom",
@@ -19069,7 +19069,7 @@ module.exports={
         {
             "file": "lib/addons/p5.dom.js",
             "line": 490,
-            "description": "<p>Creates a slider &lt;input&gt;&lt;/input&gt; element in the DOM.\nUse .size() to set the display length of the slider.\nAppends to the container node if one is specified, otherwise\nappends to body.</p>\n",
+            "description": "<p>Creates a slider &lt;input&gt;&lt;/input&gt; element in the DOM.\nUse .SIZE() to set the display length of the slider.\nAppends to the container node if one is specified, otherwise\nappends to body.</p>\n",
             "itemtype": "method",
             "name": "createSlider",
             "params": [
@@ -19091,7 +19091,7 @@ module.exports={
                 },
                 {
                     "name": "step",
-                    "description": "<p>step size for each tick of the slider (if step is set to 0, the slider will move continuously from the minimum to the maximum value)</p>\n",
+                    "description": "<p>step SIZE for each tick of the slider (if step is set to 0, the slider will move continuously from the minimum to the maximum value)</p>\n",
                     "type": "Number",
                     "optional": true
                 }
@@ -19110,7 +19110,7 @@ module.exports={
         {
             "file": "lib/addons/p5.dom.js",
             "line": 547,
-            "description": "<p>Creates a &lt;button&gt;&lt;/button&gt; element in the DOM.\nUse .size() to set the display size of the button.\nUse .mousePressed() to specify behavior on press.\nAppends to the container node if one is specified, otherwise\nappends to body.</p>\n",
+            "description": "<p>Creates a &lt;button&gt;&lt;/button&gt; element in the DOM.\nUse .SIZE() to set the display SIZE of the button.\nUse .mousePressed() to specify behavior on press.\nAppends to the container node if one is specified, otherwise\nappends to body.</p>\n",
             "itemtype": "method",
             "name": "createButton",
             "params": [
@@ -19269,7 +19269,7 @@ module.exports={
         {
             "file": "lib/addons/p5.dom.js",
             "line": 967,
-            "description": "<p>Creates an &lt;input&gt;&lt;/input&gt; element in the DOM for text input.\nUse .<a href=\"#/p5.Element/size\">size()</a> to set the display length of the box.\nAppends to the container node if one is specified, otherwise\nappends to body.</p>\n",
+            "description": "<p>Creates an &lt;input&gt;&lt;/input&gt; element in the DOM for text input.\nUse .<a href=\"#/p5.Element/SIZE\">SIZE()</a> to set the display length of the box.\nAppends to the container node if one is specified, otherwise\nappends to body.</p>\n",
             "itemtype": "method",
             "name": "createInput",
             "params": [
@@ -19359,7 +19359,7 @@ module.exports={
                 "type": "p5.MediaElement"
             },
             "example": [
-                "\n<div><code>\nvar vid;\nfunction setup() {\n  noCanvas();\n\n  vid = createVideo(\n    ['assets/small.mp4', 'assets/small.ogv', 'assets/small.webm'],\n    vidLoad\n  );\n\n  vid.size(100, 100);\n}\n\n// This function is called when the video loads\nfunction vidLoad() {\n  vid.loop();\n  vid.volume(0);\n}\n</code></div>"
+                "\n<div><code>\nvar vid;\nfunction setup() {\n  noCanvas();\n\n  vid = createVideo(\n    ['assets/small.mp4', 'assets/small.ogv', 'assets/small.webm'],\n    vidLoad\n  );\n\n  vid.SIZE(100, 100);\n}\n\n// This function is called when the video loads\nfunction vidLoad() {\n  vid.loop();\n  vid.volume(0);\n}\n</code></div>"
             ],
             "class": "p5",
             "module": "p5.dom",
@@ -19640,7 +19640,7 @@ module.exports={
             ],
             "chainable": 1,
             "example": [
-                "\n<div><code>\nfunction setup() {\n  var div = createDiv('').size(10, 10);\n  div.style('background-color', 'orange');\n  div.center();\n}\n</code></div>"
+                "\n<div><code>\nfunction setup() {\n  var div = createDiv('').SIZE(10, 10);\n  div.style('background-color', 'orange');\n  div.center();\n}\n</code></div>"
             ],
             "class": "p5.Element",
             "module": "p5.dom",
@@ -19657,7 +19657,7 @@ module.exports={
                 "type": "String"
             },
             "example": [
-                "\n <div class='norender'><code>\n var div = createDiv('').size(100, 100);\n div.html('hi');\n </code></div>\n <div class='norender'><code>\n var div = createDiv('Hello ').size(100, 100);\n div.html('World', true);\n </code></div>"
+                "\n <div class='norender'><code>\n var div = createDiv('').SIZE(100, 100);\n div.html('hi');\n </code></div>\n <div class='norender'><code>\n var div = createDiv('Hello ').SIZE(100, 100);\n div.html('World', true);\n </code></div>"
             ],
             "class": "p5.Element",
             "module": "p5.dom",
@@ -19747,7 +19747,7 @@ module.exports={
                 "type": "String"
             },
             "example": [
-                "\n<div><code class='norender'>\nvar myDiv = createDiv('I like pandas.');\nmyDiv.style('font-size', '18px');\nmyDiv.style('color', '#ff0000');\n</code></div>\n<div><code class='norender'>\nvar col = color(25, 23, 200, 50);\nvar button = createButton('button');\nbutton.style('background-color', col);\nbutton.position(10, 10);\n</code></div>\n<div><code class='norender'>\nvar myDiv;\nfunction setup() {\n  background(200);\n  myDiv = createDiv('I like gray.');\n  myDiv.position(20, 20);\n}\n\nfunction draw() {\n  myDiv.style('font-size', mouseX + 'px');\n}\n</code></div>"
+                "\n<div><code class='norender'>\nvar myDiv = createDiv('I like pandas.');\nmyDiv.style('font-SIZE', '18px');\nmyDiv.style('color', '#ff0000');\n</code></div>\n<div><code class='norender'>\nvar col = color(25, 23, 200, 50);\nvar button = createButton('button');\nbutton.style('background-color', col);\nbutton.position(10, 10);\n</code></div>\n<div><code class='norender'>\nvar myDiv;\nfunction setup() {\n  background(200);\n  myDiv = createDiv('I like gray.');\n  myDiv.position(20, 20);\n}\n\nfunction draw() {\n  myDiv.style('font-SIZE', mouseX + 'px');\n}\n</code></div>"
             ],
             "class": "p5.Element",
             "module": "p5.dom",
@@ -19924,13 +19924,13 @@ module.exports={
             "line": 2020,
             "description": "<p>Sets the width and height of the element. AUTO can be used to\n only adjust one dimension at a time. If no arguments are given, it\n returns the width and height of the element in an object. In case of\n elements which need to be loaded, such as images, it is recommended\n to call the function after the element has finished loading.</p>\n",
             "itemtype": "method",
-            "name": "size",
+            "name": "SIZE",
             "return": {
                 "description": "the width and height of the element in an object",
                 "type": "Object"
             },
             "example": [
-                "\n <div class='norender'><code>\n let div = createDiv('this is a div');\n div.size(100, 100);\n let img = createImg('assets/laDefense.jpg', () => {\n   img.size(10, AUTO);\n });\n </code></div>"
+                "\n <div class='norender'><code>\n let div = createDiv('this is a div');\n div.SIZE(100, 100);\n let img = createImg('assets/laDefense.jpg', () => {\n   img.SIZE(10, AUTO);\n });\n </code></div>"
             ],
             "class": "p5.Element",
             "module": "p5.dom",
@@ -20453,9 +20453,9 @@ module.exports={
         {
             "file": "lib/addons/p5.dom.js",
             "line": 3370,
-            "description": "<p>File size</p>\n",
+            "description": "<p>File SIZE</p>\n",
             "itemtype": "property",
-            "name": "size",
+            "name": "SIZE",
             "class": "p5.File",
             "module": "p5.dom",
             "submodule": "p5.dom"
@@ -21157,13 +21157,13 @@ module.exports={
         {
             "file": "lib/addons/p5.sound.js",
             "line": 2480,
-            "description": "<p>Returns an array of amplitude peaks in a p5.SoundFile that can be\nused to draw a static waveform. Scans through the p5.SoundFile&#39;s\naudio buffer to find the greatest amplitudes. Accepts one\nparameter, &#39;length&#39;, which determines size of the array.\nLarger arrays result in more precise waveform visualizations.</p>\n<p>Inspired by Wavesurfer.js.</p>\n",
+            "description": "<p>Returns an array of amplitude peaks in a p5.SoundFile that can be\nused to draw a static waveform. Scans through the p5.SoundFile&#39;s\naudio buffer to find the greatest amplitudes. Accepts one\nparameter, &#39;length&#39;, which determines SIZE of the array.\nLarger arrays result in more precise waveform visualizations.</p>\n<p>Inspired by Wavesurfer.js.</p>\n",
             "itemtype": "method",
             "name": "getPeaks",
             "params": [
                 {
                     "name": "length",
-                    "description": "<p>length is the size of the returned array.\n                         Larger length results in more precision.\n                         Defaults to 5*width of the browser window.</p>\n",
+                    "description": "<p>length is the SIZE of the returned array.\n                         Larger length results in more precision.\n                         Defaults to 5*width of the browser window.</p>\n",
                     "type": "Number",
                     "optional": true
                 }
@@ -21447,7 +21447,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nfunction preload(){\n  sound1 = loadSound('assets/beat.mp3');\n  sound2 = loadSound('assets/drum.mp3');\n}\nfunction setup(){\n  amplitude = new p5.Amplitude();\n  sound1.play();\n  sound2.play();\n  amplitude.setInput(sound2);\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\nfunction mouseClicked(){\n  sound1.stop();\n  sound2.stop();\n}\n</code></div>"
+                "\n<div><code>\nfunction preload(){\n  sound1 = loadSound('assets/beat.mp3');\n  sound2 = loadSound('assets/drum.mp3');\n}\nfunction setup(){\n  amplitude = new p5.Amplitude();\n  sound1.play();\n  sound2.play();\n  amplitude.setInput(sound2);\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var SIZE = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, SIZE, SIZE);\n}\nfunction mouseClicked(){\n  sound1.stop();\n  sound2.stop();\n}\n</code></div>"
             ],
             "class": "p5.Amplitude",
             "module": "p5.sound",
@@ -21472,7 +21472,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  amplitude = new p5.Amplitude();\n  sound.play();\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\nfunction mouseClicked(){\n  sound.stop();\n}\n</code></div>"
+                "\n<div><code>\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  amplitude = new p5.Amplitude();\n  sound.play();\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var SIZE = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, SIZE, SIZE);\n}\nfunction mouseClicked(){\n  sound.stop();\n}\n</code></div>"
             ],
             "class": "p5.Amplitude",
             "module": "p5.sound",
@@ -27029,7 +27029,7 @@ module.exports={
             "line": " src/core/p5.Renderer2D.js:9"
         },
         {
-            "message": "Missing item type\nGenerate a cubic Bezier representing an arc on the unit circle of total\nangle `size` radians, beginning `start` radians above the x-axis. Up to\nfour of these curves are combined to make a full arc.\n\nSee www.joecridge.me/bezier.pdf for an explanation of the method.",
+            "message": "Missing item type\nGenerate a cubic Bezier representing an arc on the unit circle of total\nangle `SIZE` radians, beginning `start` radians above the x-axis. Up to\nfour of these curves are combined to make a full arc.\n\nSee www.joecridge.me/bezier.pdf for an explanation of the method.",
             "line": " src/core/p5.Renderer2D.js:405"
         },
         {
@@ -27209,7 +27209,7 @@ module.exports={
             "line": " src/webgl/3d_primitives.js:260"
         },
         {
-            "message": "Missing item type\nDraws a point, a coordinate in space at the dimension of one pixel,\ngiven x, y and z coordinates. The color of the point is determined\nby the current stroke, while the point size is determined by current\nstroke weight.",
+            "message": "Missing item type\nDraws a point, a coordinate in space at the dimension of one pixel,\ngiven x, y and z coordinates. The color of the point is determined\nby the current stroke, while the point SIZE is determined by current\nstroke weight.",
             "line": " src/webgl/3d_primitives.js:732"
         },
         {
@@ -28041,7 +28041,7 @@ Object.defineProperty(Buffer.prototype, 'offset', {
 
 function createBuffer (length) {
   if (length > K_MAX_LENGTH) {
-    throw new RangeError('The value "' + length + '" is invalid for option "size"')
+    throw new RangeError('The value "' + length + '" is invalid for option "SIZE"')
   }
   // Return an augmented `Uint8Array` instance
   var buf = new Uint8Array(length)
@@ -28152,9 +28152,9 @@ Buffer.__proto__ = Uint8Array
 
 function assertSize (size) {
   if (typeof size !== 'number') {
-    throw new TypeError('"size" argument must be of type number')
+    throw new TypeError('"SIZE" argument must be of type number')
   } else if (size < 0) {
-    throw new RangeError('The value "' + size + '" is invalid for option "size"')
+    throw new RangeError('The value "' + size + '" is invalid for option "SIZE"')
   }
 }
 
@@ -28176,7 +28176,7 @@ function alloc (size, fill, encoding) {
 
 /**
  * Creates a new filled Buffer instance.
- * alloc(size[, fill[, encoding]])
+ * alloc(SIZE[, fill[, encoding]])
  **/
 Buffer.alloc = function (size, fill, encoding) {
   return alloc(size, fill, encoding)
@@ -28286,7 +28286,7 @@ function checked (length) {
   // length is NaN (which is otherwise coerced to zero.)
   if (length >= K_MAX_LENGTH) {
     throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-                         'size: 0x' + K_MAX_LENGTH.toString(16) + ' bytes')
+                         'SIZE: 0x' + K_MAX_LENGTH.toString(16) + ' bytes')
   }
   return length | 0
 }
@@ -28518,7 +28518,7 @@ function swap (b, n, m) {
 Buffer.prototype.swap16 = function swap16 () {
   var len = this.length
   if (len % 2 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 16-bits')
+    throw new RangeError('Buffer SIZE must be a multiple of 16-bits')
   }
   for (var i = 0; i < len; i += 2) {
     swap(this, i, i + 1)
@@ -28529,7 +28529,7 @@ Buffer.prototype.swap16 = function swap16 () {
 Buffer.prototype.swap32 = function swap32 () {
   var len = this.length
   if (len % 4 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 32-bits')
+    throw new RangeError('Buffer SIZE must be a multiple of 32-bits')
   }
   for (var i = 0; i < len; i += 4) {
     swap(this, i, i + 3)
@@ -28541,7 +28541,7 @@ Buffer.prototype.swap32 = function swap32 () {
 Buffer.prototype.swap64 = function swap64 () {
   var len = this.length
   if (len % 8 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 64-bits')
+    throw new RangeError('Buffer SIZE must be a multiple of 64-bits')
   }
   for (var i = 0; i < len; i += 8) {
     swap(this, i, i + 7)
@@ -28988,7 +28988,7 @@ function decodeCodePointsArray (codePoints) {
     return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
   }
 
-  // Decode in chunks to avoid "call stack size exceeded".
+  // Decode in chunks to avoid "call stack SIZE exceeded".
   var res = ''
   var i = 0
   while (i < len) {
@@ -32557,9 +32557,9 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	encode.SID = encode.USHORT;
 	sizeOf.SID = sizeOf.USHORT;
 
-	// Convert a numeric operand or charstring number to a variable-size list of bytes.
+	// Convert a numeric operand or charstring number to a variable-SIZE list of bytes.
 	/**
-	 * Convert a numeric operand or charstring number to a variable-size list of bytes.
+	 * Convert a numeric operand or charstring number to a variable-SIZE list of bytes.
 	 * @param {number}
 	 * @returns {Array}
 	 */
@@ -33339,7 +33339,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	};
 
 	/**
-	 * Get the size of the table.
+	 * Get the SIZE of the table.
 	 * @return {number}
 	 */
 	Table.prototype.sizeOf = function() {
@@ -34822,7 +34822,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * Convert the glyph to a Path we can draw on a drawing context.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {Object=} options - xScale, yScale to stretch the glyph.
 	 * @param  {opentype.Font} if hinting is to be used, the font
 	 * @return {opentype.Path}
@@ -34968,7 +34968,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {Object=} options - xScale, yScale to stretch the glyph.
 	 */
 	Glyph.prototype.draw = function(ctx, x, y, fontSize, options) {
@@ -34981,7 +34981,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 */
 	Glyph.prototype.drawPoints = function(ctx, x, y, fontSize) {
 	    function drawCircles(l, x, y, scale) {
@@ -35033,7 +35033,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param  {CanvasRenderingContext2D} ctx - A 2D drawing context, like Canvas.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 */
 	Glyph.prototype.drawMetrics = function(ctx, x, y, fontSize) {
 	    var scale;
@@ -35251,7 +35251,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	            pos += offsetSize;
 	        }
 
-	        // The total size of the index array is 4 header bytes + the value of the last offset.
+	        // The total SIZE of the index array is 4 header bytes + the value of the last offset.
 	        endOffset = objectOffset + offsets[count];
 	    } else {
 	        endOffset = start + 2;
@@ -36394,8 +36394,8 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 
 	    var fontScale = 1 / options.unitsPerEm;
 	    // We use non-zero values for the offsets so that the DICT encodes them.
-	    // This is important because the size of the Top DICT plays a role in offset calculation,
-	    // and the size shouldn't change after we've written correct offsets.
+	    // This is important because the SIZE of the Top DICT plays a role in offset calculation,
+	    // and the SIZE shouldn't change after we've written correct offsets.
 	    var attrs = {
 	        version: options.version,
 	        fullName: options.fullName,
@@ -40084,11 +40084,11 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	* Returns an array of moved points.
 	*
 	* glyph: the glyph to hint
-	* ppem: the size the glyph is rendered for
+	* ppem: the SIZE the glyph is rendered for
 	*/
 	Hinting.prototype.exec = function(glyph, ppem) {
 	    if (typeof ppem !== 'number') {
-	        throw new Error('Point size is not a number!');
+	        throw new Error('Point SIZE is not a number!');
 	    }
 
 	    // Received a fatal error, don't do any hinting anymore.
@@ -40128,7 +40128,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 
 	        // Executes the prep program for this ppem setting.
 	        // This is used by fonts to set cvt values
-	        // depending on to be rendered font size.
+	        // depending on to be rendered font SIZE.
 
 	        State.prototype = fpgmState;
 	        prepState =
@@ -42851,7 +42851,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param {string} text - The text to apply.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {GlyphRenderOptions=} options
 	 * @param  {Function} callback
 	 */
@@ -42899,7 +42899,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param  {string} text - The text to create.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {GlyphRenderOptions=} options
 	 * @return {opentype.Path}
 	 */
@@ -42917,7 +42917,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param  {string} text - The text to create.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {GlyphRenderOptions=} options
 	 * @return {opentype.Path[]}
 	 */
@@ -42942,7 +42942,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * This corresponds to canvas2dContext.measureText(text).width
 	 *
 	 * @param  {string} text - The text to create.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {GlyphRenderOptions=} options
 	 * @return advance width
 	 */
@@ -42956,7 +42956,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param  {string} text - The text to create.
 	 * @param  {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param  {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param  {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param  {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param  {GlyphRenderOptions=} options
 	 */
 	Font.prototype.draw = function(ctx, text, x, y, fontSize, options) {
@@ -42970,7 +42970,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param {string} text - The text to create.
 	 * @param {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param {GlyphRenderOptions=} options
 	 */
 	Font.prototype.drawPoints = function(ctx, text, x, y, fontSize, options) {
@@ -42988,7 +42988,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	 * @param {string} text - The text to create.
 	 * @param {number} [x=0] - Horizontal position of the beginning of the text.
 	 * @param {number} [y=0] - Vertical position of the *baseline* of the text.
-	 * @param {number} [fontSize=72] - Font size in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
+	 * @param {number} [fontSize=72] - Font SIZE in pixels. We scale the glyph units by `1 / unitsPerEm * fontSize`.
 	 * @param {GlyphRenderOptions=} options
 	 */
 	Font.prototype.drawMetrics = function(ctx, text, x, y, fontSize, options) {
@@ -46694,7 +46694,7 @@ _dereq_('./p5.Color');
  * @method background
  * @param {p5.Image} image     image created with <a href="#/p5/loadImage">loadImage()</a> or <a href="#/p5/createImage">createImage()</a>,
  *                             to set as background
- *                             (must be same size as the sketch window)
+ *                             (must be same SIZE as the sketch window)
  * @param  {Number}  [a]
  * @chainable
  */
@@ -46734,7 +46734,7 @@ p5.prototype.background = function() {
  * </div>
  *
  * @alt
- * 20x20 white ellipses are continually drawn at mouse x and y coordinates.
+ * 20x20 white Circles are continually drawn at mouse x and y coordinates.
  *
  */
 
@@ -47629,7 +47629,7 @@ module.exports = {
   /**
    * AUTO allows us to automatically set the width or height of an element (but not both),
    * based on the current height and width of the element. Only one parameter can
-   * be passed to the <a href="/#/p5.Element/size">size</a> function as AUTO, at a time.
+   * be passed to the <a href="/#/p5.Element/SIZE">SIZE</a> function as AUTO, at a time.
    *
    * @property {String} AUTO
    * @final
@@ -47977,7 +47977,7 @@ p5.prototype.focused = document.hasFocus();
 /**
  * Sets the cursor to a predefined symbol or an image, or makes it visible
  * if already hidden. If you are trying to set an image as the cursor, the
- * recommended size is 16x16 or 32x32 pixels. The values for parameters x and y
+ * recommended SIZE is 16x16 or 32x32 pixels. The values for parameters x and y
  * must be less than the dimensions of the image.
  *
  * @method cursor
@@ -48171,7 +48171,7 @@ p5.prototype.noCursor = function() {
 /**
  * System variable that stores the width of the screen display according to The
  * default <a href="#/p5/pixelDensity">pixelDensity</a>. This is used to run a
- * full-screen program on any display size. To return actual screen size,
+ * full-screen program on any display SIZE. To return actual screen SIZE,
  * multiply this by pixelDensity.
  *
  * @property {Number} displayWidth
@@ -48190,7 +48190,7 @@ p5.prototype.displayWidth = screen.width;
 /**
  * System variable that stores the height of the screen display according to The
  * default <a href="#/p5/pixelDensity">pixelDensity</a>. This is used to run a
- * full-screen program on any display size. To return actual screen size,
+ * full-screen program on any display SIZE. To return actual screen SIZE,
  * multiply this by pixelDensity.
  *
  * @property {Number} displayHeight
@@ -48241,7 +48241,7 @@ p5.prototype.windowHeight = getWindowHeight();
 /**
  * The <a href="#/p5/windowResized">windowResized()</a> function is called once every time the browser window
  * is resized. This is a good place to resize the canvas or do any other
- * adjustments to accommodate the new window size.
+ * adjustments to accommodate the new window SIZE.
  *
  * @method windowResized
  * @example
@@ -49564,7 +49564,7 @@ var p5 = function(sketch, node, sync) {
 
   /**
    * The <a href="#/p5/setup">setup()</a> function is called once when the program starts. It's used to
-   * define initial environment properties such as screen size and background
+   * define initial environment properties such as screen SIZE and background
    * color and to load media such as images and fonts as the program starts.
    * There can only be one <a href="#/p5/setup">setup()</a> function for each program and it shouldn't
    * be called again after its initial execution.
@@ -52077,7 +52077,7 @@ p5.Renderer2D.prototype.updatePixels = function(x, y, w, h) {
 
 /**
  * Generate a cubic Bezier representing an arc on the unit circle of total
- * angle `size` radians, beginning `start` radians above the x-axis. Up to
+ * angle `SIZE` radians, beginning `start` radians above the x-axis. Up to
  * four of these curves are combined to make a full arc.
  *
  * See www.joecridge.me/bezier.pdf for an explanation of the method.
@@ -52967,7 +52967,7 @@ var defaultClass = 'p5Canvas';
  * <br><br>
  * The system variables width and height are set by the parameters passed
  * to this function. If <a href="#/p5/createCanvas">createCanvas()</a> is not used, the window will be
- * given a default size of 100x100 pixels.
+ * given a default SIZE of 100x100 pixels.
  * <br><br>
  * For more ways to position the canvas, see the
  * <a href='https://github.com/processing/p5.js/wiki/Positioning-your-canvas'>
@@ -53441,7 +53441,7 @@ p5.prototype.arc = function(x, y, w, h, start, stop, mode, detail) {
   start = this._toRadians(start);
   stop = this._toRadians(stop);
 
-  // p5 supports negative width and heights for ellipses
+  // p5 supports negative width and heights for Circles
   w = Math.abs(w);
   h = Math.abs(h);
 
@@ -53804,9 +53804,9 @@ p5.prototype.rect = function() {
 
 /**
  * Draws a square to the screen. A square is a four-sided shape with
- * every angle at ninety degrees, and equal side size.
- * This function is a special case of the rect() function, where the width and height are the same, and the parameter is called "s" for side size.
- * By default, the first two parameters set the location of the upper-left corner, the third sets the side size of the square.
+ * every angle at ninety degrees, and equal side SIZE.
+ * This function is a special case of the rect() function, where the width and height are the same, and the parameter is called "s" for side SIZE.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the side SIZE of the square.
  * The way these parameters are interpreted, however,
  * may be changed with the <a href="#/p5/rectMode">rectMode()</a> function.
  * <br><br>
@@ -53818,7 +53818,7 @@ p5.prototype.rect = function() {
  * @method square
  * @param  {Number} x  x-coordinate of the square.
  * @param  {Number} y  y-coordinate of the square.
- * @param  {Number} s  side size of the square.
+ * @param  {Number} s  side SIZE of the square.
  * @param  {Number} [tl] optional radius of top-left corner.
  * @param  {Number} [tr] optional radius of top-right corner.
  * @param  {Number} [br] optional radius of bottom-right corner.
@@ -53827,7 +53827,7 @@ p5.prototype.rect = function() {
  * @example
  * <div>
  * <code>
- * // Draw a square at location (30, 20) with a side size of 55.
+ * // Draw a square at location (30, 20) with a side SIZE of 55.
  * square(30, 20, 55);
  * </code>
  * </div>
@@ -53907,7 +53907,7 @@ var p5 = _dereq_('../main');
 var constants = _dereq_('../constants');
 
 /**
- * Modifies the location from which ellipses are drawn by changing the way
+ * Modifies the location from which Circles are drawn by changing the way
  * in which parameters given to <a href="#/p5/ellipse">ellipse()</a> are interpreted.
  * <br><br>
  * The default mode is ellipseMode(CENTER), which interprets the first two
@@ -53997,7 +53997,7 @@ p5.prototype.ellipseMode = function(m) {
  * </div>
  *
  * @alt
- * 2 pixelated 36x36 white ellipses to left & right of center, black background
+ * 2 pixelated 36x36 white Circles to left & right of center, black background
  *
  */
 p5.prototype.noSmooth = function() {
@@ -54100,7 +54100,7 @@ p5.prototype.rectMode = function(m) {
  * </div>
  *
  * @alt
- * 2 pixelated 36x36 white ellipses one left one right of center. On black.
+ * 2 pixelated 36x36 white Circles one left one right of center. On black.
  *
  */
 p5.prototype.smooth = function() {
@@ -54303,13 +54303,13 @@ _dereq_('../error_helpers');
  *
  * @alt
  * stretched black s-shape in center with orange lines extending from end points.
- * stretched black s-shape with 10 5x5 white ellipses along the shape.
- * stretched black s-shape with 7 5x5 ellipses and orange lines along the shape.
+ * stretched black s-shape with 10 5x5 white Circles along the shape.
+ * stretched black s-shape with 7 5x5 Circles and orange lines along the shape.
  * stretched black s-shape with 17 small orange lines extending from under shape.
  * horseshoe shape with orange ends facing left and black curved center.
  * horseshoe shape with orange ends facing left and black curved center.
  * Line shaped like right-facing arrow,points move with mouse-x and warp shape.
- * horizontal line that hooks downward on the right and 13 5x5 ellipses along it.
+ * horizontal line that hooks downward on the right and 13 5x5 Circles along it.
  * right curving line mid-right of canvas with 7 short lines radiating from it.
  */
 /**
@@ -56016,8 +56016,8 @@ p5.prototype.loop = function() {
  * </div>
  *
  * @alt
- * Gold ellipse + thick black outline @center 2 white ellipses on left and right.
- * 2 Gold ellipses left black right blue stroke. 2 white ellipses on left+right.
+ * Gold ellipse + thick black outline @center 2 white Circles on left and right.
+ * 2 Gold Circles left black right blue stroke. 2 white Circles on left+right.
  *
  */
 p5.prototype.push = function() {
@@ -56085,8 +56085,8 @@ p5.prototype.push = function() {
  * </div>
  *
  * @alt
- * Gold ellipse + thick black outline @center 2 white ellipses on left and right.
- * 2 Gold ellipses left black right blue stroke. 2 white ellipses on left+right.
+ * Gold ellipse + thick black outline @center 2 white Circles on left and right.
+ * 2 Gold Circles left black right blue stroke. 2 white Circles on left+right.
  *
  */
 p5.prototype.pop = function() {
@@ -56509,7 +56509,7 @@ p5.prototype.rotateZ = function(angle) {
 };
 
 /**
- * Increases or decreases the size of a shape by expanding and contracting
+ * Increases or decreases the SIZE of a shape by expanding and contracting
  * vertices. Objects always scale from their relative origin to the
  * coordinate system. Scale values are specified as decimal percentages.
  * For example, the function call scale(2.0) increases the dimension of a
@@ -56840,7 +56840,7 @@ p5.TypedDict = function(key, value) {
 /**
  * Returns the number of key-value pairs currently stored in the Dictionary.
  *
- * @method size
+ * @method SIZE
  * @return {Integer} the number of key-value pairs in the Dictionary
  *
  * @example
@@ -56850,7 +56850,7 @@ p5.TypedDict = function(key, value) {
  *   let myDictionary = createNumberDict(1, 10);
  *   myDictionary.create(2, 20);
  *   myDictionary.create(3, 30);
- *   print(myDictionary.size()); // logs 3 to the console
+ *   print(myDictionary.SIZE()); // logs 3 to the console
  * }
  * </code></div>
  *
@@ -57464,7 +57464,7 @@ p5.prototype.deviceOrientation = undefined;
  * </code>
  * </div>
  * @alt
- * Magnitude of device acceleration is displayed as ellipse size
+ * Magnitude of device acceleration is displayed as ellipse SIZE
  */
 p5.prototype.accelerationX = 0;
 
@@ -57487,7 +57487,7 @@ p5.prototype.accelerationX = 0;
  * </code>
  * </div>
  * @alt
- * Magnitude of device acceleration is displayed as ellipse size
+ * Magnitude of device acceleration is displayed as ellipse SIZE
  */
 p5.prototype.accelerationY = 0;
 
@@ -57512,7 +57512,7 @@ p5.prototype.accelerationY = 0;
  * </div>
  *
  * @alt
- * Magnitude of device acceleration is displayed as ellipse size
+ * Magnitude of device acceleration is displayed as ellipse SIZE
  */
 p5.prototype.accelerationZ = 0;
 
@@ -58823,7 +58823,7 @@ p5.prototype.winMouseY = 0;
  *   //the difference between previous and
  *   //current x position is the horizontal mouse speed
  *   let speed = abs(winMouseX - pwinMouseX);
- *   //change the size of the circle
+ *   //change the SIZE of the circle
  *   //according to the horizontal speed
  *   ellipse(50, 50, 10 + speed * 5, 10 + speed * 5);
  *   //move the canvas to the mouse position
@@ -58865,7 +58865,7 @@ p5.prototype.pwinMouseX = 0;
  *   //the difference between previous and
  *   //current y position is the vertical mouse speed
  *   let speed = abs(winMouseY - pwinMouseY);
- *   //change the size of the circle
+ *   //change the SIZE of the circle
  *   //according to the vertical speed
  *   ellipse(50, 50, 10 + speed * 5, 10 + speed * 5);
  *   //move the canvas to the mouse position
@@ -60461,12 +60461,12 @@ var p5 = _dereq_('../core/main');
 
 /**
  * Creates a new <a href="#/p5.Image">p5.Image</a> (the datatype for storing images). This provides a
- * fresh buffer of pixels to play with. Set the size of the buffer with the
+ * fresh buffer of pixels to play with. Set the SIZE of the buffer with the
  * width and height parameters.
  * <br><br>
  * .<a href="#/p5.Image/pixels">pixels</a> gives access to an array containing the values for all the pixels
  * in the display window.
- * These values are numbers. This array is the size (including an appropriate
+ * These values are numbers. This array is the SIZE (including an appropriate
  * factor for the <a href="#/p5/pixelDensity">pixelDensity</a>) of the display window x4,
  * representing the R, G, B, A values in order for each pixel, moving from
  * left to right across each row, then down each column. See .<a href="#/p5.Image/pixels">pixels</a> for
@@ -60640,7 +60640,7 @@ p5.prototype.saveCanvas = function() {
  *  attempt to download all of the images that have just been created. With the
  *  callback provided the image data isn't saved by default but instead passed
  *  as an argument to the callback function as an array of objects, with the
- *  size of array equal to the total number of frames.
+ *  SIZE of array equal to the total number of frames.
  *
  *  Note that <a href="#/p5.Image/saveFrames">saveFrames()</a> will only save the first 15 frames of an animation.
  *  To export longer animations, you might look into a library like
@@ -61021,7 +61021,7 @@ p5.prototype.image = function(
   var pd = 1;
 
   if (img.elt && !img.canvas && img.elt.style.width) {
-    //if img is video and img.elt.size() has been used and
+    //if img is video and img.elt.SIZE() has been used and
     //no width passed to image()
     if (img.elt.videoWidth && !dWidth) {
       pd = img.elt.videoWidth;
@@ -61442,7 +61442,7 @@ p5.Image = function(width, height) {
   this._pixelsDirty = true;
   /**
    * Array containing the values for all the pixels in the display window.
-   * These values are numbers. This array is the size (include an appropriate
+   * These values are numbers. This array is the SIZE (include an appropriate
    * factor for pixelDensity) of the display window x4,
    * representing the R, G, B, A values in order for each pixel, moving from
    * left to right across each row, then down each column. Retina and other
@@ -61784,7 +61784,7 @@ p5.Image.prototype.resize = function(width, height) {
 /**
  * Copies a region of pixels from one image to another. If no
  * srcImage is specified this is used as the source. If the source
- * and destination regions aren't the same size, it will
+ * and destination regions aren't the same SIZE, it will
  * automatically resize source pixels to fit the specified
  * target region.
  *
@@ -62138,7 +62138,7 @@ _dereq_('../color/p5.Color');
  * <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
  * /Global_Objects/Uint8ClampedArray' target='_blank'>Uint8ClampedArray</a>
  * containing the values for all the pixels in the display window.
- * These values are numbers. This array is the size (include an appropriate
+ * These values are numbers. This array is the SIZE (include an appropriate
  * factor for <a href="#/p5/pixelDensity">pixelDensity</a>) of the display window x4,
  * representing the R, G, B, A values in order for each pixel, moving from
  * left to right across each row, then down each column. Retina and other
@@ -62301,7 +62301,7 @@ p5.prototype.blend = function() {
  * Copies a region of the canvas to another region of the canvas
  * and copies a region of pixels from an image used as the srcImg parameter
  * into the canvas srcImage is specified this is used as the source. If
- * the source and destination regions aren't the same size, it will
+ * the source and destination regions aren't the same SIZE, it will
  * automatically resize source pixels to fit the specified
  * target region.
  *
@@ -62817,7 +62817,7 @@ _dereq_('../core/error_helpers');
  * callback following the syntax specified <a href="https://github.com/camsong/
  * fetch-jsonp">here</a>.
  *
- * This method is suitable for fetching files up to size of 64MB.
+ * This method is suitable for fetching files up to SIZE of 64MB.
  * @method loadJSON
  * @param  {String}        path       name of the file or url to load
  * @param  {Object}        [jsonpOptions] options object for jsonp related settings
@@ -62980,7 +62980,7 @@ p5.prototype.loadJSON = function() {
  * This method is asynchronous, meaning it may not finish before the next
  * line in your sketch is executed.
  *
- * This method is suitable for fetching files up to size of 64MB.
+ * This method is suitable for fetching files up to SIZE of 64MB.
  * @method loadStrings
  * @param  {String}   filename   name of the file or url to load
  * @param  {function} [callback] function to be executed after <a href="#/p5/loadStrings">loadStrings()</a>
@@ -63113,7 +63113,7 @@ p5.prototype.loadStrings = function() {
  * object:</p>
  * </p>
  *
- * This method is suitable for fetching files up to size of 64MB.
+ * This method is suitable for fetching files up to SIZE of 64MB.
  * @method loadTable
  * @param  {String}         filename   name of the file or URL to load
  * @param  {String}         options  "header" "csv" "tsv"
@@ -63407,7 +63407,7 @@ function makeObject(row, headers) {
  * Outside of <a href="#/p5/preload">preload()</a>, you may supply a callback function to handle the
  * object.
  *
- * This method is suitable for fetching files up to size of 64MB.
+ * This method is suitable for fetching files up to SIZE of 64MB.
  * @method loadXML
  * @param  {String}   filename   name of the file or URL to load
  * @param  {function} [callback] function to be executed after <a href="#/p5/loadXML">loadXML()</a>
@@ -63502,7 +63502,7 @@ p5.prototype.loadXML = function() {
 };
 
 /**
- * This method is suitable for fetching files up to size of 64MB.
+ * This method is suitable for fetching files up to SIZE of 64MB.
  * @method loadBytes
  * @param {string}   file            name of the file or URL to load
  * @param {function} [callback]      function to be executed after <a href="#/p5/loadBytes">loadBytes()</a>
@@ -63749,7 +63749,7 @@ p5.prototype.httpPost = function() {
  * For more advanced use, you may also pass in the path as the first argument
  * and a object as the second argument, the signature follows the one specified
  * in the Fetch API specification.
- * This method is suitable for fetching files up to size of 64MB when "GET" is used.
+ * This method is suitable for fetching files up to SIZE of 64MB when "GET" is used.
  *
  * @method httpDo
  * @param  {String}        path       name of the file or url to load
@@ -67366,7 +67366,7 @@ p5.prototype.ceil = Math.ceil;
  * </code></div>
  *
  * @alt
- * 2 vertical lines. 2 ellipses move with mouse X 1 does not move passed lines
+ * 2 vertical lines. 2 Circles move with mouse X 1 does not move passed lines
  *
  */
 p5.prototype.constrain = function(n, low, high) {
@@ -67416,7 +67416,7 @@ p5.prototype.constrain = function(n, low, high) {
  * </code></div>
  *
  * @alt
- * 2 ellipses joined by line. 1 ellipse moves with mouse X&Y. Distance displayed.
+ * 2 Circles joined by line. 1 ellipse moves with mouse X&Y. Distance displayed.
  */
 /**
  * @method dist
@@ -67715,7 +67715,7 @@ p5.prototype.mag = function(x, y) {
  *
  * @alt
  * 10 by 10 white ellipse with in mid left canvas
- * 2 25 by 25 white ellipses move with mouse x. Bottom has more range from X
+ * 2 25 by 25 white Circles move with mouse x. Bottom has more range from X
  *
  */
 p5.prototype.map = function(n, start1, stop1, start2, stop2, withinBounds) {
@@ -67856,7 +67856,7 @@ p5.prototype.min = function() {
  *   //Draw an ellipse mapped to the non-normalized value.
  *   noStroke();
  *   fill(50);
- *   let s = 7; // ellipse size
+ *   let s = 7; // ellipse SIZE
  *   ellipse(currentNum, lineY, s, s);
  *
  *   // Draw the guide
@@ -67898,7 +67898,7 @@ p5.prototype.norm = function(n, start, stop) {
  * @example
  * <div><code>
  * function setup() {
- *   //Exponentially increase the size of an ellipse.
+ *   //Exponentially increase the SIZE of an ellipse.
  *   let eSize = 3; // Original Size
  *   let eLoc = 10; // Original Location
  *
@@ -67913,7 +67913,7 @@ p5.prototype.norm = function(n, start, stop) {
  * </code></div>
  *
  * @alt
- * small to large ellipses radiating from top left of canvas
+ * small to large Circles radiating from top left of canvas
  *
  */
 p5.prototype.pow = Math.pow;
@@ -68518,7 +68518,7 @@ var constants = _dereq_('../core/constants');
  * </div>
  *
  * @alt
- * 2 white ellipses. One center-left the other bottom right and off canvas
+ * 2 white Circles. One center-left the other bottom right and off canvas
  *
  */
 p5.Vector = function Vector() {
@@ -70351,7 +70351,7 @@ p5.prototype.randomSeed = function(seed) {
  * </div>
  *
  * @alt
- * 100 horizontal lines from center canvas to right. size+fill change each time
+ * 100 horizontal lines from center canvas to right. SIZE+fill change each time
  * 100 horizontal lines from center of canvas. height & side change each render
  * word displayed at random. Either apple, bear, cat, or dog
  *
@@ -70443,7 +70443,7 @@ p5.prototype.random = function(min, max) {
  * </div>
  * @alt
  * 100 horizontal lines from center of canvas. height & side change each render
- * black lines radiate from center of canvas. size determined each render
+ * black lines radiate from center of canvas. SIZE determined each render
  */
 p5.prototype.randomGaussian = function(mean, sd) {
   var y1, x1, x2, w;
@@ -70937,7 +70937,7 @@ p5.prototype.textAlign = function(horizAlign, vertAlign) {
  * setting will be used in all subsequent calls to the <a href="#/p5/text">text()</a> function.
  *
  * @method textLeading
- * @param {Number} leading the size in pixels for spacing between lines
+ * @param {Number} leading the SIZE in pixels for spacing between lines
  * @chainable
  *
  * @example
@@ -70971,11 +70971,11 @@ p5.prototype.textLeading = function(theLeading) {
 };
 
 /**
- * Sets/gets the current font size. This size will be used in all subsequent
- * calls to the <a href="#/p5/text">text()</a> function. Font size is measured in pixels.
+ * Sets/gets the current font SIZE. This SIZE will be used in all subsequent
+ * calls to the <a href="#/p5/text">text()</a> function. Font SIZE is measured in pixels.
  *
  * @method textSize
- * @param {Number} theSize the size of the letters in units of pixels
+ * @param {Number} theSize the SIZE of the letters in units of pixels
  * @chainable
  *
  * @example
@@ -71075,7 +71075,7 @@ p5.prototype.textWidth = function(theText) {
 };
 
 /**
- * Returns the ascent of the current font at its current size. The ascent
+ * Returns the ascent of the current font at its current SIZE. The ascent
  * represents the distance, in pixels, of the tallest character above
  * the baseline.
  * @method textAscent
@@ -71086,12 +71086,12 @@ p5.prototype.textWidth = function(theText) {
  * let base = height * 0.75;
  * let scalar = 0.8; // Different for each font
  *
- * textSize(32); // Set initial text size
+ * textSize(32); // Set initial text SIZE
  * let asc = textAscent() * scalar; // Calc ascent
  * line(0, base - asc, width, base - asc);
  * text('dp', 0, base); // Draw text on baseline
  *
- * textSize(64); // Increase text size
+ * textSize(64); // Increase text SIZE
  * asc = textAscent() * scalar; // Recalc ascent
  * line(40, base - asc, width, base - asc);
  * text('dp', 40, base); // Draw text on baseline
@@ -71104,7 +71104,7 @@ p5.prototype.textAscent = function() {
 };
 
 /**
- * Returns the descent of the current font at its current size. The descent
+ * Returns the descent of the current font at its current SIZE. The descent
  * represents the distance, in pixels, of the character with the longest
  * descender below the baseline.
  * @method textDescent
@@ -71115,12 +71115,12 @@ p5.prototype.textAscent = function() {
  * let base = height * 0.75;
  * let scalar = 0.8; // Different for each font
  *
- * textSize(32); // Set initial text size
+ * textSize(32); // Set initial text SIZE
  * let desc = textDescent() * scalar; // Calc ascent
  * line(0, base + desc, width, base + desc);
  * text('dp', 0, base); // Draw text on baseline
  *
- * textSize(64); // Increase text size
+ * textSize(64); // Increase text SIZE
  * desc = textDescent() * scalar; // Recalc ascent
  * line(40, base + desc, width, base + desc);
  * text('dp', 40, base); // Draw text on baseline
@@ -71288,7 +71288,7 @@ p5.prototype.loadFont = function(path, onSuccess, onError) {
  * Draws text to the screen. Displays the information specified in the first
  * parameter on the screen in the position specified by the additional
  * parameters. A default font will be used unless a font is set with the
- * <a href="#/p5/textFont">textFont()</a> function and a default size will be used unless a font is set
+ * <a href="#/p5/textFont">textFont()</a> function and a default SIZE will be used unless a font is set
  * with <a href="#/p5/textSize">textSize()</a>. Change the color of the text with the <a href="#/p5/fill">fill()</a> function.
  * Change the outline of the text with the <a href="#/p5/stroke">stroke()</a> and <a href="#/p5/strokeWeight">strokeWeight()</a>
  * functions.
@@ -71421,7 +71421,7 @@ p5.prototype.text = function(str, x, y, maxWidth, maxHeight) {
  * @param {Object|String} font a font loaded via <a href="#/p5/loadFont">loadFont()</a>, or a String
  * representing a <a href="https://mzl.la/2dOw8WD">web safe font</a> (a font
  * that is generally available across all systems)
- * @param {Number} [size] the font size to use
+ * @param {Number} [SIZE] the font SIZE to use
  * @chainable
  */
 p5.prototype.textFont = function(theFont, theSize) {
@@ -71489,7 +71489,7 @@ p5.Font = function(p) {
  * @param  {String} line     a line of text
  * @param  {Number} x        x-position
  * @param  {Number} y        y-position
- * @param  {Number} [fontSize] font size to use (optional) Default is 12.
+ * @param  {Number} [fontSize] font SIZE to use (optional) Default is 12.
  * @param  {Object} [options] opentype options (optional)
  *                            opentype fonts contains alignment and baseline options.
  *                            Default is 'LEFT' and 'alphabetic'
@@ -71612,7 +71612,7 @@ p5.Font.prototype.textBounds = function(str, x, y, fontSize, opts) {
  * @param  {String} txt     a line of text
  * @param  {Number} x        x-position
  * @param  {Number} y        y-position
- * @param  {Number} fontSize font size to use (optional)
+ * @param  {Number} fontSize font SIZE to use (optional)
  * @param  {Object} [options] an (optional) object that can contain:
  *
  * <br>sampleFactor - the ratio of path-length to number of samples
@@ -72738,7 +72738,7 @@ p5.prototype.append = function(array, value) {
  * instead of overwriting them, use <a href="#/p5/concat">concat()</a>.
  * <br><br>
  * The simplified version with only two arguments, arrayCopy(src, dst),
- * copies an entire array to another of the same size. It is equivalent to
+ * copies an entire array to another of the same SIZE. It is equivalent to
  * arrayCopy(src, 0, dst, 0, src.length).
  * <br><br>
  * Using this function is far more efficient for copying array data than
@@ -74867,7 +74867,7 @@ p5.prototype.torus = function(radius, tubeRadius, detailX, detailY) {
 /**
  * Draws a point, a coordinate in space at the dimension of one pixel,
  * given x, y and z coordinates. The color of the point is determined
- * by the current stroke, while the point size is determined by current
+ * by the current stroke, while the point SIZE is determined by current
  * stroke weight.
  * @private
  * @param {Number} x x-coordinate of point
@@ -75873,7 +75873,7 @@ p5.prototype.orbitControl = function(sensitivityX, sensitivityY) {
  * ‘ground’ is in a sketch and an axes icon which indicates the +X, +Y, and +Z
  * directions. This function can be called without parameters to create a
  * default grid and axes icon, or it can be called according to the examples
- * above to customize the size and position of the grid and/or axes icon.  The
+ * above to customize the SIZE and position of the grid and/or axes icon.  The
  * grid is drawn using the most recently set stroke color and weight.  To
  * specify these parameters, add a call to stroke() and strokeWeight()
  * just before the end of the draw() loop.
@@ -75881,7 +75881,7 @@ p5.prototype.orbitControl = function(sensitivityX, sensitivityY) {
  * By default, the grid will run through the origin (0,0,0) of the sketch
  * along the XZ plane
  * and the axes icon will be offset from the origin.  Both the grid and axes
- * icon will be sized according to the current canvas size.  Note that because the
+ * icon will be sized according to the current canvas SIZE.  Note that because the
  * grid runs parallel to the default camera view, it is often helpful to use
  * debugMode along with orbitControl to allow full view of the grid.
  * @method debugMode
@@ -76009,7 +76009,7 @@ p5.prototype.orbitControl = function(sensitivityX, sensitivityY) {
 /**
  * @method debugMode
  * @param {Constant} mode
- * @param {Number} [gridSize] size of one side of the grid
+ * @param {Number} [gridSize] SIZE of one side of the grid
  * @param {Number} [gridDivisions] number of divisions in the grid
  * @param {Number} [xOff] X axis offset from origin (0,0,0)
  * @param {Number} [yOff] Y axis offset from origin (0,0,0)
@@ -76019,7 +76019,7 @@ p5.prototype.orbitControl = function(sensitivityX, sensitivityY) {
 /**
  * @method debugMode
  * @param {Constant} mode
- * @param {Number} [axesSize] size of axes icon
+ * @param {Number} [axesSize] SIZE of axes icon
  * @param {Number} [xOff]
  * @param {Number} [yOff]
  * @param {Number} [zOff]
@@ -76151,7 +76151,7 @@ p5.prototype.noDebugMode = function() {
  * For use with debugMode
  * @private
  * @method _grid
- * @param {Number} [size] size of grid sides
+ * @param {Number} [size] SIZE of grid sides
  * @param {Number} [div] number of grid divisions
  * @param {Number} [xOff] offset of grid center from origin in X axis
  * @param {Number} [yOff] offset of grid center from origin in Y axis
@@ -76228,7 +76228,7 @@ p5.prototype._grid = function(size, numDivs, xOff, yOff, zOff) {
  * For use with debugMode
  * @private
  * @method _axesIcon
- * @param {Number} [size] size of axes icon lines
+ * @param {Number} [size] SIZE of axes icon lines
  * @param {Number} [xOff] offset of icon from origin in X axis
  * @param {Number} [yOff] offset of icon from origin in Y axis
  * @param {Number} [zOff] offset of icon from origin in Z axis
@@ -76635,12 +76635,12 @@ _dereq_('./p5.Geometry');
  * be very different sizes. If your model isn't displaying, try calling
  * <a href="#/p5/loadModel">loadModel()</a> with the normalized parameter set to true. This will resize the
  * model to a scale appropriate for p5. You can also make additional changes to
- * the final size of your model with the <a href="#/p5/scale">scale()</a> function.
+ * the final SIZE of your model with the <a href="#/p5/scale">scale()</a> function.
  *
  * @method loadModel
  * @param  {String} path              Path of the model to be loaded
  * @param  {Boolean} normalize        If true, scale the model to a
- *                                      standardized size when loading
+ *                                      standardized SIZE when loading
  * @param  {function(p5.Geometry)} [successCallback] Function to be called
  *                                     once the model is loaded. Will be passed
  *                                     the 3D model object.
@@ -77069,7 +77069,7 @@ p5.prototype.loadShader = function(
  * }
  *
  * function draw() {
- *   // 'r' is the size of the image in Mandelbrot-space
+ *   // 'r' is the SIZE of the image in Mandelbrot-space
  *   mandel.setUniform('r', 1.5 * exp(-6.5 * (1 + sin(millis() / 2000))));
  *   quad(-1, -1, 1, -1, 1, 1, -1, 1);
  * }
@@ -77270,7 +77270,7 @@ p5.prototype.texture = function(tex) {
  * This function only works in WEBGL mode.
  *
  * With IMAGE, if an image is 100 x 200 pixels, mapping the image onto the entire
- * size of a quad would require the points (0,0) (100, 0) (100,200) (0,200).
+ * SIZE of a quad would require the points (0,0) (100, 0) (100,200) (0,200).
  * The same mapping in NORMAL is (0,0) (1,0) (1,1) (0,1).
  * @method  textureMode
  * @param {Constant} mode either IMAGE or NORMAL
@@ -77352,7 +77352,7 @@ p5.prototype.textureMode = function(mode) {
  * MIRROR works similarly to REPEAT but it flips the texture with every new tile
  *
  * REPEAT & MIRROR are only available if the texture
- * is a power of two size (128, 256, 512, 1024, etc.).
+ * is a power of two SIZE (128, 256, 512, 1024, etc.).
  *
  * This method will affect all textures in your sketch until a subsequent
  * textureWrap call is made.
@@ -77717,7 +77717,7 @@ p5.prototype.camera = function() {
 /**
  * Sets a perspective projection for the camera in a 3D sketch. This projection
  * represents depth through foreshortening: objects that are close to the camera
- * appear their actual size while those that are further away from the camera
+ * appear their actual SIZE while those that are further away from the camera
  * appear smaller. The parameters to this function define the viewing frustum
  * (the truncated pyramid within which objects are seen by the camera) through
  * vertical field of view, aspect ratio (usually width/height), and near and far
@@ -77782,7 +77782,7 @@ p5.prototype.perspective = function() {
 /**
  * Sets an orthographic projection for the camera in a 3D sketch and defines a
  * box-shaped viewing frustum within which objects are seen. In this projection,
- * all objects with the same dimension appear the same size, regardless of
+ * all objects with the same dimension appear the same SIZE, regardless of
  * whether they are near or far from the camera. The parameters to this
  * function specify the viewing frustum where left and right are the minimum and
  * maximum x values, top and bottom are the minimum and maximum y values, and near
@@ -80702,8 +80702,8 @@ var defaultShaders = {
   lightTextureFrag: "precision mediump float;\n\nuniform vec4 uMaterialColor;\nuniform sampler2D uSampler;\nuniform bool isTexture;\nuniform bool uUseLighting;\n\nvarying vec3 vLightWeighting;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  gl_FragColor = isTexture ? texture2D(uSampler, vVertTexCoord) : uMaterialColor;\n  if (uUseLighting)\n    gl_FragColor.rgb *= vLightWeighting;\n}",
   phongVert: "precision mediump float;\n\nattribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform vec3 uAmbientColor[8];\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform int uAmbientLightCount;\n\nvarying vec3 vNormal;\nvarying vec2 vTexCoord;\nvarying vec3 vViewPosition;\nvarying vec3 vAmbientColor;\n\nvoid main(void){\n\n  vec4 viewModelPosition = uModelViewMatrix * vec4(aPosition, 1.0);\n\n  // Pass varyings to fragment shader\n  vViewPosition = viewModelPosition.xyz;\n  gl_Position = uProjectionMatrix * viewModelPosition;  \n\n  vNormal = normalize(uNormalMatrix * normalize(aNormal));\n  vTexCoord = aTexCoord;\n\n  vAmbientColor = vec3(0.0);\n  for (int i = 0; i < 8; i++) {\n    if (uAmbientLightCount == i) break;\n    vAmbientColor += uAmbientColor[i];\n  }\n}\n",
   phongFrag: "precision mediump float;\n\n//uniform mat4 uModelViewMatrix;\nuniform mat4 uViewMatrix;\n\nuniform vec4 uMaterialColor;\nuniform sampler2D uSampler;\nuniform bool isTexture;\nuniform bool uUseLighting;\n\nuniform vec3 uLightingDirection[8];\nuniform vec3 uDirectionalColor[8];\nuniform vec3 uPointLightLocation[8];\nuniform vec3 uPointLightColor[8];\nuniform bool uSpecular;\nuniform float uShininess;\n\nuniform int uDirectionalLightCount;\nuniform int uPointLightCount;\n\nvarying vec3 vNormal;\nvarying vec2 vTexCoord;\nvarying vec3 vViewPosition;\nvarying vec3 vAmbientColor;\n\nvec3 V;\nvec3 N;\n\nconst float specularFactor = 2.0;\nconst float diffuseFactor = 0.73;\n\nstruct LightResult {\n\tfloat specular;\n\tfloat diffuse;\n};\n\nfloat phongSpecular(\n  vec3 lightDirection,\n  vec3 viewDirection,\n  vec3 surfaceNormal,\n  float shininess) {\n\n  vec3 R = normalize(reflect(-lightDirection, surfaceNormal));  \n  return pow(max(0.0, dot(R, viewDirection)), shininess);\n}\n\nfloat lambertDiffuse(\n  vec3 lightDirection,\n  vec3 surfaceNormal) {\n  return max(0.0, dot(-lightDirection, surfaceNormal));\n}\n\nLightResult light(vec3 lightVector) {\n\n  vec3 L = normalize(lightVector);\n\n  //compute our diffuse & specular terms\n  LightResult lr;\n  if (uSpecular)\n    lr.specular = phongSpecular(L, V, N, uShininess);\n  lr.diffuse = lambertDiffuse(L, N);\n  return lr;\n}\n\nvoid main(void) {\n\n  V = normalize(vViewPosition);\n  N = vNormal;\n\n  vec3 diffuse = vec3(0.0);\n  float specular = 0.0;\n\n  for (int j = 0; j < 8; j++) {\n    if (uDirectionalLightCount == j) break;\n\n    LightResult result = light(uLightingDirection[j]);\n    diffuse += result.diffuse * uDirectionalColor[j];\n    specular += result.specular;\n  }\n\n  for (int k = 0; k < 8; k++) {\n    if (uPointLightCount == k) break;\n\n    vec3 lightPosition = (uViewMatrix * vec4(uPointLightLocation[k], 1.0)).xyz;\n    vec3 lightVector = vViewPosition - lightPosition;\n\t\n    //calculate attenuation\n    float lightDistance = length(lightVector);\n    float falloff = 500.0 / (lightDistance + 500.0);\n\n    LightResult result = light(lightVector);\n    diffuse += result.diffuse * falloff * uPointLightColor[k];\n    specular += result.specular * falloff;\n  }\n\n  gl_FragColor = isTexture ? texture2D(uSampler, vTexCoord) : uMaterialColor;\n  gl_FragColor.rgb = gl_FragColor.rgb * (diffuse * diffuseFactor + vAmbientColor) + specular * specularFactor;\n}",
-  fontVert: "precision mediump float;\n\nattribute vec3 aPosition;\nattribute vec2 aTexCoord;\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\n\nuniform vec4 uGlyphRect;\nuniform float uGlyphOffset;\n\nvarying vec2 vTexCoord;\nvarying float w;\n\nvoid main() {\n  vec4 positionVec4 = vec4(aPosition, 1.0);\n\n  // scale by the size of the glyph's rectangle\n  positionVec4.xy *= uGlyphRect.zw - uGlyphRect.xy;\n\n  // move to the corner of the glyph\n  positionVec4.xy += uGlyphRect.xy;\n\n  // move to the letter's line offset\n  positionVec4.x += uGlyphOffset;\n  \n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vTexCoord = aTexCoord;\n  w = gl_Position.w;\n}\n",
-  fontFrag: "#extension GL_OES_standard_derivatives : enable\nprecision mediump float;\n\n#if 0\n  // simulate integer math using floats\n\t#define int float\n\t#define ivec2 vec2\n\t#define INT(x) float(x)\n\n\tint ifloor(float v) { return floor(v); }\n\tivec2 ifloor(vec2 v) { return floor(v); }\n\n#else\n  // use native integer math\n\tprecision mediump int;\n\t#define INT(x) x\n\n\tint ifloor(float v) { return int(v); }\n\tint ifloor(int v) { return v; }\n\tivec2 ifloor(vec2 v) { return ivec2(v); }\n\n#endif\n\nuniform sampler2D uSamplerStrokes;\nuniform sampler2D uSamplerRowStrokes;\nuniform sampler2D uSamplerRows;\nuniform sampler2D uSamplerColStrokes;\nuniform sampler2D uSamplerCols;\n\nuniform ivec2 uStrokeImageSize;\nuniform ivec2 uCellsImageSize;\nuniform ivec2 uGridImageSize;\n\nuniform ivec2 uGridOffset;\nuniform ivec2 uGridSize;\nuniform vec4 uMaterialColor;\n\nvarying vec2 vTexCoord;\n\n// some helper functions\nint round(float v) { return ifloor(v + 0.5); }\nivec2 round(vec2 v) { return ifloor(v + 0.5); }\nfloat saturate(float v) { return clamp(v, 0.0, 1.0); }\nvec2 saturate(vec2 v) { return clamp(v, 0.0, 1.0); }\n\nint mul(float v1, int v2) {\n  return ifloor(v1 * float(v2));\n}\n\nivec2 mul(vec2 v1, ivec2 v2) {\n  return ifloor(v1 * vec2(v2) + 0.5);\n}\n\n// unpack a 16-bit integer from a float vec2\nint getInt16(vec2 v) {\n  ivec2 iv = round(v * 255.0);\n  return iv.x * INT(128) + iv.y;\n}\n\nvec2 pixelScale;\nvec2 coverage = vec2(0.0);\nvec2 weight = vec2(0.5);\nconst float minDistance = 1.0/8192.0;\nconst float hardness = 1.05; // amount of antialias\n\n// the maximum number of curves in a glyph\nconst int N = INT(250);\n\n// retrieves an indexed pixel from a sampler\nvec4 getTexel(sampler2D sampler, int pos, ivec2 size) {\n  int width = size.x;\n  int y = ifloor(pos / width);\n  int x = pos - y * width;  // pos % width\n\n  return texture2D(sampler, (vec2(x, y) + 0.5) / vec2(size));\n}\n\nvoid calulateCrossings(vec2 p0, vec2 p1, vec2 p2, out vec2 C1, out vec2 C2) {\n\n  // get the coefficients of the quadratic in t\n  vec2 a = p0 - p1 * 2.0 + p2;\n  vec2 b = p0 - p1;\n  vec2 c = p0 - vTexCoord;\n\n  // found out which values of 't' it crosses the axes\n  vec2 surd = sqrt(max(vec2(0.0), b * b - a * c));\n  vec2 t1 = ((b - surd) / a).yx;\n  vec2 t2 = ((b + surd) / a).yx;\n\n  // approximate straight lines to avoid rounding errors\n  if (abs(a.y) < 0.001)\n    t1.x = t2.x = c.y / (2.0 * b.y);\n\n  if (abs(a.x) < 0.001)\n    t1.y = t2.y = c.x / (2.0 * b.x);\n\n  // plug into quadratic formula to find the corrdinates of the crossings\n  C1 = ((a * t1 - b * 2.0) * t1 + c) * pixelScale;\n  C2 = ((a * t2 - b * 2.0) * t2 + c) * pixelScale;\n}\n\nvoid coverageX(vec2 p0, vec2 p1, vec2 p2) {\n\n  vec2 C1, C2;\n  calulateCrossings(p0, p1, p2, C1, C2);\n\n  // determine on which side of the x-axis the points lie\n  bool y0 = p0.y > vTexCoord.y;\n  bool y1 = p1.y > vTexCoord.y;\n  bool y2 = p2.y > vTexCoord.y;\n\n  // could web be under the curve (after t1)?\n  if (y1 ? !y2 : y0) {\n    // add the coverage for t1\n    coverage.x += saturate(C1.x + 0.5);\n    // calculate the anti-aliasing for t1\n    weight.x = min(weight.x, abs(C1.x));\n  }\n\n  // are we outside the curve (after t2)?\n  if (y1 ? !y0 : y2) {\n    // subtract the coverage for t2\n    coverage.x -= saturate(C2.x + 0.5);\n    // calculate the anti-aliasing for t2\n    weight.x = min(weight.x, abs(C2.x));\n  }\n}\n\n// this is essentially the same as coverageX, but with the axes swapped\nvoid coverageY(vec2 p0, vec2 p1, vec2 p2) {\n\n  vec2 C1, C2;\n  calulateCrossings(p0, p1, p2, C1, C2);\n\n  bool x0 = p0.x > vTexCoord.x;\n  bool x1 = p1.x > vTexCoord.x;\n  bool x2 = p2.x > vTexCoord.x;\n\n  if (x1 ? !x2 : x0) {\n    coverage.y -= saturate(C1.y + 0.5);\n    weight.y = min(weight.y, abs(C1.y));\n  }\n\n  if (x1 ? !x0 : x2) {\n    coverage.y += saturate(C2.y + 0.5);\n    weight.y = min(weight.y, abs(C2.y));\n  }\n}\n\nvoid main() {\n\n  // calculate the pixel scale based on screen-coordinates\n  pixelScale = hardness / fwidth(vTexCoord);\n\n  // which grid cell is this pixel in?\n  ivec2 gridCoord = ifloor(vTexCoord * vec2(uGridSize));\n\n  // intersect curves in this row\n  {\n    // the index into the row info bitmap\n    int rowIndex = gridCoord.y + uGridOffset.y;\n    // fetch the info texel\n    vec4 rowInfo = getTexel(uSamplerRows, rowIndex, uGridImageSize);\n    // unpack the rowInfo\n    int rowStrokeIndex = getInt16(rowInfo.xy);\n    int rowStrokeCount = getInt16(rowInfo.zw);\n\n    for (int iRowStroke = INT(0); iRowStroke < N; iRowStroke++) {\n      if (iRowStroke >= rowStrokeCount)\n        break;\n\n      // each stroke is made up of 3 points: the start and control point\n      // and the start of the next curve.\n      // fetch the indices of this pair of strokes:\n      vec4 strokeIndices = getTexel(uSamplerRowStrokes, rowStrokeIndex++, uCellsImageSize);\n\n      // unpack the stroke index\n      int strokePos = getInt16(strokeIndices.xy);\n\n      // fetch the two strokes\n      vec4 stroke0 = getTexel(uSamplerStrokes, strokePos + INT(0), uStrokeImageSize);\n      vec4 stroke1 = getTexel(uSamplerStrokes, strokePos + INT(1), uStrokeImageSize);\n\n      // calculate the coverage\n      coverageX(stroke0.xy, stroke0.zw, stroke1.xy);\n    }\n  }\n\n  // intersect curves in this column\n  {\n    int colIndex = gridCoord.x + uGridOffset.x;\n    vec4 colInfo = getTexel(uSamplerCols, colIndex, uGridImageSize);\n    int colStrokeIndex = getInt16(colInfo.xy);\n    int colStrokeCount = getInt16(colInfo.zw);\n    \n    for (int iColStroke = INT(0); iColStroke < N; iColStroke++) {\n      if (iColStroke >= colStrokeCount)\n        break;\n\n      vec4 strokeIndices = getTexel(uSamplerColStrokes, colStrokeIndex++, uCellsImageSize);\n\n      int strokePos = getInt16(strokeIndices.xy);\n      vec4 stroke0 = getTexel(uSamplerStrokes, strokePos + INT(0), uStrokeImageSize);\n      vec4 stroke1 = getTexel(uSamplerStrokes, strokePos + INT(1), uStrokeImageSize);\n      coverageY(stroke0.xy, stroke0.zw, stroke1.xy);\n    }\n  }\n\n  weight = saturate(1.0 - weight * 2.0);\n  float distance = max(weight.x + weight.y, minDistance); // manhattan approx.\n  float antialias = abs(dot(coverage, weight) / distance);\n  float cover = min(abs(coverage.x), abs(coverage.y));\n  gl_FragColor = uMaterialColor;\n  gl_FragColor.a *= saturate(max(antialias, cover));\n}",
+  fontVert: "precision mediump float;\n\nattribute vec3 aPosition;\nattribute vec2 aTexCoord;\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\n\nuniform vec4 uGlyphRect;\nuniform float uGlyphOffset;\n\nvarying vec2 vTexCoord;\nvarying float w;\n\nvoid main() {\n  vec4 positionVec4 = vec4(aPosition, 1.0);\n\n  // scale by the SIZE of the glyph's rectangle\n  positionVec4.xy *= uGlyphRect.zw - uGlyphRect.xy;\n\n  // move to the corner of the glyph\n  positionVec4.xy += uGlyphRect.xy;\n\n  // move to the letter's line offset\n  positionVec4.x += uGlyphOffset;\n  \n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vTexCoord = aTexCoord;\n  w = gl_Position.w;\n}\n",
+  fontFrag: "#extension GL_OES_standard_derivatives : enable\nprecision mediump float;\n\n#if 0\n  // simulate integer math using floats\n\t#define int float\n\t#define ivec2 vec2\n\t#define INT(x) float(x)\n\n\tint ifloor(float v) { return floor(v); }\n\tivec2 ifloor(vec2 v) { return floor(v); }\n\n#else\n  // use native integer math\n\tprecision mediump int;\n\t#define INT(x) x\n\n\tint ifloor(float v) { return int(v); }\n\tint ifloor(int v) { return v; }\n\tivec2 ifloor(vec2 v) { return ivec2(v); }\n\n#endif\n\nuniform sampler2D uSamplerStrokes;\nuniform sampler2D uSamplerRowStrokes;\nuniform sampler2D uSamplerRows;\nuniform sampler2D uSamplerColStrokes;\nuniform sampler2D uSamplerCols;\n\nuniform ivec2 uStrokeImageSize;\nuniform ivec2 uCellsImageSize;\nuniform ivec2 uGridImageSize;\n\nuniform ivec2 uGridOffset;\nuniform ivec2 uGridSize;\nuniform vec4 uMaterialColor;\n\nvarying vec2 vTexCoord;\n\n// some helper functions\nint round(float v) { return ifloor(v + 0.5); }\nivec2 round(vec2 v) { return ifloor(v + 0.5); }\nfloat saturate(float v) { return clamp(v, 0.0, 1.0); }\nvec2 saturate(vec2 v) { return clamp(v, 0.0, 1.0); }\n\nint mul(float v1, int v2) {\n  return ifloor(v1 * float(v2));\n}\n\nivec2 mul(vec2 v1, ivec2 v2) {\n  return ifloor(v1 * vec2(v2) + 0.5);\n}\n\n// unpack a 16-bit integer from a float vec2\nint getInt16(vec2 v) {\n  ivec2 iv = round(v * 255.0);\n  return iv.x * INT(128) + iv.y;\n}\n\nvec2 pixelScale;\nvec2 coverage = vec2(0.0);\nvec2 weight = vec2(0.5);\nconst float minDistance = 1.0/8192.0;\nconst float hardness = 1.05; // amount of antialias\n\n// the maximum number of curves in a glyph\nconst int N = INT(250);\n\n// retrieves an indexed pixel from a sampler\nvec4 getTexel(sampler2D sampler, int pos, ivec2 SIZE) {\n  int width = SIZE.x;\n  int y = ifloor(pos / width);\n  int x = pos - y * width;  // pos % width\n\n  return texture2D(sampler, (vec2(x, y) + 0.5) / vec2(SIZE));\n}\n\nvoid calulateCrossings(vec2 p0, vec2 p1, vec2 p2, out vec2 C1, out vec2 C2) {\n\n  // get the coefficients of the quadratic in t\n  vec2 a = p0 - p1 * 2.0 + p2;\n  vec2 b = p0 - p1;\n  vec2 c = p0 - vTexCoord;\n\n  // found out which values of 't' it crosses the axes\n  vec2 surd = sqrt(max(vec2(0.0), b * b - a * c));\n  vec2 t1 = ((b - surd) / a).yx;\n  vec2 t2 = ((b + surd) / a).yx;\n\n  // approximate straight lines to avoid rounding errors\n  if (abs(a.y) < 0.001)\n    t1.x = t2.x = c.y / (2.0 * b.y);\n\n  if (abs(a.x) < 0.001)\n    t1.y = t2.y = c.x / (2.0 * b.x);\n\n  // plug into quadratic formula to find the corrdinates of the crossings\n  C1 = ((a * t1 - b * 2.0) * t1 + c) * pixelScale;\n  C2 = ((a * t2 - b * 2.0) * t2 + c) * pixelScale;\n}\n\nvoid coverageX(vec2 p0, vec2 p1, vec2 p2) {\n\n  vec2 C1, C2;\n  calulateCrossings(p0, p1, p2, C1, C2);\n\n  // determine on which side of the x-axis the points lie\n  bool y0 = p0.y > vTexCoord.y;\n  bool y1 = p1.y > vTexCoord.y;\n  bool y2 = p2.y > vTexCoord.y;\n\n  // could web be under the curve (after t1)?\n  if (y1 ? !y2 : y0) {\n    // add the coverage for t1\n    coverage.x += saturate(C1.x + 0.5);\n    // calculate the anti-aliasing for t1\n    weight.x = min(weight.x, abs(C1.x));\n  }\n\n  // are we outside the curve (after t2)?\n  if (y1 ? !y0 : y2) {\n    // subtract the coverage for t2\n    coverage.x -= saturate(C2.x + 0.5);\n    // calculate the anti-aliasing for t2\n    weight.x = min(weight.x, abs(C2.x));\n  }\n}\n\n// this is essentially the same as coverageX, but with the axes swapped\nvoid coverageY(vec2 p0, vec2 p1, vec2 p2) {\n\n  vec2 C1, C2;\n  calulateCrossings(p0, p1, p2, C1, C2);\n\n  bool x0 = p0.x > vTexCoord.x;\n  bool x1 = p1.x > vTexCoord.x;\n  bool x2 = p2.x > vTexCoord.x;\n\n  if (x1 ? !x2 : x0) {\n    coverage.y -= saturate(C1.y + 0.5);\n    weight.y = min(weight.y, abs(C1.y));\n  }\n\n  if (x1 ? !x0 : x2) {\n    coverage.y += saturate(C2.y + 0.5);\n    weight.y = min(weight.y, abs(C2.y));\n  }\n}\n\nvoid main() {\n\n  // calculate the pixel scale based on screen-coordinates\n  pixelScale = hardness / fwidth(vTexCoord);\n\n  // which grid cell is this pixel in?\n  ivec2 gridCoord = ifloor(vTexCoord * vec2(uGridSize));\n\n  // intersect curves in this row\n  {\n    // the index into the row info bitmap\n    int rowIndex = gridCoord.y + uGridOffset.y;\n    // fetch the info texel\n    vec4 rowInfo = getTexel(uSamplerRows, rowIndex, uGridImageSize);\n    // unpack the rowInfo\n    int rowStrokeIndex = getInt16(rowInfo.xy);\n    int rowStrokeCount = getInt16(rowInfo.zw);\n\n    for (int iRowStroke = INT(0); iRowStroke < N; iRowStroke++) {\n      if (iRowStroke >= rowStrokeCount)\n        break;\n\n      // each stroke is made up of 3 points: the start and control point\n      // and the start of the next curve.\n      // fetch the indices of this pair of strokes:\n      vec4 strokeIndices = getTexel(uSamplerRowStrokes, rowStrokeIndex++, uCellsImageSize);\n\n      // unpack the stroke index\n      int strokePos = getInt16(strokeIndices.xy);\n\n      // fetch the two strokes\n      vec4 stroke0 = getTexel(uSamplerStrokes, strokePos + INT(0), uStrokeImageSize);\n      vec4 stroke1 = getTexel(uSamplerStrokes, strokePos + INT(1), uStrokeImageSize);\n\n      // calculate the coverage\n      coverageX(stroke0.xy, stroke0.zw, stroke1.xy);\n    }\n  }\n\n  // intersect curves in this column\n  {\n    int colIndex = gridCoord.x + uGridOffset.x;\n    vec4 colInfo = getTexel(uSamplerCols, colIndex, uGridImageSize);\n    int colStrokeIndex = getInt16(colInfo.xy);\n    int colStrokeCount = getInt16(colInfo.zw);\n    \n    for (int iColStroke = INT(0); iColStroke < N; iColStroke++) {\n      if (iColStroke >= colStrokeCount)\n        break;\n\n      vec4 strokeIndices = getTexel(uSamplerColStrokes, colStrokeIndex++, uCellsImageSize);\n\n      int strokePos = getInt16(strokeIndices.xy);\n      vec4 stroke0 = getTexel(uSamplerStrokes, strokePos + INT(0), uStrokeImageSize);\n      vec4 stroke1 = getTexel(uSamplerStrokes, strokePos + INT(1), uStrokeImageSize);\n      coverageY(stroke0.xy, stroke0.zw, stroke1.xy);\n    }\n  }\n\n  weight = saturate(1.0 - weight * 2.0);\n  float distance = max(weight.x + weight.y, minDistance); // manhattan approx.\n  float antialias = abs(dot(coverage, weight) / distance);\n  float cover = min(abs(coverage.x), abs(coverage.y));\n  gl_FragColor = uMaterialColor;\n  gl_FragColor.a *= saturate(max(antialias, cover));\n}",
   lineVert: "/*\n  Part of the Processing project - http://processing.org\n  Copyright (c) 2012-15 The Processing Foundation\n  Copyright (c) 2004-12 Ben Fry and Casey Reas\n  Copyright (c) 2001-04 Massachusetts Institute of Technology\n  This library is free software; you can redistribute it and/or\n  modify it under the terms of the GNU Lesser General Public\n  License as published by the Free Software Foundation, version 2.1.\n  This library is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n  Lesser General Public License for more details.\n  You should have received a copy of the GNU Lesser General\n  Public License along with this library; if not, write to the\n  Free Software Foundation, Inc., 59 Temple Place, Suite 330,\n  Boston, MA  02111-1307  USA\n*/\n\n#define PROCESSING_LINE_SHADER\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uStrokeWeight;\n\nuniform vec4 uViewport;\n\n// using a scale <1 moves the lines towards the camera\n// in order to prevent popping effects due to half of\n// the line disappearing behind the geometry faces.\nvec3 scale = vec3(0.9995);\n\nattribute vec4 aPosition;\nattribute vec4 aDirection;\n  \nvoid main() {\n  vec4 posp = uModelViewMatrix * aPosition;\n  vec4 posq = uModelViewMatrix * (aPosition + vec4(aDirection.xyz, 0));\n\n  // Moving vertices slightly toward the camera\n  // to avoid depth-fighting with the fill triangles.\n  // Discussed here:\n  // http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=showflat&Number=252848  \n  posp.xyz = posp.xyz * scale;\n  posq.xyz = posq.xyz * scale;\n\n  vec4 p = uProjectionMatrix * posp;\n  vec4 q = uProjectionMatrix * posq;\n\n  // formula to convert from clip space (range -1..1) to screen space (range 0..[width or height])\n  // screen_p = (p.xy/p.w + <1,1>) * 0.5 * uViewport.zw\n\n  // prevent division by W by transforming the tangent formula (div by 0 causes\n  // the line to disappear, see https://github.com/processing/processing/issues/5183)\n  // t = screen_q - screen_p\n  //\n  // tangent is normalized and we don't care which aDirection it points to (+-)\n  // t = +- normalize( screen_q - screen_p )\n  // t = +- normalize( (q.xy/q.w+<1,1>)*0.5*uViewport.zw - (p.xy/p.w+<1,1>)*0.5*uViewport.zw )\n  //\n  // extract common factor, <1,1> - <1,1> cancels out\n  // t = +- normalize( (q.xy/q.w - p.xy/p.w) * 0.5 * uViewport.zw )\n  //\n  // convert to common divisor\n  // t = +- normalize( ((q.xy*p.w - p.xy*q.w) / (p.w*q.w)) * 0.5 * uViewport.zw )\n  //\n  // remove the common scalar divisor/factor, not needed due to normalize and +-\n  // (keep uViewport - can't remove because it has different components for x and y\n  //  and corrects for aspect ratio, see https://github.com/processing/processing/issues/5181)\n  // t = +- normalize( (q.xy*p.w - p.xy*q.w) * uViewport.zw )\n\n  vec2 tangent = normalize((q.xy*p.w - p.xy*q.w) * uViewport.zw);\n\n  // flip tangent to normal (it's already normalized)\n  vec2 normal = vec2(-tangent.y, tangent.x);\n\n  float thickness = aDirection.w * uStrokeWeight;\n  vec2 offset = normal * thickness / 2.0;\n\n  // Perspective ---\n  // convert from world to clip by multiplying with projection scaling factor\n  // to get the right thickness (see https://github.com/processing/processing/issues/5182)\n  // invert Y, projections in Processing invert Y\n  vec2 perspScale = (uProjectionMatrix * vec4(1, -1, 0, 0)).xy;\n\n  // No Perspective ---\n  // multiply by W (to cancel out division by W later in the pipeline) and\n  // convert from screen to clip (derived from clip to screen above)\n  vec2 noPerspScale = p.w / (0.5 * uViewport.zw);\n\n  //gl_Position.xy = p.xy + offset.xy * mix(noPerspScale, perspScale, float(perspective > 0));\n  gl_Position.xy = p.xy + offset.xy * perspScale;\n  gl_Position.zw = p.zw;\n}\n",
   lineFrag: "precision mediump float;\nprecision mediump int;\n\nuniform vec4 uMaterialColor;\n\nvoid main() {\n  gl_FragColor = uMaterialColor;\n}",
   pointVert: "attribute vec3 aPosition;\nuniform float uPointSize;\nvarying float vStrokeWeight;\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nvoid main() {\n\tvec4 positionVec4 =  vec4(aPosition, 1.0);\n\tgl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n\tgl_PointSize = uPointSize;\n\tvStrokeWeight = uPointSize;\n}",
@@ -80780,7 +80780,7 @@ p5.RendererGL = function(elt, pInst, isMainCanvas, attr) {
   this.isImmediateDrawing = false;
   this.immediateMode = {};
 
-  this.pointSize = 5.0; //default point size
+  this.pointSize = 5.0; //default point SIZE
   this.curStrokeWeight = 1;
 
   // array of textures created in this gl context via this.getTexture(src)
@@ -82129,7 +82129,7 @@ p5.Shader.prototype._loadUniforms = function() {
     var uniformName = uniformInfo.name;
     //uniforms thats are arrays have their name returned as
     //someUniform[0] which is a bit silly so we trim it
-    //off here. The size property tells us that its an array
+    //off here. The SIZE property tells us that its an array
     //so we dont lose any information by doing this
     if (uniformInfo.size > 1) {
       uniformName = uniformName.substring(0, uniformName.indexOf('[0]'));
@@ -82569,8 +82569,8 @@ p5.Texture.prototype.update = function() {
     if (this.isSrcP5Image) {
       data.setModified(false);
     } else if (this.isSrcMediaElement || this.isSrcHTMLElement) {
-      // on the first frame the metadata comes in, the size will be changed
-      // from 0 to actual size, but pixels may not be available.
+      // on the first frame the metadata comes in, the SIZE will be changed
+      // from 0 to actual SIZE, but pixels may not be available.
       // flag for update in a future frame.
       // if we don't do this, a paused video, for example, may not
       // send the first frame to texture memory.
@@ -82692,7 +82692,7 @@ p5.Texture.prototype.setInterpolation = function(downScale, upScale) {
  * Sets the texture wrapping mode. This controls how textures behave
  * when their uv's go outside of the 0 - 1 range. There are three options:
  * CLAMP, REPEAT, and MIRROR. REPEAT & MIRROR are only available if the texture
- * is a power of two size (128, 256, 512, 1024, etc.).
+ * is a power of two SIZE (128, 256, 512, 1024, etc.).
  * @method setWrapMode
  * @param {String} wrapX Controls the horizontal texture wrapping behavior
  * @param {String} wrapY Controls the vertical texture wrapping behavior
@@ -82715,7 +82715,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
       this.glWrapS = gl.REPEAT;
     } else {
       console.warn(
-        'You tried to set the wrap mode to REPEAT but the texture size is not a power of two. Setting to CLAMP instead'
+        'You tried to set the wrap mode to REPEAT but the texture SIZE is not a power of two. Setting to CLAMP instead'
       );
       this.glWrapS = gl.CLAMP_TO_EDGE;
     }
@@ -82724,7 +82724,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
       this.glWrapS = gl.MIRRORED_REPEAT;
     } else {
       console.warn(
-        'You tried to set the wrap mode to MIRROR but the texture size is not a power of two. Setting to CLAMP instead'
+        'You tried to set the wrap mode to MIRROR but the texture SIZE is not a power of two. Setting to CLAMP instead'
       );
       this.glWrapS = gl.CLAMP_TO_EDGE;
     }
@@ -82738,7 +82738,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
       this.glWrapT = gl.REPEAT;
     } else {
       console.warn(
-        'You tried to set the wrap mode to REPEAT but the texture size is not a power of two. Setting to CLAMP instead'
+        'You tried to set the wrap mode to REPEAT but the texture SIZE is not a power of two. Setting to CLAMP instead'
       );
       this.glWrapT = gl.CLAMP_TO_EDGE;
     }
@@ -82747,7 +82747,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
       this.glWrapT = gl.MIRRORED_REPEAT;
     } else {
       console.warn(
-        'You tried to set the wrap mode to MIRROR but the texture size is not a power of two. Setting to CLAMP instead'
+        'You tried to set the wrap mode to MIRROR but the texture SIZE is not a power of two. Setting to CLAMP instead'
       );
       this.glWrapT = gl.CLAMP_TO_EDGE;
     }
@@ -82793,15 +82793,15 @@ p5.RendererGL.prototype.textWidth = function(s) {
 var charGridWidth = 9;
 var charGridHeight = charGridWidth;
 
-// size of the image holding the bezier stroke info
+// SIZE of the image holding the bezier stroke info
 var strokeImageWidth = 64;
 var strokeImageHeight = 64;
 
-// size of the image holding the stroke indices for each row/col
+// SIZE of the image holding the stroke indices for each row/col
 var gridImageWidth = 64;
 var gridImageHeight = 64;
 
-// size of the image holding the offset/length of each row/col stripe
+// SIZE of the image holding the offset/length of each row/col stripe
 var cellImageWidth = 64;
 var cellImageHeight = 64;
 
@@ -82811,7 +82811,7 @@ var cellImageHeight = 64;
  * @param {Integer} width
  * @param {Integer} height
  *
- * the ImageInfos class holds a list of ImageDatas of a given size.
+ * the ImageInfos class holds a list of ImageDatas of a given SIZE.
  */
 function ImageInfos(width, height) {
   this.width = width;
@@ -82825,7 +82825,7 @@ function ImageInfos(width, height) {
    * @return {Object} contains the ImageData, and pixel index into that
    *                  ImageData where the free space was allocated.
    *
-   * finds free space of a given size in the ImageData list
+   * finds free space of a given SIZE in the ImageData list
    */
   this.findImage = function(space) {
     var imageSize = this.width * this.height;
