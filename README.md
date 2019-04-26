@@ -13,13 +13,8 @@
 ##### Development
        
 2. Run Development Server
-<<<<<<< HEAD
 
-       python backend_start.py
-=======
-    
         python backend_start.py
->>>>>>> 2b0b3ffb16a4cc0bba474cc829699d204d46af40
 
 ##### Production
 
