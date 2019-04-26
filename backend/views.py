@@ -15,9 +15,10 @@ def hello_world():
 
 
 class Data(Resource):
-    def get(self):
+    def get(self, data_name):
         return {
-            {
-                "ok"
-            }
+                "ok": data_name
         }
+
+
+api.add_resource(Data, '/api/<data_name>')
