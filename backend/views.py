@@ -6,6 +6,8 @@ from flask import render_template
 
 from flask_restful import Resource
 
+api_version = app.config['API_VERSION']
+
 
 @app.route('/')
 def hello_world():
@@ -17,8 +19,8 @@ def hello_world():
 class Data(Resource):
     def get(self, data_name):
         return {
-                "ok": data_name
+            "ok": data_name
         }
 
 
-api.add_resource(Data, '/api/<data_name>')
+api.add_resource(Data, '/api/' + api_version + '/<data_name>')
