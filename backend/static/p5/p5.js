@@ -151,7 +151,7 @@ module.exports={
             "namespaces": {}
         },
         "src/core/main.js": {
-            "name": "src/core/main.js",
+            "name": "src/core/p5_example.js",
             "modules": {
                 "Structure": 1
             },
@@ -961,7 +961,7 @@ module.exports={
             },
             "namespaces": {},
             "module": "IO",
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 1,
             "requires": [
                 "constants"
@@ -1772,7 +1772,7 @@ module.exports={
             "module": "IO",
             "submodule": "Output",
             "namespace": "",
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 15,
             "description": "<p>This is the p5 instance constructor.</p>\n<p>A p5 instance holds all the properties and methods related to\na p5 sketch.  It expects an incoming sketch closure and it can also\ntake an optional node parameter for attaching the generated p5 canvas\nto a node.  The sketch closure takes the newly created p5 instance as\nits sole argument and may optionally set <a href=\"#/p5/preload\">preload()</a>, <a href=\"#/p5/setup\">setup()</a>, and/or\n<a href=\"#/p5/draw\">draw()</a> properties on it for running a sketch.</p>\n<p>A p5 sketch can run in &quot;global&quot; or &quot;instance&quot; mode:\n&quot;global&quot;   - all properties and methods are attached to the window\n&quot;instance&quot; - all properties and methods are bound to this p5 object</p>\n",
             "is_constructor": 1,
@@ -7202,7 +7202,7 @@ module.exports={
             "module": "Environment"
         },
         {
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 49,
             "description": "<p>Called directly before <a href=\"#/p5/setup\">setup()</a>, the <a href=\"#/p5/preload\">preload()</a> function is used to handle\nasynchronous loading of external files in a blocking way. If a preload\nfunction is defined, <a href=\"#/p5/setup\">setup()</a> will wait until any load calls within have\nfinished. Nothing besides load calls (<a href=\"#/p5/loadImage\">loadImage</a>, <a href=\"#/p5/loadJSON\">loadJSON</a>, <a href=\"#/p5/loadFont\">loadFont</a>,\n<a href=\"#/p5/loadStrings\">loadStrings</a>, etc.) should be inside the preload function. If asynchronous\nloading is preferred, the load methods can instead be called in <a href=\"#/p5/setup\">setup()</a>\nor anywhere else with the use of a callback parameter.\n<br><br>\nBy default the text &quot;loading...&quot; will be displayed. To make your own\nloading page, include an HTML element with id &quot;p5_loading&quot; in your\npage. More information <a href=\"http://bit.ly/2kQ6Nio\">here</a>.</p>\n",
             "itemtype": "method",
@@ -7216,7 +7216,7 @@ module.exports={
             "submodule": "Structure"
         },
         {
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 90,
             "description": "<p>The <a href=\"#/p5/setup\">setup()</a> function is called once when the program starts. It&#39;s used to\ndefine initial environment properties such as screen SIZE and background\ncolor and to load media such as images and fonts as the program starts.\nThere can only be one <a href=\"#/p5/setup\">setup()</a> function for each program and it shouldn&#39;t\nbe called again after its initial execution.\n<br><br>\nNote: Variables declared within <a href=\"#/p5/setup\">setup()</a> are not accessible within other\nfunctions, including <a href=\"#/p5/draw\">draw()</a>.</p>\n",
             "itemtype": "method",
@@ -7230,7 +7230,7 @@ module.exports={
             "submodule": "Structure"
         },
         {
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 121,
             "description": "<p>Called directly after <a href=\"#/p5/setup\">setup()</a>, the <a href=\"#/p5/draw\">draw()</a> function continuously executes\nthe lines of code contained inside its block until the program is stopped\nor <a href=\"#/p5/noLoop\">noLoop()</a> is called. Note if <a href=\"#/p5/noLoop\">noLoop()</a> is called in <a href=\"#/p5/setup\">setup()</a>, <a href=\"#/p5/draw\">draw()</a> will\nstill be executed once before stopping. <a href=\"#/p5/draw\">draw()</a> is called automatically and\nshould never be called explicitly.\n<br><br>\nIt should always be controlled with <a href=\"#/p5/noLoop\">noLoop()</a>, <a href=\"#/p5/redraw\">redraw()</a> and <a href=\"#/p5/loop\">loop()</a>. After\n<a href=\"#/p5/noLoop\">noLoop()</a> stops the code in <a href=\"#/p5/draw\">draw()</a> from executing, <a href=\"#/p5/redraw\">redraw()</a> causes the\ncode inside <a href=\"#/p5/draw\">draw()</a> to execute once, and <a href=\"#/p5/loop\">loop()</a> will cause the code\ninside <a href=\"#/p5/draw\">draw()</a> to resume executing continuously.\n<br><br>\nThe number of times <a href=\"#/p5/draw\">draw()</a> executes in each second may be controlled with\nthe <a href=\"#/p5/frameRate\">frameRate()</a> function.\n<br><br>\nThere can only be one <a href=\"#/p5/draw\">draw()</a> function for each sketch, and <a href=\"#/p5/draw\">draw()</a> must\nexist if you want the code to run continuously, or to process events such\nas <a href=\"#/p5/mousePressed\">mousePressed()</a>. Sometimes, you might have an empty call to <a href=\"#/p5/draw\">draw()</a> in\nyour program, as shown in the above example.\n<br><br>\nIt is important to note that the drawing coordinate system will be reset\nat the beginning of each <a href=\"#/p5/draw\">draw()</a> call. If any transformations are performed\nwithin <a href=\"#/p5/draw\">draw()</a> (ex: scale, rotate, translate), their effects will be\nundone at the beginning of <a href=\"#/p5/draw\">draw()</a>, so transformations will not accumulate\nover time. On the other hand, styling applied (ex: fill, stroke, etc) will\nremain in effect.</p>\n",
             "itemtype": "method",
@@ -7244,7 +7244,7 @@ module.exports={
             "submodule": "Structure"
         },
         {
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 401,
             "description": "<p>Removes the entire p5 sketch. This will remove the canvas and any\nelements created by p5.js. It will also stop the draw loop and unbind\nany properties or methods from the window global scope. It will\nleave a variable p5 in case you wanted to create a new p5 sketch.\nIf you like, you can set p5 = null to erase it. While all functions and\nvariables and objects created by the p5 library will be removed, any\nother global variables created by your code will remain.</p>\n",
             "itemtype": "method",
@@ -7258,7 +7258,7 @@ module.exports={
             "submodule": "Structure"
         },
         {
-            "file": "src/core/main.js",
+            "file": "src/core/p5_example.js",
             "line": 586,
             "description": "<p>Allows for the friendly error system (FES) to be turned off when creating a sketch,\nwhich can give a significant boost to performance when needed.\nSee <a href='https://github.com/processing/p5.js/wiki/Optimizing-p5.js-Code-for-Performance#disable-the-friendly-error-system-fes'>\ndisabling the friendly error system</a>.</p>\n",
             "itemtype": "property",
@@ -25834,19 +25834,19 @@ module.exports={
         },
         {
             "message": "unknown tag: alt",
-            "line": " src/core/main.js:49"
+            "line": " src/core/p5_example.js:49"
         },
         {
             "message": "unknown tag: alt",
-            "line": " src/core/main.js:90"
+            "line": " src/core/p5_example.js:90"
         },
         {
             "message": "unknown tag: alt",
-            "line": " src/core/main.js:121"
+            "line": " src/core/p5_example.js:121"
         },
         {
             "message": "unknown tag: alt",
-            "line": " src/core/main.js:401"
+            "line": " src/core/p5_example.js:401"
         },
         {
             "message": "unknown tag: alt",
