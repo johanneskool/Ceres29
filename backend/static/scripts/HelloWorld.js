@@ -6,7 +6,7 @@ function setup() {
 function draw() {
     noStroke();
     ellipse(random(0,window.innerWidth), random(0,window.innerHeight), 50, 50);
-    fill(random(20, 235), random(20, 235), random(20, 235), 100);
+    fill(random(25, 240), random(25, 240), random(25, 240), 100);
 
     if (mouseIsPressed) {
         background(0);
