@@ -1,15 +1,28 @@
-var NODE_COUNT = 100;
+var NODE_COUNT = 1000;
 var node_width = 500 / NODE_COUNT;
 var nodes = [];
 var matrix;
+
+var xOff = 0;
+var yOff = 0;
+var oldMouseX = 0;
+var oldMouseY = 0;
+var newMouseX = 0;
+var newMouseY = 0;
+
+var matrixSize;
+var canvas;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
     colorMode(HSL,100);
     createCanvas(window.innerWidth, window.innerHeight);
 
+    node_width = ceil(min(window.innerWidth, window.innerHeight) / (1.5*NODE_COUNT));
+
+    canvas = document.getElementsByTagName('canvas')[0];
     //make matrix buffer graphics
-    var matrixSize = NODE_COUNT * node_width;
+    matrixSize = NODE_COUNT * node_width;
     matrix = createGraphics(matrixSize, matrixSize);
     matrix.colorMode(HSL,100);
 
@@ -45,6 +58,25 @@ function draw_matrix() {
     }
 }
 
+function mousePressed() {
+    print('clicked');
+    oldMouseX = mouseX;
+    oldMouseY = mouseY;
+    newMouseX = mouseX;
+    newMouseY = mouseY;
+}
+
+function mouseDragged() {
+    print('dragged');
+    newMouseX = mouseX;
+    newMouseY = mouseY;
+
+    xOff += newMouseX - oldMouseX;
+    yOff += newMouseY - oldMouseY;
+
+    oldMouseX = mouseX;
+    oldMouseY = mouseY;
+}
 
 function draw() {
     background(0,0,0);
@@ -53,8 +85,8 @@ function draw() {
     push();
     var width = window.innerWidth / 2 - (NODE_COUNT * node_width) / 2;
     var height = window.innerHeight / 2 - (NODE_COUNT * node_width) / 2;
-    translate(width,height);
-    image(matrix,0,0);
+    translate(width + xOff,height + yOff);
+    image(matrix,0,0,300,300);
     pop();
 }
 
