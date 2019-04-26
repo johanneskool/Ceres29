@@ -13,7 +13,7 @@ with open('GephiMatrix_co-citation.csv', newline='', encoding='utf-8') as csvfil
 		rownumber = tags.index(row[0]) #look for the position in the tags array
 		if rownumber != -1 and row[0] not in already_seen:
 			already_seen.append(row[0])
-			weights[rownumber] = row[1:-6]
+			weights[rownumber] = row[1:-1]
 
 weights = weights.astype(float, copy=False)
 dict = OrderedDict() #ordering of the keys is important, as it determines the order of the weight arrays

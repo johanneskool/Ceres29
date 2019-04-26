@@ -2,12 +2,16 @@
 <html lang="">
 
 <!-- AUTHORS
-Tristan Trouwen,
+Tristan Trouwen, Rick Luiken
 -->
 
   <head>
+    <!-- including css stylesheets -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/stylesheet.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/stylesheet.css') }}">
 
+    <!-- including javascript scripts -->
+    <script src="{{ url_for('static', filename='scripts/bootstrap.min.js')}}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.sound.min.js') }}"></script>
@@ -15,7 +19,6 @@ Tristan Trouwen,
   </head>
 
   <body>
-
-
+    {% blockcontent %}{% endblock %}
   </body>
 </html>
