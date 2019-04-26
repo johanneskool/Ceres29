@@ -11,6 +11,7 @@ class Config(object):
     HOST = 'localhost'
     PORT = '5555'
     TESTING = False
+    API_VERSION = 'test'
     DATABASE_URI = 'sqlite:///:memory:'  # set database URI to use local database in RAM
     DEVELOPMENT = False
 
