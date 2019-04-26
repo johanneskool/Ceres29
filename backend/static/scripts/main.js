@@ -3,10 +3,12 @@ var node_width = 500 / NODE_COUNT;
 var nodes = [];
 var matrix;
 
+//basic setup and buffer for matrix to prevent redrawing.
 function setup() {
     colorMode(HSL,100);
     createCanvas(window.innerWidth, window.innerHeight);
 
+    //make matrix buffer graphics
     var matrixSize = NODE_COUNT * node_width;
     matrix = createGraphics(matrixSize, matrixSize);
     matrix.colorMode(HSL,100);
@@ -21,6 +23,7 @@ function setup() {
 
 }
 
+//function that generates random matrix values.
 function generate_matrix () {
     for (var i = 0; i < NODE_COUNT; i++) {
         nodes.push(new Node());
@@ -34,12 +37,14 @@ function generate_matrix () {
     }
 }
 
+//invoke function for drawing the matrix to the buffer
 function draw_matrix() {
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].drawOutgoing();
         matrix.translate(node_width,0);
     }
 }
+
 
 function draw() {
     background(0,0,0);
@@ -53,10 +58,16 @@ function draw() {
     pop();
 }
 
+/**
+ * Class for managing Nodes
+ * @constructor Node class
+ */
 function Node() {
+    /** @lends Node */
     this.outgoing = [];
 }
 
+/** Draws matrix for node.*/
 Node.prototype.drawOutgoing = function () {
     matrix.push();
     for (var i = 0; i < this.outgoing.length; i++) {
