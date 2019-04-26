@@ -19,7 +19,7 @@ var SIZE = 80;
 
 //basic setup
 function setup() {
-    colorMode(HSL,100);
+    colorMode(HSL, 100);
     createCanvas(window.innerWidth, window.innerHeight);
     frameRate(999);
     imageMode(CENTER);
@@ -29,17 +29,17 @@ function setup() {
 }
 
 function draw() {
-    background(0,0,0);
+    background(0, 0, 0);
     fill(0, 0, 0, 100);
 
-    inc = circlesList.length/200; //animation speed is based on the amount of circles
+    inc = circlesList.length / 200; //animation speed is based on the amount of circles
 
 
-    var mouseVector = createVector(mouseX,mouseY);
-    var jitter = createVector(random(-2,2),random(-2,2)); //random jitter vector
+    var mouseVector = createVector(mouseX, mouseY);
+    var jitter = createVector(random(-2, 2), random(-2, 2)); //random jitter vector
 
-    var speedVector = p5.Vector.sub(mouseVector,newMouseVector).add(jitter); //make vector from last and current mouse pos.
-    newMouseVector = createVector(mouseX,mouseY);                            //update last mouse pos.
+    var speedVector = p5.Vector.sub(mouseVector, newMouseVector).add(jitter); //make vector from last and current mouse pos.
+    newMouseVector = createVector(mouseX, mouseY);                            //update last mouse pos.
 
     //add a circle if mouse is pressed
     if (mouseIsPressed) {
@@ -70,11 +70,11 @@ function draw() {
  * @param {number} x   - the dividend
  * @param {number} mod - the divisor
  */
-function Mod(x, mod){
+function Mod(x, mod) {
     if (mod >= x) {
         return x;
     } else {
-        return  x - mod *floor(x/mod);
+        return x - mod * floor(x / mod);
     }
 }
 
@@ -87,8 +87,8 @@ function Circles(speedVector) {
     /** @lends Circle */
     this.speed = speedVector;
     this.startRange = startRange;
-    this.acceleration = p5.Vector.mult(speedVector,-0.2);
-    this.position = createVector(mouseX,mouseY);
+    this.acceleration = p5.Vector.mult(speedVector, -0.2);
+    this.position = createVector(mouseX, mouseY);
     this.a = 80;
 }
 
@@ -96,7 +96,7 @@ function Circles(speedVector) {
  * Updates the position and draws the circle
  */
 Circles.prototype.update = function () {
-    if (this.speed.mag()/1.5 > this.acceleration.mag()) {
+    if (this.speed.mag() / 1.5 > this.acceleration.mag()) {
         this.speed.add(this.acceleration);
     }
     this.position.add(this.speed);
@@ -106,7 +106,7 @@ Circles.prototype.update = function () {
 /**
  * Rescales the canvas when the windows has been changed
  */
-window.onresize = function() {
+window.onresize = function () {
     var w = window.innerWidth;
     var h = window.innerHeight;
     resizeCanvas(w, h);
