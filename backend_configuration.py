@@ -14,6 +14,8 @@ class Config(object):
     API_VERSION = 'test'
     DATABASE_URI = 'sqlite:///:memory:'  # set database URI to use local database in RAM
     DEVELOPMENT = False
+    UPLOAD_FOLDER = os.path.join(basedir, 'backend/static/uploads')
+    ALLOWED_EXTENSIONS = set(['csv'])
 
 
 class ProductionConfig(Config):
