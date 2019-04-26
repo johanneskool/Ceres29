@@ -16,9 +16,7 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
     if request.method == 'GET':
-        return render_template(
-            "index.html"
-        )
+        return render_template("index.html")
 
     if request.method == 'POST':
             # check if the post request has the file part
@@ -34,8 +32,8 @@ def hello_world():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return redirect(url_for('uploaded_file',
-                                        filename=filename))
+                flash("Successfully uploaded!")
+                return render_template("index.html")
 
 
 class Data(Resource):
