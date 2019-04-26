@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>p5.js example</title>
-    <link rel="stylesheet" type="text/css" href="../static/content/stylesheet.css">
-    <script src="../static/p5/addons/p5.dom.js"></script>
-    <script src="../static/p5/addons/p5.sound.js"></script>
-    <script src="../static/p5/p5.js"></script>
-    <script src="../static/scripts/main.js"></script>
-  </head>
-  <body>
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+    <!-- AUTHORS
+    Tristan Trouwen, Rick Luiken
+    -->
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+
+{% endblock %}
