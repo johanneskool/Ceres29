@@ -617,3 +617,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/linux,flask,windows,webstorm,pycharm+all,reactnative,python
+
+##Do not share uploads, but make sure the uploads folder is copied, because else we might crash during uploads
+backend/static/uploads/*
+!backend/static/uploads/readme.md
