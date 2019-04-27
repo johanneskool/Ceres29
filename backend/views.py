@@ -17,7 +17,7 @@ def allowed_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def hello_world():
     if request.method == 'GET':
-        return render_template("index.html")
+        return render_template("index.html", app=app)
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -34,7 +34,7 @@ def hello_world():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash("Successfully uploaded!")
-            return render_template("index.html")
+            return render_template("index.html", app=app)
 
 @app.after_request
 def add_header(response):
