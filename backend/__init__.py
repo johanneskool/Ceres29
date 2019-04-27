@@ -1,5 +1,6 @@
 __author__ = 'Tristan Trouwen'
 
+import os
 from os import environ
 from flask import Flask
 from flask_restful import Api
@@ -15,5 +16,8 @@ else:  # default to development configuration
 
 # initialize API
 api = Api(app)
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 import backend.views
