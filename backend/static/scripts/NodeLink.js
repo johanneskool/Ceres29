@@ -1,7 +1,7 @@
 var sizeCircle = window.innerHeight-20;
 var xValues = [];
 var yValues = [];
-var Nodes = []
+var Nodes = [];
 var size = 200;
 
 function setup() {
@@ -24,7 +24,7 @@ function generateInput() {
     for (var j = 0; j < size; j++) {
         Nodes[j] = new Node(randomNodes[i], random(0, 200), xValues[j], yValues[j]);
     }
-    console.log(Nodes);
+
     setNodes();
 }
 
