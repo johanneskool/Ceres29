@@ -17,7 +17,7 @@ var bufferGraphics;
 function setup() {
 
     colorMode(HSL,100);
-    var canvas = createCanvas(window.innerWidth, window.innerHeight);
+    let canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent('canvas');
     //canvas.mouseWheel(zoom);
     //NODE_SIZE = floor(8000 / NODE_COUNT);
@@ -94,7 +94,7 @@ function mouseDragged() {
 
 //TODO make zooming go to center of screen.
 function mouseWheel () {
-    if (event.deltaY > 0) {
+    if (event.deltaY < 0) {
         xOff -= mouseX - matrixX;
         yOff -= mouseY - matrixY;
         zoomScale = zoomScale / zoomFactor;
