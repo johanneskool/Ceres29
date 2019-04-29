@@ -3,7 +3,6 @@ __author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 import os
 
 from flask import render_template, request, redirect, flash, url_for
-from flask_restful import Resource
 from werkzeug.utils import secure_filename
 
 from backend import app, api, helper
@@ -17,7 +16,8 @@ def allowed_file(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/<string:data_name>', methods=['GET', 'POST'])
+def index(data_name=None):
     if request.method == 'GET':
         # find available JSON files
         json_file_path = app.config['JSON_FOLDER']
@@ -28,7 +28,7 @@ def index():
             for file in os.listdir(json_file_path) if os.path.isfile(os.path.join(json_file_path, file))
         ]
 
-        return render_template("index.html", files_available=available_files, app=app)
+        return render_template("index.html", files_available=available_files, app=app, data=data_name)
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -50,6 +50,7 @@ def index():
             helper.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash("Successfully uploaded!")
             return redirect(url_for('index'))
+
 
 @app.after_request
 def add_header(response):
