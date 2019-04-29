@@ -2,6 +2,7 @@ function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
     colorMode(HSL, 360, 100, 100, 100);
     background(0);
+    var particles = [];
 }
 
 function draw() {
