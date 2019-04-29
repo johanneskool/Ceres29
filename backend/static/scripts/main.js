@@ -1,4 +1,4 @@
-var NODE_COUNT = 1000;
+var NODE_COUNT = 10;
 var NODE_SIZE; //also the render quality.
 var nodes = [];
 var matrix;
@@ -17,7 +17,8 @@ var bufferGraphics;
 function setup() {
 
     colorMode(HSL,100);
-    createCanvas(window.innerWidth, window.innerHeight);
+    let canvas = createCanvas(window.innerWidth, window.innerHeight);
+    canvas.parent('canvas');
     //canvas.mouseWheel(zoom);
     NODE_SIZE = 8;
     //make matrix buffer graphics

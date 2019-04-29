@@ -10,8 +10,15 @@
     </form>
     <ul>
        {% for file in files_available %}
-           <li><a href="{{ file["url"] }}">{{ file["filename"] }}</a></li>
+           <li>
+               <button><a href="{{ file["url"] }}">{{ file["filename"] }}</a></button>
+           </li>
+
        {% endfor %}
     </ul>
+
+    <div id="canvas">
+
+    </div>
 
 {% endblock %}
