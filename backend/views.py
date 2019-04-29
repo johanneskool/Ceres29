@@ -57,13 +57,3 @@ def add_header(response):
     """
     response.cache_control.max_age = 0
     return response
-
-
-class Data(Resource):
-    def get(self, data_name):
-        return {
-            "ok": data_name
-        }
-
-
-api.add_resource(Data, '/api/' + api_version + '/file/<data_name>')
