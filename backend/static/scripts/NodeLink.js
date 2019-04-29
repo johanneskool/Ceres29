@@ -1,6 +1,8 @@
 var sizeCircle = window.innerHeight-20;
 var xValues = [];
 var yValues = [];
+var Nodes = [];
+var size = 200;
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
@@ -13,35 +15,39 @@ function setup() {
 //Code for random Input here
 function generateInput() {
     var randomNodes = [];
-    var size = 100;
     createCircleArea();
 
     for (var i = 0; i < size; i++) {
-        randomNodes.push(i);
+        randomNodes[i] = i;
     }
 
     for (var j = 0; j < size; j++) {
-        Node[i] = new Node(randomNodes[floor(random(i))], random(0, 200));
+        Nodes[j] = new Node(randomNodes[i], random(0, 200), xValues[j], yValues[j]);
     }
 
     setNodes();
 }
 
 //setting up each node
-function Node(connected, weight) {
+function Node(connected, weight, x, y) {
     this.connected = connected;
     this.weight = weight;
-    ellipse(xValues[floor(random(Node.length))], yValues[floor(random(Node.length))], 50, 50);
+    this.x = x;
+    this.y = y;
+    ellipse(x, y, 20, 20);
 }
 
 function createCircleArea() {
     var centerX = width/2;
     var centerY = height/2;
     var radius = sizeCircle/2;
-    var steps = 10;
-    for (var i = 0; i < steps; i+=0.01) {
-        xValues[i] = (centerX + radius * Math.cos(2 * Math.PI * i / steps));
-        yValues[i] = (centerY + radius * Math.sin(2 * Math.PI * i / steps));
+    var steps = 2*3.14;
+    for (var i = 0; i < size; i++) {
+        var phase = 2 * Math.PI * i / steps;
+        xValues[i] = (centerX + radius * Math.cos(phase));
+        yValues[i] = (centerY + radius * Math.sin(phase));
+        console.log(xValues[i]);
+        console.log(yValues[i]);
     }
 }
 

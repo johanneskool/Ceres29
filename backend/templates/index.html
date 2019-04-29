@@ -11,14 +11,16 @@
     <ul>
        {% for file in files_available %}
            <li>
-               <button><a href="{{ file["url"] }}">{{ file["filename"] }}</a></button>
+               <button><a href="{{ url_for('index', data_name=file["filename"]) }}">{{ file["filename"] }}</a></button>
            </li>
 
        {% endfor %}
     </ul>
-
+    {% if data %}
+        <h1>{{ data }}</h1>
     <div id="canvas">
 
     </div>
+    {% endif %}
 
 {% endblock %}
