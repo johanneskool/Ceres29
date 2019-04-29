@@ -1,0 +1,11 @@
+PRESENT:
+	All
+TODO:
+	0. Optimizing frontend i.v.m. maximum size canvas (Samuel)
+  1. Creating node-link diagram on frontend (Akam)
+  2. Optimizing backend (Johannes and Rick)
+EVALUATION:
+  5. Due to Rinks absence due to ouderdagen on Friday May 3rd, the evaluation will be held on Monday May 6th. Everyone will be present. On May 3rd there will be a regular meeting
+DECISIONS:
+  3. We are going to use the WindWords-visualization for the node-link diagram (https://visme.co/blog/wp-content/uploads/WindWords-best-data-visualizations-visme-1.gif)
+  4. Johannes is allowed to leave June 10-June 13 and do his work before and/or after that period
