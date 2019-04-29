@@ -1,4 +1,4 @@
-__author__ = 'Tristan Trouwen'
+__author__ = 'Tristan Trouwen, Rick Luiken, Rink Pieters'
 
 import os
 from os import environ

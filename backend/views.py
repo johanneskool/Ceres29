@@ -1,4 +1,4 @@
-__author__ = 'Tristan Trouwen'
+__author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 
 import os
 from backend import app, api
