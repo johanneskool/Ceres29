@@ -14,7 +14,8 @@ class Config(object):
     API_VERSION = 'test'
     DATABASE_URI = 'sqlite:///:memory:'  # set database URI to use local database in RAM
     DEVELOPMENT = False
-    UPLOAD_FOLDER = os.path.join(basedir, 'backend/static/uploads')
+    UPLOAD_FOLDER = os.path.join(basedir, 'backend/static/uploads/')
+    JSON_FOLDER = os.path.join(basedir, 'backend/static/json/')
     ALLOWED_EXTENSIONS = set(['csv'])
     SECRET_KEY = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
 

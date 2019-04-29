@@ -1,24 +1,26 @@
 __author__ = "Rick Luiken"
-
+import ujson
+import os
+from backend import app
 import csv
-import numpy as np
 from collections import OrderedDict
 
-with open('GephiMatrix_co-citation.csv', newline='', encoding='utf-8') as csvfile:
-    reader = csv.reader(csvfile, delimiter=';', quotechar='|')
-    tags = list(OrderedDict.fromkeys(next(reader)[1:]))  # tags are stored in the first row
-    weights = np.zeros((len(tags), len(tags)), dtype=str)
-    already_seen = []
-    for i, row in enumerate(reader):
-        row_number = tags.index(row[0])  # look for the position in the tags array
-        if row_number != -1 and row[0] not in already_seen:
-            already_seen.append(row[0])
-            weights[rownumber] = row[1:-1]
 
-weights = weights.astype(float, copy=False)
+def parse(file):
+    with open(file, mode='r', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile, delimiter=';')
+        tags = next(reader)[1:]  # tags are stored in the first row
+        mydict = {rows[0]: map(int, rows[1:-1]) for rows in reader}
 
-dict = OrderedDict()  # ordering of the keys is important, as it determines the order of the weight arrays
-for i, row in enumerate(weights):
-    dict[tags[i]] = row.tolist()
 
-print(dict)
+    jsondict = ujson.dumps(mydict, indent=2, sort_keys=True)
+    return jsondict
+
+
+if __name__ == '__main__':
+    filename = 'GephiMatrix_co-citation.csv'
+    jsons = parse(filename)
+    # the split is done to remove the extension
+    with open(app.config['JSON_FOLDER'] + filename.split('.')[0] + ".json", "w+") as f:
+        f.write(jsons)
+

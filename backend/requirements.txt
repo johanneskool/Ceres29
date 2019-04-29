@@ -1,8 +1,12 @@
+aniso8601==6.0.0
 Click==7.0
 Flask==1.0.2
+Flask-RESTful==0.3.7
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
-Werkzeug==0.15.2
-flask-restful==0.3.7
 numpy==1.16.3
+pytz==2019.1
+six==1.12.0
+ujson==1.35
+Werkzeug==0.15.2

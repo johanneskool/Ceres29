@@ -30,7 +30,10 @@ def hello_world():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
+        if not allowed_file(file.filename):
+            flash('Filetype not allowed')
+            return redirect(request.url)
+        if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash("Successfully uploaded!")
