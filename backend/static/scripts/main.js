@@ -17,10 +17,11 @@ var bufferGraphics;
 function setup() {
 
     colorMode(HSL,100);
-    let canvas = createCanvas(window.innerWidth, window.innerHeight);
+    var canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent('canvas');
     //canvas.mouseWheel(zoom);
-    NODE_SIZE = 8;
+    //NODE_SIZE = floor(8000 / NODE_COUNT);
+    NODE_SIZE = 20;
     //make matrix buffer graphics
     matrixSize = NODE_COUNT * NODE_SIZE;
     matrix = createGraphics(matrixSize, matrixSize);
