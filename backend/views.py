@@ -1,10 +1,12 @@
 __author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 
 import os
-from backend import app, api
-from flask import render_template, request, redirect, url_for, flash
-from werkzeug.utils import secure_filename
+
+from flask import render_template, request, redirect, flash, url_for
 from flask_restful import Resource
+from werkzeug.utils import secure_filename
+
+from backend import app, api, helper
 
 api_version = app.config['API_VERSION']
 
@@ -45,9 +47,9 @@ def index():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            helper.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash("Successfully uploaded!")
-            return render_template("index.html", app=app)
-
+            return redirect(url_for('index'))
 
 @app.after_request
 def add_header(response):
