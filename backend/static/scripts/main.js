@@ -1,5 +1,5 @@
 var NODE_COUNT = 1000;
-var nodeSize; //also the render quality.
+var NODE_SIZE; //also the render quality.
 var nodes = [];
 var matrix;
 
@@ -10,6 +10,8 @@ var defaultCanvas;
 var body;
 var zoomScale = 1;
 var zoomFactor = 2;
+var drawQuality = 1;
+var bufferGraphics;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
@@ -17,13 +19,12 @@ function setup() {
     colorMode(HSL,100);
     createCanvas(window.innerWidth, window.innerHeight);
     //canvas.mouseWheel(zoom);
-    nodeSize = floor(10000 / NODE_COUNT); //for some reason 16000 is the maximum width / height of a canvas element.
-    nodeSize = 5;
+    NODE_SIZE = 8;
     //make matrix buffer graphics
-    matrixSize = NODE_COUNT * nodeSize;
+    matrixSize = NODE_COUNT * NODE_SIZE;
     matrix = createGraphics(matrixSize, matrixSize);
     matrix.colorMode(HSL,100);
-    matrix.textSize(nodeSize/2);
+    matrix.textSize(NODE_SIZE/2);
 
     frameRate(999);
 
@@ -37,6 +38,11 @@ function setup() {
 
     generateMatrix();
     drawMatrix();
+
+    bufferGraphics = createGraphics(2000, 2000);
+    bufferGraphics.imageMode(CORNER);
+    bufferGraphics.image(matrix, 0, 0, 2000, 2000);
+
 }
 
 //function that generates random matrix values.
@@ -51,9 +57,9 @@ function generateMatrix () {
 
 //invoke function for drawing the matrix to the buffer
 function drawMatrix() {
-    for (var i = 0; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i+= drawQuality) {
         nodes[i].drawOutgoing(i);
-        matrix.translate(nodeSize,0);
+        matrix.translate(NODE_SIZE*drawQuality,0);
     }
 }
 
@@ -113,7 +119,8 @@ function showImage(){
     resetMatrix();
     matrixX = windowWidth / 2 + xOff;
     matrixY = windowHeight / 2 + yOff;
-    image(matrix,matrixX,matrixY,matrixWidth/zoomScale,matrixWidth/zoomScale);
+    image(bufferGraphics,matrixX,matrixY,matrixWidth/zoomScale,matrixWidth/zoomScale);
+    //image(matrix,matrixX,matrixY,matrixWidth/zoomScale,matrixWidth/zoomScale);
 }
 
 /**
@@ -128,14 +135,14 @@ function Node() {
 /** Draws matrix for node.*/
 Node.prototype.drawOutgoing = function (j) {
     matrix.push();
-    for (var i = 0; i < this.outgoing.length; i++) {
+    for (var i = 0; i < this.outgoing.length; i += drawQuality) {
         var hue = map(this.outgoing[i],0,1,25,0);
         var opacity = map(this.outgoing[i],0,1,25,100);
         matrix.fill(hue,75,50,opacity);
-        matrix.rect(0,0,nodeSize,nodeSize);
+        matrix.rect(0,0,NODE_SIZE*drawQuality,NODE_SIZE*drawQuality);
         matrix.fill(0,75,100,50);
-        matrix.text(i+", "+j,0,nodeSize-textSize());
-        matrix.translate(0,nodeSize);
+        matrix.text(i+", "+j,0,NODE_SIZE-textSize());
+        matrix.translate(0,NODE_SIZE*drawQuality);
     }
     matrix.pop();
 };
