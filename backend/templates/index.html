@@ -8,5 +8,10 @@
         <input type=file name=file accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
         <input type=submit value=Upload>
     </form>
+    <ul>
+       {% for file in files_available %}
+           <li><a href="{{ file["url"] }}">{{ file["filename"] }}</a></li>
+       {% endfor %}
+    </ul>
 
 {% endblock %}

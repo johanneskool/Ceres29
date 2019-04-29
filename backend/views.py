@@ -15,9 +15,18 @@ def allowed_file(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def hello_world():
+def index():
     if request.method == 'GET':
-        return render_template("index.html", app=app)
+        # find available JSON files
+        json_file_path = app.config['JSON_FOLDER']
+        available_files = [{
+            "url": url_for('static', filename=os.path.join(app.config['JSON_FOLDER_RELATIVE'], file)),
+            "filename": file
+        }
+            for file in os.listdir(json_file_path) if os.path.isfile(os.path.join(json_file_path, file))
+        ]
+
+        return render_template("index.html", files_available=available_files, app=app)
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -39,6 +48,7 @@ def hello_world():
             flash("Successfully uploaded!")
             return render_template("index.html", app=app)
 
+
 @app.after_request
 def add_header(response):
     """
@@ -48,6 +58,7 @@ def add_header(response):
     response.cache_control.max_age = 0
     return response
 
+
 class Data(Resource):
     def get(self, data_name):
         return {
@@ -55,4 +66,4 @@ class Data(Resource):
         }
 
 
-api.add_resource(Data, '/api/' + api_version + '/<data_name>')
+api.add_resource(Data, '/api/' + api_version + '/file/<data_name>')
