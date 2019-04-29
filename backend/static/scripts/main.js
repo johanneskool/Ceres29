@@ -19,6 +19,17 @@ function setup() {
     colorMode(HSL,100);
     let canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent('canvas');
+
+    // fetch data
+    fetch('/static/json'+window.location.pathname)
+    .then(res => res.json())
+    .then((out_json_data) => {
+      console.log(out_json_data);
+    })
+    .catch(err => { throw err });
+
+
+
     //canvas.mouseWheel(zoom);
     //NODE_SIZE = floor(8000 / NODE_COUNT);
     NODE_SIZE = 20;
