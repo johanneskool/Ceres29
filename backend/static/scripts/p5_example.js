@@ -24,6 +24,10 @@ function setup() {
     frameRate(999);
     imageMode(CENTER);
     noStroke();
+    for (var i = 0; i < 50000; i++) {
+        print(i);
+        circlesList[i] = new Circles(createVector(0,0));
+    }
 
     startHue = random(100);
 }
@@ -31,7 +35,7 @@ function setup() {
 function draw() {
     background(0, 0, 0);
     fill(0, 0, 0, 100);
-
+    print(frameRate());
     inc = circlesList.length / 200; //animation speed is based on the amount of circles
 
 
@@ -44,6 +48,7 @@ function draw() {
     //add a circle if mouse is pressed
     if (mouseIsPressed) {
         circlesList.push(new Circles(speedVector));
+        print("add")
     }
 
 
@@ -55,9 +60,9 @@ function draw() {
             //base the color on age of circle
             circlesList[i].startRange = Mod(startRange + circlesList[i].a, 100);
             var color = map(circlesList[i].startRange, 0, 100, 0, 75);
-            fill(startHue, color, color, circlesList[i].a);
+            fill(random(100), color, color, circlesList[i].a);
 
-            circlesList[i].a -= inc;    //decrease age
+            /*circlesList[i].a -= inc;*/    //decrease age
 
             circlesList[i].update();
         }
@@ -88,7 +93,7 @@ function Circles(speedVector) {
     this.speed = speedVector;
     this.startRange = startRange;
     this.acceleration = p5.Vector.mult(speedVector, -0.2);
-    this.position = createVector(mouseX, mouseY);
+    this.position = createVector(random(width), random(height));
     this.a = 80;
 }
 

@@ -1,5 +1,5 @@
-var NODE_COUNT = 500;
-var NODE_SIZE = 10;
+var NODE_COUNT = 10;
+var NODE_SIZE; //also the render quality.
 var nodes = [];
 var matrix;
 
@@ -9,22 +9,39 @@ var matrixHeight; //matrix is square so no real reason to differ between height 
 var defaultCanvas;
 var body;
 var zoomScale = 1;
+var zoomFactor = 2;
+var drawQuality = 1;
+var bufferGraphics;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
 
     colorMode(HSL,100);
-    createCanvas(window.innerWidth, window.innerHeight);
-    //canvas.mouseWheel(zoom);
+    let canvas = createCanvas(window.innerWidth, window.innerHeight);
+    canvas.parent('canvas');
 
+    // fetch data
+    fetch('/static/json'+window.location.pathname)
+    .then(res => res.json())
+    .then((out_json_data) => {
+      console.log(out_json_data);
+    })
+    .catch(err => { throw err });
+
+
+
+    //canvas.mouseWheel(zoom);
+    //NODE_SIZE = floor(8000 / NODE_COUNT);
+    NODE_SIZE = 20;
     //make matrix buffer graphics
     matrixSize = NODE_COUNT * NODE_SIZE;
     matrix = createGraphics(matrixSize, matrixSize);
     matrix.colorMode(HSL,100);
+    matrix.textSize(NODE_SIZE/2);
 
     frameRate(999);
 
-    matrixWidth = ceil(min(windowHeight, windowWidth) / 1.5);
+    matrixWidth = ceil(min(windowHeight, windowWidth) / 1.3);
 
     imageMode(CENTER);
     matrix.imageMode(CENTER);
@@ -34,6 +51,11 @@ function setup() {
 
     generateMatrix();
     drawMatrix();
+
+    bufferGraphics = createGraphics(2000, 2000);
+    bufferGraphics.imageMode(CORNER);
+    bufferGraphics.image(matrix, 0, 0, 2000, 2000);
+
 }
 
 //function that generates random matrix values.
@@ -41,20 +63,16 @@ function generateMatrix () {
     for (var i = 0; i < NODE_COUNT; i++) {
         nodes.push(new Node());
         for (var j = 0; j < NODE_COUNT; j++) {
-            if (random(1) < 0.5) {
-                nodes[i].outgoing.push(0);
-            } else {
-                nodes[i].outgoing.push(random(0,1));
-            }
+            nodes[i].outgoing.push(((j+1)%(i+1))/(i+1));
         }
     }
 }
 
 //invoke function for drawing the matrix to the buffer
 function drawMatrix() {
-    for (var i = 0; i < nodes.length; i++) {
-        nodes[i].drawOutgoing();
-        matrix.translate(NODE_SIZE,0);
+    for (var i = 0; i < nodes.length; i+= drawQuality) {
+        nodes[i].drawOutgoing(i);
+        matrix.translate(NODE_SIZE*drawQuality,0);
     }
 }
 
@@ -85,27 +103,37 @@ function mouseDragged() {
     oldMouseY = mouseY;
 }
 
+//TODO make zooming go to center of screen.
+function mouseWheel () {
+    if (event.deltaY < 0) {
+        xOff -= mouseX - matrixX;
+        yOff -= mouseY - matrixY;
+        zoomScale = zoomScale / zoomFactor;
+    } else {
+        xOff += (mouseX - matrixX)/zoomFactor;
+        yOff += (mouseY - matrixY)/zoomFactor;
+        zoomScale = zoomScale * zoomFactor;
+    }
+    print(zoomScale);
+}
+
+var matrixX, matrixY;
+
 function draw() {
     background(0,0,0);
     fill(0, 0, 0, 100);
 
     //push();
-    resetMatrix();
-    var matrixX = windowWidth / 2 + xOff;
-    var matrixY = windowHeight / 2 + yOff;
-    image(matrix,matrixX,matrixY,matrixWidth/zoomScale,matrixWidth/zoomScale);
+    showImage();
     //pop();
 }
 
-//TODO make zooming go to center of screen.
-function mouseWheel () {
-    print(event.deltaY);
-    if (event.deltaY > 0) {
-        zoomScale = zoomScale / 2;
-    } else {
-        zoomScale = zoomScale * 2;
-    }
-    print(zoomScale);
+function showImage(){
+    resetMatrix();
+    matrixX = windowWidth / 2 + xOff;
+    matrixY = windowHeight / 2 + yOff;
+    image(bufferGraphics,matrixX,matrixY,matrixWidth/zoomScale,matrixWidth/zoomScale);
+    //image(matrix,matrixX,matrixY,matrixWidth/zoomScale,matrixWidth/zoomScale);
 }
 
 /**
@@ -118,14 +146,16 @@ function Node() {
 }
 
 /** Draws matrix for node.*/
-Node.prototype.drawOutgoing = function () {
+Node.prototype.drawOutgoing = function (j) {
     matrix.push();
-    for (var i = 0; i < this.outgoing.length; i++) {
+    for (var i = 0; i < this.outgoing.length; i += drawQuality) {
         var hue = map(this.outgoing[i],0,1,25,0);
         var opacity = map(this.outgoing[i],0,1,25,100);
         matrix.fill(hue,75,50,opacity);
-        matrix.rect(0,0,NODE_SIZE,NODE_SIZE);
-        matrix.translate(0,NODE_SIZE);
+        matrix.rect(0,0,NODE_SIZE*drawQuality,NODE_SIZE*drawQuality);
+        matrix.fill(0,75,100,50);
+        matrix.text(i+", "+j,0,NODE_SIZE-textSize());
+        matrix.translate(0,NODE_SIZE*drawQuality);
     }
     matrix.pop();
 };

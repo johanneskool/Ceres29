@@ -1,10 +1,11 @@
-__author__ = 'Tristan Trouwen'
+__author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 
 import os
-from backend import app, api
-from flask import render_template, request, redirect, url_for, flash
+
+from flask import render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
-from flask_restful import Resource
+
+from backend import app, api, helper
 
 api_version = app.config['API_VERSION']
 
@@ -15,9 +16,19 @@ def allowed_file(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def hello_world():
+@app.route('/<string:data_name>', methods=['GET', 'POST'])
+def index(data_name=None):
     if request.method == 'GET':
-        return render_template("index.html")
+        # find available JSON files
+        json_file_path = app.config['JSON_FOLDER']
+        available_files = [{
+            "url": url_for('static', filename=os.path.join(app.config['JSON_FOLDER_RELATIVE'], file)),
+            "filename": file
+        }
+            for file in os.listdir(json_file_path) if os.path.isfile(os.path.join(json_file_path, file))
+        ]
+
+        return render_template("index.html", files_available=available_files, app=app, data=data_name)
 
     if request.method == 'POST':
         # check if the post request has the file part
@@ -30,11 +41,16 @@ def hello_world():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
+        if not allowed_file(file.filename):
+            flash('Filetype not allowed')
+            return redirect(request.url)
+        if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            helper.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash("Successfully uploaded!")
-            return render_template("index.html")
+            return redirect(url_for('index'))
+
 
 @app.after_request
 def add_header(response):
@@ -44,12 +60,3 @@ def add_header(response):
     """
     response.cache_control.max_age = 0
     return response
-
-class Data(Resource):
-    def get(self, data_name):
-        return {
-            "ok": data_name
-        }
-
-
-api.add_resource(Data, '/api/' + api_version + '/<data_name>')
