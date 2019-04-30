@@ -9,7 +9,7 @@ var matrixHeight; //matrix is square so no real reason to differ between height 
 var defaultCanvas;
 var body;
 var zoomScale = 1;
-var zoomFactor = 2;
+var zoomFactor = 1.5;
 var drawQuality = 1;
 var bufferGraphics;
 
@@ -31,8 +31,8 @@ function setup() {
 
 
     //canvas.mouseWheel(zoom);
-    //NODE_SIZE = floor(8000 / NODE_COUNT);
-    NODE_SIZE = 20;
+    NODE_SIZE = floor(8000 / NODE_COUNT);
+    //NODE_SIZE = 20;
     //make matrix buffer graphics
     matrixSize = NODE_COUNT * NODE_SIZE;
     matrix = createGraphics(matrixSize, matrixSize);
@@ -106,15 +106,32 @@ function mouseDragged() {
 //TODO make zooming go to center of screen.
 function mouseWheel () {
     if (event.deltaY < 0) {
-        xOff -= mouseX - matrixX;
-        yOff -= mouseY - matrixY;
+        zoom(true, 1.2);
+    } else {
+        zoom(false, 1.2);
+    }
+}
+
+function zoom(zoomIn, zoomFactor) {
+    if (zoomIn) {
+        xOff -= (mouseX - matrixX)*(zoomFactor - 1);
+        yOff -= (mouseY - matrixY)*(zoomFactor - 1);
         zoomScale = zoomScale / zoomFactor;
     } else {
-        xOff += (mouseX - matrixX)/zoomFactor;
-        yOff += (mouseY - matrixY)/zoomFactor;
+        xOff += (mouseX - matrixX)*(zoomFactor - 1)/zoomFactor;
+        yOff += (mouseY - matrixY)*(zoomFactor - 1)/zoomFactor;
         zoomScale = zoomScale * zoomFactor;
     }
-    print(zoomScale);
+}
+
+
+
+var zoomAnimationEnded = true;
+var zoomTo;
+function smoothZoom () {
+    if(!zoomAnimationEnded) {
+
+    }
 }
 
 var matrixX, matrixY;
