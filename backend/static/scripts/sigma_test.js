@@ -2,7 +2,7 @@ var sizeCircle = (window.innerHeight - 125);
 var xValues = [];
 var yValues = [];
 var Nodes = [];
-var size = 157;
+var inputSize = 1256;
 
 function setup() {
     createCircleArea();
@@ -16,15 +16,15 @@ function setup() {
                 minEdgeSize: 1,
                 maxEdgeSize: 4,
                 minNodeSize: 1,
-                maxNodeSize: 8,
+                maxNodeSize: 5,
                 minArrowSize: 10
             }
         }
     );
 
 // Generate a random graph:
-    var nbNode = 157;
-    var nbEdge = 140;
+    var nbNode = inputSize;
+    var nbEdge = floor(inputSize/2);
     var graph = {
         nodes: [],
         edges: []
@@ -52,15 +52,15 @@ function setup() {
     // Load the graph in sigma
     s.graph.read(graph);
     // Ask sigma to draw it
-    s.refresh(graph);
+    s.refresh();
 }
 
 function createCircleArea() {
     var centerX = width/2;
     var centerY = height/2;
     var radius = sizeCircle/2;
-    var steps = 2*3.14;
-    for (var i = 0; i < 157; i++) {
+    var steps = 16 * 3.14;
+    for (var i = 0; i < inputSize; i++) {
         var phase = 2 * Math.PI * i / steps;
         xValues[i] = (centerX + radius * Math.cos(phase));
         yValues[i] = (centerY + radius * Math.sin(phase));
