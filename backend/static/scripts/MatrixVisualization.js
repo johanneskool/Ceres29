@@ -6,17 +6,16 @@ var MatrixVisualization = function () {
     Visualization.call(this, arguments);
     this.nodes = [];
     this.NODE_COUNT = 200;
-    this.bufferWidth = 2000;
     /*this.NODE_SIZE;
     this.matrix;
-    this.bufferGraphics;
+    this.matrix;
     this.posX;
     this.posY;
     this.zoomScale;
     this.drawWidth;*/
     this.active = false;
     this.loaded = false;
-    this.globalMAX = 0;
+    this.globalMAX = 10;
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
@@ -26,9 +25,11 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * Function that creates a matrix for the given dataset, random if no dataset given.
  */
 MatrixVisualization.prototype.load = function () {
-    this.NODE_COUNT = this.nodes.length;
+    this.NODE_COUNT = this.nodes[0].outgoing.length;
     this.NODE_SIZE = floor(8000 / this.NODE_COUNT);
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
+
+
 
     this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
     this.matrix.colorMode(HSL, 100);
@@ -42,18 +43,12 @@ MatrixVisualization.prototype.load = function () {
     //this.generateNodes();
     this.drawMatrix(this.nodes);
 
-    this.bufferGraphics = createGraphics(this.bufferWidth, this.bufferWidth);
-    this.bufferGraphics.imageMode(CORNER);
-    this.bufferGraphics.colorMode(HSL, 100);
-    this.bufferGraphics.noStroke();
-    this.bufferGraphics.image(this.matrix, 0, 0, 2000, 2000);
-
-    this.overlayGraphics = createGraphics(2000, 2000);
+    this.overlayGraphics = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
     this.overlayGraphics.imageMode(CORNER);
     this.overlayGraphics.colorMode(HSL, 100);
     this.overlayGraphics.noStroke();
 
-    this.overlayRatio =  this.bufferWidth / MATRIX_SIZE;
+    this.overlayRatio =  1;
     this.loaded = true;
     print("done loading");
 };
@@ -70,12 +65,8 @@ MatrixVisualization.prototype.setData = function (url) {
         for (key in data) {
             var newNode = new Node();
             newNode.name = key;
-            for (number in data[key]) {
-                if (number > currentMatrix.globalMAX) {
-                    currentMatrix.globalMAX = number;
-                }
-                newNode.outgoing.push(number);
-            }
+            newNode.outgoing = data[key];
+            print(data[key]);
             currentMatrix.nodes.push(newNode);
         }
         currentMatrix.load();
@@ -103,9 +94,9 @@ MatrixVisualization.prototype.drawMatrix = function (nodes) {
     for (let i = 0; i < nodes.length; i++) {
         this.matrix.push();
         for (let j = 0; j < nodes[i].outgoing.length; j++) {
-            var hue = map(nodes[i].outgoing[j], 0, this.globalMAX, 25, 0);
-            var opacity = map(nodes[i].outgoing[j], 0, this.globalMAX, 100, 25);
-            this.matrix.fill(hue, 75, 50, opacity);
+            var hue = map(log(nodes[i].outgoing[j]), 0, 3, 25, 0);
+            //var opacity = map(nodes[i].outgoing[j], 0, this.globalMAX, 100, 25);
+            this.matrix.fill(hue, 75, 50, 100);
             this.matrix.rect(0, 0, this.NODE_SIZE, this.NODE_SIZE);
             this.matrix.fill(0, 75, 50, 100);
             //this.matrix.text(i + ", " + j, 0, this.NODE_SIZE - textSize());
@@ -127,18 +118,19 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
         return;
     }
     if (arguments.length === 0) {
-        image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        image(this.matrix, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         return;
     }
     this.posX = posX;
     this.posY = posY;
     this.zoomScale = zoomScale;
-    image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+    image(this.matrix, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
     image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
 
 MatrixVisualization.prototype.colorCell = function (x, y) {
+    this.overlayGraphics.clear();
     this.overlayGraphics.fill(50,75,75);
     this.overlayGraphics.rect(x*this.overlayRatio*this.NODE_SIZE, y*this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE);
 
@@ -152,15 +144,8 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     var x = floor(cell.x / nodeSize);
     var y = floor(cell.y / nodeSize);
     this.colorCell(x, y);
+    print(x, y);
     console.log("Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y]);
-};
-
-/**
- * Updates the bufferGraphics
- * @deprecated Very slow, use overlay Graphics to print over the matrix instead.
- */
-MatrixVisualization.prototype.updateBuffer = function () {
-    this.bufferGraphics.image(this.matrix, 0, 0, 2000, 2000);
 };
 
 MatrixVisualization.prototype.setActive = function (boolean) {

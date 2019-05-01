@@ -23,6 +23,7 @@ function setup() {
     fetch('/static/json/'+ file_name)
     .then(res => res.json())
     .then((out_json_data) => {
+        console.log(out_json_data);
 /*        matrixVis.setData('/static/json/'+ file_name);*/
     })
     .catch(err => { throw err });
