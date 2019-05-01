@@ -2,11 +2,9 @@ __author__ = "Rick Luiken"
 import os
 
 import numpy as np
-import ujson
 from scipy import sparse
-from scipy.sparse.csgraph import laplacian
-from scipy import linalg
-from backend import app
+import scipy.sparse.csgraph as csg
+from scipy.sparse import linalg
 
 
 def parse(filename):
@@ -17,32 +15,29 @@ def parse(filename):
 
     with open(filename, 'r', encoding='utf-8') as f:
         tags = f.readline()
+        colnr = tags.count(";")
+        tags = tags.split(";")[1::]
 
-    colnr = tags.count(";")
     matrix = np.loadtxt(filename, delimiter=";",
                         skiprows=1,
                         usecols=range(1, colnr + 1))
-    laplacian = laplacian(sparse(matrix))
+    L = csg.laplacian(csg.csgraph_from_dense(matrix))
 
-    eigvals, eigvec = linalg.eig(laplacian, left = True)
-    ind = np.argsort(evals)
+    eigvals, eigvec = linalg.eigs(L)
+    ind = np.argsort(eigvals)
     eigvals = eigvals[ind]
     eigvec = eigvec[:, ind]
     lowest = eigvals[0]
-    for i in range(eigvals):
+    for i in range(len(eigvals)):
         if eigvals[i] != lowest:
-            fiedler = eigvec[i]
+            fiedler = eigvec[:, i]
 
-    print(fiedler)
+    order = np.argsort(fiedler)
+    #sort matrix on both the rows and columns
+    matrix = matrix[order, order]
+    tags = list(np.array(tags)[order])
+    print(tags[0])
 
-
-
-    filename = os.path.basename(filename)
-    filepath = os.path.join(app.config['JSON_FOLDER'], filename.split('.')[0] + ".json")
-    with open(filepath, "w+", encoding='utf-8') as f:
-        f.write(ujson.dumps(sparsematrix, indent=4))
-
-
-if __name__ == '__main__':
-    csvfilename = 'GephiMatrix_co-citation.csv'
-    parse(csvfilename)
+if __name__ == "__main__":
+    filename = "GephiMatrix_co-citation.csv"
+    parse(filename)
