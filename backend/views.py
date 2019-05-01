@@ -16,8 +16,8 @@ def allowed_file(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/<string:data_name>', methods=['GET', 'POST'])
-def index(data_name=None):
+def index():
+    data_name = request.args.get('data')
     if request.method == 'GET':
         # find available JSON files
         json_file_path = app.config['JSON_FOLDER']

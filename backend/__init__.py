@@ -17,11 +17,11 @@ else:  # default to development configuration
 # initialize API
 api = Api(app)
 
-#Creating uploads folder if it does not yet exist
+# Creating uploads folder if it does not yet exist
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
-#Creating uploads folder if it does not yet exist
+# Creating uploads folder if it does not yet exist
 if not os.path.exists(app.config['JSON_FOLDER']):
     os.makedirs(app.config['JSON_FOLDER'])
 

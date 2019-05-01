@@ -14,7 +14,8 @@ function setup() {
     canvas.parent('canvas');
 
     // fetch data
-    fetch('/static/json'+window.location.pathname)
+    var file_name = window.location.search.split('=')[1];
+    fetch('/static/json/'+ file_name)
     .then(res => res.json())
     .then((out_json_data) => {
       console.log(out_json_data);

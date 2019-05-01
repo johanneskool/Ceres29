@@ -12,7 +12,7 @@
     <ul>
        {% for file in files_available %}
            <li>
-               <input type="button" onclick="location.href='{{ url_for('index', data_name=file["filename"]) }}';" value="{{ file["filename"] }}"/>
+               <input type="button" onclick="location.href='{{ url_for('index', data=file["filename"]) }}';" value="{{ file["filename"] }}"/>
            </li>
 
        {% endfor %}
