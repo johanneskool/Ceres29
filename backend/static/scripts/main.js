@@ -13,6 +13,7 @@ function setup() {
     let canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent('canvas');
 
+
     // fetch data
     var file_name = window.location.search.split('=')[1];
     fetch('/static/json/'+ file_name)
@@ -32,6 +33,9 @@ function setup() {
 
     imageMode(CENTER);
     rectMode(CENTER);
+    var context = document.getElementById("defaultCanvas0");
+    var ctx = context.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
 }
 
 var xOff = 0;

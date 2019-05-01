@@ -5,14 +5,14 @@
 var MatrixVisualization = function () {
     Visualization.call(this, arguments);
     this.nodes = [];
-    this.NODE_COUNT = 1000;
-    this.NODE_SIZE;
+    this.NODE_COUNT = 2000;
+    /*this.NODE_SIZE;
     this.matrix;
     this.bufferGraphics;
     this.posX;
     this.posY;
     this.zoomScale;
-    this.drawWidth;
+    this.drawWidth;*/
     this.active = false;
 };
 
@@ -23,7 +23,7 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * Function that creates a matrix for the given dataset, random if no dataset given.
  */
 MatrixVisualization.prototype.load = function () {
-    this.NODE_SIZE = 16000/this.NODE_COUNT;
+    this.NODE_SIZE = 2;
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
 
     this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
@@ -93,6 +93,14 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
     image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
 
+MatrixVisualization.prototype.colorCell = function (x, y, color) {
+    this.matrix.fill(color);
+    this.matrix.rect()
+};
+
+MatrixVisualization.prototype.updateBuffer = function () {
+    this.bufferGraphics.image(this.matrix, 0, 0, 2000, 2000);
+};
 
 MatrixVisualization.prototype.setActive = function (boolean) {
     this.active = boolean;
