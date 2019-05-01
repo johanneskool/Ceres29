@@ -28,7 +28,7 @@ def index():
             for file in os.listdir(json_file_path) if os.path.isfile(os.path.join(json_file_path, file))
         ]
 
-        return render_template("index.html", files_available=available_files, app=app, data=data_name)
+        return render_template("index.html", files_available=available_files, app=app, data=data_name, title=data_name)
 
     if request.method == 'POST':
         # check if the post request has the file part

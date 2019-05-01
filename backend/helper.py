@@ -4,7 +4,8 @@ import os
 import numpy as np
 import ujson
 from scipy import sparse
-
+from scipy.sparse.csgraph import laplacian
+from scipy import linalg
 from backend import app
 
 
@@ -21,7 +22,20 @@ def parse(filename):
     matrix = np.loadtxt(filename, delimiter=";",
                         skiprows=1,
                         usecols=range(1, colnr + 1))
-    sparsematrix = dict(sparse.csr_matrix(matrix).todok().items())
+    laplacian = laplacian(sparse(matrix))
+
+    eigvals, eigvec = linalg.eig(laplacian, left = True)
+    ind = np.argsort(evals)
+    eigvals = eigvals[ind]
+    eigvec = eigvec[:, ind]
+    lowest = eigvals[0]
+    for i in range(eigvals):
+        if eigvals[i] != lowest:
+            fiedler = eigvec[i]
+
+    print(fiedler)
+
+
 
     filename = os.path.basename(filename)
     filepath = os.path.join(app.config['JSON_FOLDER'], filename.split('.')[0] + ".json")
