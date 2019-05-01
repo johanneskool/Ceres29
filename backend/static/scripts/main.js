@@ -17,7 +17,7 @@ function setup() {
 
 
     // fetch data
-    var file_name = window.location.search.split('=')[1];
+    var file_name = new URL(window.location.href).searchParams.get("data");;
     fetch('/static/json/'+ file_name)
     .then(res => res.json())
     .then((out_json_data) => {
