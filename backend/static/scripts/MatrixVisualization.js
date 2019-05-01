@@ -5,7 +5,7 @@
 var MatrixVisualization = function () {
     Visualization.call(this, arguments);
     this.nodes = [];
-    this.NODE_COUNT = 100;
+    this.NODE_COUNT = 200;
     this.bufferWidth = 2000;
     /*this.NODE_SIZE;
     this.matrix;
@@ -15,6 +15,8 @@ var MatrixVisualization = function () {
     this.zoomScale;
     this.drawWidth;*/
     this.active = false;
+    this.loaded = false;
+    this.globalMAX = 0;
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
@@ -24,7 +26,7 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * Function that creates a matrix for the given dataset, random if no dataset given.
  */
 MatrixVisualization.prototype.load = function () {
-    this.NODE_SIZE = 8000 / this.NODE_COUNT;
+    this.NODE_SIZE = 8000 / this.nodes[0].outgoing.length;
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
 
     this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
@@ -36,7 +38,7 @@ MatrixVisualization.prototype.load = function () {
     this.drawWidth = ceil(min(windowHeight, windowWidth) / 1.3);
 
     //if there aren't any nodes we make our own.
-    this.generateNodes();
+    //this.generateNodes();
     this.drawMatrix(this.nodes);
 
     this.bufferGraphics = createGraphics(this.bufferWidth, this.bufferWidth);
@@ -51,6 +53,32 @@ MatrixVisualization.prototype.load = function () {
     this.overlayGraphics.noStroke();
 
     this.overlayRatio =  this.bufferWidth / MATRIX_SIZE;
+    this.loaded = true;
+    print("done loading");
+};
+
+
+MatrixVisualization.prototype.setData = function (url) {
+    print(url);
+    loadJSON(url, loadNodes);
+    var currentMatrix = this;
+
+    function loadNodes(data) {
+        currentMatrix.data = data;
+        currentMatrix.nodes = [];
+        for (key in data) {
+            var newNode = new Node();
+            newNode.name = key;
+            for (number in data[key]) {
+                if (number > currentMatrix.globalMAX) {
+                    currentMatrix.globalMAX = number;
+                }
+                newNode.outgoing.push(number);
+            }
+            currentMatrix.nodes.push(newNode);
+        }
+        currentMatrix.load();
+    }
 };
 
 /**
@@ -65,6 +93,7 @@ MatrixVisualization.prototype.generateNodes = function () {
     }
 };
 
+
 /**
  * Draws a matrix to the graphics based of the input nodes
  * @param nodes input nodes
@@ -73,11 +102,11 @@ MatrixVisualization.prototype.drawMatrix = function (nodes) {
     for (let i = 0; i < nodes.length; i++) {
         this.matrix.push();
         for (let j = 0; j < nodes[i].outgoing.length; j++) {
-            var hue = map(nodes[i].outgoing[j], 0, 1, 25, 0);
-            var opacity = map(nodes[i].outgoing[j], 0, 1, 100, 25);
-            this.matrix.fill(hue, 75, opacity);
+            var hue = map(nodes[i].outgoing[j], 0, this.globalMAX, 25, 0);
+            var opacity = map(nodes[i].outgoing[j], 0, this.globalMAX, 100, 25);
+            this.matrix.fill(hue, 75, 50, opacity);
             this.matrix.rect(0, 0, this.NODE_SIZE, this.NODE_SIZE);
-            this.matrix.fill(0, 75, 100, 50);
+            this.matrix.fill(0, 75, 50, 100);
             //this.matrix.text(i + ", " + j, 0, this.NODE_SIZE - textSize());
             this.matrix.translate(0, this.NODE_SIZE);
         }
@@ -93,6 +122,9 @@ MatrixVisualization.prototype.drawMatrix = function (nodes) {
  * @param zoomScale
  */
 MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
+    if (!this.loaded) {
+        return;
+    }
     if (arguments.length === 0) {
         image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
@@ -106,10 +138,21 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
 };
 
 MatrixVisualization.prototype.colorCell = function (x, y) {
-    print("call colorcell");
     this.overlayGraphics.fill(50,75,75);
-    this.overlayGraphics.rect(0, 0, this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE);
+    this.overlayGraphics.rect(x*this.overlayRatio*this.NODE_SIZE, y*this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE);
 
+};
+
+MatrixVisualization.prototype.click = function (xCord, yCord) {
+    var topLeft = createVector(this.posX - (this.drawWidth / this.zoomScale)/2, this.posY - (this.drawWidth / this.zoomScale)/2);
+    var mouse = createVector(xCord, yCord);
+    var cell = p5.Vector.sub(mouse, topLeft);
+    var nodeSize = (this.drawWidth / this.zoomScale)/this.NODE_COUNT;
+    var x = floor(cell.x / nodeSize);
+    var y = floor(cell.y / nodeSize);
+    this.colorCell(x, y);
+    print(x + ", " + y);
+    print(this.nodes[x].outgoing[y]);
 };
 
 /**

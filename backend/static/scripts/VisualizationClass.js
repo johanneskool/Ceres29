@@ -27,5 +27,3 @@ Visualization.prototype.isActive = function (boolean) {
 
 
 
-
-

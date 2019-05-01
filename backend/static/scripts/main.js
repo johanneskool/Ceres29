@@ -15,22 +15,21 @@ function setup() {
     let canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent('canvas');
 
+    matrixVis = new MatrixVisualization();
 
     // fetch data
-    var file_name = new URL(window.location.href).searchParams.get("data");;
+    var file_name = new URL(window.location.href).searchParams.get("data");
+    matrixVis.setData('/static/json/'+ file_name);
     fetch('/static/json/'+ file_name)
     .then(res => res.json())
     .then((out_json_data) => {
-      console.log(out_json_data);
+/*        matrixVis.setData('/static/json/'+ file_name);*/
     })
     .catch(err => { throw err });
-
     frameRate(999);
 
-    matrixVis = new MatrixVisualization();
     visualizations.push(matrixVis);
 
-    matrixVis.load();
     matrixVis.setActive(true);
 
     imageMode(CENTER);
@@ -41,6 +40,7 @@ function setup() {
     ctx.imageSmoothingEnabled = false;
 
     setupListeners();
+    print(new URL(window.location.href).searchParams.get("data"));
 }
 
 var xOff = 0;
@@ -82,14 +82,19 @@ function setupListeners () {
     };
     document.getElementById("defaultCanvas0").onmouseup = function (event) {
         mouseFlag = false;
+        if (!drag) {
+            matrixVis.click(mouseX, mouseY);
+        }
+        drag = false;
     };
     document.getElementById("defaultCanvas0").onclick = function (event) {
-        print(mouseX, mouseY);
     };
 }
 
+var drag = false;
 function mouseDragged() {
     if (mouseFlag) {
+        drag = true;
         print('dragged');
         newMouseX = mouseX;
         newMouseY = mouseY;
@@ -144,6 +149,7 @@ function showImage(){
  */
 function Node() {
     /** @lends Node */
+    this.name;
     this.outgoing = [];
 }
 
