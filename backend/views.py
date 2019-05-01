@@ -5,7 +5,7 @@ import os
 from flask import render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
 
-from backend import app, api, helper
+from backend import app, api, matrix_parsing
 
 api_version = app.config['API_VERSION']
 
@@ -46,8 +46,10 @@ def index():
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            helper.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(filename)
+            tags, matrix = matrix_parsing.parse(filename)
+            tags, matrix = matrix_parsing.reorder(tags, matrix)
+            matrix_parsing.adjacency_to_json_file(filename, tags, matrix)
             flash("Successfully uploaded!")
             return redirect(url_for('index'))
 
