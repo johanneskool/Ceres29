@@ -1,4 +1,11 @@
+var sizeCircle = (window.innerHeight - 125);
+var xValues = [];
+var yValues = [];
+var Nodes = [];
+var size = 157;
+
 function setup() {
+    createCircleArea();
     var s = new sigma(
         {
             renderer: {
@@ -6,30 +13,56 @@ function setup() {
                 type: 'canvas'
             },
             settings: {
-                minEdgeSize: 0.1,
-                maxEdgeSize: 2,
+                minEdgeSize: 1,
+                maxEdgeSize: 4,
                 minNodeSize: 1,
                 maxNodeSize: 8,
+                minArrowSize: 10
             }
         }
     );
 
-    // Create a graph object
+// Generate a random graph:
+    var nbNode = 157;
+    var nbEdge = 140;
     var graph = {
-        nodes: [
-            {id: "n0", label: "A node", x: 0, y: 0, size: 3, color: '#008cc2'},
-            {id: "n1", label: "Another node", x: 3, y: 1, size: 2, color: '#008cc2'},
-            {id: "n2", label: "And a last one", x: 1, y: 3, size: 1, color: '#E57821'}
-        ],
-        edges: [
-            {id: "e0", source: "n0", target: "n1", color: '#282c34', type: 'line', size: 0.5},
-            {id: "e1", source: "n1", target: "n2", color: '#282c34', type: 'curve', size: 1},
-            {id: "e2", source: "n2", target: "n0", color: '#FF0000', type: 'line', size: 2}
-        ]
-    }
+        nodes: [],
+        edges: []
+    };
+
+    for (var i = 0; i < nbNode; i++)
+        graph.nodes.push({
+            id:  i,
+            label: 'Node ' + i,
+            x: xValues[i],
+            y: yValues[i],
+            size: 1,
+            color: '#EE651D',
+        });
+
+    for (var i = 0; i < nbEdge; i++)
+        graph.edges.push({
+            id: i,
+            source: '' + (Math.random() * nbNode | 0),
+            target: '' + (Math.random() * nbNode | 0),
+            color: '#202020',
+            type: 'curvedArrow',
+        });
 
     // Load the graph in sigma
     s.graph.read(graph);
     // Ask sigma to draw it
     s.refresh(graph);
+}
+
+function createCircleArea() {
+    var centerX = width/2;
+    var centerY = height/2;
+    var radius = sizeCircle/2;
+    var steps = 2*3.14;
+    for (var i = 0; i < 157; i++) {
+        var phase = 2 * Math.PI * i / steps;
+        xValues[i] = (centerX + radius * Math.cos(phase));
+        yValues[i] = (centerY + radius * Math.sin(phase));
+    }
 }

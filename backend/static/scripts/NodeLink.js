@@ -6,9 +6,6 @@ var size = 157;
 var sizeNodes = 8;
 
 function setup() {
-    createCanvas(window.innerWidth, window.innerHeight);
-    colorMode(HSL, 360, 100, 100, 100);
-    background(255);
     generateInput();
 }
 
