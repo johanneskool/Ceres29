@@ -25,7 +25,7 @@ def index():
             "url": url_for('static', filename=os.path.join(app.config['JSON_FOLDER_RELATIVE'], file)),
             "filename": file
         }
-            for file in os.listdir(json_file_path) if os.path.isfile(os.path.join(json_file_path, file))
+            for file in os.listdir(json_file_path) if os.path.isfile(os.path.join(json_file_path, file)) and file != 'readme.md'
         ]
 
         return render_template("index.html", files_available=available_files, app=app, data=data_name, title=data_name)
