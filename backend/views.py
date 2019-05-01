@@ -46,10 +46,10 @@ def index():
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
-            file.save(filename)
-            tags, matrix = matrix_parsing.parse(filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            tags, matrix = matrix_parsing.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             tags, matrix = matrix_parsing.reorder(tags, matrix)
-            matrix_parsing.adjacency_to_json_file(filename, tags, matrix)
+            matrix_parsing.adjacency_to_json_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), tags, matrix)
             flash("Successfully uploaded!")
             return redirect(url_for('index'))
 
