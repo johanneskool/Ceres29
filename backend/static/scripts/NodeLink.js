@@ -1,9 +1,9 @@
-var sizeCircle = window.innerHeight-20;
+var sizeCircle = (window.innerHeight - 125);
 var xValues = [];
 var yValues = [];
 var Nodes = [];
-var size = 200;
-var sizeNodes = 25;
+var size = 157;
+var sizeNodes = 8;
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
@@ -42,7 +42,7 @@ function createCircleArea() {
     var centerY = height/2;
     var radius = sizeCircle/2;
     var steps = 2*3.14;
-    for (var i = 0; i < size; i++) {
+    for (var i = 0; i < 157; i++) {
         var phase = 2 * Math.PI * i / steps;
         xValues[i] = (centerX + radius * Math.cos(phase));
         yValues[i] = (centerY + radius * Math.sin(phase));
@@ -50,18 +50,8 @@ function createCircleArea() {
 }
 
 function  drawNodes() {
-    var overlap = false
-    for (var i = 0; i < size-1; i++) {
-        var other = Nodes[i+1];
-        var d = dist(Nodes[i].x, Nodes[i].y, other.x, other.y);
-        if (d < Nodes[i].r + other.r) {
-            overlap = true;
-            console.log(overlap);
-        }
-    }
-
     for (var i = 0; i < size; i++) {
-        ellipse(Nodes[i].x, Nodes[i].y, sizeNodes, sizeNodes);
+        ellipse(Nodes[i].x, Nodes[i].y, 2 * Nodes[i].r, 2 * Nodes[i].r);
     }
 
 }
