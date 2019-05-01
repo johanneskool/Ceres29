@@ -6,6 +6,7 @@ var MatrixVisualization = function () {
     Visualization.call(this, arguments);
     this.nodes = [];
     this.NODE_COUNT = 100;
+    this.bufferWidth = 2000;
     /*this.NODE_SIZE;
     this.matrix;
     this.bufferGraphics;
@@ -38,10 +39,18 @@ MatrixVisualization.prototype.load = function () {
     this.generateNodes();
     this.drawMatrix(this.nodes);
 
-    this.bufferGraphics = createGraphics(2000, 2000);
+    this.bufferGraphics = createGraphics(this.bufferWidth, this.bufferWidth);
     this.bufferGraphics.imageMode(CORNER);
     this.bufferGraphics.colorMode(HSL, 100);
+    this.bufferGraphics.noStroke();
     this.bufferGraphics.image(this.matrix, 0, 0, 2000, 2000);
+
+    this.overlayGraphics = createGraphics(2000, 2000);
+    this.overlayGraphics.imageMode(CORNER);
+    this.overlayGraphics.colorMode(HSL, 100);
+    this.overlayGraphics.noStroke();
+
+    this.overlayRatio =  this.bufferWidth / MATRIX_SIZE;
 };
 
 /**
@@ -86,23 +95,27 @@ MatrixVisualization.prototype.drawMatrix = function (nodes) {
 MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
     if (arguments.length === 0) {
         image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         return;
     }
     this.posX = posX;
     this.posY = posY;
     this.zoomScale = zoomScale;
     image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+    image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
 
 MatrixVisualization.prototype.colorCell = function (x, y) {
     print("call colorcell");
+    this.overlayGraphics.fill(50,75,75);
+    this.overlayGraphics.rect(0, 0, this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE);
 
-    this.matrix.fill(0,50,50);
-    this.matrix.rect(0, 0, 2000, 2000);
-
-    this.updateBuffer();
 };
 
+/**
+ * Updates the bufferGraphics
+ * @deprecated Very slow, use overlay Graphics to print over the matrix instead.
+ */
 MatrixVisualization.prototype.updateBuffer = function () {
     this.bufferGraphics.image(this.matrix, 0, 0, 2000, 2000);
 };

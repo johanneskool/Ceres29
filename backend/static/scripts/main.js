@@ -39,6 +39,8 @@ function setup() {
     context = document.getElementById("defaultCanvas0");
     ctx = context.getContext('2d');
     ctx.imageSmoothingEnabled = false;
+
+    setupListeners();
 }
 
 var xOff = 0;
@@ -48,41 +50,57 @@ var oldMouseY = 0;
 var newMouseX = 0;
 var newMouseY = 0;
 
-function mousePressed() {
-    print('clicked');
-    oldMouseX = mouseX;
-    oldMouseY = mouseY;
-    newMouseX = mouseX;
-    newMouseY = mouseY;
+
+var mouseFlag = false;
+/**
+ * Setup for the canvas listeners, zooming scrolling and clicking.
+ */
+function setupListeners () {
+    document.getElementById( "defaultCanvas0" ).onwheel = function(event){
+        if (event.deltaY < 0) {
+            zoom(true, zoomFactor);
+        } else {
+            zoom(false, zoomFactor);
+        }
+        event.preventDefault();
+    };
+    document.getElementById( "defaultCanvas0" ).onmousewheel = function(event){
+        if (event.deltaY < 0) {
+            zoom(true, zoomFactor);
+        } else {
+            zoom(false, zoomFactor);
+        }
+        event.preventDefault();
+    };
+    document.getElementById( "defaultCanvas0" ).onmousedown = function(event){
+        mouseFlag = true;
+        print('click');
+        oldMouseX = mouseX;
+        oldMouseY = mouseY;
+        newMouseX = mouseX;
+        newMouseY = mouseY;
+    };
+    document.getElementById("defaultCanvas0").onmouseup = function (event) {
+        mouseFlag = false;
+    };
+    document.getElementById("defaultCanvas0").onclick = function (event) {
+        print(mouseX, mouseY);
+    };
 }
 
 function mouseDragged() {
-    print('dragged');
-    newMouseX = mouseX;
-    newMouseY = mouseY;
+    if (mouseFlag) {
+        print('dragged');
+        newMouseX = mouseX;
+        newMouseY = mouseY;
 
-    xOff += newMouseX - oldMouseX;
-    yOff += newMouseY - oldMouseY;
+        xOff += newMouseX - oldMouseX;
+        yOff += newMouseY - oldMouseY;
 
-    oldMouseX = mouseX;
-    oldMouseY = mouseY;
-}
-
-document.getElementById( "defaultCanvas0" ).onwheel = function(event){
-    event.preventDefault();
-};
-
-document.getElementById( "defaultCanvas0" ).onmousewheel = function(event){
-    event.preventDefault();
-};
-
-function mouseWheel () {
-    if (event.deltaY < 0) {
-        zoom(true, zoomFactor);
-    } else {
-        zoom(false, zoomFactor);
+        oldMouseX = mouseX;
+        oldMouseY = mouseY;
     }
-}
+};
 
 function zoom(zoomIn, zoomFactor) {
     if (zoomIn) {
@@ -107,8 +125,8 @@ function draw() {
 
 function showImage(){
     resetMatrix();
-    matrixX = windowWidth / 2 + xOff;
-    matrixY = windowHeight / 2 + yOff;
+    matrixX = width / 2 + xOff;
+    matrixY = height / 2 + yOff;
 
     for (let i = 0; i < visualizations.length; i++) {
         if (visualizations[i].isActive()) {
@@ -135,5 +153,5 @@ function Node() {
 window.onresize = function() {
     var w = window.innerWidth;
     var h = window.innerHeight;
-    context.resizeCanvas(w, h);
+    resizeCanvas(w, h);
 };
