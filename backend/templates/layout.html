@@ -6,6 +6,15 @@ Tristan Trouwen, Rick Luiken
 -->
 
 <head>
+    <meta charset="utf-8">
+    <meta description="Visualization of datasets">
+
+    {% if title %}
+        <title>{{ title }} | CERES 29</title>
+    {% else %}
+        <title>CERES 29</title>
+    {% endif %}
+
     <!-- including css stylesheets -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/stylesheet.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/bootstrap.min.css') }}">
