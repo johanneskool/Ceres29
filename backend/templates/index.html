@@ -8,17 +8,18 @@
         <input type=file name=file accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
         <input type=submit value=Upload>
     </form>
+    <h2>or open an existing file:</h2>
     <ul>
        {% for file in files_available %}
            <li>
-               <button><a href="{{ url_for('index', data_name=file["filename"]) }}">{{ file["filename"] }}</a></button>
+               <input type="button" onclick="location.href='{{ url_for('index', data_name=file["filename"]) }}';" value="{{ file["filename"] }}"/>
            </li>
 
        {% endfor %}
     </ul>
     {% if data %}
         <h1>{{ data }}</h1>
-    <div id="canvas">
+    <div id="canvas" class="pixelated">
 
     </div>
     {% endif %}

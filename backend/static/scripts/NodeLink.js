@@ -3,12 +3,12 @@ var xValues = [];
 var yValues = [];
 var Nodes = [];
 var size = 200;
+var sizeNodes = 25;
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
     colorMode(HSL, 360, 100, 100, 100);
     background(255);
-    ellipse(width/2, height/2, sizeCircle, sizeCircle);
     generateInput();
 }
 
@@ -25,7 +25,7 @@ function generateInput() {
         Nodes[j] = new Node(randomNodes[i], random(0, 200), xValues[j], yValues[j]);
     }
 
-    setNodes();
+    drawNodes();
 }
 
 //setting up each node
@@ -34,7 +34,7 @@ function Node(connected, weight, x, y) {
     this.weight = weight;
     this.x = x;
     this.y = y;
-    ellipse(x, y, 20, 20);
+    this.r = sizeNodes/2;
 }
 
 function createCircleArea() {
@@ -46,12 +46,23 @@ function createCircleArea() {
         var phase = 2 * Math.PI * i / steps;
         xValues[i] = (centerX + radius * Math.cos(phase));
         yValues[i] = (centerY + radius * Math.sin(phase));
-        console.log(xValues[i]);
-        console.log(yValues[i]);
     }
 }
 
-function setNodes() {
+function  drawNodes() {
+    var overlap = false
+    for (var i = 0; i < size-1; i++) {
+        var other = Nodes[i+1];
+        var d = dist(Nodes[i].x, Nodes[i].y, other.x, other.y);
+        if (d < Nodes[i].r + other.r) {
+            overlap = true;
+            console.log(overlap);
+        }
+    }
+
+    for (var i = 0; i < size; i++) {
+        ellipse(Nodes[i].x, Nodes[i].y, sizeNodes, sizeNodes);
+    }
 
 }
 
