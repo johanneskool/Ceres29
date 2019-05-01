@@ -23,14 +23,19 @@ Tristan Trouwen, Rick Luiken
 
 <body>
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-{% block content %}{% endblock %}
-
+  <div class="container-fluid">
+    <div class="row">
+      {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages %}
+                  {{ message }}
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </div>
+    <div class="row">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
 </body>
 </html>

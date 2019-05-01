@@ -3,24 +3,31 @@
     <!-- AUTHORS
     Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters
     -->
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-        <input type=file name=file accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
-        <input type=submit value=Upload>
-    </form>
-    <h2>or open an existing file:</h2>
-    <ul>
-       {% for file in files_available %}
-           <li>
-               <input type="button" onclick="location.href='{{ url_for('index', data=file["filename"]) }}';" value="{{ file["filename"] }}"/>
-           </li>
 
-       {% endfor %}
-    </ul>
-    {% if data %}
-        <h1>{{ data }}</h1>
-    <div id="canvas" class="pixelated">
+    <div class="col-md-6">
+      <h2>Upload new File</h2>
+      <form method=post enctype=multipart/form-data>
+          <input type=file name=file accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
+          <input type=submit value=Upload>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h2>or open an existing file:</h2>
+      <ul>
+         {% for file in files_available %}
+             <li>
+                 <input type="button" onclick="location.href='{{ url_for('index', data=file["filename"]) }}';" value="{{ file["filename"] }}"/>
+             </li>
 
+         {% endfor %}
+      </ul>
+    </div>
+      {% if data %}
+      <div class="col-md-12">
+        <h3>{{ data }}</h3>
+        <div id="canvas" class="pixelated" style="overflow:hidden;">
+
+        </div>
     </div>
     {% endif %}
 
