@@ -7,6 +7,8 @@ var matrixVis;
 
 var visualizations = [];
 
+var ctx;
+
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
     colorMode(HSL,100);
@@ -33,8 +35,9 @@ function setup() {
 
     imageMode(CENTER);
     rectMode(CENTER);
-    var context = document.getElementById("defaultCanvas0");
-    var ctx = context.getContext('2d');
+
+    context = document.getElementById("defaultCanvas0");
+    ctx = context.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 }
 
@@ -65,6 +68,14 @@ function mouseDragged() {
     oldMouseY = mouseY;
 }
 
+document.getElementById( "defaultCanvas0" ).onwheel = function(event){
+    event.preventDefault();
+};
+
+document.getElementById( "defaultCanvas0" ).onmousewheel = function(event){
+    event.preventDefault();
+};
+
 function mouseWheel () {
     if (event.deltaY < 0) {
         zoom(true, zoomFactor);
@@ -88,7 +99,7 @@ function zoom(zoomIn, zoomFactor) {
 var matrixX, matrixY;
 
 function draw() {
-    background(0,0,0);
+    background(0,0,100);
     fill(0, 0, 0, 100);
 
     showImage();
@@ -124,5 +135,5 @@ function Node() {
 window.onresize = function() {
     var w = window.innerWidth;
     var h = window.innerHeight;
-    resizeCanvas(w, h);
+    context.resizeCanvas(w, h);
 };

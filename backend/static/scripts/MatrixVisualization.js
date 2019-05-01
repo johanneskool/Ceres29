@@ -1,11 +1,11 @@
 /***
- * The class for the MatrixVisualization, a child of the visualization class.
+ * The class for the MatrixVisualization, a child of the visualization.
  * @constructor
  */
 var MatrixVisualization = function () {
     Visualization.call(this, arguments);
     this.nodes = [];
-    this.NODE_COUNT = 2000;
+    this.NODE_COUNT = 100;
     /*this.NODE_SIZE;
     this.matrix;
     this.bufferGraphics;
@@ -23,7 +23,7 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * Function that creates a matrix for the given dataset, random if no dataset given.
  */
 MatrixVisualization.prototype.load = function () {
-    this.NODE_SIZE = 2;
+    this.NODE_SIZE = 8000 / this.NODE_COUNT;
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
 
     this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
@@ -40,6 +40,7 @@ MatrixVisualization.prototype.load = function () {
 
     this.bufferGraphics = createGraphics(2000, 2000);
     this.bufferGraphics.imageMode(CORNER);
+    this.bufferGraphics.colorMode(HSL, 100);
     this.bufferGraphics.image(this.matrix, 0, 0, 2000, 2000);
 };
 
@@ -64,8 +65,8 @@ MatrixVisualization.prototype.drawMatrix = function (nodes) {
         this.matrix.push();
         for (let j = 0; j < nodes[i].outgoing.length; j++) {
             var hue = map(nodes[i].outgoing[j], 0, 1, 25, 0);
-            var opacity = map(nodes[i].outgoing[j], 0, 1, 25, 100);
-            this.matrix.fill(hue, 75, 50, opacity);
+            var opacity = map(nodes[i].outgoing[j], 0, 1, 100, 25);
+            this.matrix.fill(hue, 75, opacity);
             this.matrix.rect(0, 0, this.NODE_SIZE, this.NODE_SIZE);
             this.matrix.fill(0, 75, 100, 50);
             //this.matrix.text(i + ", " + j, 0, this.NODE_SIZE - textSize());
@@ -93,9 +94,13 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
     image(this.bufferGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
 
-MatrixVisualization.prototype.colorCell = function (x, y, color) {
-    this.matrix.fill(color);
-    this.matrix.rect()
+MatrixVisualization.prototype.colorCell = function (x, y) {
+    print("call colorcell");
+
+    this.matrix.fill(0,50,50);
+    this.matrix.rect(0, 0, 2000, 2000);
+
+    this.updateBuffer();
 };
 
 MatrixVisualization.prototype.updateBuffer = function () {
