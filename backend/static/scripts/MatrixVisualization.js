@@ -26,7 +26,8 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * Function that creates a matrix for the given dataset, random if no dataset given.
  */
 MatrixVisualization.prototype.load = function () {
-    this.NODE_SIZE = 8000 / this.nodes[0].outgoing.length;
+    this.NODE_COUNT = this.nodes.length;
+    this.NODE_SIZE = floor(8000 / this.NODE_COUNT);
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
 
     this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
@@ -151,8 +152,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     var x = floor(cell.x / nodeSize);
     var y = floor(cell.y / nodeSize);
     this.colorCell(x, y);
-    print(x + ", " + y);
-    print(this.nodes[x].outgoing[y]);
+    console.log("Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y]);
 };
 
 /**
