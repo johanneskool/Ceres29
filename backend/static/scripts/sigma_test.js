@@ -2,18 +2,29 @@ var sizeCircle = (window.innerHeight - 125);
 var xValues = [];
 var yValues = [];
 var Nodes = [];
+var colors = [];
+var s;
+var end = 1;
+var nbEdge;
+var nbNode;
+var graph = {
+    nodes: [],
+    edges: []
+};
+
 //Changing the amount of nodes:
-//factorCircle should be:
-// 32 -> 2512 nodes
-// 16 -> 1256 nodes
-// 8  -> 628 nodes
-//etc...
-var inputSize = 1256;
-var factorCircle = 16;
+var inputSize = 600;
+//max weight of the dataset?
+var maxWeight = 1000;
+
 
 function setup() {
+    colorArray();
     createCircleArea(); //creates coordinates for circle
-    var s = new sigma(
+    nbNode = inputSize;
+    nbEdge = floor(inputSize/4);
+
+    s = new sigma(
         {
             renderer: {
                 container: document.getElementById('sigma-container'),
@@ -24,55 +35,107 @@ function setup() {
                 maxEdgeSize: 4,
                 minNodeSize: 1,
                 maxNodeSize: 5,
-                minArrowSize: 10,
-                defaultLabelAlignment: 'left'
+                minArrowSize: 8,
+                autoRescale: ['nodePosition', 'nodeSize', 'edgeSize'],
+                animationsTime: 1000,
+                enableHovering: true,
+                doubleClickEnabled: false,
+                enableEdgeHovering: true,
+                edgeHoverColor: 'edge',
+                defaultEdgeHoverColor: '#009C05',
+                edgeHoverSizeRatio: 1,
+                edgeHoverExtremities: true,
+                scalingMode: 'outside'
             }
         }
     );
 
 // Generate a random graph:
-    var nbNode = inputSize;
-    var nbEdge = floor(inputSize/3);
-    var graph = {
-        nodes: [],
-        edges: []
-    };
-
     for (var i = 0; i < nbNode; i++) {
         graph.nodes.push({
             id: i,
             label: 'Node ' + i,
+            labelAlignment: "left",
             x: xValues[i],
             y: yValues[i],
             size: 1,
-            color: '#EE651D',
+            color: '#0099ff'
         });
     }
 
     for (var i = 0; i < nbEdge; i++) {
+        var edgeWeight = floor(random(maxWeight));
+        var edgeSize = map(edgeWeight, 0, maxWeight, 0, colors.length);
+        var pickColor = colors[floor(edgeSize)]
         graph.edges.push({
             id: i,
+            size: edgeSize,
             source: '' + (Math.random() * nbNode | 0),
             target: '' + (Math.random() * nbNode | 0),
-            color: '#202020',
-            type: 'curvedArrow',
+            color: pickColor,
+            type: 'arrow',
+            hover_color: '#000000'
         });
     }
-
+    //binding events
+    animateGraph();
     // Load the graph in sigma
     s.graph.read(graph);
     // Ask sigma to draw it
     s.refresh();
 }
 
+//Creates array with x and y for a circle
 function createCircleArea() {
-    var centerX = width/2;
-    var centerY = height/2;
+    var phase = 0;
     var radius = sizeCircle/2;
-    var steps = factorCircle * 3.14;
     for (var i = 0; i < inputSize; i++) {
-        var phase = 2 * Math.PI * i / steps;
-        xValues[i] = (centerX + radius * Math.cos(phase));
-        yValues[i] = (centerY + radius * Math.sin(phase));
+        phase = i * 2 * Math.PI /inputSize;
+        xValues[i] = (radius * Math.cos(phase));
+        yValues[i] = (radius * Math.sin(phase));
     }
+}
+
+//Array for edge colors
+function colorArray() {
+    colors.push("#ff8566");
+    colors.push("#ff704d");
+    colors.push("#ff5c33");
+    colors.push("#ff5c33");
+    colors.push("#ff3300");
+    colors.push("#e62e00");
+    colors.push("#cc2900");
+    colors.push("#b32400");
+    colors.push("#991f00");
+}
+
+function animateGraph() {
+// Bind the events:
+    s.bind('overNode outNode doubleClickNode rightClickNode', function(e) {
+        console.log(e.type, e.data.node.label, e.data.captor);
+    });
+    s.bind('clickNode', function(e) {
+        console.log(e.type, e.data.node.label, e.data.captor);
+        //spin(parseInt(e.data.node.id));
+    });
+    s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
+        console.log(e.type, e.data.edge, e.data.captor);
+    });
+    s.bind('clickStage', function(e) {
+        console.log(e.type, e.data.captor);
+    });
+    s.bind('doubleClickStage rightClickStage', function(e) {
+        console.log(e.type, e.data.captor);
+    });
+}
+
+//Spin the circle
+function spin(startNode) {
+    while (startNode !== 300) {
+        var popElement = graph.nodes.pop();
+        graph.nodes.push(popElement);
+        console.log(graph.nodes);
+        startNode++;
+    }
+    s.refresh();
 }
