@@ -139,19 +139,34 @@ MatrixVisualization.prototype.colorCell = function (x, y) {
 };
 
 MatrixVisualization.prototype.click = function (xCord, yCord) {
+    // function gets executed when an edge is pressed
+
+    // calculate which edge is pressed
     var topLeft = createVector(this.posX - (this.drawWidth / this.zoomScale)/2, this.posY - (this.drawWidth / this.zoomScale)/2);
     var mouse = createVector(xCord, yCord);
     var cell = p5.Vector.sub(mouse, topLeft);
     var nodeSize = (this.drawWidth / this.zoomScale)/this.NODE_COUNT;
     var x = floor(cell.x / nodeSize);
     var y = floor(cell.y / nodeSize);
-    this.colorCell(x, y);
     print(x, y);
+
     try {
-        console.log("Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y]);
+        // mark this cell
+        this.colorCell(x, y);
+
+        // show debugging info in console
+        var text = "Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y];
+        console.log(text);
+
+        // update sidebar with informatino
+        document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
+        document.getElementById('matrix-visualization-edge-info-from').innerHTML = this.nodes[x].name;
+        document.getElementById('matrix-visualization-edge-info-to').innerHTML = this.nodes[y].name;
+        document.getElementById('matrix-visualization-edge-info-weight').innerHTML = this.nodes[x].outgoing[y];
     } catch(error) {
         if (error instanceof TypeError) {
-            // user clicked outside of box
+            // user clicked outside of box, hide edge info again
+            document.getElementById('matrix-visualization-edge-info').style.display = 'none';
         } else { throw error }
     }
 };
