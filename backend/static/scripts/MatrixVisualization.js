@@ -1,3 +1,5 @@
+// authors: Samuel Oosterholt, Tristan Trouwen
+
 /***
  * The class for the MatrixVisualization, a child of the visualization.
  * @constructor
