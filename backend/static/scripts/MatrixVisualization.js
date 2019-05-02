@@ -52,7 +52,7 @@ MatrixVisualization.prototype.load = function () {
 
     this.overlayRatio =  1;
     this.loaded = true;
-    print("done loading");
+    console.log();
 };
 
 
@@ -68,7 +68,6 @@ MatrixVisualization.prototype.setData = function (url) {
             var newNode = new Node();
             newNode.name = key;
             newNode.outgoing = data[key];
-            print(data[key]);
             currentMatrix.nodes.push(newNode);
         }
         currentMatrix.load();
@@ -96,16 +95,23 @@ MatrixVisualization.prototype.drawMatrix = function (nodes) {
     for (let i = 0; i < nodes.length; i++) {
         this.matrix.push();
         for (let j = 0; j < nodes[i].outgoing.length; j++) {
-            var hue = map(log(nodes[i].outgoing[j]), 0, 3, 25, 0);
+            var hue = map(log(nodes[i].outgoing[j]), 0, 3, 0, -25);
+            var saturation;
+            var brightness = map(log(nodes[i].outgoing[j]), 0, 3, 0, 35);
+            if (hue < 0) {
+                hue += 100;
+            }
             //var opacity = map(nodes[i].outgoing[j], 0, this.globalMAX, 100, 25);
-            this.matrix.fill(hue, 75, 50, 100);
+            this.matrix.fill(hue, 100, brightness, 100);
             this.matrix.rect(0, 0, this.NODE_SIZE, this.NODE_SIZE);
-            this.matrix.fill(0, 75, 50, 100);
+
+            //this.matrix.fill(0, 75, 50, 100);
             //this.matrix.text(i + ", " + j, 0, this.NODE_SIZE - textSize());
             this.matrix.translate(0, this.NODE_SIZE);
         }
         this.matrix.pop();
         this.matrix.translate(this.NODE_SIZE, 0);
+
     }
 };
 

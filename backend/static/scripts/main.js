@@ -131,8 +131,8 @@ function draw() {
 
 function showImage(){
     resetMatrix();
-    matrixX = width / 2 + xOff;
-    matrixY = height / 2 + yOff;
+    matrixX = document.getElementById("canvas").offsetWidth / 2 + xOff;
+    matrixY = document.getElementById("canvas").offsetHeight / 2 + yOff;
 
     for (let i = 0; i < visualizations.length; i++) {
         if (visualizations[i].isActive()) {
