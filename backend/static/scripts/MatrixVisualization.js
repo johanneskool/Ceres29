@@ -145,7 +145,13 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     var y = floor(cell.y / nodeSize);
     this.colorCell(x, y);
     print(x, y);
-    console.log("Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y]);
+    try {
+        console.log("Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y]);
+    } catch(error) {
+        if (error instanceof TypeError) {
+            // user clicked outside of box
+        } else { throw error }
+    }
 };
 
 MatrixVisualization.prototype.setActive = function (boolean) {
