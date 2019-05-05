@@ -12,3 +12,12 @@
     background: #E9ECEF;
     color: #212529;
 }
+
+#canvas {
+    display: grid;
+}
+
+#defaultCanvas0, #defaultCanvas1 {
+    grid-column: 1;
+    grid-row: 1;
+}

@@ -4,7 +4,7 @@ let body;
 const zoomFactor = 1.5;
 var zoomScale = 1;
 var matrixVis;
-
+var visIsLoaded = false;
 var visualizations = [];
 
 var ctx;
@@ -23,7 +23,7 @@ function setup() {
     fetch('/static/json/'+ file_name)
     .then(res => res.json())
     .then((out_json_data) => {
-        console.log(out_json_data);
+        /*console.log(out_json_data);*/
 /*        matrixVis.setData('/static/json/'+ file_name);*/
     })
     .catch(err => { throw err });
@@ -125,7 +125,6 @@ var matrixX, matrixY;
 function draw() {
     background(0,0,100);
     fill(0, 0, 0, 100);
-
     showImage();
 }
 
@@ -161,4 +160,5 @@ window.onresize = function() {
     var w = window.innerWidth;
     var h = window.innerHeight;
     resizeCanvas(w, h);
+    loadingAnimation.onresize();
 };

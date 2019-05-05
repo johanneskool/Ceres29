@@ -52,7 +52,7 @@ MatrixVisualization.prototype.load = function () {
 
     this.overlayRatio =  1;
     this.loaded = true;
-    console.log();
+    visIsLoaded = true;
 };
 
 
