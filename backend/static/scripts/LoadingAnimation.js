@@ -1,3 +1,5 @@
+//Author: Fabiénne
+
 var centerX = 200;
 var centerY = 200;
 var radius = 100;
