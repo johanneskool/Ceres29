@@ -1,17 +1,7 @@
-<!-- AUTHORS
-Fabienne vd Weide
--->
-
 var centerX = 200;
 var centerY = 200;
 var radius = 100;
-let circle1;
-let circle2;
-let circle3;
-let circle4;
-let circle5;
-let circle6;
-let circle7;
+var circleArray = [];
 
 class Circle {
   constructor(angle, r, g, b) {
@@ -20,8 +10,8 @@ class Circle {
     this.g = g;
     this.b = b;
     this.speed = 0.02;
-    this.x = centerX + radius
-    this.y = centerY + radius
+    this.x = centerX + radius;
+    this.y = centerY + radius;
   }
 
   move() {
@@ -46,29 +36,15 @@ class Circle {
 function setup() {
   createCanvas(400, 400);
   noStroke();
-  circle1 = new Circle(-80, 0, 120, 100);
-  circle2 = new Circle(-60, 0, 140, 125);
-  circle3 = new Circle(-40, 0, 160, 150);
-  circle4 = new Circle(-20, 0, 180, 175);
-  circle5 = new Circle(0, 0, 200, 200);
-  circle6 = new Circle(20, 0, 220, 225);
-  circle7 = new Circle(40, 0, 230, 240);
+  for (var i = 0; i < 7; i++) {
+    circleArray.push(new Circle(-80 + 20*i, 0, 120 + i*20, 100 + i*25));
+  }
 }
 
 function draw() {
   background(255);
-  circle1.move();
-  circle1.show();
-  circle2.move();
-  circle2.show();
-  circle3.move();
-  circle3.show();
-  circle4.move();
-  circle4.show();
-  circle5.move();
-  circle5.show();
-  circle6.move();
-  circle6.show();
-  circle7.move();
-  circle7.show();
+  for (var i = 0; i < circleArray.length; i++) {
+    circleArray[i].move();
+    circleArray[i].show();
+  }
 }
