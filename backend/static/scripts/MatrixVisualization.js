@@ -84,27 +84,28 @@ MatrixVisualization.prototype.generateNodes = function () {
  * Draws a matrix to the graphics based of the input nodes
  * @param data input JSON
  */
-MatrixVisualization.prototype.drawMatrix = function (data) {
-    for (key in this.data) {
+MatrixVisualization.prototype.drawMatrix = function () {
+    this.NODE_COUNT = this.getArrayAtIndex(1).length;
+    this.NODE_SIZE = floor(8000 / this.NODE_COUNT);
+
+    let weights = this.getKeyAtIndex(1);
+
+    for (let i = 0; i < this.NODE_COUNT; i++) {
         this.matrix.push();
-        for (let i = 0; i < this.data[key].length; i++) {
-            let weight = this.data[key][i];
+        for (let j = 0; j < this.NODE_COUNT; j++) {
+            let weight = this.data[weights][i][j]
             var hue = map(log(weight), 0, 3, 0, -25);
             var brightness = map(log(weight), 0, 3, 0, 35);
             if (hue < 0) {
                 hue += 100;
             }
-            //var opacity = map(nodes[i].outgoing[j], 0, this.globalMAX, 100, 25);
+
             this.matrix.fill(hue, 100, brightness, 100);
             this.matrix.rect(0, 0, this.NODE_SIZE, this.NODE_SIZE);
-
-            //this.matrix.fill(0, 75, 50, 100);
-            //this.matrix.text(i + ", " + j, 0, this.NODE_SIZE - textSize());
             this.matrix.translate(0, this.NODE_SIZE);
         }
         this.matrix.pop();
         this.matrix.translate(this.NODE_SIZE, 0);
-
     }
 };
 
@@ -153,15 +154,22 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
         // mark this cell
         this.colorCell(x, y);
 
+        let from = this.getArrayAtIndex(0)[x];
+        from = from.replace(/_/g,' ');
+        let to = this.getArrayAtIndex(0)[y];
+        to = to.replace(/_/g,' ');
+        let weight = this.getArrayAtIndex(1)[x][y];
+
         // show debugging info in console
-        var text = "Edge from :" + this.getKeyAtIndex(x) + " to " + this.getKeyAtIndex(y) + " has a weight of: " + this.getDataAtPosition(x,y);
+        var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
         console.log(text);
 
         // update sidebar with informatino
         document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
-        document.getElementById('matrix-visualization-edge-info-from').innerHTML = this.getKeyAtIndex(x);
-        document.getElementById('matrix-visualization-edge-info-to').innerHTML = this.getKeyAtIndex(y);
-        document.getElementById('matrix-visualization-edge-info-weight').innerHTML = this.getDataAtPosition(x,y);
+        document.getElementById('matrix-visualization-edge-info-from').innerHTML = from;
+        document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;
+        document.getElementById('matrix-visualization-edge-info-weight').innerHTML = weight;
+
     } catch(error) {
         if (error instanceof TypeError) {
             // user clicked outside of box, hide edge info again

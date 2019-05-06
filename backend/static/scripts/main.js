@@ -5,27 +5,28 @@
  * @author Samuel Oosterholt
  */
 
-let nodes = [];
-let defaultCanvas;
-let body;
 const zoomFactor = 1.5;
 var zoomScale = 1;
 var matrixVis;
-var visIsLoaded = false;
+let visIsLoaded = false;
 var visualizations = [];
-
-var ctx;
+let canvas;
+let ctx;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
     colorMode(HSL,100);
-    let canvas = createCanvas(window.innerWidth, window.innerHeight);
+    canvas = createCanvas(window.innerWidth, window.innerHeight);
+    frameRate(999);
+
+    //puts the canvas under the 'canvas' div
     canvas.parent('canvas');
 
-    matrixVis = new MatrixVisualization();
 
+    matrixVis = new MatrixVisualization();
     // fetch data
     var file_name = new URL(window.location.href).searchParams.get("data");
+
     matrixVis.setData('/static/json/'+ file_name);
 
 //     outdated:
@@ -37,8 +38,6 @@ function setup() {
 //     })
 //     .catch(err => { throw err });
 
-    frameRate(999);
-
     visualizations.push(matrixVis);
 
     matrixVis.setActive(true);
@@ -46,7 +45,7 @@ function setup() {
     imageMode(CENTER);
     rectMode(CENTER);
 
-    context = document.getElementById("defaultCanvas0");
+    let context = document.getElementById("defaultCanvas0");
     ctx = context.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
@@ -154,21 +153,11 @@ function showImage(){
 }
 
 /**
- * Class for managing Nodes
- * @constructor Node class
- */
-function Node() {
-    /** @lends Node */
-    this.name;
-    this.outgoing = [];
-}
-
-/**
  * Rescales the canvas when the windows has been changed
  */
 window.onresize = function() {
     let w = window.innerWidth;
     let h = window.innerHeight;
-    resizeCanvas(w, h);
-    loadingAnimation.onresize();z
+    canvas.resizeCanvas(w, h);
+    loadingAnimation.onresize();
 };
