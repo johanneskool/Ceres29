@@ -1,28 +1,30 @@
-var sizeCircle = (window.innerHeight - 125);
-var xValues = [];
-var yValues = [];
-var Nodes = [];
-var colors = [];
-var s;
-var end = 1;
-var nbEdge;
-var nbNode;
-var graph = {
+const sizeCircle = (window.innerHeight - 125);
+let xValues = [];
+let yValues = [];
+let Nodes = [];
+let colors = [];
+let s;
+let test = 0;
+let end = 1;
+let nbEdge;
+let nbNode;
+let graph = {
     nodes: [],
-    edges: []
+    edges: [],
+    phase: []
 };
 
 //Changing the amount of nodes:
-var inputSize = 600;
+const inputSize = 100;
 //max weight of the dataset?
-var maxWeight = 1000;
+const maxWeight = 1000;
 
 
 function setup() {
     colorArray();
     createCircleArea(); //creates coordinates for circle
     nbNode = inputSize;
-    nbEdge = floor(inputSize/4);
+    nbEdge = floor(inputSize/8);
 
     s = new sigma(
         {
@@ -51,11 +53,10 @@ function setup() {
     );
 
 // Generate a random graph:
-    for (var i = 0; i < nbNode; i++) {
+    for (let i = 0; i < nbNode; i++) {
         graph.nodes.push({
             id: i,
             label: 'Node ' + i,
-            labelAlignment: "left",
             x: xValues[i],
             y: yValues[i],
             size: 1,
@@ -63,10 +64,10 @@ function setup() {
         });
     }
 
-    for (var i = 0; i < nbEdge; i++) {
-        var edgeWeight = floor(random(maxWeight));
-        var edgeSize = map(edgeWeight, 0, maxWeight, 0, colors.length);
-        var pickColor = colors[floor(edgeSize)]
+    for (let i = 0; i < nbEdge; i++) {
+        let edgeWeight = floor(random(maxWeight));
+        let edgeSize = map(edgeWeight, 0, maxWeight, 0, colors.length);
+        let pickColor = colors[floor(edgeSize)]
         graph.edges.push({
             id: i,
             size: edgeSize,
@@ -87,13 +88,22 @@ function setup() {
 
 //Creates array with x and y for a circle
 function createCircleArea() {
-    var phase = 0;
-    var radius = sizeCircle/2;
-    for (var i = 0; i < inputSize; i++) {
-        phase = i * 2 * Math.PI /inputSize;
-        xValues[i] = (radius * Math.cos(phase));
-        yValues[i] = (radius * Math.sin(phase));
+    let radius = sizeCircle/2;
+    for (let i = 0; i <= inputSize; i++) {
+        graph.phase[i] = i * 2 * Math.PI /inputSize;
+        xValues[i] = (radius * Math.cos(graph.phase[i]));
+        yValues[i] = (radius * Math.sin(graph.phase[i]));
     }
+}
+
+function moveNodeX(angle) {
+    let radius = sizeCircle/2;
+    return radius * Math.cos(angle);
+}
+
+function moveNodeY(angle) {
+    let radius = sizeCircle/2;
+    return radius * Math.sin(angle);
 }
 
 //Array for edge colors
@@ -111,31 +121,34 @@ function colorArray() {
 
 function animateGraph() {
 // Bind the events:
-    s.bind('overNode outNode doubleClickNode rightClickNode', function(e) {
+    s.bind('overNode outNode doubleClickNode rightClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
     });
-    s.bind('clickNode', function(e) {
+    s.bind('clickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
-        //spin(parseInt(e.data.node.id));
-    });
-    s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
-        console.log(e.type, e.data.edge, e.data.captor);
-    });
-    s.bind('clickStage', function(e) {
-        console.log(e.type, e.data.captor);
-    });
-    s.bind('doubleClickStage rightClickStage', function(e) {
-        console.log(e.type, e.data.captor);
-    });
-}
-
-//Spin the circle
-function spin(startNode) {
-    while (startNode !== 300) {
-        var popElement = graph.nodes.pop();
-        graph.nodes.push(popElement);
-        console.log(graph.nodes);
-        startNode++;
-    }
-    s.refresh();
+        let startNode = parseInt(e.data.node.id);
+        while (startNode != floor(inputSize / 2)) {
+            let i = test;
+            s.graph.nodes().forEach(function (n) {
+                n.x = moveNodeX(graph.phase[(i + 1) % inputSize]);
+                n.y = moveNodeY(graph.phase[(i + 1) % inputSize]);
+                n.phase = (i + 1) * 2 * Math.PI / inputSize
+                i++;
+            });
+            startNode = (startNode + 1) % inputSize;
+            test++;
+            setTimeout(function () {
+                s.refresh();
+            }, 100);
+        }
+        s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
+            console.log(e.type, e.data.edge, e.data.captor);
+        });
+        s.bind('clickStage', function (e) {
+            console.log(e.type, e.data.captor);
+        });
+        s.bind('doubleClickStage rightClickStage', function (e) {
+            console.log(e.type, e.data.captor);
+        });
+    })
 }
