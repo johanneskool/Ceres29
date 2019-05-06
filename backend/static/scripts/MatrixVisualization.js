@@ -8,16 +8,9 @@ var MatrixVisualization = function () {
     Visualization.call(this, arguments);
     this.nodes = [];
     this.NODE_COUNT = 200;
-    /*this.NODE_SIZE;
-    this.matrix;
-    this.matrix;
-    this.posX;
-    this.posY;
-    this.zoomScale;
-    this.drawWidth;*/
+    this.position = createVector();
     this.active = false;
     this.loaded = false;
-    this.globalMAX = 10;
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
@@ -120,15 +113,15 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
         return;
     }
     if (arguments.length === 0) {
-        image(this.matrix, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
-        image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         return;
     }
-    this.posX = posX;
-    this.posY = posY;
+    this.position.x = posX;
+    this.position.y = posY;
     this.zoomScale = zoomScale;
-    image(this.matrix, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
-    image(this.overlayGraphics, this.posX, this.posY, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+    image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+    image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
 
 MatrixVisualization.prototype.colorCell = function (x, y) {
@@ -142,7 +135,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
 
     // calculate which edge is pressed
-    var topLeft = createVector(this.posX - (this.drawWidth / this.zoomScale)/2, this.posY - (this.drawWidth / this.zoomScale)/2);
+    var topLeft = createVector(this.position.x - (this.drawWidth / this.zoomScale)/2, this.position.y - (this.drawWidth / this.zoomScale)/2);
     var mouse = createVector(xCord, yCord);
     var cell = p5.Vector.sub(mouse, topLeft);
     var nodeSize = (this.drawWidth / this.zoomScale)/this.NODE_COUNT;

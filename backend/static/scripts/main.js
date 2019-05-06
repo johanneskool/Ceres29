@@ -5,25 +5,56 @@
  * @author Samuel Oosterholt
  */
 
+/**
+ * Factor by which the scale should change
+ * @type {number}
+ */
 const zoomFactor = 1.5;
+
+/**
+ * Current Scale at which the visualization is drawn
+ * @TODO make this a property of the current active visualization instead of a global.
+ * @type {number}
+ */
 var zoomScale = 1;
+
+/**
+ * A matrix visualization object
+ * @TODO should be created from a menu instead of hardcoded.
+ * @type {Visualization}
+ */
 var matrixVis;
+
+/**
+ * Flag is true if the matrix has been loaded
+ * @TODO make this a property of the current loading visualization instead of a global.
+ * @type {boolean}
+ */
 let visIsLoaded = false;
+
+/**
+ * Array of al the currently iniated visualizations.
+ * @type {Array}
+ */
 var visualizations = [];
-let canvas;
-let ctx;
+
+/**
+ * Canvas which shows the current visualization(s)
+ * @type {canvas}
+ */
+let visualizationCanvas;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
     colorMode(HSL,100);
-    canvas = createCanvas(window.innerWidth, window.innerHeight);
+    visualizationCanvas = createCanvas(window.innerWidth, window.innerHeight);
 
     frameRate(999);
     imageMode(CENTER);
     rectMode(CENTER);
 
     //puts the canvas under the 'canvas' div
-    canvas.parent('canvas');
+    visualizationCanvas.parent('canvas');
 
     //create a new matrix object
     matrixVis = new MatrixVisualization();
@@ -51,7 +82,7 @@ function setup() {
 
     //disable the anti-aliasing.
     let context = document.getElementById("defaultCanvas0");
-    ctx = context.getContext('2d');
+    let ctx = context.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
     setupListeners();
@@ -86,7 +117,7 @@ var oldMouse;
 var newMouse;
 
 /**
- * boolean to differentiate between a click and a click-drag.
+ * Flag is true if mouse is (currently) clicked.
  * @type {boolean}
  */
 var mouseFlag = false;
@@ -120,60 +151,98 @@ function setupListeners () {
     document.getElementById( "defaultCanvas0" ).onmousedown = function(event){
         mouseFlag = true;
 
+        //fix that prevents the visualization from moving when the window regains focus.
         oldMouse.x = mouseX;
         oldMouse.y = mouseY;
         newMouse.x = mouseX;
         newMouse.y = mouseY;
     };
+    //on release
     document.getElementById("defaultCanvas0").onmouseup = function (event) {
         mouseFlag = false;
-        if (!drag) {
+
+        //if mouse has not been dragged, send click to visualization.
+        if (!dragFlag) {
+            //TODO update this function to be ambigous, not only for matrixVis. i.e. create a handler.
             matrixVis.click(mouseX, mouseY);
         }
-        drag = false;
-    };
-    document.getElementById("defaultCanvas0").onclick = function (event) {
+
+        //reset dragFlag flag.
+        dragFlag = false;
     };
 }
 
-var drag = false;
+/**
+ * Flag is true if mouse has been dragged since click. Else false.
+ * @type {boolean}
+ */
+var dragFlag = false;
+
 function mouseDragged() {
     if (mouseFlag) {
-        drag = true;
-        print('dragged');
+        //mouse was dragged, so update the dragFlag.
+        dragFlag = true;
+
+        //update mouse vector
         newMouse.x = mouseX;
         newMouse.y = mouseY;
 
+        //Add the difference between old and new mouse to the offset.
         xOff += newMouse.x - oldMouse.x;
         yOff += newMouse.y - oldMouse.y;
 
+        //update old mouse vector positions.
         oldMouse.x = mouseX;
         oldMouse.y= mouseY;
     }
-};
+}
 
+/**
+ * Function that handles the zooming.
+ * Updates the Zoomscale by the zoomfactor and transform the visualization such
+ * that the mouse does not change position relative to the visualization.
+ * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
+ * @param zoomFactor {number} factor by which the zoomScale should change.
+ */
 function zoom(zoomIn, zoomFactor) {
     if (zoomIn) {
+        //hard to explain in code, get some pen and paper and visualize the transformation.
         xOff -= (mouseX - matrixX)*(zoomFactor - 1);
         yOff -= (mouseY - matrixY)*(zoomFactor - 1);
         zoomScale = zoomScale / zoomFactor;
     } else {
+        //idem.
         xOff += (mouseX - matrixX)*(zoomFactor - 1)/zoomFactor;
         yOff += (mouseY - matrixY)*(zoomFactor - 1)/zoomFactor;
         zoomScale = zoomScale * zoomFactor;
     }
 }
 
-var matrixX, matrixY;
+/**
+ * x position where the matrix should be drawn
+ * @Type {number}
+ */
+let matrixX;
+
+/**
+ * y position where the matrix should be drawn
+ * @Type {number}
+ */
+let matrixY;
 
 function draw() {
+    //wipe background
     background(0,0,100);
     fill(0, 0, 0, 100);
+
     showImage();
 }
 
+/**
+ * @function Draws the Image to the correct position on the canvas
+ * @TODO make it ambiguous for all types of visualizations, not just the matrix.
+ */
 function showImage(){
-    resetMatrix();
     matrixX = document.getElementById("canvas").offsetWidth / 2 + xOff;
     matrixY = document.getElementById("canvas").offsetHeight / 2 + yOff;
 
@@ -193,6 +262,6 @@ function showImage(){
 window.onresize = function() {
     let w = window.innerWidth;
     let h = window.innerHeight;
-    canvas.resizeCanvas(w, h);
+    visualizationCanvas.resizeCanvas(w, h);
     loadingAnimation.onresize();
 };
