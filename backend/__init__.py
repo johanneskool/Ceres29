@@ -2,6 +2,7 @@ __author__ = 'Tristan Trouwen, Rick Luiken, Rink Pieters'
 
 import os
 from os import environ
+
 from flask import Flask
 from flask_restful import Api
 
@@ -24,6 +25,5 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 # Creating json folder if it does not yet exist
 if not os.path.exists(app.config['JSON_FOLDER']):
     os.makedirs(app.config['JSON_FOLDER'])
-
 
 import backend.views
