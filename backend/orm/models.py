@@ -1,3 +1,5 @@
+__author__ = 'Tristan Trouwen'
+
 from backend import db
 from datetime import datetime
 
