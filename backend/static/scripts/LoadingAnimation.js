@@ -30,6 +30,8 @@ var sketch = function (animation) {
         animation.circleArray[i].move();
         animation.circleArray[i].show();
       }
+    } else {
+      document.getElementById("defaultCanvas1").style.zIndex = -2;
     }
   };
 
