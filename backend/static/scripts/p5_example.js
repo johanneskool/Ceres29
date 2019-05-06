@@ -26,7 +26,7 @@ function setup() {
     noStroke();
     for (var i = 0; i < 50000; i++) {
         print(i);
-        circlesList[i] = new Circles(createVector(0,0));
+        circlesList[i] = new Circles(createVector(0, 0));
     }
 
     startHue = random(100);

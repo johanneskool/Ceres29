@@ -2,6 +2,7 @@ __author__ = 'Tristan Trouwen, Rick Luiken, Rink Pieters'
 
 import os
 from os import environ
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -25,6 +26,5 @@ if not os.path.exists(app.config['JSON_FOLDER']):
 # initialize db
 db = SQLAlchemy(app)
 from backend.orm import models
-
 
 import backend.views

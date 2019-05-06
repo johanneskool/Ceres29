@@ -31,14 +31,14 @@ function Node(connected, weight, x, y) {
     this.weight = weight;
     this.x = x;
     this.y = y;
-    this.r = sizeNodes/2;
+    this.r = sizeNodes / 2;
 }
 
 function createCircleArea() {
-    var centerX = width/2;
-    var centerY = height/2;
-    var radius = sizeCircle/2;
-    var steps = 2*3.14;
+    var centerX = width / 2;
+    var centerY = height / 2;
+    var radius = sizeCircle / 2;
+    var steps = 2 * 3.14;
     for (var i = 0; i < 157; i++) {
         var phase = 2 * Math.PI * i / steps;
         xValues[i] = (centerX + radius * Math.cos(phase));
@@ -46,7 +46,7 @@ function createCircleArea() {
     }
 }
 
-function  drawNodes() {
+function drawNodes() {
     for (var i = 0; i < size; i++) {
         ellipse(Nodes[i].x, Nodes[i].y, 2 * Nodes[i].r, 2 * Nodes[i].r);
     }
