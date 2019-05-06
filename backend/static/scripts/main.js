@@ -11,7 +11,7 @@ var ctx;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
-    colorMode(HSL,100);
+    colorMode(HSL, 100);
     let canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent('canvas');
 
@@ -19,7 +19,7 @@ function setup() {
 
     // fetch data
     var file_name = new URL(window.location.href).searchParams.get("data");
-    matrixVis.setData('/static/json/'+ file_name);
+    matrixVis.setData('/static/json/' + file_name);
 //     fetch('/static/json/'+ file_name)
 //     .then(res => res.json())
 //     .then((out_json_data) => {
@@ -53,11 +53,12 @@ var newMouseY = 0;
 
 
 var mouseFlag = false;
+
 /**
  * Setup for the canvas listeners, zooming scrolling and clicking.
  */
-function setupListeners () {
-    document.getElementById( "defaultCanvas0" ).onwheel = function(event){
+function setupListeners() {
+    document.getElementById("defaultCanvas0").onwheel = function (event) {
         if (event.deltaY < 0) {
             zoom(true, zoomFactor);
         } else {
@@ -65,7 +66,7 @@ function setupListeners () {
         }
         event.preventDefault();
     };
-    document.getElementById( "defaultCanvas0" ).onmousewheel = function(event){
+    document.getElementById("defaultCanvas0").onmousewheel = function (event) {
         if (event.deltaY < 0) {
             zoom(true, zoomFactor);
         } else {
@@ -73,7 +74,7 @@ function setupListeners () {
         }
         event.preventDefault();
     };
-    document.getElementById( "defaultCanvas0" ).onmousedown = function(event){
+    document.getElementById("defaultCanvas0").onmousedown = function (event) {
         mouseFlag = true;
         print('click');
         oldMouseX = mouseX;
@@ -93,6 +94,7 @@ function setupListeners () {
 }
 
 var drag = false;
+
 function mouseDragged() {
     if (mouseFlag) {
         drag = true;
@@ -110,12 +112,12 @@ function mouseDragged() {
 
 function zoom(zoomIn, zoomFactor) {
     if (zoomIn) {
-        xOff -= (mouseX - matrixX)*(zoomFactor - 1);
-        yOff -= (mouseY - matrixY)*(zoomFactor - 1);
+        xOff -= (mouseX - matrixX) * (zoomFactor - 1);
+        yOff -= (mouseY - matrixY) * (zoomFactor - 1);
         zoomScale = zoomScale / zoomFactor;
     } else {
-        xOff += (mouseX - matrixX)*(zoomFactor - 1)/zoomFactor;
-        yOff += (mouseY - matrixY)*(zoomFactor - 1)/zoomFactor;
+        xOff += (mouseX - matrixX) * (zoomFactor - 1) / zoomFactor;
+        yOff += (mouseY - matrixY) * (zoomFactor - 1) / zoomFactor;
         zoomScale = zoomScale * zoomFactor;
     }
 }
@@ -123,12 +125,12 @@ function zoom(zoomIn, zoomFactor) {
 var matrixX, matrixY;
 
 function draw() {
-    background(0,0,100);
+    background(0, 0, 100);
     fill(0, 0, 0, 100);
     showImage();
 }
 
-function showImage(){
+function showImage() {
     resetMatrix();
     matrixX = document.getElementById("canvas").offsetWidth / 2 + xOff;
     matrixY = document.getElementById("canvas").offsetHeight / 2 + yOff;
@@ -137,7 +139,7 @@ function showImage(){
         if (visualizations[i].isActive()) {
             visualizations[i].draw(matrixX, matrixY, zoomScale);
             matrixVis.draw(matrixX, matrixY, zoomScale);
-        }  else {
+        } else {
             visualizations[i].draw();
         }
     }
@@ -156,7 +158,7 @@ function Node() {
 /**
  * Rescales the canvas when the windows has been changed
  */
-window.onresize = function() {
+window.onresize = function () {
     let w = window.innerWidth;
     let h = window.innerHeight;
     resizeCanvas(w, h);

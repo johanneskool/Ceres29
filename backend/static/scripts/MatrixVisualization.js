@@ -32,7 +32,6 @@ MatrixVisualization.prototype.load = function () {
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
 
 
-
     this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
     this.matrix.colorMode(HSL, 100);
     this.matrix.textSize(this.NODE_SIZE / 2);
@@ -50,7 +49,7 @@ MatrixVisualization.prototype.load = function () {
     this.overlayGraphics.colorMode(HSL, 100);
     this.overlayGraphics.noStroke();
 
-    this.overlayRatio =  1;
+    this.overlayRatio = 1;
     this.loaded = true;
     visIsLoaded = true;
 };
@@ -138,8 +137,8 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
 
 MatrixVisualization.prototype.colorCell = function (x, y) {
     this.overlayGraphics.clear();
-    this.overlayGraphics.fill(50,75,75);
-    this.overlayGraphics.rect(x*this.overlayRatio*this.NODE_SIZE, y*this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE);
+    this.overlayGraphics.fill(50, 75, 75);
+    this.overlayGraphics.rect(x * this.overlayRatio * this.NODE_SIZE, y * this.overlayRatio * this.NODE_SIZE, this.overlayRatio * this.NODE_SIZE, this.overlayRatio * this.NODE_SIZE);
 
 };
 
@@ -147,10 +146,10 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
 
     // calculate which edge is pressed
-    var topLeft = createVector(this.posX - (this.drawWidth / this.zoomScale)/2, this.posY - (this.drawWidth / this.zoomScale)/2);
+    var topLeft = createVector(this.posX - (this.drawWidth / this.zoomScale) / 2, this.posY - (this.drawWidth / this.zoomScale) / 2);
     var mouse = createVector(xCord, yCord);
     var cell = p5.Vector.sub(mouse, topLeft);
-    var nodeSize = (this.drawWidth / this.zoomScale)/this.NODE_COUNT;
+    var nodeSize = (this.drawWidth / this.zoomScale) / this.NODE_COUNT;
     var x = floor(cell.x / nodeSize);
     var y = floor(cell.y / nodeSize);
     print(x, y);
@@ -168,11 +167,13 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
         document.getElementById('matrix-visualization-edge-info-from').innerHTML = this.nodes[x].name;
         document.getElementById('matrix-visualization-edge-info-to').innerHTML = this.nodes[y].name;
         document.getElementById('matrix-visualization-edge-info-weight').innerHTML = this.nodes[x].outgoing[y];
-    } catch(error) {
+    } catch (error) {
         if (error instanceof TypeError) {
             // user clicked outside of box, hide edge info again
             document.getElementById('matrix-visualization-edge-info').style.display = 'none';
-        } else { throw error }
+        } else {
+            throw error
+        }
     }
 };
 

@@ -1,4 +1,5 @@
 import os
+from collections import OrderedDict
 
 import numpy as np
 import scipy.sparse.csgraph as csg
@@ -22,7 +23,7 @@ def parse(filename):
     matrix (ndarray): the parsed adjacency matrix values
     """
 
-    #TODO check file formatc and csv format and give appropriate errors
+    # TODO check file formatc and csv format and give appropriate errors
 
     with open(filename, 'r', encoding='utf-8') as f:
         tags = f.readline()
@@ -34,6 +35,7 @@ def parse(filename):
                         usecols=range(1, colnr + 1))
 
     return tags, matrix
+
 
 def reorder(tags, matrix):
     """
@@ -53,32 +55,33 @@ def reorder(tags, matrix):
 
     L = csg.laplacian(csg.csgraph_from_dense(matrix))
 
-    #calculate eigenvalues and eigenvectors from the laplacian
-    #TODO: look into making this more effiecient, not all eigenvalues have
-    #to be calculated
+    # calculate eigenvalues and eigenvectors from the laplacian
+    # TODO: look into making this more effiecient, not all eigenvalues have
+    # to be calculated
     eigvals, eigvec = linalg.eigs(L)
 
-    #sort eigenvalues and eigenvectors from low to high
+    # sort eigenvalues and eigenvectors from low to high
     ind = np.argsort(eigvals)
     eigvals = eigvals[ind]
     eigvec = eigvec[:, ind]
 
-    #find second lowest unique eigenvalues, it's eigenvector is the Fiedler vector
+    # find second lowest unique eigenvalues, it's eigenvector is the Fiedler vector
     lowest = eigvals[0]
     for i in range(len(eigvals)):
         if eigvals[i] != lowest:
             fiedler = eigvec[:, i]
             break
 
-    #find the reordering based on the Fiedler vector
+    # find the reordering based on the Fiedler vector
     order = np.argsort(fiedler)
 
-    #sort matrix on both the rows and columns
+    # sort matrix on both the rows and columns
     matrix = matrix[order, :]
     matrix = matrix[:, order]
-    #sort tags
+    # sort tags
     tags = list(np.array(tags)[order])
     return tags, matrix
+
 
 def adjacency_to_json_string(tags, matrix):
     """

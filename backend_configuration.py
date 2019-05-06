@@ -11,14 +11,14 @@ class Config(object):
     HOST = 'localhost'
     PORT = '5555'
     TESTING = False
-    API_VERSION = 'test'
-    DATABASE_URI = 'sqlite:///:memory:'  # set database URI to use local database in RAM
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEVELOPMENT = False
     UPLOAD_FOLDER = os.path.join(basedir, 'backend/static/uploads/')
     JSON_FOLDER_RELATIVE = 'json'
     JSON_FOLDER = os.path.join(basedir, 'backend/static/', JSON_FOLDER_RELATIVE)
     ALLOWED_EXTENSIONS = set(['csv'])
-    SECRET_KEY = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
+    SECRET_KEY = 'yolowaterpolo'
 
 
 class ProductionConfig(Config):
