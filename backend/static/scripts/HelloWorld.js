@@ -14,6 +14,6 @@ function draw() {
 }
 
 function addCircle() {
-    fill(0,50, 50, 50);
+    fill(0, 50, 50, 50);
     ellipse(random(0, window.innerWidth), random(0, window.innerHeight), 45, 45);
 }

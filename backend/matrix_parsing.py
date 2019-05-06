@@ -1,9 +1,9 @@
-import ujson
 import os
 from collections import OrderedDict
 
 import numpy as np
 import scipy.sparse.csgraph as csg
+import ujson
 from scipy.sparse import linalg
 
 from backend import app

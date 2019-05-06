@@ -66,7 +66,7 @@ function setup() {
     for (var i = 0; i < nbEdge; i++) {
         var edgeWeight = floor(random(maxWeight));
         var edgeSize = map(edgeWeight, 0, maxWeight, 0, colors.length);
-        var pickColor = colors[floor(edgeSize)]
+        var pickColor = colors[floor(edgeSize)];
         graph.edges.push({
             id: i,
             size: edgeSize,
