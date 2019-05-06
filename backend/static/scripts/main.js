@@ -20,13 +20,13 @@ function setup() {
     // fetch data
     var file_name = new URL(window.location.href).searchParams.get("data");
     matrixVis.setData('/static/json/'+ file_name);
-    fetch('/static/json/'+ file_name)
-    .then(res => res.json())
-    .then((out_json_data) => {
-        /*console.log(out_json_data);*/
-/*        matrixVis.setData('/static/json/'+ file_name);*/
-    })
-    .catch(err => { throw err });
+//     fetch('/static/json/'+ file_name)
+//     .then(res => res.json())
+//     .then((out_json_data) => {
+//         /*console.log(out_json_data);*/
+// /*        matrixVis.setData('/static/json/'+ file_name);*/
+//     })
+//     .catch(err => { throw err });
     frameRate(999);
 
     visualizations.push(matrixVis);
@@ -157,8 +157,8 @@ function Node() {
  * Rescales the canvas when the windows has been changed
  */
 window.onresize = function() {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
+    let w = window.innerWidth;
+    let h = window.innerHeight;
     resizeCanvas(w, h);
     loadingAnimation.onresize();
 };
