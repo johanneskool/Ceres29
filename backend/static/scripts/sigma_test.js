@@ -22,7 +22,7 @@ function setup() {
     colorArray();
     createCircleArea(); //creates coordinates for circle
     nbNode = inputSize;
-    nbEdge = floor(inputSize/4);
+    nbEdge = floor(inputSize / 4);
 
     s = new sigma(
         {
@@ -66,7 +66,7 @@ function setup() {
     for (var i = 0; i < nbEdge; i++) {
         var edgeWeight = floor(random(maxWeight));
         var edgeSize = map(edgeWeight, 0, maxWeight, 0, colors.length);
-        var pickColor = colors[floor(edgeSize)]
+        var pickColor = colors[floor(edgeSize)];
         graph.edges.push({
             id: i,
             size: edgeSize,
@@ -88,9 +88,9 @@ function setup() {
 //Creates array with x and y for a circle
 function createCircleArea() {
     var phase = 0;
-    var radius = sizeCircle/2;
+    var radius = sizeCircle / 2;
     for (var i = 0; i < inputSize; i++) {
-        phase = i * 2 * Math.PI /inputSize;
+        phase = i * 2 * Math.PI / inputSize;
         xValues[i] = (radius * Math.cos(phase));
         yValues[i] = (radius * Math.sin(phase));
     }
@@ -111,20 +111,20 @@ function colorArray() {
 
 function animateGraph() {
 // Bind the events:
-    s.bind('overNode outNode doubleClickNode rightClickNode', function(e) {
+    s.bind('overNode outNode doubleClickNode rightClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
     });
-    s.bind('clickNode', function(e) {
+    s.bind('clickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
         //spin(parseInt(e.data.node.id));
     });
-    s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
+    s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
     });
-    s.bind('clickStage', function(e) {
+    s.bind('clickStage', function (e) {
         console.log(e.type, e.data.captor);
     });
-    s.bind('doubleClickStage rightClickStage', function(e) {
+    s.bind('doubleClickStage rightClickStage', function (e) {
         console.log(e.type, e.data.captor);
     });
 }
