@@ -17,16 +17,24 @@ let ctx;
 function setup() {
     colorMode(HSL,100);
     canvas = createCanvas(window.innerWidth, window.innerHeight);
+
     frameRate(999);
+    imageMode(CENTER);
+    rectMode(CENTER);
 
     //puts the canvas under the 'canvas' div
     canvas.parent('canvas');
 
-
+    //create a new matrix object
     matrixVis = new MatrixVisualization();
+
+    //add the matrix to the list of visualizations.
+    visualizations.push(matrixVis);
+
     // fetch data
     var file_name = new URL(window.location.href).searchParams.get("data");
 
+    //update the matrix data
     matrixVis.setData('/static/json/'+ file_name);
 
 //     outdated:
@@ -38,42 +46,68 @@ function setup() {
 //     })
 //     .catch(err => { throw err });
 
-    visualizations.push(matrixVis);
-
+    //makes the current matrix the one to show.
     matrixVis.setActive(true);
 
-    imageMode(CENTER);
-    rectMode(CENTER);
-
+    //disable the anti-aliasing.
     let context = document.getElementById("defaultCanvas0");
     ctx = context.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
     setupListeners();
-    print(new URL(window.location.href).searchParams.get("data"));
+
+    //I can only create vectors in a function. (or I would have to namespace main.js, and I wont.)
+    oldMouse = createVector();
+    newMouse = createVector();
 }
 
+/**
+ * x offset from dragging the visualization
+ * @type {number}
+ */
 var xOff = 0;
+
+/**
+ * y offset from draggin the visualization
+ * @type {number}
+ */
 var yOff = 0;
-var oldMouseX = 0;
-var oldMouseY = 0;
-var newMouseX = 0;
-var newMouseY = 0;
 
+/**
+ * Mouse position vector at the begin of the loop.
+ * @Type {vector}
+ */
+var oldMouse;
 
+/**
+ * Mouse position vector at the end of the loop.
+ * @Type {vector}
+ */
+var newMouse;
+
+/**
+ * boolean to differentiate between a click and a click-drag.
+ * @type {boolean}
+ */
 var mouseFlag = false;
+
 /**
  * Setup for the canvas listeners, zooming scrolling and clicking.
  */
 function setupListeners () {
+    //for zooming
     document.getElementById( "defaultCanvas0" ).onwheel = function(event){
         if (event.deltaY < 0) {
+            //zoom in
             zoom(true, zoomFactor);
         } else {
+            //else zoom out
             zoom(false, zoomFactor);
         }
+        //prevent the page from scrolling
         event.preventDefault();
     };
+    //onmousewheel has different support than onwheel for some reason.
     document.getElementById( "defaultCanvas0" ).onmousewheel = function(event){
         if (event.deltaY < 0) {
             zoom(true, zoomFactor);
@@ -82,13 +116,14 @@ function setupListeners () {
         }
         event.preventDefault();
     };
+    //on click
     document.getElementById( "defaultCanvas0" ).onmousedown = function(event){
         mouseFlag = true;
-        print('click');
-        oldMouseX = mouseX;
-        oldMouseY = mouseY;
-        newMouseX = mouseX;
-        newMouseY = mouseY;
+
+        oldMouse.x = mouseX;
+        oldMouse.y = mouseY;
+        newMouse.x = mouseX;
+        newMouse.y = mouseY;
     };
     document.getElementById("defaultCanvas0").onmouseup = function (event) {
         mouseFlag = false;
@@ -106,14 +141,14 @@ function mouseDragged() {
     if (mouseFlag) {
         drag = true;
         print('dragged');
-        newMouseX = mouseX;
-        newMouseY = mouseY;
+        newMouse.x = mouseX;
+        newMouse.y = mouseY;
 
-        xOff += newMouseX - oldMouseX;
-        yOff += newMouseY - oldMouseY;
+        xOff += newMouse.x - oldMouse.x;
+        yOff += newMouse.y - oldMouse.y;
 
-        oldMouseX = mouseX;
-        oldMouseY = mouseY;
+        oldMouse.x = mouseX;
+        oldMouse.y= mouseY;
     }
 };
 

@@ -17,6 +17,10 @@ Visualization.prototype.load = function () {
     return "load";
 };
 
+Visualization.prototype.setData = function (data) {
+    this.data = data;
+};
+
 Visualization.prototype.draw = function () {
     return "draw";
 };
