@@ -62,12 +62,11 @@ MatrixVisualization.prototype.setData = function (url) {
     var currentMatrix = this;
 
     function loadNodes(data) {
-        currentMatrix.data = data;
         currentMatrix.nodes = [];
-        for (key in data) {
+        for (var i = 0; i < data.tags.length; i++) {
             var newNode = new Node();
-            newNode.name = key;
-            newNode.outgoing = data[key];
+            newNode.name = data.tags[i];
+            newNode.outgoing = data.weights[i];
             currentMatrix.nodes.push(newNode);
         }
         currentMatrix.load();

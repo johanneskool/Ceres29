@@ -33,6 +33,8 @@ def parse(filename):
                         skiprows=1,
                         usecols=range(1, colnr + 1))
 
+    print(matrix.shape)
+
     return tags, matrix
 
 def reorder(tags, matrix):

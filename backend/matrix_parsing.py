@@ -3,7 +3,7 @@ import os
 import numpy as np
 import scipy.sparse.csgraph as csg
 from scipy.sparse import linalg
-import json
+import ujson
 from collections import OrderedDict
 from backend import app
 
@@ -33,7 +33,6 @@ def parse(filename):
                         skiprows=1,
                         usecols=range(1, colnr + 1))
 
-    print(tags[0])
     return tags, matrix
 
 def reorder(tags, matrix):
@@ -73,14 +72,12 @@ def reorder(tags, matrix):
 
     #find the reordering based on the Fiedler vector
     order = np.argsort(fiedler)
-    print(fiedler[order[0:10]])
 
     #sort matrix on both the rows and columns
     matrix = matrix[order, :]
     matrix = matrix[:, order]
     #sort tags
     tags = list(np.array(tags)[order])
-    print(tags[0:10])
     return tags, matrix
 
 def adjacency_to_json_string(tags, matrix):
@@ -93,12 +90,15 @@ def adjacency_to_json_string(tags, matrix):
     matrix (ndarray): the parsed adjacency matrix values
 
     Returns:
-    json string in the format {"tag1": [value_tag1, value_tag2 ... value_tagn], ...}
+    json string in the format {"tags": ["tag1", "tag2", "tagn"], "weights": 2D array of weights}
     """
-    to_be_converted = OrderedDict()
-    for row, tag in enumerate(tags):
-        to_be_converted[tag] = list(matrix[row, :])
-    return json.dumps(to_be_converted, indent=4)
+    to_be_converted = {}
+    to_be_converted["tags"] = tags
+    to_be_converted["weights"] = []
+    for row in range(len(tags)):
+        to_be_converted["weights"].append(list(matrix[row, :]))
+
+    return ujson.dumps(to_be_converted)
 
 def adjacency_to_json_file(filename, tags, matrix):
     jsonstring = adjacency_to_json_string(tags, matrix)
