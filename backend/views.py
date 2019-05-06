@@ -5,9 +5,7 @@ import os
 from flask import render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
 
-from backend import app, api, matrix_parsing
-
-api_version = app.config['API_VERSION']
+from backend import app, matrix_parsing
 
 
 def allowed_file(filename):
