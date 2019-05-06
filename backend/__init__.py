@@ -4,9 +4,11 @@ import os
 from os import environ
 
 from flask import Flask
+from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+Compress(app)
 
 # import configuration
 if environ.get('FLASK_ENV', '').lower() == 'production':
