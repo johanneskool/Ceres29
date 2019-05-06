@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This is the main file of the visualization which handels the creating
+ * and the canvas which displays the data.
+ *
+ * @author Samuel Oosterholt
+ */
+
 let nodes = [];
 let defaultCanvas;
 let body;
@@ -20,6 +27,8 @@ function setup() {
     // fetch data
     var file_name = new URL(window.location.href).searchParams.get("data");
     matrixVis.setData('/static/json/'+ file_name);
+
+//     outdated:
 //     fetch('/static/json/'+ file_name)
 //     .then(res => res.json())
 //     .then((out_json_data) => {
@@ -27,6 +36,7 @@ function setup() {
 // /*        matrixVis.setData('/static/json/'+ file_name);*/
 //     })
 //     .catch(err => { throw err });
+
     frameRate(999);
 
     visualizations.push(matrixVis);
@@ -160,5 +170,5 @@ window.onresize = function() {
     let w = window.innerWidth;
     let h = window.innerHeight;
     resizeCanvas(w, h);
-    loadingAnimation.onresize();
+    loadingAnimation.onresize();z
 };

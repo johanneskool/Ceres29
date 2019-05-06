@@ -27,7 +27,8 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * Function that creates a matrix for the given dataset, random if no dataset given.
  */
 MatrixVisualization.prototype.load = function () {
-    this.NODE_COUNT = this.nodes[0].outgoing.length;
+    console.log("start matrix loads");
+    this.NODE_COUNT = this.getArrayAtIndex(0).length;
     this.NODE_SIZE = floor(8000 / this.NODE_COUNT);
     const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
 
@@ -41,9 +42,7 @@ MatrixVisualization.prototype.load = function () {
 
     this.drawWidth = ceil(min(windowHeight, windowWidth) / 1.3);
 
-    //if there aren't any nodes we make our own.
-    //this.generateNodes();
-    this.drawMatrix(this.nodes);
+    this.drawMatrix(this.data);
 
     this.overlayGraphics = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
     this.overlayGraphics.imageMode(CORNER);
@@ -53,8 +52,8 @@ MatrixVisualization.prototype.load = function () {
     this.overlayRatio =  1;
     this.loaded = true;
     visIsLoaded = true;
+    console.log("matrix load done");
 };
-
 
 MatrixVisualization.prototype.setData = function (url) {
     print(url);
@@ -63,15 +62,9 @@ MatrixVisualization.prototype.setData = function (url) {
 
     function loadNodes(data) {
         currentMatrix.data = data;
-        currentMatrix.nodes = [];
-        for (key in data) {
-            var newNode = new Node();
-            newNode.name = key;
-            newNode.outgoing = data[key];
-            currentMatrix.nodes.push(newNode);
-        }
         currentMatrix.load();
     }
+
 };
 
 /**
@@ -89,15 +82,15 @@ MatrixVisualization.prototype.generateNodes = function () {
 
 /**
  * Draws a matrix to the graphics based of the input nodes
- * @param nodes input nodes
+ * @param data input JSON
  */
-MatrixVisualization.prototype.drawMatrix = function (nodes) {
-    for (let i = 0; i < nodes.length; i++) {
+MatrixVisualization.prototype.drawMatrix = function (data) {
+    for (key in this.data) {
         this.matrix.push();
-        for (let j = 0; j < nodes[i].outgoing.length; j++) {
-            var hue = map(log(nodes[i].outgoing[j]), 0, 3, 0, -25);
-            var saturation;
-            var brightness = map(log(nodes[i].outgoing[j]), 0, 3, 0, 35);
+        for (let i = 0; i < this.data[key].length; i++) {
+            let weight = this.data[key][i];
+            var hue = map(log(weight), 0, 3, 0, -25);
+            var brightness = map(log(weight), 0, 3, 0, 35);
             if (hue < 0) {
                 hue += 100;
             }
@@ -161,14 +154,14 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
         this.colorCell(x, y);
 
         // show debugging info in console
-        var text = "Edge from :" + this.nodes[x].name + " to " + this.nodes[y].name + " has a weight of: " + this.nodes[x].outgoing[y];
+        var text = "Edge from :" + this.getKeyAtIndex(x) + " to " + this.getKeyAtIndex(y) + " has a weight of: " + this.getDataAtPosition(x,y);
         console.log(text);
 
         // update sidebar with informatino
         document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
-        document.getElementById('matrix-visualization-edge-info-from').innerHTML = this.nodes[x].name;
-        document.getElementById('matrix-visualization-edge-info-to').innerHTML = this.nodes[y].name;
-        document.getElementById('matrix-visualization-edge-info-weight').innerHTML = this.nodes[x].outgoing[y];
+        document.getElementById('matrix-visualization-edge-info-from').innerHTML = this.getKeyAtIndex(x);
+        document.getElementById('matrix-visualization-edge-info-to').innerHTML = this.getKeyAtIndex(y);
+        document.getElementById('matrix-visualization-edge-info-weight').innerHTML = this.getDataAtPosition(x,y);
     } catch(error) {
         if (error instanceof TypeError) {
             // user clicked outside of box, hide edge info again
