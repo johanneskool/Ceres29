@@ -24,7 +24,7 @@ var VisualizationHandler = function () {
      * The active visualization is the visualization that is being interacted with.
      * @type {Visualization}
      */
-    this.active;
+    this.active = null;
 
     /**
      * The vector of the currently selected node, vector representation in the matrix.
@@ -39,15 +39,15 @@ var VisualizationHandler = function () {
     this.data = null;
 
     /**
-     * Active setter
+     * Active getter
      * @returns {Visualization}
      */
     this.getActive = function () {
-        return active;
+        return this.active;
     };
 
     /**
-     * Active getter
+     * Active setter
      * @param active
      */
     this.setActive = function (active) {
@@ -94,26 +94,45 @@ var VisualizationHandler = function () {
      * @param yPos y position of the click
      */
     this.click = function (xPos, yPos) {
+        //first try to see if any other visualization on top are a click.
+        for (let i = 0; i <this.visualizations.length; i++) {
+            let index = this.visualizations.length - i;
+            if (this.visualizations[index] !== this.active) {
+                try {
+                    this.visualizations[index].getCell(xPos, yPos);
+                } catch (e) {
+                   continue;
+                }
+                this.setActive(this.visualizations[index]);
+                return;
+            }
+        }
+
         //If the active visualization throws an error
         try {
             this.active.click(xPos, yPos);
             this.colorCell(this.active.getCell(xPos, yPos));
+            return;
         } catch (error) {
             //check if we have clicked on another vis, we do this by running through the array and checking for click errors.
             if (error instanceof RangeError) {
-                for (let i = 0; i < this.visualizations.length; i++) {
+                for (let i = 0; i <= this.visualizations.length; i++) {
+                    //look from back to front.
+                    let index = this.visualizations.length - i;
                     try {
-                        this.visualizations[i].click(xPos, yPos);
+                        this.visualizations[index].getCell(xPos, yPos);
                     } catch (error) {
-                        console.log(error);
                         continue
                     }
-                    this.setActive(this.visualizations[i]);
+                    this.setActive(this.visualizations[index]);
                     return;
                 }
             }
         }
-        //clicked nothing, unload active cell.
+        //clicked nothing, unload active cell and clear overlay.
+        for (let i = 0; i < this.visualizations.length; i++) {
+            this.visualizations[i].colorCell(-1, -1);
+        }
         this.activeCell = null;
     };
 
@@ -134,6 +153,21 @@ var VisualizationHandler = function () {
      */
     this.setCanvas = function (canvas) {
         this.visualizationCanvas = canvas;
+    };
+
+    /**
+     * Delete the active visualization from the handler.
+     */
+    this.deleteActive = function () {
+        let activeIndex = this.visualizations.indexOf(this.active);
+        console.log(activeIndex);
+        if (activeIndex > -1) {
+            this.visualizations.splice(activeIndex,1)
+        }
+        if (this.visualizations.length > 0) {
+            this.active = this.visualizations[activeIndex - 1];
+        }
+        console.log(this.visualizations);
     };
 
     /**

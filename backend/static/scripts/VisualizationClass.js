@@ -13,33 +13,41 @@ var Visualization = function () {
 };
 
 /**
- * @Abstract
+ * Should load the main visualization
+ * @abstract
  */
 Visualization.prototype.load = function () {
-    return "load";
 };
 
+/**
+ * Should update the visualization data vrom the json url.
+ * @abstract
+ * @param url
+ */
 Visualization.prototype.setData = function (url) {
     this.data = url;
 };
 
+/**
+ * Should draw the image to the VH canvas.
+ * @abstract
+ */
 Visualization.prototype.draw = function () {
-    return "draw";
 };
 
-Visualization.prototype.setActive = function (boolean) {
-    return "active";
-};
-
-Visualization.prototype.isActive = function (boolean) {
-    return "active";
-};
-
+/**
+ * Should update the image position.
+ * @param {p5.Vector} position vector
+ */
 Visualization.prototype.setPosition = function (position) {
     this.position.set(position);
 };
 
-Visualization.prototype.getPosition = function (position) {
+/**
+ * Should return the image position
+ * @return {p5.Vector}
+ */
+Visualization.prototype.getPosition = function () {
     return this.position;
 };
 
@@ -70,4 +78,14 @@ Visualization.prototype.moveVisualization = function (xOff, yOff) {
 
 Visualization.prototype.getDataAtPosition = function (x,y) {
     return this.data[Object.keys(this.data)[x]][y];
+};
+
+/**
+ * Function that should be able to handle a click to the canvas with the given coords.
+ * @param posX
+ * @param posY
+ * @throws RangeError if you click outside the visualization. !important.
+ */
+Visualization.prototype.click = function (posX, posY) {
+
 };

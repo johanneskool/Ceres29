@@ -11,49 +11,67 @@
  */
 var MatrixVisualization = function () {
     Visualization.call(this, arguments);
-    this.active = false;
     this.loaded = false;
-    /*this.zoomScale;*/
+    this.maxSize = 3000;
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
 MatrixVisualization.prototype.constructor = MatrixVisualization;
 
 /***
- * Function that creates a matrix for the given dataset, random if no dataset given.
+ * Basic load function that draws the matrix to a buffer.
  */
 MatrixVisualization.prototype.load = function () {
     console.log("start matrix loads");
+
+    //update the node count.
     this.nodeCount = this.getArrayAtIndex(0).length;
-    this.nodeSize = floor(8000 / this.nodeCount);
+    this.updateNodeSize();
+
+    //create a matrix and the buffer graphics
     const matrixSize = this.nodeCount * this.nodeSize;
-
-
-
     this.matrix = createGraphics(matrixSize, matrixSize);
     this.matrix.colorMode(HSL, 100);
     this.matrix.textSize(this.nodeSize / 2);
     this.matrix.imageMode(CENTER);
     this.matrix.noStroke();
 
+    //initial matrix size
     this.drawWidth = ceil(min(windowHeight, windowWidth) / 1.3);
 
+    //draw the nodes from the data to the buffer
     this.drawMatrix(this.data);
 
+    //where we can show selected nodes.
     this.overlayGraphics = createGraphics(matrixSize, matrixSize);
     this.overlayGraphics.imageMode(CORNER);
     this.overlayGraphics.colorMode(HSL, 100);
     this.overlayGraphics.noStroke();
 
+    //unused since the later updates.
     this.overlayRatio =  1;
     this.loaded = true;
     visIsLoaded = true;
+
     console.log("matrix load done");
 };
 
+/**
+ * Function to update the node size of the matrix.
+ */
+MatrixVisualization.prototype.updateNodeSize = function () {
+    this.nodeSize = floor(this.maxSize / this.nodeCount);
+};
+
+/**
+ * Updates the matrix data.
+ * @param {url} url the json url of the data
+ */
 MatrixVisualization.prototype.setData = function (url) {
     print(url);
     loadJSON(url, loadNodes);
+
+    //the json callback forgets what matrix called it.
     var currentMatrix = this;
 
     function loadNodes(data) {
@@ -66,6 +84,7 @@ MatrixVisualization.prototype.setData = function (url) {
 
 /**
  * Generate random nodes.
+ * @deprecated unused since we have a json.
  */
 MatrixVisualization.prototype.generateNodes = function () {
     for (var i = 0; i < this.nodeCount; i++) {
@@ -78,18 +97,22 @@ MatrixVisualization.prototype.generateNodes = function () {
 
 /**
  * Draws a matrix to the graphics based of the input nodes
- * @param data input JSON
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-    this.nodeCount = this.getArrayAtIndex(1).length;
-    this.nodeSize = floor(8000 / this.nodeCount);
 
+    //update the basic information based on the new data.
+    this.nodeCount = this.getArrayAtIndex(1).length;
+    this.updateNodeSize();
+
+    //get the key to the weights
     let weights = this.getKeyAtIndex(1);
 
+    //loop through all the edges and create a rectangle.
     for (let i = 0; i < this.nodeCount; i++) {
         this.matrix.push();
         for (let j = 0; j < this.nodeCount; j++) {
-            let weight = this.data[weights][i][j]
+            let weight = this.data[weights][i][j];
+            //use the weight to color the cell.
             var hue = map(log(weight), 0, 3, 0, -25);
             var brightness = map(log(weight), 0, 3, 0, 35);
             if (hue < 0) {
@@ -106,27 +129,24 @@ MatrixVisualization.prototype.drawMatrix = function () {
 };
 
 /**
- * Draws the visualization to a new position and or zoomscale.
- * @param posX
- * @param posY
- * @param zoomScale
+ * Draw the visualization.
  */
-MatrixVisualization.prototype.draw = function (posX, posY) {
+MatrixVisualization.prototype.draw = function () {
+    //disregard draw calls that happen whilst it is still loading.
     if (!this.loaded) {
         return;
     }
     if (arguments.length === 0) {
         image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
-        return;
     }
-    this.position.x = posX;
-    this.position.y = posY;
-
-    image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
-    image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
 
+/**
+ * Color the cell at the given coords
+ * @param x the x cords of the matrix
+ * @param y the y cords of the matrix
+ */
 MatrixVisualization.prototype.colorCell = function (x, y) {
     this.overlayGraphics.clear();
     this.overlayGraphics.fill(50,75,75);
@@ -139,6 +159,7 @@ MatrixVisualization.prototype.colorCell = function (x, y) {
  * @param xCord
  * @param yCord
  * @return {p5.Vector} vector of the cell at the given position.
+ * @throws RangeError if you click a cell that is outside of the matrix, i.e. a bad click.
  */
 MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed
@@ -148,50 +169,48 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     var nodeSize = (this.drawWidth / this.zoomScale)/this.nodeCount;
     var x = floor(cell.x / nodeSize);
     var y = floor(cell.y / nodeSize);
-    print(x, y);
     var cellVector = createVector(x, y);
+
+    if (x < 0 || y < 0 || x > this.nodeCount ||  y > this.nodeCount) {
+        throw new RangeError("clicked outside of visualization");
+    }
+
     return cellVector
 };
 
+/**
+ * Handles the clicking to the canvas.
+ * @param xCord mouse x
+ * @param yCord mouse y
+ * @throws RangeError if you click outside of the matrix.
+ */
 MatrixVisualization.prototype.click = function (xCord, yCord) {
-    //     // function gets executed when an edge is pressed
-    var cellVector = this.getCell(xCord, yCord);
-    var x = cellVector.x;
-    var y = cellVector.y;
-
+    // function gets executed when an edge is pressed
     try {
-        // mark this cell
-        this.colorCell(x, y);
-
-        let from = this.getArrayAtIndex(0)[x];
-        from = from.replace(/_/g,' ');
-        let to = this.getArrayAtIndex(0)[y];
-        to = to.replace(/_/g,' ');
-        let weight = this.getArrayAtIndex(1)[x][y];
-
-        // show debugging info in console
-        var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
-        console.log(text);
-
-        // update sidebar with informatino
-        document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
-        document.getElementById('matrix-visualization-edge-info-from').innerHTML = from;
-        document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;
-        document.getElementById('matrix-visualization-edge-info-weight').innerHTML = weight;
-
-    } catch(error) {
-        if (error instanceof TypeError) {
-            // user clicked outside of box, hide edge info again
-            document.getElementById('matrix-visualization-edge-info').style.display = 'none';
-        }
+        var cellVector = this.getCell(xCord, yCord);
+        var x = cellVector.x;
+        var y = cellVector.y;
+    } catch (error) {
+        document.getElementById('matrix-visualization-edge-info').style.display = 'none';
         throw new RangeError("clicked outside of visualization");
     }
-};
 
-MatrixVisualization.prototype.setActive = function (boolean) {
-    this.active = boolean;
-};
+    // mark this cell
+    this.colorCell(x, y);
 
-MatrixVisualization.prototype.isActive = function () {
-    return this.active;
+    let from = this.getArrayAtIndex(0)[x];
+    from = from.replace(/_/g,' ');
+    let to = this.getArrayAtIndex(0)[y];
+    to = to.replace(/_/g,' ');
+    let weight = this.getArrayAtIndex(1)[x][y];
+
+    // show debugging info in console
+    var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
+    console.log(text);
+
+    // update sidebar with informatino
+    document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
+    document.getElementById('matrix-visualization-edge-info-from').innerHTML = from;
+    document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;
+    document.getElementById('matrix-visualization-edge-info-weight').innerHTML = weight;
 };
