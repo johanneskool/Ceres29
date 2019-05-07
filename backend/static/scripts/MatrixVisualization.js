@@ -1,4 +1,9 @@
-// authors: Samuel Oosterholt, Tristan Trouwen
+/**
+ * @fileoverview Contains the matrix visualization class and the functions needed to draw it to the canvas
+ * @author Samuel Oosterholt
+ * @author Tristan Trouwem
+ */
+
 
 /***
  * The class for the MatrixVisualization, a child of the visualization.
@@ -6,11 +11,9 @@
  */
 var MatrixVisualization = function () {
     Visualization.call(this, arguments);
-    this.nodes = [];
-    this.NODE_COUNT = 200;
-    this.position = createVector();
     this.active = false;
     this.loaded = false;
+    /*this.zoomScale;*/
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
@@ -21,15 +24,15 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  */
 MatrixVisualization.prototype.load = function () {
     console.log("start matrix loads");
-    this.NODE_COUNT = this.getArrayAtIndex(0).length;
-    this.NODE_SIZE = floor(8000 / this.NODE_COUNT);
-    const MATRIX_SIZE = this.NODE_COUNT * this.NODE_SIZE;
+    this.nodeCount = this.getArrayAtIndex(0).length;
+    this.nodeSize = floor(8000 / this.nodeCount);
+    const matrixSize = this.nodeCount * this.nodeSize;
 
 
 
-    this.matrix = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
+    this.matrix = createGraphics(matrixSize, matrixSize);
     this.matrix.colorMode(HSL, 100);
-    this.matrix.textSize(this.NODE_SIZE / 2);
+    this.matrix.textSize(this.nodeSize / 2);
     this.matrix.imageMode(CENTER);
     this.matrix.noStroke();
 
@@ -37,7 +40,7 @@ MatrixVisualization.prototype.load = function () {
 
     this.drawMatrix(this.data);
 
-    this.overlayGraphics = createGraphics(MATRIX_SIZE, MATRIX_SIZE);
+    this.overlayGraphics = createGraphics(matrixSize, matrixSize);
     this.overlayGraphics.imageMode(CORNER);
     this.overlayGraphics.colorMode(HSL, 100);
     this.overlayGraphics.noStroke();
@@ -60,32 +63,32 @@ MatrixVisualization.prototype.setData = function (url) {
 
 };
 
+
 /**
  * Generate random nodes.
  */
 MatrixVisualization.prototype.generateNodes = function () {
-    for (var i = 0; i < this.NODE_COUNT; i++) {
+    for (var i = 0; i < this.nodeCount; i++) {
         this.nodes.push(new Node());
-        for (var j = 0; j < this.NODE_COUNT; j++) {
+        for (var j = 0; j < this.nodeCount; j++) {
             this.nodes[i].outgoing.push(floor(random(1) * 10) / 10);
         }
     }
 };
-
 
 /**
  * Draws a matrix to the graphics based of the input nodes
  * @param data input JSON
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-    this.NODE_COUNT = this.getArrayAtIndex(1).length;
-    this.NODE_SIZE = floor(8000 / this.NODE_COUNT);
+    this.nodeCount = this.getArrayAtIndex(1).length;
+    this.nodeSize = floor(8000 / this.nodeCount);
 
     let weights = this.getKeyAtIndex(1);
 
-    for (let i = 0; i < this.NODE_COUNT; i++) {
+    for (let i = 0; i < this.nodeCount; i++) {
         this.matrix.push();
-        for (let j = 0; j < this.NODE_COUNT; j++) {
+        for (let j = 0; j < this.nodeCount; j++) {
             let weight = this.data[weights][i][j]
             var hue = map(log(weight), 0, 3, 0, -25);
             var brightness = map(log(weight), 0, 3, 0, 35);
@@ -94,11 +97,11 @@ MatrixVisualization.prototype.drawMatrix = function () {
             }
 
             this.matrix.fill(hue, 100, brightness, 100);
-            this.matrix.rect(0, 0, this.NODE_SIZE, this.NODE_SIZE);
-            this.matrix.translate(0, this.NODE_SIZE);
+            this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
+            this.matrix.translate(0, this.nodeSize);
         }
         this.matrix.pop();
-        this.matrix.translate(this.NODE_SIZE, 0);
+        this.matrix.translate(this.nodeSize, 0);
     }
 };
 
@@ -108,7 +111,7 @@ MatrixVisualization.prototype.drawMatrix = function () {
  * @param posY
  * @param zoomScale
  */
-MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
+MatrixVisualization.prototype.draw = function (posX, posY) {
     if (!this.loaded) {
         return;
     }
@@ -119,7 +122,7 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
     }
     this.position.x = posX;
     this.position.y = posY;
-    this.zoomScale = zoomScale;
+
     image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
     image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
 };
@@ -127,21 +130,34 @@ MatrixVisualization.prototype.draw = function (posX, posY, zoomScale) {
 MatrixVisualization.prototype.colorCell = function (x, y) {
     this.overlayGraphics.clear();
     this.overlayGraphics.fill(50,75,75);
-    this.overlayGraphics.rect(x*this.overlayRatio*this.NODE_SIZE, y*this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE, this.overlayRatio*this.NODE_SIZE);
+    this.overlayGraphics.rect(x*this.overlayRatio*this.nodeSize, y*this.overlayRatio*this.nodeSize, this.overlayRatio*this.nodeSize, this.overlayRatio*this.nodeSize);
 
 };
 
-MatrixVisualization.prototype.click = function (xCord, yCord) {
-    // function gets executed when an edge is pressed
-
+/**
+ * Turns x and y cords into a cell.
+ * @param xCord
+ * @param yCord
+ * @return {p5.Vector} vector of the cell at the given position.
+ */
+MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed
     var topLeft = createVector(this.position.x - (this.drawWidth / this.zoomScale)/2, this.position.y - (this.drawWidth / this.zoomScale)/2);
     var mouse = createVector(xCord, yCord);
     var cell = p5.Vector.sub(mouse, topLeft);
-    var nodeSize = (this.drawWidth / this.zoomScale)/this.NODE_COUNT;
+    var nodeSize = (this.drawWidth / this.zoomScale)/this.nodeCount;
     var x = floor(cell.x / nodeSize);
     var y = floor(cell.y / nodeSize);
     print(x, y);
+    var cellVector = createVector(x, y);
+    return cellVector
+};
+
+MatrixVisualization.prototype.click = function (xCord, yCord) {
+    //     // function gets executed when an edge is pressed
+    var cellVector = this.getCell(xCord, yCord);
+    var x = cellVector.x;
+    var y = cellVector.y;
 
     try {
         // mark this cell
@@ -167,7 +183,8 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
         if (error instanceof TypeError) {
             // user clicked outside of box, hide edge info again
             document.getElementById('matrix-visualization-edge-info').style.display = 'none';
-        } else { throw error }
+        }
+        throw new RangeError("clicked outside of visualization");
     }
 };
 

@@ -33,16 +33,16 @@ var matrixVis;
 let visIsLoaded = false;
 
 /**
- * Array of al the currently iniated visualizations.
- * @type {Array}
- */
-var visualizations = [];
-
-/**
  * Canvas which shows the current visualization(s)
  * @type {canvas}
  */
 let visualizationCanvas;
+
+/**
+ * Main handler for the visualization canvas.
+ * @type {VisualizationHandler}
+ */
+let visualizationHandler;
 
 //basic setup and buffer for matrix to prevent redrawing.
 function setup() {
@@ -56,17 +56,18 @@ function setup() {
     //puts the canvas under the 'canvas' div
     visualizationCanvas.parent('canvas');
 
-    //create a new matrix object
-    matrixVis = new MatrixVisualization();
+    //iniate the main handler
+    visualizationHandler = new VisualizationHandler();
+    visualizationHandler.setCanvas(visualizationCanvas);
 
-    //add the matrix to the list of visualizations.
-    visualizations.push(matrixVis);
+    //create a new matrix object
+    visualizationHandler.newVisualization('matrix');
 
     // fetch data
     var file_name = new URL(window.location.href).searchParams.get("data");
 
-    //update the matrix data
-    matrixVis.setData('/static/json/'+ file_name);
+    //update the VH data
+    visualizationHandler.setData('/static/json/' + file_name);
 
 //     outdated:
 //     fetch('/static/json/'+ file_name)
@@ -78,7 +79,6 @@ function setup() {
 //     .catch(err => { throw err });
 
     //makes the current matrix the one to show.
-    matrixVis.setActive(true);
 
     //disable the anti-aliasing.
     let context = document.getElementById("defaultCanvas0");
@@ -91,18 +91,6 @@ function setup() {
     oldMouse = createVector();
     newMouse = createVector();
 }
-
-/**
- * x offset from dragging the visualization
- * @type {number}
- */
-var xOff = 0;
-
-/**
- * y offset from draggin the visualization
- * @type {number}
- */
-var yOff = 0;
 
 /**
  * Mouse position vector at the begin of the loop.
@@ -163,8 +151,7 @@ function setupListeners () {
 
         //if mouse has not been dragged, send click to visualization.
         if (!dragFlag) {
-            //TODO update this function to be ambigous, not only for matrixVis. i.e. create a handler.
-            matrixVis.click(mouseX, mouseY);
+            visualizationHandler.click(mouseX, mouseY);
         }
 
         //reset dragFlag flag.
@@ -187,9 +174,7 @@ function mouseDragged() {
         newMouse.x = mouseX;
         newMouse.y = mouseY;
 
-        //Add the difference between old and new mouse to the offset.
-        xOff += newMouse.x - oldMouse.x;
-        yOff += newMouse.y - oldMouse.y;
+        visualizationHandler.moveActive(newMouse.x - oldMouse.x, newMouse.y - oldMouse.y);
 
         //update old mouse vector positions.
         oldMouse.x = mouseX;
@@ -207,54 +192,23 @@ function mouseDragged() {
 function zoom(zoomIn, zoomFactor) {
     if (zoomIn) {
         //hard to explain in code, get some pen and paper and visualize the transformation.
-        xOff -= (mouseX - matrixX)*(zoomFactor - 1);
-        yOff -= (mouseY - matrixY)*(zoomFactor - 1);
-        zoomScale = zoomScale / zoomFactor;
+        visualizationHandler.moveActive(-(mouseX - visualizationHandler.getActivePosition().x)*(zoomFactor - 1), -(mouseY - visualizationHandler.getActivePosition().y)*(zoomFactor - 1));
+        visualizationHandler.setActiveZoomScale(visualizationHandler.active.getZoomScale()/zoomFactor);
     } else {
         //idem.
-        xOff += (mouseX - matrixX)*(zoomFactor - 1)/zoomFactor;
-        yOff += (mouseY - matrixY)*(zoomFactor - 1)/zoomFactor;
-        zoomScale = zoomScale * zoomFactor;
+        visualizationHandler.moveActive((mouseX - visualizationHandler.getActivePosition().x)*(zoomFactor - 1)/zoomFactor, (mouseY - visualizationHandler.getActivePosition().y)*(zoomFactor - 1)/zoomFactor);
+        visualizationHandler.setActiveZoomScale(visualizationHandler.active.getZoomScale() * zoomFactor);
     }
 }
-
-/**
- * x position where the matrix should be drawn
- * @Type {number}
- */
-let matrixX;
-
-/**
- * y position where the matrix should be drawn
- * @Type {number}
- */
-let matrixY;
 
 function draw() {
     //wipe background
     background(0,0,100);
     fill(0, 0, 0, 100);
 
-    showImage();
+    visualizationHandler.drawAll();
 }
 
-/**
- * @function Draws the Image to the correct position on the canvas
- * @TODO make it ambiguous for all types of visualizations, not just the matrix.
- */
-function showImage(){
-    matrixX = document.getElementById("canvas").offsetWidth / 2 + xOff;
-    matrixY = document.getElementById("canvas").offsetHeight / 2 + yOff;
-
-    for (let i = 0; i < visualizations.length; i++) {
-        if (visualizations[i].isActive()) {
-            visualizations[i].draw(matrixX, matrixY, zoomScale);
-            matrixVis.draw(matrixX, matrixY, zoomScale);
-        }  else {
-            visualizations[i].draw();
-        }
-    }
-}
 
 /**
  * Rescales the canvas when the windows has been changed

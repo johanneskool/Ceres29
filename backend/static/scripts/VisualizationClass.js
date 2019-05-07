@@ -8,6 +8,8 @@ var Visualization = function () {
         throw new Error("Bruh.");
     }
     this.data;
+    this.zoomScale;
+    this.position = createVector();
 };
 
 /**
@@ -17,8 +19,8 @@ Visualization.prototype.load = function () {
     return "load";
 };
 
-Visualization.prototype.setData = function (data) {
-    this.data = data;
+Visualization.prototype.setData = function (url) {
+    this.data = url;
 };
 
 Visualization.prototype.draw = function () {
@@ -33,6 +35,22 @@ Visualization.prototype.isActive = function (boolean) {
     return "active";
 };
 
+Visualization.prototype.setPosition = function (position) {
+    this.position.set(position);
+};
+
+Visualization.prototype.getPosition = function (position) {
+    return this.position;
+};
+
+Visualization.prototype.setZoomScale = function (zoomScale) {
+    this.zoomScale = zoomScale;
+};
+
+Visualization.prototype.getZoomScale = function () {
+    return this.zoomScale;
+};
+
 Visualization.prototype.getArrayAtKey = function (key) {
     return this.data[key];
 };
@@ -45,8 +63,11 @@ Visualization.prototype.getArrayAtIndex = function (x) {
     return this.data[Object.keys(this.data)[x]];
 };
 
+Visualization.prototype.moveVisualization = function (xOff, yOff) {
+    let offset = createVector(xOff, yOff);
+    this.position.add(offset);
+};
+
 Visualization.prototype.getDataAtPosition = function (x,y) {
     return this.data[Object.keys(this.data)[x]][y];
 };
-
-
