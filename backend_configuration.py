@@ -11,7 +11,8 @@ class Config(object):
     HOST = 'localhost'
     PORT = '5555'
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + SQLALCHEMY_DATABASE_PATH
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEVELOPMENT = False
     UPLOAD_FOLDER = os.path.join(basedir, 'backend/static/uploads/')
@@ -30,4 +31,3 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     TEMPLATES_AUTO_RELOAD = True
-

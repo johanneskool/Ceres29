@@ -624,14 +624,14 @@ backend/static/uploads/*
 backend/static/json/*
 !backend/static/json/readme.md
 
-
 ##Do not use docs folder anymore
 docs/*
-
-##don't copy virtual environment
-venv/
-
-
 !docs/readme.md
 !docs/ujson-1.35-cp36-cp36m-win_amd64.whl
 !docs/ujson-1.35-cp37-cp37m-win_amd64.whl
+
+##Don't sync app.db file
+app.db
+
+##don't copy virtual environment
+venv/

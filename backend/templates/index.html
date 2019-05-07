@@ -25,6 +25,7 @@
             <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
           </div>
           <div class="custom-file">
+            <!-- Keep custom-file-input class for dynamically showing filename -->
             <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
             <label class="custom-file-label" for="file">Choose file</label>
           </div>
