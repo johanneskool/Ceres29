@@ -6,6 +6,7 @@ from os import environ
 from flask import Flask
 from flask_compress import Compress
 from flask_sqlalchemy import SQLAlchemy
+from shutil import copyfile
 
 app = Flask(__name__)
 Compress(app)
@@ -24,6 +25,10 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 # Creating json folder if it does not yet exist
 if not os.path.exists(app.config['JSON_FOLDER']):
     os.makedirs(app.config['JSON_FOLDER'])
+
+# Create database from example db if it does not yet exist
+if not os.path.isfile(app.config['SQLALCHEMY_DATABASE_PATH']):
+    copyfile(app.config['SQLALCHEMY_DATABASE_PATH'].replace('.db', '.example.db'), app.config['SQLALCHEMY_DATABASE_PATH'])
 
 # initialize db
 db = SQLAlchemy(app)
