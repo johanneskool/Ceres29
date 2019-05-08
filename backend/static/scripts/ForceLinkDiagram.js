@@ -3,11 +3,11 @@ let graph = {
     edges: [],
 };
 
-const limit = 100;
+const limit = 1000;
 
 function preload() {
     // get json data
-    let url = "http://localhost:5555/static/json/test.json";
+    let url = "http://localhost:5555/static/json/f.json";
     data = loadJSON(url);
 }
 
@@ -16,6 +16,7 @@ function setup() {
 
     s = new sigma(
         {
+            graph: data,
             renderer: {
                 container: document.getElementById('sigma-container'),
                 type: 'canvas'
@@ -34,27 +35,26 @@ function setup() {
         }
     );
 
-    let number = 0;
+    for (let index in data.tags) {
+            graph.nodes.push({
+                id: index,
+                label: data.tags[index],
+                x: random(-500, 500),
+                y: random(-500, 500),
+                size: 1,
+                color: '#0099ff'
+            });
 
-    for (let entry in data) {
-        graph.nodes.push({
-            id: number,
-            label: entry,
-            x: random(-500, 500),
-            y: random(-500, 500),
-            size: 1,
-            color: '#0099ff'
-        });
-
-        number++;
-        if (number > limit) {
-            break; // stop adding nodes if the limit of nodes is reached
-        }
+            if (index > limit) {
+                break; // stop adding nodes if the limit of nodes is reached
+            }
     }
 
-    graph.nodes.forEach((node) => {
-        let outgoing = data[node.name];
-        for (let i = 0; i < outgoing.length; i++) {
+/*    let outgoing = data[nodes];
+    for (let i = 0; i < outgoing.length; i++) {
+        console.log(outgoing);
+    }
+        for (let i = 0; i < 100; i++) {
             let weight = outgoing[i];
             let to_node;
 
@@ -81,7 +81,7 @@ function setup() {
                     });
                 });
             }
-    }});
+        }*/
 
     // Load the graph in sigma
     s.graph.read(graph);
