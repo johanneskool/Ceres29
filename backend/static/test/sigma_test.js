@@ -15,7 +15,7 @@ let graph = {
 };
 
 //Changing the amount of nodes:
-const inputSize = 100;
+const inputSize = 300;
 //max weight of the dataset?
 const maxWeight = 1000;
 
