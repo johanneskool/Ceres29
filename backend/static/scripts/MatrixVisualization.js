@@ -108,10 +108,10 @@ MatrixVisualization.prototype.drawMatrix = function () {
     let weights = this.getKeyAtIndex(1);
 
     //loop through all the edges and create a rectangle.
-    for (let i = 0; i < this.nodeCount; i++) {
+    for (let row = 0; row < this.nodeCount; row++) {
         this.matrix.push();
-        for (let j = 0; j < this.nodeCount; j++) {
-            let weight = this.data[weights][i][j];
+        for (let col = 0; col < this.nodeCount; col++) {
+            let weight = this.data[weights][col][row];
             //use the weight to color the cell.
             var hue = map(log(weight), 0, 3, 0, -25);
             var brightness = map(log(weight), 0, 3, 0, 35);
