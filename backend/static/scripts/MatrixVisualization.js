@@ -113,11 +113,11 @@ MatrixVisualization.prototype.drawMatrix = function () {
         for (let j = 0; j < this.nodeCount; j++) {
             let weight = this.data[weights][i][j];
             //use the weight to color the cell.
-            var hue = map(log(weight), 0, 3, 0, -25);
-            var brightness = map(log(weight), 0, 3, 0, 35);
-            if (hue < 0) {
+            var hue = map(log(weight), 0, 2, 65, 55);     //fixed variable oringal range TODO
+            var brightness = map(log(weight), 0, 2, 22, 49);
+            /*if (hue < 0) {
                 hue += 100;
-            }
+            }*/
 
             this.matrix.fill(hue, 100, brightness, 100);
             this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);

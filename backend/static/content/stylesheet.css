@@ -1,4 +1,4 @@
-/* authors: Tristan Trouwen */
+/* authors: Tristan Trouwen, Rink Pieters, Fabienne vd Weide */
 
 
 .wrapper {
@@ -20,4 +20,8 @@
 #defaultCanvas0, #defaultCanvas1 {
     grid-column: 1;
     grid-row: 1;
+}
+
+.jumbotron {
+  background-color: green;
 }

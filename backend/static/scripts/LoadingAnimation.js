@@ -19,7 +19,7 @@ var sketch = function (animation) {
         document.getElementById("defaultCanvas1").style.zIndex = 2;
         animation.noStroke();
         for (var i = 0; i < 7; i++) {
-            animation.circleArray.push(new animation.Circle(-80 + 20 * i, 0, 120 + i * 20, 100 + i * 25));
+            animation.circleArray.push(new animation.Circle(-80 + 20 * i, 41 + i, 100 + i * 8, 138 + i * 9));
         }
     };
 

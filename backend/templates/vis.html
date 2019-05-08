@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Network visualization tool
+{% endblock %}
+
+{% block title_text %}
+  TU/e BDL Project HTI + Webtech by Ceres 29.
+  <br>
+  This tool provides an adjacency matrix and three different types of node-link diagrams.
+  <br>
+  Upload your own files to analyze your network data!
+{% endblock %}
+
+{% block content %}
+    <!-- AUTHORS
+    Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide
+    -->
+
+    {% if data %}
+      <div class="col-md-12" style='height: calc(100% - 100px);'>
+        <div class="wrapper">
+            <div class="sidebar">
+                <p><b>Filename: </b>{{ data }}</p>
+                <hr>
+                <div id="matrix-visualization-edge-info" style="display: none">
+                    <h6>Edge information</h6>
+                    <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
+                    <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
+                    <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
+                </div>
+            </div>
+            <div id="canvas" style="overflow:hidden;"></div>
+        </div>
+      </div>
+    {% endif %}
+
+{% endblock %}

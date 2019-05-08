@@ -203,7 +203,7 @@ function zoom(zoomIn, zoomFactor) {
 
 function draw() {
     //wipe background
-    background(0,0,100);
+    background(66, 35, 22);
     fill(0, 0, 0, 100);
 
     visualizationHandler.drawAll();

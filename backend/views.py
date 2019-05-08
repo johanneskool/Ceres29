@@ -52,6 +52,61 @@ def index():
             flash("Successfully uploaded!")
             return redirect(url_for('index'))
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    data_name = request.args.get('data')
+    if request.method == 'GET':
+        # find available JSON files
+        json_file_path = app.config['JSON_FOLDER']
+        available_files = [{
+            "url": url_for('static', filename=os.path.join(app.config['JSON_FOLDER_RELATIVE'], file)),
+            "filename": file
+        }
+            for file in os.listdir(json_file_path) if
+            os.path.isfile(os.path.join(json_file_path, file)) and file != 'readme.md'
+        ]
+
+        return render_template("upload.html", files_available=available_files, app=app, data=data_name, title="Upload a file")
+
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if not allowed_file(file.filename):
+            flash('Filetype not allowed')
+            return redirect(request.url)
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            tags, matrix = matrix_parsing.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            tags, matrix = matrix_parsing.reorder(tags, matrix)
+            matrix_parsing.adjacency_to_json_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), tags, matrix)
+            flash("Successfully uploaded!")
+            return redirect(url_for('index'))
+
+@app.route('/vis', methods=['GET'])
+def vis():
+    data_name = request.args.get('data')
+    if request.method == 'GET':
+        # find available JSON files
+        json_file_path = app.config['JSON_FOLDER']
+        available_files = [{
+            "url": url_for('static', filename=os.path.join(app.config['JSON_FOLDER_RELATIVE'], file)),
+            "filename": file
+        }
+            for file in os.listdir(json_file_path) if
+            os.path.isfile(os.path.join(json_file_path, file)) and file != 'readme.md'
+        ]
+
+        return render_template("vis.html", files_available=available_files, app=app, data=data_name, title=data_name)
+
 
 @app.after_request
 def add_header(response):

@@ -16,9 +16,9 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     {% endif %}
 
     <!-- including css stylesheets -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/stylesheet.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/jumbotron.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='content/stylesheet.css') }}">
 
     <!-- including javascript scripts -->
     <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
@@ -44,26 +44,38 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
+        {% if request.path == "/" %}
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
+        {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="/">Home</a>
         </li>
+        {% endif %}
+
+        {% if request.path == "/upload" %}
+        <li class="nav-item active">
+          <a class="nav-link" href="/upload">Upload <span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
+          <a class="nav-link" href="/upload">Upload</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
+        {% endif %}
+
+        {% if request.path == "/vis" %}
+        <li class="nav-item active">
+          <a class="nav-link" href="/vis">Visualization <span class="sr-only">(current)</span></a>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/vis">Visualization</a>
+        </li>
+        {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <input class="form-control mr-sm-2" disabled type="text" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
@@ -71,6 +83,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
   <main role="main">
 
+    {% if request.path != "/vis" %}
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
@@ -78,6 +91,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         <p>{% block title_text %}{% endblock %}</p>
       </div>
     </div>
+    {% endif %}
 
     <div class="container-fluid">
       <div class="row">

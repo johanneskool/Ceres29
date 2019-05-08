@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Network visualization tool
+{% endblock %}
+
+{% block title_text %}
+  TU/e BDL Project HTI + Webtech by Ceres 29.
+  <br>
+  This tool provides an adjacency matrix and three different types of node-link diagrams.
+  <br>
+  Upload your own files to analyze your network data!
+{% endblock %}
+
+{% block content %}
+    <!-- AUTHORS
+    Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide
+    -->
+
+    <div class="col-md-6">
+      <h2>Upload new file</h2>
+      <form method=post enctype=multipart/form-data>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">File:</span>
+          </div>
+          <div class="custom-file">
+            <!-- Keep custom-file-input class for dynamically showing filename -->
+            <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
+            <label class="custom-file-label" for="file">Upload a file</label>
+          </div>
+        </div>
+        <br>
+        <input type=submit value=Upload class="btn btn-secondary">
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <h2>or open an existing file:</h2>
+      <form method=get enctype=multipart/form-data action="/vis">
+        <div class="input-group">
+          <select class="custom-select" id="data" name="data">
+            <option selected value="" disabled>Choose a file</option>
+            {% for file in files_available %}
+              <option value="{{ file["filename"] }}">{{ file["filename"] }}</option>
+            {% endfor %}
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Load</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+{% endblock %}
