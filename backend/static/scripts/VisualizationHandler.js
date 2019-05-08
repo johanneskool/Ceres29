@@ -8,6 +8,14 @@
  * @constructor
  */
 var VisualizationHandler = function () {
+
+    /**
+     * Create an animation to go with the handler
+     * @type {p5}
+     */
+    this.loadingAnimation = new p5(sketch);
+    this.loadingAnimation.setHandler(this);
+
     /**
      * Main array containing all the visualizations handled by this handler.
      * @type {Array}
@@ -42,7 +50,7 @@ var VisualizationHandler = function () {
      * Flag that is true if the Handler is actively showing a loaded visualization.
      * @type {boolean}
      */
-    this.loadedVisualization = false;
+    this.hasLoadedVisualization = false;
 
     /**
      * Active getter
@@ -173,9 +181,25 @@ var VisualizationHandler = function () {
         if (this.visualizations.length > 0) {
             this.active = this.visualizations[activeIndex - 1];
         } else {
-            this.loadedVisualization = false;
+            this.hasLoadedVisualization = false;
         }
         console.log(this.visualizations);
+    };
+
+    /**
+     * Getter for hasLoadedVisualization.
+     * @return {boolean}
+     */
+    this.getLoadedVisualization = function () {
+        return this.hasLoadedVisualization;
+    };
+
+    /**
+     * Setter of HasLoadedVisualization
+     * @param boolean
+     */
+    this.setLoadedVisualization = function (boolean) {
+        this.hasLoadedVisualization = boolean;
     };
 
     /**
@@ -194,13 +218,9 @@ var VisualizationHandler = function () {
                     newMatrixVisualization.setData(this.data);
                 }
 
-                if (this.activeCell != null) {
-                    newMatrixVisualization.colorCell(this.activeCell.x, this.activeCell.y);
-                }
                 newMatrixVisualization.setVH(this);
                 this.active.setZoomScale(1);
                 this.centerActive();
-                this.loadedVisualization = true;
                 break;
         }
     };
@@ -231,14 +251,6 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].setData(url);
         }
-    };
-
-    /**
-     * Getter for loadedVisualization.
-     * @return {boolean}
-     */
-    this.hasLoadedVisualization = function () {
-        return this.loadedVisualization;
     };
 
     /**

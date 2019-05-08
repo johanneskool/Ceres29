@@ -158,7 +158,11 @@ MatrixVisualization.prototype.drawMatrix = function () {
     if (!done) {
         this.startPositon += this.stepSize();
     } else {
+
         this.loaded = true;
+
+        //used to control animation flow.
+        this.vH.setLoadedVisualization(true);
         visIsLoaded = true;
     }
 };

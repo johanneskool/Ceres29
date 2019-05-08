@@ -1,9 +1,23 @@
-//Author: Fabiénne
+/**
+ * @fileoverview Animation that is drawn when there is nothing to show.
+ * @author Fabienne vd Weide
+ */
+
+
 var sketch = function (animation) {
     animation.centerX = window.innerWidth / 2;
     animation.centerY = window.innerHeight / 2;
     animation.radius = 100;
     animation.circleArray = [];
+    animation.vH;
+
+    /**
+     * Assigns a handler to the animation sketch.
+     * @param handler
+     */
+    animation.setHandler = function (handler) {
+        animation.vH = handler;
+    };
 
     animation.onresize = function () {
         animation.w = window.innerWidth;
@@ -25,7 +39,8 @@ var sketch = function (animation) {
 
     animation.draw = function () {
         animation.clear();
-        if (!visIsLoaded) {
+        if (animation.vH != null && !animation.vH.getLoadedVisualization()) {
+            document.getElementById("defaultCanvas1").style.zIndex = 2;
             for (var i = 0; i < animation.circleArray.length; i++) {
                 animation.circleArray[i].move();
                 animation.circleArray[i].show();
@@ -61,8 +76,6 @@ var sketch = function (animation) {
         };
     }
 };
-
-var loadingAnimation = new p5(sketch);
 
 window.onresize = function () {
     loadingAnimation.onresize();
