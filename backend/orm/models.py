@@ -1,19 +1,33 @@
 __author__ = 'Tristan Trouwen'
 
-from backend import db
+import os
+
 from datetime import datetime
+from backend import db
+
+from backend.parsing import Network
 
 
 class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.Time)
     filename = db.Column(db.String, unique=True)
-    location_default = db.Column(db.String, unique=True)
-    location_fiedler = db.Column(db.String, unique=True)
+    location_path = db.Column(db.String, unique=True)  # contains path of directory with all different files
 
-    def __init__(self, name):
+    def __init__(self, file, name):
         self.timestamp = datetime.now()
         self.name = name
+
+        network = Network.Network(file)
+        self.location_path = network.location_path
+
+    @property
+    def default(self):
+        return os.path.join(self.location_path, Network.filenames['default'])
+
+    @property
+    def fiedler(self):
+        return os.path.join(self.location_path, Network.filenames['fiedler'])
 
     def __repr__(self):
         return "<File {}>".format(self.name)

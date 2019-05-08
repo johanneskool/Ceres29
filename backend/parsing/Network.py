@@ -1,18 +1,24 @@
 __author__ = "Rick Luiken"
 
-import os
 import numpy as np
 import scipy.sparse.csgraph as csg
 from scipy.sparse import linalg
 import ujson
-from collections import OrderedDict
+
+
+filenames = {
+    'default': 'default.json',
+    'fiedler': 'fiedler.json'
+}
+
 
 class Network(object):
 
     def __init__(self, filename):
         self.tags, self.adjacency_matrix = self.__parse__(filename)
 
-    def __parse__(self, filename):
+    @staticmethod
+    def __parse__(filename):
         """
         Parse a csv file of the given format of the course in a ordered tags list
         and an adjacency matrix ndarray
@@ -39,9 +45,10 @@ class Network(object):
 
         return tags, matrix
 
-    def __to_json_string__(self):
+    @property
+    def __json_string__(self):
         """
-        Convertes a tags list and adjacency matrix to a json string
+        Converts a tags list and adjacency matrix to a json string
 
         Parameters:
         tags (list): list of tags that name the rows and columns in the adjacency
@@ -60,7 +67,7 @@ class Network(object):
         return ujson.dumps(to_be_converted)
 
     def save_as_json(self, filename):
-        jsonstring = self.__to_json_string__()
+        jsonstring = self.__json_string__()
         with open(filename, "w+", encoding='utf-8') as f:
             f.write(jsonstring)
 
