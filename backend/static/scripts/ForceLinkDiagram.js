@@ -1,19 +1,18 @@
+//http://localhost:5555/static/test/ForceLinkDiagram.html
+
 let graph = {
     nodes: [],
     edges: [],
 };
 
-const limit = 1000;
-
 function preload() {
     // get json data
-    let url = "http://localhost:5555/static/json/f.json";
+    let url = "http://localhost:5555/static/json/book1.json";
     data = loadJSON(url);
 }
 
 function setup() {
-    createCanvas(window.innerWidth, window.innerHeight);
-
+    //setup for sigma with setting for the graph
     s = new sigma(
         {
             graph: data,
@@ -23,7 +22,7 @@ function setup() {
             },
             settings: {
                 minEdgeSize: 1,
-                maxEdgeSize: 4,
+                maxEdgeSize: 2,
                 minNodeSize: 1,
                 maxNodeSize: 5,
                 minArrowSize: 8,
@@ -35,61 +34,42 @@ function setup() {
         }
     );
 
+    //adds nodes to the graph
     for (let index in data.tags) {
             graph.nodes.push({
                 id: index,
                 label: data.tags[index],
-                x: random(-500, 500),
-                y: random(-500, 500),
+                x: random(),
+                y: random(),
                 size: 1,
                 color: '#0099ff'
             });
-
-            if (index > limit) {
-                break; // stop adding nodes if the limit of nodes is reached
-            }
     }
 
-/*    let outgoing = data[nodes];
-    for (let i = 0; i < outgoing.length; i++) {
-        console.log(outgoing);
-    }
-        for (let i = 0; i < 100; i++) {
-            let weight = outgoing[i];
-            let to_node;
-
-            if (weight > 0) {
-                nodes.forEach((some_node) => {
-                    if (some_node.number === i) {
-                        to_node = some_node;
-                        graph.edges.push({
-                            id: i,
-                            size: 1,
-                            source: node,
-                            target: to_node,
-                            color: '#000000',
-                            type: 'arrow',
-                        });
-                    }
-                    graph.edges.push({
-                        id: i,
-                        size: 1,
-                        source: node,
-                        target: some_node,
-                        color: '#000000',
-                        type: 'arrow',
-                    });
+    let i = 0;
+    for (let indexNodes in data.tags) {
+        for (let indexEdges in data.weights) {
+            console.log(data.weights[indexNodes][indexEdges]);
+            if (data.weights[indexNodes][indexEdges] > 0) {
+                graph.edges.push({
+                    id: i,
+                    size: 1,
+                    source: graph.nodes[indexNodes].id,
+                    target: graph.nodes[indexEdges].id,
+                    color: '#000000',
+                    type: 'arrow',
                 });
+                i++
             }
-        }*/
+        }
+    }
 
     // Load the graph in sigma
     s.graph.read(graph);
     // Ask sigma to draw it
     s.refresh();
-}
-
-function Node(name, number) {
-    this.number = number;
-    this.name = name;
+    //may the force be with you (start the physics).
+    s.startForceAtlas2();
+    //stops after 10 sec with the physics
+    window.setTimeout(function() {s.killForceAtlas2()}, 10000);
 }
