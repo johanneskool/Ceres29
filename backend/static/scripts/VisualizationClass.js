@@ -7,9 +7,14 @@ var Visualization = function () {
     if (this.constructor === Visualization) {
         throw new Error("Bruh.");
     }
-    this.data;
+    /**
+     * Current url used by the visualization
+     * @type {json|null}
+     */
+    this.data = null;
     this.zoomScale;
     this.position = createVector();
+    this.vH;
 };
 
 /**
@@ -65,6 +70,10 @@ Visualization.prototype.getArrayAtKey = function (key) {
 
 Visualization.prototype.getKeyAtIndex = function (index) {
     return Object.keys(this.data)[index];
+};
+
+Visualization.prototype.setVH = function (vH) {
+    this.vH = vH;
 };
 
 Visualization.prototype.getArrayAtIndex = function (x) {

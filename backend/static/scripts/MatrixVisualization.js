@@ -11,21 +11,45 @@
  */
 var MatrixVisualization = function () {
     Visualization.call(this, arguments);
+    /**
+     * Flag is true if the matrix is done loading
+     * @type {boolean}
+     */
     this.loaded = false;
+
+    /**
+     * Max size of the buffer image
+     * @type {number}
+     */
     this.maxSize = 3000;
+
+    /**
+     * Where the drawMatrix should start drawing.
+     * @type {number}
+     */
+    this.startPositon = 0;
+
+    /**
+     * Amount of nodes that should be generated each time drawMatrix is called.
+     * @return {number}
+     */
+    this.stepSize = function () {
+        return floor(this.nodeCount / 100);
+    }
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
 MatrixVisualization.prototype.constructor = MatrixVisualization;
 
+
 /***
  * Basic load function that draws the matrix to a buffer.
  */
 MatrixVisualization.prototype.load = function () {
-    console.log("start matrix loads");
 
-    //update the node count.
+    //update the node count
     this.nodeCount = this.getArrayAtIndex(0).length;
+    this.startPositon = 0;
     this.updateNodeSize();
 
     //create a matrix and the buffer graphics
@@ -40,7 +64,7 @@ MatrixVisualization.prototype.load = function () {
     this.drawWidth = ceil(min(windowHeight, windowWidth) / 1.3);
 
     //draw the nodes from the data to the buffer
-    this.drawMatrix(this.data);
+    this.drawMatrix(this);
 
     //where we can show selected nodes.
     this.overlayGraphics = createGraphics(matrixSize, matrixSize);
@@ -50,10 +74,6 @@ MatrixVisualization.prototype.load = function () {
 
     //unused since the later updates.
     this.overlayRatio =  1;
-    this.loaded = true;
-    visIsLoaded = true;
-
-    console.log("matrix load done");
 };
 
 /**
@@ -76,6 +96,8 @@ MatrixVisualization.prototype.setData = function (url) {
 
     function loadNodes(data) {
         currentMatrix.data = data;
+        currentMatrix.nodeCount = currentMatrix.getArrayAtIndex(1).length;
+        currentMatrix.updateNodeSize();
         currentMatrix.load();
     }
 
@@ -99,19 +121,15 @@ MatrixVisualization.prototype.generateNodes = function () {
  * Draws a matrix to the graphics based of the input nodes
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-
-    //update the basic information based on the new data.
-    this.nodeCount = this.getArrayAtIndex(1).length;
-    this.updateNodeSize();
-
+    var done = false;
     //get the key to the weights
-    let weights = this.getKeyAtIndex(1);
+    this.weights = this.getKeyAtIndex(1);
 
     //loop through all the edges and create a rectangle.
-    for (let row = 0; row < this.nodeCount; row++) {
+    for (let row = this.startPositon; row < this.nodeCount; row++) {
         this.matrix.push();
         for (let col = 0; col < this.nodeCount; col++) {
-            let weight = this.data[weights][col][row];
+            let weight = this.data[this.weights][col][row];
             //use the weight to color the cell.
             var hue = map(log(weight), 0, 2, 65, 55);     //fixed variable oringal range TODO
             var brightness = map(log(weight), 0, 2, 22, 49);
@@ -125,6 +143,23 @@ MatrixVisualization.prototype.drawMatrix = function () {
         }
         this.matrix.pop();
         this.matrix.translate(this.nodeSize, 0);
+
+        if (row > this.startPositon + this.stepSize()) {
+            break;
+        }
+    }
+
+    //if we have drawn all nodes we are done
+    if (this.startPositon > this.nodeCount) {
+        done = true
+    }
+
+    //split the generation in steps so that we can have a animation.
+    if (!done) {
+        this.startPositon += this.stepSize();
+    } else {
+        this.loaded = true;
+        visIsLoaded = true;
     }
 };
 
@@ -134,8 +169,14 @@ MatrixVisualization.prototype.drawMatrix = function () {
 MatrixVisualization.prototype.draw = function () {
     //disregard draw calls that happen whilst it is still loading.
     if (!this.loaded) {
+        //matrix can be unloaded without data
+        if (this.data != null) {
+            this.drawMatrix(this);
+        }
         return;
     }
+
+    //draw the image and the overlay
     if (arguments.length === 0) {
         image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);

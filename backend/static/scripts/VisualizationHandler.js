@@ -39,6 +39,12 @@ var VisualizationHandler = function () {
     this.data = null;
 
     /**
+     * Flag that is true if the Handler is actively showing a loaded visualization.
+     * @type {boolean}
+     */
+    this.loadedVisualization = false;
+
+    /**
      * Active getter
      * @returns {Visualization}
      */
@@ -166,6 +172,8 @@ var VisualizationHandler = function () {
         }
         if (this.visualizations.length > 0) {
             this.active = this.visualizations[activeIndex - 1];
+        } else {
+            this.loadedVisualization = false;
         }
         console.log(this.visualizations);
     };
@@ -189,9 +197,10 @@ var VisualizationHandler = function () {
                 if (this.activeCell != null) {
                     newMatrixVisualization.colorCell(this.activeCell.x, this.activeCell.y);
                 }
-
+                newMatrixVisualization.setVH(this);
                 this.active.setZoomScale(1);
                 this.centerActive();
+                this.loadedVisualization = true;
                 break;
         }
     };
@@ -222,6 +231,14 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].setData(url);
         }
+    };
+
+    /**
+     * Getter for loadedVisualization.
+     * @return {boolean}
+     */
+    this.hasLoadedVisualization = function () {
+        return this.loadedVisualization;
     };
 
     /**
