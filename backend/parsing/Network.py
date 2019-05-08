@@ -1,10 +1,14 @@
+import os
+
 __author__ = "Rick Luiken"
 
+import os
 import numpy as np
 import scipy.sparse.csgraph as csg
 from scipy.sparse import linalg
 import ujson
 
+from backend import app
 
 filenames = {
     'default': 'default.json',
@@ -13,9 +17,35 @@ filenames = {
 
 
 class Network(object):
+    """
+    Helper class to convert and save network data in appropriate folders
+    @:param filename String with name of file (already saved) in upload folder
+    @:param hash Randomly generated hash that is not equal to the name of a folder in the json folder
 
-    def __init__(self, filename):
-        self.tags, self.adjacency_matrix = self.__parse__(filename)
+    @return nothing
+    """
+
+    def __init__(self, filename, hash):
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        self.tags, self.adjacency_matrix = self.__parse__(filepath)
+        self.hash = hash
+
+        # processing and saving files
+
+        # create folder to save all files in
+        os.mkdir(os.path.join(app.config['JSON_FOLDER'], hash))
+
+        # save default json
+        self.save_as_json(
+                os.path.join(app.config['JSON_FOLDER'], self.hash, filenames['default'])
+        )
+
+        # convert to fiedler
+        self.reorder_with_fiedler()
+
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.hash, filenames['fiedler'])
+        )
 
     @staticmethod
     def __parse__(filename):
@@ -67,7 +97,7 @@ class Network(object):
         return ujson.dumps(to_be_converted)
 
     def save_as_json(self, filename):
-        jsonstring = self.__json_string__()
+        jsonstring = self.__json_string__
         with open(filename, "w+", encoding='utf-8') as f:
             f.write(jsonstring)
 

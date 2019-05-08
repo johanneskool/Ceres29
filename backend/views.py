@@ -4,8 +4,9 @@ import os
 
 from flask import render_template, request, redirect, flash, url_for
 from werkzeug.utils import secure_filename
-from backend.parsing.Network import Network
-from backend import db, app
+
+from backend import app
+from backend.orm.models import File
 
 
 def allowed_file(filename):
@@ -47,12 +48,10 @@ def index():
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
-            matrix = Network(filepath)
-            matrix.reorder_with_fiedler()
-            json_filename = filename.split('.')[0] + '.json'
-            matrix.save_as_json(os.path.join(app.config['JSON_FOLDER'], json_filename))
+            File(filepath)
             flash("Successfully uploaded!")
             return redirect(url_for('index'))
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -87,11 +86,10 @@ def upload():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            tags, matrix = matrix_parsing.parse(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            tags, matrix = matrix_parsing.reorder(tags, matrix)
-            matrix_parsing.adjacency_to_json_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), tags, matrix)
+            File(filename, name=os.path.splitext(filename)[0])
             flash("Successfully uploaded!")
             return redirect(url_for('index'))
+
 
 @app.route('/vis', methods=['GET'])
 def vis():
