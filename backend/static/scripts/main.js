@@ -216,6 +216,6 @@ function draw() {
 window.onresize = function() {
     let w = window.innerWidth;
     let h = window.innerHeight;
-    visualizationCanvas.resizeCanvas(w, h);
+    //visualizationCanvas.resizeCanvas(w, h);
     loadingAnimation.onresize();
 };
