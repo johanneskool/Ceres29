@@ -5,8 +5,7 @@ import os
 from datetime import datetime
 from backend import db
 
-from parser import filenames
-from parser import Network
+from backend.parsing import Network
 
 
 class File(db.Model):
@@ -19,16 +18,16 @@ class File(db.Model):
         self.timestamp = datetime.now()
         self.name = name
 
-        network = Network(file)
+        network = Network.Network(file)
         self.location_path = network.location_path
 
     @property
     def default(self):
-        return os.path.join(self.location_path, filenames['default'])
+        return os.path.join(self.location_path, Network.filenames['default'])
 
     @property
     def fiedler(self):
-        return os.path.join(self.location_path, filenames['fiedler'])
+        return os.path.join(self.location_path, Network.filenames['fiedler'])
 
     def __repr__(self):
         return "<File {}>".format(self.name)
