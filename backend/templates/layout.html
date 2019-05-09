@@ -69,21 +69,17 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
         {% if request.path == "/upload" %}
         <li class="nav-item active">
-          <a class="nav-link" href="/upload">Upload <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/upload">Choose a file <span class="sr-only">(current)</span></a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="/upload">Upload</a>
+          <a class="nav-link" href="/upload">Choose a file</a>
         </li>
         {% endif %}
 
         {% if request.path == "/vis" %}
         <li class="nav-item active">
           <a class="nav-link" href="/vis">Visualization <span class="sr-only">(current)</span></a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="/vis">Visualization</a>
         </li>
         {% endif %}
       </ul>
@@ -120,12 +116,10 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         {% block content %}{% endblock %}
       </div>
     </div>
-
+    <footer class="container">
+      <p>&copy; Ceres 29 </p>
+    </footer>
   </main>
-
-  <footer class="container">
-    <p>&copy; Ceres 29 </p>
-  </footer>
 
 </body>
 </html>
