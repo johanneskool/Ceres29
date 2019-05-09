@@ -45,3 +45,14 @@ main {
   background-color: #29648A;
   border-color: #AAABB8;
 }
+
+/* page height 100% */
+html, body {
+  height: 100%;
+}
+main {
+  min-height: 100%;
+}
+footer > p {
+  margin-bottom: 0px;
+}
