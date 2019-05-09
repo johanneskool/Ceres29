@@ -23,5 +23,11 @@
 }
 
 .jumbotron {
-  background-color: green;
+    color: #AAABB8;
+    background-color: #25274D;
+}
+
+main {
+    color: #AAABB8;
+    background-color: #464866;
 }
