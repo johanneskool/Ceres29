@@ -12,7 +12,7 @@ Installation was tested on Ubuntu 18.04. Installation on Windows may differ slig
        virtualenv -p python3 venv
        source venv/bin/activate
        
-       pip3 install -r backend/requirements.txt
+       pip3 install -r requirements.txt
 
 We are using python 3.6. However, python 3.7 probably also works.
 
