@@ -31,3 +31,17 @@ main {
     color: #AAABB8;
     background-color: #464866;
 }
+
+.bg-dark {
+  background-color: #25274D !important;
+}
+
+.btn-primary {
+  background-color: #2E9CCA;
+  border-color: #AAABB8;
+}
+
+.btn-secondary {
+  background-color: #29648A;
+  border-color: #AAABB8;
+}
