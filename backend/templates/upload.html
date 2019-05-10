@@ -26,7 +26,7 @@
           </div>
           <div class="custom-file">
             <!-- Keep custom-file-input class for dynamically showing filename -->
-            <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="{{ '.' + ', .'.join(app.config['ALLOWED_EXTENSIONS']) }}">
+            <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="text/csv">
             <label class="custom-file-label" for="file">Upload a file</label>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <select class="custom-select" id="data" name="data">
             <option selected value="" disabled>Choose a file</option>
             {% for file in files_available %}
-              <option value="{{ file["filename"] }}">{{ file["filename"] }}</option>
+              <option value="{{ file.id }}">{{ file.name }}</option>
             {% endfor %}
           </select>
           <div class="input-group-append">
