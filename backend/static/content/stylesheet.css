@@ -23,8 +23,12 @@
 }
 
 .jumbotron {
-    color: #AAABB8;
+    color: #29648A;
     background-color: #25274D;
+}
+
+.display-3 {
+    color: #AAABB8;
 }
 
 main {
@@ -37,13 +41,12 @@ main {
 }
 
 .btn-primary {
-  background-color: #2E9CCA;
+  background-color: #29648A;
   border-color: #AAABB8;
 }
 
 .btn-secondary {
-  background-color: #29648A;
-  border-color: #AAABB8;
+  background-color: #AAABB8;
 }
 
 /* page height 100% */
