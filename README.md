@@ -1,6 +1,13 @@
 # DBL29 Ceres
 > Webapp that visualizes weighted directed graphs
 
+## Features
+
+- Upload csv file automatically saves data and sorts data
+- Visualises the data in a matrix
+- Zoom (scroll)
+
+
 ## Installation
 
 Installation was tested on Ubuntu 18.04. Installation on Windows may differ slightly.
