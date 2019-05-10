@@ -45,11 +45,11 @@ class File(db.Model):
 
     @property
     def default(self):
-        return os.path.join(self.location_path, Network.filenames['default'])
+        return os.path.join(app.config["JSON_FOLDER"], self.location_path, Network.filenames['default'])
 
     @property
     def fiedler(self):
-        return os.path.join(self.location_path, Network.filenames['fiedler'])
+        return os.path.join(app.config["JSON_FOLDER"], self.location_path, Network.filenames['fiedler'])
 
     def __repr__(self):
         return "<File {}>".format(self.name)

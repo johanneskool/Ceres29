@@ -73,15 +73,14 @@ def vis():
         return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name)
 
 
-@app.route('/data/<int:id>')
+@app.route('/data/<int:id>', methods=['GET'])
 def data(id):
     type = request.args.get('type')
     file = File.query.get(id)
-
     if type == 'fiedler':
-        return send_from_directory('static', file.fiedler)
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "fiedler.json") # clean up later but good for now
     else:
-        return send_from_directory('static', file.default)
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "default.json") # clean up later but good for now
 
 
 @app.after_request

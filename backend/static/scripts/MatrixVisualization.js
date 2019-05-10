@@ -34,7 +34,7 @@ var MatrixVisualization = function () {
      * @return {number}
      */
     this.stepSize = function () {
-        return floor(this.nodeCount / 100);
+        return ceil(this.nodeCount / 100);
     }
 };
 
@@ -48,7 +48,7 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
 MatrixVisualization.prototype.load = function () {
 
     //update the node count
-    this.nodeCount = this.getArrayAtIndex(0).length;
+    this.nodeCount = this.data.tags.length;
     this.startPositon = 0;
     this.updateNodeSize();
 
@@ -96,7 +96,7 @@ MatrixVisualization.prototype.setData = function (url) {
 
     function loadNodes(data) {
         currentMatrix.data = data;
-        currentMatrix.nodeCount = currentMatrix.getArrayAtIndex(1).length;
+        currentMatrix.nodeCount = currentMatrix.data.weights.length;
         currentMatrix.updateNodeSize();
         currentMatrix.load();
     }
@@ -123,13 +123,13 @@ MatrixVisualization.prototype.generateNodes = function () {
 MatrixVisualization.prototype.drawMatrix = function () {
     var done = false;
     //get the key to the weights
-    this.weights = this.getKeyAtIndex(1);
+    //this.weights = this.getKeyAtIndex(1);
 
     //loop through all the edges and create a rectangle.
     for (let row = this.startPositon; row < this.nodeCount; row++) {
         this.matrix.push();
         for (let col = 0; col < this.nodeCount; col++) {
-            let weight = this.data[this.weights][col][row];
+            let weight = this.data.weights[col][row];
             //use the weight to color the cell.
             var hue = map(log(weight), 0, 2, 65, 55);     //fixed variable oringal range TODO
             var brightness = map(log(weight), 0, 2, 22, 49);

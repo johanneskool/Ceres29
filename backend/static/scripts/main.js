@@ -67,8 +67,7 @@ function setup() {
     var data_id = new URL(window.location.href).searchParams.get("data");
 
     //update the VH data
-    visualizationHandler.setData('/data/' + data_id);
-
+    visualizationHandler.setData('/data/' + data_id + "?type=fiedler");
     //makes the current matrix the one to show.
 
     //disable the anti-aliasing.
