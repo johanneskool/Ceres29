@@ -1,6 +1,4 @@
-import os
-
-__author__ = "Rick Luiken"
+__author__ = "Rick Luiken, Tristan Trouwen"
 
 import os
 import numpy as np
@@ -16,35 +14,37 @@ filenames = {
 }
 
 
-class Network(object):
+class Network:
     """
     Helper class to convert and save network data in appropriate folders
+    @:param string with name of data
     @:param filename String with name of file (already saved) in upload folder
-    @:param hash Randomly generated hash that is not equal to the name of a folder in the json folder
+    @:param id that is not equal to the name of a folder in the json folder
 
     @return nothing
     """
 
-    def __init__(self, filename, hash):
+    def __init__(self, name, filename, directory_name):
+        self.name = name
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         self.tags, self.adjacency_matrix = self.__parse__(filepath)
-        self.hash = hash
+        self.directory_name = directory_name
 
         # processing and saving files
 
         # create folder to save all files in
-        os.mkdir(os.path.join(app.config['JSON_FOLDER'], hash))
+        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
 
         # save default json
         self.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'], self.hash, filenames['default'])
+                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
         )
 
         # convert to fiedler
         self.reorder_with_fiedler()
 
         self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.hash, filenames['fiedler'])
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
         )
 
     @staticmethod
@@ -86,9 +86,10 @@ class Network(object):
         matrix (ndarray): the parsed adjacency matrix values
 
         Returns:
-        json string in the format {"tags": ["tag1", "tag2", "tagn"], "weights": 2D array of weights}
+        json string in the format {"name": DataName, "tags": ["tag1", "tag2", "tagn"], "weights": 2D array of weights}
         """
         to_be_converted = {}
+        to_be_converted["name"] = self.name
         to_be_converted["tags"] = self.tags
         to_be_converted["weights"] = []
         for row in range(len(self.tags)):

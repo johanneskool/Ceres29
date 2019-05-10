@@ -64,19 +64,10 @@ function setup() {
     visualizationHandler.newVisualization('matrix');
 
     // fetch data
-    var file_name = new URL(window.location.href).searchParams.get("data");
+    var data_id = new URL(window.location.href).searchParams.get("data");
 
     //update the VH data
-    visualizationHandler.setData('/static/json/' + file_name);
-
-//     outdated:
-//     fetch('/static/json/'+ file_name)
-//     .then(res => res.json())
-//     .then((out_json_data) => {
-//         /*console.log(out_json_data);*/
-// /*        matrixVis.setData('/static/json/'+ file_name);*/
-//     })
-//     .catch(err => { throw err });
+    visualizationHandler.setData('/data/' + data_id);
 
     //makes the current matrix the one to show.
 
