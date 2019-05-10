@@ -23,6 +23,8 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <!-- including javascript scripts -->
     <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
+
+    {% if request.path == "/vis" %}
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.sound.min.js') }}"></script>
@@ -32,6 +34,17 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <script src="{{ url_for('static', filename='scripts/VisualizationClass.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
+    {% else %}
+    <link rel="preload" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='p5/addons/p5.sound.min.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='scripts/general.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
+    <link rel="preload" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
+    {% endif %}
 </head>
 
 <body>
@@ -56,21 +69,17 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
         {% if request.path == "/upload" %}
         <li class="nav-item active">
-          <a class="nav-link" href="/upload">Upload <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/upload">Choose a file <span class="sr-only">(current)</span></a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="/upload">Upload</a>
+          <a class="nav-link" href="/upload">Choose a file</a>
         </li>
         {% endif %}
 
         {% if request.path == "/vis" %}
         <li class="nav-item active">
           <a class="nav-link" href="/vis">Visualization <span class="sr-only">(current)</span></a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="/vis">Visualization</a>
         </li>
         {% endif %}
       </ul>
@@ -107,12 +116,10 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         {% block content %}{% endblock %}
       </div>
     </div>
-
+    <footer class="container">
+      <p>&copy; Ceres 29 </p>
+    </footer>
   </main>
-
-  <footer class="container">
-    <p>&copy; Ceres 29 </p>
-  </footer>
 
 </body>
 </html>
