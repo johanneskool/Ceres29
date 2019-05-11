@@ -1,6 +1,13 @@
 #Omdat het niet mooi is om twee verschillende line-endings te hebben
 * text=auto
 
-#Fix statistics voor die 5 miljoen js-files van Samuel en Akam
+#Fix statistics
 /backend/static/p5/* linguist-vendored
 /backend/static/Sigma/* linguist-vendored
+/backend/static/scripts/jquery-3.4.0.min.js linguist-generated linguist-vendored
+/backend/static/scripts/bootstrap.min.js linguist-generated linguist-vendored
+/backend/static/styles/bootstrap.min.css linguist-generated linguist-vendored
+/backend/static/styles/jumbotron.css linguist-vendored
+
+/code snippets/* linguist-documentation
+/docs/* linguist-documentation
