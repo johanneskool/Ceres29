@@ -15,7 +15,7 @@ let graph = {
 };
 
 //Changing the amount of nodes:
-const inputSize = 300;
+const inputSize = 10;
 //max weight of the dataset?
 const maxWeight = 1000;
 
@@ -24,7 +24,7 @@ function setup() {
     colorArray();
     createCircleArea(); //creates coordinates for circle
     nbNode = inputSize;
-    nbEdge = floor(inputSize/8);
+    nbEdge = floor(random(7, 16));
 
     s = new sigma(
         {
