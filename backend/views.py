@@ -49,7 +49,7 @@ def handle_file_upload(request_upload):
 def index():
     data_id = request.args.get('data')
     if request.method == 'GET':
-        return render_template("index.html", files_available=get_available_files(), data=data_id, title="Home")
+        return render_template("index.html", data=data_id, title="Home")
 
     if request.method == 'POST':
         return handle_file_upload(request)
