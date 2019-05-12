@@ -5,11 +5,11 @@
 {% extends "layout.html" %}
 
 {% block title %}
-  Network visualization tool
+  {{ config['APP_TITLE'] }}
 {% endblock %}
 
 {% block title_text %}
-  TU/e DBL Project HTI + Webtech by Ceres 29.
+  TU/e DBL Project HTI + Webtech by {{ config['APP_AUTHOR'] }}.
   <br>
   This tool provides an adjacency matrix and three different types of node-link diagrams.
   <br>

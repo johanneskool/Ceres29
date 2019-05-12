@@ -10,9 +10,9 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <meta name="description" content="Visualization of datasets">
 
     {% if title %}
-        <title>{{ title }} | CERES 29</title>
+        <title>{{ title }} | {{ config['APP_TITLE'] }}</title>
     {% else %}
-        <title>CERES 29</title>
+        <title>{{ config['APP_TITLE'] }}</title>
     {% endif %}
 
     <!-- including css stylesheets -->
@@ -83,7 +83,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" disabled type="text" placeholder="Search" aria-label="Search">
+        <input class="form-control mr-sm-2" disabled type="text" placeholder="Search (not implemented yet)" aria-label="Search">
         <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
@@ -92,7 +92,6 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
   <main role="main">
 
     {% if request.path != "/vis" %}
-    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
         <h1 class="display-3">{% block title %}{% endblock %}</h1>
@@ -116,7 +115,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
       </div>
     </div>
     <footer class="container">
-      <p>&copy; Ceres 29 </p>
+      <p>&copy; {{ config['APP_AUTHOR'] }} </p>
     </footer>
   </main>
 
