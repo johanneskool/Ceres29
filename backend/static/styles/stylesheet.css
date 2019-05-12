@@ -33,7 +33,7 @@
     color: #D6FFF6;
 }
 
-main {
+body, main {
     color: #25274D;
     background-color: #D6FFF6;
 }
@@ -69,6 +69,10 @@ html, body {
 }
 main {
   min-height: 100%;
+}
+footer {
+  padding-top: 2%;
+  padding-bottom: 1%;
 }
 footer > p {
   margin-bottom: 0px;

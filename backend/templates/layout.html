@@ -20,6 +20,9 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/jumbotron.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stylesheet.css') }}">
 
+    <!-- favicon (good browsers only) -->
+    <link rel="shortcut icon" href="/static/styles/favicon.ico">
+
     <!-- including javascript scripts -->
     <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
@@ -49,7 +52,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 <body>
 
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">{{ config['APP_AUTHOR'] }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -100,7 +103,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     </div>
     {% endif %}
 
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -114,10 +117,10 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         {% block content %}{% endblock %}
       </div>
     </div>
-    <footer class="container">
-      <p>&copy; {{ config['APP_AUTHOR'] }} </p>
-    </footer>
   </main>
+  <footer class="container">
+    <p>&copy; {{ config['APP_AUTHOR'] }} - {{ config['APP_TITLE'] + " " + config['APP_VERSION']}}</p>
+  </footer>
 
 </body>
 </html>
