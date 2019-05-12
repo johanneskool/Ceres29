@@ -15,7 +15,7 @@ def allowed_file(filename):
 
 
 def get_available_files():
-    return File.query.all()
+    return File.query.order_by(File.timestamp.desc()).limit(20).all() #newest file on top; max 20 files. Possibly add some default files always in a separate category
 
 def custom_flash(message, type='danger'):
     if type not in ['info', 'success', 'warning', 'danger']: type = 'danger'

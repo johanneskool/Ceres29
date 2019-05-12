@@ -41,8 +41,13 @@
             <div class="input-group">
               <select class="custom-select" id="data" name="data">
                 <option selected value="" disabled>Choose a file</option>
+                {% set loopvars = {'lastdate': ""} %}
                 {% for file in files_available %}
-                  <option value="{{ file.id }}">{{ file.name }}</option>
+                  {% if loopvars.lastdate != file.timestamp.strftime('%A %B %d, %Y') %}
+                    {% if loopvars.update({'lastdate': file.timestamp.strftime('%A %B %d, %Y')}) %}{% endif %}
+                    <option  disabled value="">{{ loopvars.lastdate }}</option>
+                  {% endif %}
+                  <option value="{{ file.id }}">&nbsp; &nbsp;{{ file.name + ' (' + file.timestamp.strftime('%H:%M:%S') + ')'}}</option>
                 {% endfor %}
               </select>
               <div class="input-group-append">
