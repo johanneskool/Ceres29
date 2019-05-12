@@ -18,22 +18,22 @@ def get_available_files():
     return File.query.all()
 
 def custom_flash(message, type='danger'):
-    if type not in ['info', 'succes', 'warning', 'danger']: type = 'danger'
+    if type not in ['info', 'success', 'warning', 'danger']: type = 'danger'
     return flash('<div class="alert alert-' + type + '">' + message + '</div>')
 
 def handle_file_upload(request_upload):
     # check if the post request has the file part
-    if 'file' not in request_upload.files:
-        custom_flash('No file part')
+    if 'file' not in request_upload.files: #if we encounter this the input for the file isn't shown or disabled; that should not happen
+        custom_flash('The webserver expected a file upload, but did not receive a file or files. Please select a file from your computer and click the upload button')
         return redirect(request_upload.url)
     file = request_upload.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename
     if file.filename == '':
-        custom_flash('No selected file')
+        custom_flash('Please select a file from your computer and click the upload button')
         return redirect(request_upload.url)
     if not allowed_file(file.filename):
-        custom_flash('Filetype not allowed')
+        custom_flash('The file you uploaded is a .' + file.filename.rsplit('.', 1)[1].lower() + ' file. Please select one of the following: .' + ', .'.join(app.config['ALLOWED_EXTENSIONS']))
         return redirect(request_upload.url)
     if file:
         filename = secure_filename(file.filename)
@@ -44,15 +44,15 @@ def handle_file_upload(request_upload):
         db.session.add(new_file)
         db.session.commit()
 
-        custom_flash("Successfully uploaded!", 'succes')
-        return redirect(url_for('index'))
+        custom_flash(new_file.filename + " successfully uploaded as " + new_file.name + ", showing it below", 'success')
+        return redirect(url_for('vis') + '?data=' + str(new_file.id))
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     data_id = request.args.get('data')
     if request.method == 'GET':
-        if app.config['DEVELOPMENT'] == True: custom_flash('Flask is currently running development mode. This is an example to show how we handle messages in our layout. Possible types for custom_flash are info, warning, danger and succes', 'info')
+        if app.config['DEVELOPMENT'] == True: custom_flash('Flask is currently running development mode. This is an example to show how we handle messages in our layout. Possible types for custom_flash are info, warning, danger and success', 'info')
         return render_template("index.html", data=data_id, title="Home")
 
     if request.method == 'POST':
@@ -72,6 +72,9 @@ def upload():
 @app.route('/vis', methods=['GET'])
 def vis():
     data_id = request.args.get('data')
+    if data_id is None:
+        custom_flash('Please select a file before going to the visualization')
+        return redirect(url_for('upload'))
     data_name = File.query.get(data_id).name
     if request.method == 'GET':
         return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name)

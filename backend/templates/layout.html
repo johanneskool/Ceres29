@@ -115,10 +115,8 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
           {% endwith %}
         </div>
       </div>
-      <div class="row">
-        {% block content %}{% endblock %}
-      </div>
     </div>
+    {% block content %}{% endblock %}
   </main>
   <footer class="container">
     <p>&copy; {{ config['APP_AUTHOR'] }} - {{ config['APP_TITLE'] + " " + config['APP_VERSION']}}</p>
