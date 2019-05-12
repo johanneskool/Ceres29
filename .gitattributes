@@ -9,5 +9,5 @@
 /backend/static/styles/bootstrap.min.css linguist-generated linguist-vendored
 /backend/static/styles/jumbotron.css linguist-vendored
 
-/code snippets/* linguist-documentation
+/code[[:space]]snippets/* linguist-documentation
 /docs/* linguist-documentation
