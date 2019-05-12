@@ -19,21 +19,23 @@
 
     <div class="col-md-6">
       <h2>Upload new file</h2>
+      <p>Choose a file using "Browse" and click on "Upload". Uploading a file may take a while depending on the speed of your network connection and the current server load. Read more about the file specifications <a href='#'>here</a>.</p>
       <form method=post enctype=multipart/form-data>
         <div class="input-group">
           <div class="custom-file">
-            <!-- Keep custom-file-input class for dynamically showing filename -->
-            <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="text/csv">
-            <label class="custom-file-label" for="file">Upload a file</label>
+            <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="{{ '.' + ', .'.join(config['ALLOWED_EXTENSIONS']) }}">
+            <label class="custom-file-label" for="file">No file selected</label>
+          </div>
+          <div class="input-group-append">
+            <input type=submit value=Upload class="btn btn-primary">
           </div>
         </div>
-        <br>
-        <input type=submit value=Upload class="btn btn-primary">
       </form>
     </div>
 
     <div class="col-md-6">
       <h2>or open an existing file:</h2>
+      <p>Start gaining insight in datasets quickly by picking one of the {{ files_available|length }} files uploaded by users of {{ config['APP_TITLE'] }} from all over the world. Commercial use of these files is not allowed. </p>
       <form method=get enctype=multipart/form-data action="/vis">
         <div class="input-group">
           <select class="custom-select" id="data" name="data">
