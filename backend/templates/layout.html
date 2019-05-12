@@ -105,13 +105,15 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
     <div class="container">
       <div class="row">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                  {% for message in messages %}
+                      {{ message|safe }}
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+        </div>
       </div>
       <div class="row">
         {% block content %}{% endblock %}

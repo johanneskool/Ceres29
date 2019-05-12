@@ -17,20 +17,23 @@ def allowed_file(filename):
 def get_available_files():
     return File.query.all()
 
+def custom_flash(message, type='danger'):
+    if type not in ['info', 'succes', 'warning', 'danger']: type = 'danger'
+    return flash('<div class="alert alert-' + type + '">' + message + '</div>')
 
 def handle_file_upload(request_upload):
     # check if the post request has the file part
     if 'file' not in request_upload.files:
-        flash('No file part')
+        custom_flash('No file part')
         return redirect(request_upload.url)
     file = request_upload.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename
     if file.filename == '':
-        flash('No selected file')
+        custom_flash('No selected file')
         return redirect(request_upload.url)
     if not allowed_file(file.filename):
-        flash('Filetype not allowed')
+        custom_flash('Filetype not allowed')
         return redirect(request_upload.url)
     if file:
         filename = secure_filename(file.filename)
@@ -41,7 +44,7 @@ def handle_file_upload(request_upload):
         db.session.add(new_file)
         db.session.commit()
 
-        flash("Successfully uploaded!")
+        custom_flash("Successfully uploaded!", 'succes')
         return redirect(url_for('index'))
 
 
@@ -49,6 +52,7 @@ def handle_file_upload(request_upload):
 def index():
     data_id = request.args.get('data')
     if request.method == 'GET':
+        if app.config['DEVELOPMENT'] == True: custom_flash('Flask is currently running development mode. This is an example to show how we handle messages in our layout. Possible types for custom_flash are info, warning, danger and succes', 'info')
         return render_template("index.html", data=data_id, title="Home")
 
     if request.method == 'POST':
