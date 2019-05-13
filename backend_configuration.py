@@ -21,7 +21,7 @@ class Config(object):
     UPLOAD_FOLDER = os.path.join(basedir, 'backend/static/uploads/')
     JSON_FOLDER_RELATIVE = 'json'
     JSON_FOLDER = os.path.join(basedir, 'backend/static/', JSON_FOLDER_RELATIVE)
-    ALLOWED_EXTENSIONS = set(['csv'])
+    ALLOWED_EXTENSIONS = {'csv'}
     SECRET_KEY = 'yolowaterpolo'
 
 
