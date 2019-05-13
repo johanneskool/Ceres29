@@ -243,11 +243,11 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // mark this cell
     this.colorCell(x, y);
 
-    let from = this.getArrayAtIndex(0)[x];
+    let from = this.getArrayAtIndex(1)[x];
     from = from.replace(/_/g,' ');
-    let to = this.getArrayAtIndex(0)[y];
+    let to = this.getArrayAtIndex(1)[y];
     to = to.replace(/_/g,' ');
-    let weight = this.getArrayAtIndex(1)[x][y];
+    let weight = this.getArrayAtIndex(2)[x][y];
 
     // show debugging info in console
     var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;

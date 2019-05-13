@@ -12,27 +12,6 @@
 const zoomFactor = 1.5;
 
 /**
- * Current Scale at which the visualization is drawn
- * @TODO make this a property of the current active visualization instead of a global.
- * @type {number}
- */
-var zoomScale = 1;
-
-/**
- * A matrix visualization object
- * @TODO should be created from a menu instead of hardcoded.
- * @type {Visualization}
- */
-var matrixVis;
-
-/**
- * Flag is true if the matrix has been loaded
- * @TODO make this a property of the current loading visualization instead of a global.
- * @type {boolean}
- */
-let visIsLoaded = false;
-
-/**
  * Canvas which shows the current visualization(s)
  * @type {canvas}
  */
@@ -128,6 +107,7 @@ function setupListeners () {
     //on click
     document.getElementById( "defaultCanvas0" ).onmousedown = function(event){
         mouseFlag = true;
+        dragFlag = false;
 
         //fix that prevents the visualization from moving when the window regains focus.
         oldMouse.x = mouseX;
@@ -156,6 +136,7 @@ function setupListeners () {
 var dragFlag = false;
 
 function mouseDragged() {
+    console.log('drag');
     if (mouseFlag) {
         //mouse was dragged, so update the dragFlag.
         dragFlag = true;
