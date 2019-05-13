@@ -21,32 +21,24 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stylesheet.css') }}">
 
     <!-- favicon (good browsers only) -->
-    <link rel="shortcut icon" href="/static/styles/favicon.ico">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='styles/favicon.ico') }}">
 
     <!-- including javascript scripts -->
     <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/general.js') }}"></script>
 
-    {% if request.path == "/vis" %}
-    <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='p5/addons/p5.sound.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/VisualizationClass.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
-    {% else %}
     <link rel="preload" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
     <link rel="preload" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='p5/addons/p5.sound.min.js') }}" as="script">
     <link rel="preload" href="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}" as="script">
     <link rel="preload" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
     <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
     <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
     <link rel="preload" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
-    {% endif %}
+
+    {% block scripts %}
+    {% endblock %}
+
 </head>
 
 <body>
@@ -69,19 +61,19 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         </li>
         {% endif %}
 
-        {% if request.path == "/upload" %}
+        {% if request.path == url_for('upload') %}
         <li class="nav-item active">
-          <a class="nav-link" href="/upload">Choose a file <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ url_for('upload') }}">Choose a file <span class="sr-only">(current)</span></a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="/upload">Choose a file</a>
+          <a class="nav-link" href="{{ url_for('upload') }}">Choose a file</a>
         </li>
         {% endif %}
 
-        {% if request.path == "/vis" %}
+        {% if request.path == url_for('vis') %}
         <li class="nav-item active">
-          <a class="nav-link" href="/vis">Visualization <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ url_for('vis') }}">Visualization <span class="sr-only">(current)</span></a>
         </li>
         {% endif %}
       </ul>
@@ -93,15 +85,9 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
   </nav>
 
   <main role="main">
+    {% block header %}
+    {% endblock%}
 
-    {% if request.path != "/vis" %}
-    <div class="jumbotron">
-      <div class="container">
-        <h1 class="display-3">{% block title %}{% endblock %}</h1>
-        <p>{% block title_text %}{% endblock %}</p>
-      </div>
-    </div>
-    {% endif %}
 
     <div class="container">
       <div class="row">

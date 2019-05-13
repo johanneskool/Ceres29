@@ -4,17 +4,23 @@
 
 {% extends "layout.html" %}
 
-{% block title %}
-  {{ config['APP_TITLE'] }}
+{% block header %}
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">
+            {{ config['APP_TITLE'] }}
+        </h1>
+        <p>
+            TU/e DBL Project HTI + Webtech by {{ config['APP_AUTHOR'] }}.
+            <br>
+            This tool provides an adjacency matrix and three different types of node-link diagrams.
+            <br>
+            Upload your own files to analyze your network data!
+        </p>
+    </div>
+</div>
 {% endblock %}
 
-{% block title_text %}
-  TU/e DBL Project HTI + Webtech by {{ config['APP_AUTHOR'] }}.
-  <br>
-  This tool provides an adjacency matrix and three different types of node-link diagrams.
-  <br>
-  Upload your own files to analyze your network data!
-{% endblock %}
 
 {% block content %}
   <div class="container">
