@@ -232,7 +232,7 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
 MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
     try {
-        var cellVector = this.getCell(xCord, yCord);
+        var cellVector = this.getCell(yCord, xCord);
         var x = cellVector.x;
         var y = cellVector.y;
     } catch (error) {
