@@ -15,7 +15,7 @@ class File(db.Model):
     name = db.Column(db.String, unique=True)
     timestamp = db.Column(db.DateTime)
     filename = db.Column(db.String)
-    hash = db.Column(db.String)
+    hash = db.Column(db.String, unique=True)
 
     def __init__(self, file, name):
         self.timestamp = datetime.utcnow()

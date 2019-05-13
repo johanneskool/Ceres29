@@ -11,6 +11,9 @@ class Config(object):
     HOST = 'localhost'
     PORT = '5555'
     TESTING = False
+    APP_TITLE = "Network visualization tool"
+    APP_AUTHOR = "Ceres 29"
+    APP_VERSION = "v0.1a"
     SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'app.db')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + SQLALCHEMY_DATABASE_PATH
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -28,6 +31,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
+    APP_VERSION = "v0.2a (development)"
     DEVELOPMENT = True
     DEBUG = True
     TEMPLATES_AUTO_RELOAD = True

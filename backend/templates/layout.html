@@ -10,15 +10,18 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <meta name="description" content="Visualization of datasets">
 
     {% if title %}
-        <title>{{ title }} | CERES 29</title>
+        <title>{{ title }} | {{ config['APP_TITLE'] }}</title>
     {% else %}
-        <title>CERES 29</title>
+        <title>{{ config['APP_TITLE'] }}</title>
     {% endif %}
 
     <!-- including css stylesheets -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/jumbotron.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stylesheet.css') }}">
+
+    <!-- favicon (good browsers only) -->
+    <link rel="shortcut icon" href="/static/styles/favicon.ico">
 
     <!-- including javascript scripts -->
     <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
@@ -49,7 +52,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 <body>
 
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">{{ config['APP_AUTHOR'] }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -83,7 +86,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" disabled type="text" placeholder="Search" aria-label="Search">
+        <input class="form-control mr-sm-2" disabled type="text" placeholder="Search (not implemented yet)" aria-label="Search">
         <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
@@ -92,7 +95,6 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
   <main role="main">
 
     {% if request.path != "/vis" %}
-    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
         <h1 class="display-3">{% block title %}{% endblock %}</h1>
@@ -101,24 +103,24 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     </div>
     {% endif %}
 
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-      </div>
-      <div class="row">
-        {% block content %}{% endblock %}
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                  {% for message in messages %}
+                      {{ message|safe }}
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+        </div>
       </div>
     </div>
-    <footer class="container">
-      <p>&copy; Ceres 29 </p>
-    </footer>
+    {% block content %}{% endblock %}
   </main>
+  <footer class="container">
+    <p>&copy; {{ config['APP_AUTHOR'] }} - {{ config['APP_TITLE'] + " " + config['APP_VERSION']}}</p>
+  </footer>
 
 </body>
 </html>

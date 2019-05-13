@@ -22,31 +22,45 @@
     grid-row: 1;
 }
 
+/* color scheme */
+
 .jumbotron {
-    color: #29648A;
-    background-color: #25274D;
+    color: #25274D;
+    background-color: #4DCCBD;
 }
 
 .display-3 {
-    color: #AAABB8;
+    color: #D6FFF6;
 }
 
-main {
-    color: #AAABB8;
-    background-color: #464866;
+body, main {
+    color: #25274D;
+    background-color: #D6FFF6;
 }
 
-.bg-dark {
+.navbar-dark {
+  border-bottom: 2px solid #D6FFF6;
   background-color: #25274D !important;
 }
 
 .btn-primary {
-  background-color: #29648A;
-  border-color: #AAABB8;
+  background-color: #2E9CCA;
+  border-color: #25274D;
+}
+.btn-primary:hover {
+  background-color: #54AED3;
 }
 
 .btn-secondary {
-  background-color: #AAABB8;
+  background-color: #25274D;
+  border-color: #25274D;
+}
+.btn-secondary:hover {
+  background-color: #4C4E6D;
+}
+
+a {
+  color: #2E9CCA;
 }
 
 /* page height 100% */
@@ -55,6 +69,10 @@ html, body {
 }
 main {
   min-height: 100%;
+}
+footer {
+  padding-top: 2%;
+  padding-bottom: 1%;
 }
 footer > p {
   margin-bottom: 0px;
