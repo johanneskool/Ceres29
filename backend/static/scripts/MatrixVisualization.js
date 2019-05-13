@@ -232,9 +232,9 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
 MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
     try {
-        var cellVector = this.getCell(yCord, xCord);
-        var x = cellVector.x;
-        var y = cellVector.y;
+        var cellVector = this.getCell(xCord, yCord);
+        var y = cellVector.x;
+        var x = cellVector.y;
     } catch (error) {
         document.getElementById('matrix-visualization-edge-info').style.display = 'none';
         throw new RangeError("clicked outside of visualization");
