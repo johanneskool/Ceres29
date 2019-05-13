@@ -45,7 +45,7 @@ def handle_file_upload(request_upload):
         db.session.commit()
 
         custom_flash(new_file.filename + " successfully uploaded as " + new_file.name + ", showing it below", 'success')
-        return redirect(url_for('vis') + '?data=' + str(new_file.id))
+        return redirect(url_for('vis', data=str(new_file.id)))
 
 
 @app.route('/', methods=['GET', 'POST'])
