@@ -15,7 +15,7 @@ var RoundNodeLink = function () {
      * Where the drawRoundNodeLink should start drawing.
      * @type {number}
      */
-    this.startPositon = 0;
+    this.startPosition = 0;
 
     this.nodes = [];
     this.tags = [];
@@ -28,6 +28,7 @@ var RoundNodeLink = function () {
 
     this.currentActive = null; // node which is clicked
     this.limit = 100; // at most 100 nodes can be put on the circle
+    console.log("ok")
 };
 
 RoundNodeLink.prototype = Object.create(Visualization.prototype);
@@ -45,16 +46,18 @@ RoundNodeLink.prototype.setData = function (url) {
         let weights = data["weights"];
         let number = 0;
 
+        let currentVisualization = this;
+
         for (let node_index in weights) {
             let new_node = new Node(
                 node_index, // node id
                 number,    // number in circle
-                number*2*Math.PI/(Math.min(Object.keys(data).length, limit)+1),
-                this.circleLocation,
-                this.circleRadius
+                number*2*Math.PI/(Math.min(Object.keys(data).length, currentVisualization.limit)+1),
+                currentVisualization.circleLocation,
+                currentVisualization.circleRadius
             );
-
-            nodes.push(new_node); // put in array
+            print(currentVisualization.circleLocation);
+            currentVisualization.nodes.push(new_node); // put in array
             number++;
             if (number > limit) {
                 break; // stop adding nodes if the limit of nodes is reached
