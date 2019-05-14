@@ -222,6 +222,18 @@ var VisualizationHandler = function () {
                 this.active.setZoomScale(1);
                 this.centerActive();
                 break;
+            case "roundNodeLink":
+                let newRoundNodeLink = new RoundNodeLink();
+                this.visualizations.push(newRoundNodeLink);
+                this.active = newRoundNodeLink;
+
+                //if this VH has data
+                if (this.data != null) {
+                    newRoundNodeLink.setData(this.data);
+                }
+                newRoundNodeLink.setVH(this);
+                this.active.setZoomScale(1);
+                break;
         }
     };
 
