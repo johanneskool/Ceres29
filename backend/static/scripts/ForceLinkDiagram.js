@@ -23,11 +23,11 @@ function setup() {
                 type: 'canvas'
             },
             settings: {
-                minEdgeSize: 0.2,
-                maxEdgeSize: 1,
+                minEdgeSize: 0.001,
+                maxEdgeSize: 0.2,
                 minNodeSize: 2,
                 maxNodeSize: 5,
-                minArrowSize: 2,
+                minArrowSize: 4,
                 animationsTime: 1000,
                 enableHovering: true,
                 doubleClickEnabled: false,
@@ -68,10 +68,10 @@ function setup() {
     for (let indexNodes in data.tags) {
         for (let indexEdges in data.weights) {
             //console.log(data.weights[indexNodes][indexEdges]);
-            if ((data.weights[indexNodes][indexEdges]) > 0.6) {
+            if ((data.weights[indexNodes][indexEdges]) > 0.5) {
                 graph.edges.push({
                     id: i,
-                    size: data.weights[indexNodes][indexEdges]/2,
+                    size: data.weights[indexNodes][indexEdges]/4,
                     source: graph.nodes[indexNodes].id,
                     target: graph.nodes[indexEdges].id,
                     color: '#000000',
@@ -91,7 +91,7 @@ function setup() {
     //may the force be with you (start the physics).
     s.startForceAtlas2();
     //stops after 10 sec with the physics
-    window.setTimeout(function() {s.killForceAtlas2(); s.startNoverlap();}, 10000);
+    window.setTimeout(function() {s.killForceAtlas2(); s.startNoverlap();}, 8000);
 }
 
 function animateGraph() {
@@ -109,6 +109,11 @@ function animateGraph() {
             e.data.node.color = "#ff9900";
             e.data.node.isSelected = true;
         }
+        s.killForceAtlas2();
+        let filter = new sigma.plugins.filter(s);
+        filter.neighborsOf(e.data.node.id);
+        filter.apply();
+        filter.undo();
         //newGraph(e.data.node.id);
         s.refresh();
     });
@@ -125,34 +130,17 @@ function animateGraph() {
 
 //clicking on a new should show its neighbours
 function newGraph(startIndex) {
-    this.startIndex = startIndex;
+    //this.startIndex = startIndex;
     s.killForceAtlas2();
-    s.graph.clear();
+    let filter = new sigma.plugins.filter(s);
+    filter.neighborsOf(startIndex);
+}
 
-    sigma.classes.graph.addMethod('neighbors', function(nodeId) {
-        let k,
-            neighbors = {},
-            index = this.allNeighborsIndex[nodeId] || {};
-
-        for (k in index) {
-            neighbors[k] = this.nodesIndex[k];
-        }
-        return neighbors;
-    });
-
-    let db = new sigma.plugins.neighborhoods();
-    db.load(url, function() {
-        let nodeId = startIndex;
-        s.graph.read(db.neighborhood(nodeId));
-        let i,
-            nodes = s.graph.nodes(),
-            len = nodes.length;
-        for (i = 0; i < len; i++) {
-            nodes[i].x = Math.cos(Math.PI * 2 * i / len);
-            nodes[i].y = Math.sin(Math.PI * 2 * i / len);
-        }
-
+function keyPressed() {
+    if(keyCode === BACKSPACE) {
+        let filter = new sigma.plugins.filter(s);
+        filter.undo();
+        filter.apply();
         s.refresh();
-        s.startForceAtlas2();
-    });
+    }
 }
