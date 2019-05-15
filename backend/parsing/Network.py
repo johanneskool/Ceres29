@@ -2,9 +2,9 @@ __author__ = "Rick Luiken, Tristan Trouwen"
 
 import os
 import numpy as np
-import scipy.sparse.csgraph as csg
-from scipy.sparse import linalg
+from scipy.sparse.linalg import eigs
 import ujson
+import igraph as ig
 
 from backend import app
 
@@ -27,7 +27,7 @@ class Network:
     def __init__(self, name, filename, directory_name):
         self.name = name
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        self.tags, self.adjacency_matrix = self.__parse__(filepath)
+        self.graph = self.__parse__(filepath)
         self.directory_name = directory_name
 
         # processing and saving files
@@ -42,11 +42,9 @@ class Network:
 
         # convert to fiedler
         self.reorder_with_fiedler()
-
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
         )
-
     @staticmethod
     def __parse__(filename):
         """
@@ -72,8 +70,12 @@ class Network:
         matrix = np.loadtxt(filename, delimiter=";",
                             skiprows=1,
                             usecols=range(1, colnr + 1))
+        g = ig.Graph.Adjacency(matrix.astype(bool).tolist())
 
-        return tags, matrix
+        g.es["weight"] = matrix[matrix.nonzero()]
+        g.vs['label'] = tags
+
+        return g
 
     @property
     def __json_string__(self):
@@ -90,10 +92,11 @@ class Network:
         """
         to_be_converted = {}
         to_be_converted["name"] = self.name
-        to_be_converted["tags"] = self.tags
+        to_be_converted["tags"] = self.graph.vs["label"]
         to_be_converted["weights"] = []
-        for row in range(len(self.tags)):
-            to_be_converted["weights"].append(list(self.adjacency_matrix[row, :]))
+        matrix = self.graph.get_adjacency(attribute="weight")
+        for row in range(self.graph.vcount()):
+            to_be_converted["weights"].append(list(matrix[row]))
 
         return ujson.dumps(to_be_converted)
 
@@ -118,30 +121,17 @@ class Network:
                           vector
         """
 
-        L = csg.laplacian(csg.csgraph_from_dense(self.adjacency_matrix))
-
+        L = np.array(self.graph.laplacian(), dtype=float)
         # calculate eigenvalues and eigenvectors from the laplacian
         # TODO: look into making this more effiecient, not all eigenvalues have
         # to be calculated
-        eigvals, eigvec = linalg.eigs(L)
 
-        # sort eigenvalues and eigenvectors from low to high
-        ind = np.argsort(eigvals)
-        eigvals = eigvals[ind]
-        eigvec = eigvec[:, ind]
+        # calculate the k eigenvalues/vectors with the lowest magnitude
+        eigvals, eigvec = eigs(L, k=2, which="SM")
 
-        # find second lowest unique eigenvalues, it's eigenvector is the Fiedler vector
-        lowest = eigvals[0]
-        for i in range(len(eigvals)):
-            if eigvals[i] != lowest:
-                fiedler = eigvec[:, i]
-                break
+        fiedler = eigvec[:, 1]
 
         # find the reordering based on the Fiedler vector
         order = np.argsort(fiedler)
-
         # sort matrix on both the rows and columns
-        self.adjacency_matrix = self.adjacency_matrix[order, :]
-        self.adjacency_matrix = self.adjacency_matrix[:, order]
-        # sort tags
-        self.tags = list(np.array(self.tags)[order])
+        self.graph = self.graph.permute_vertices(order.tolist())
