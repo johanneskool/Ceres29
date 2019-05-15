@@ -73,7 +73,7 @@ def upload():
 def vis():
     data_id = request.args.get('data')
     if data_id is None:
-        custom_flash('Please select a file before going to the visualization')
+        custom_flash('Please select a file before going to the visualisation')
         return redirect(url_for('upload'))
     data_name = File.query.get(data_id).name
     if request.method == 'GET':
