@@ -43,10 +43,12 @@ function setup() {
     visualizationHandler.newVisualization('matrix');
 
     // fetch data
-    var data_id = new URL(window.location.href).searchParams.get("data");
+    var current_URL = new URL(window.location.href);
+    var data_id = current_URL.searchParams.get("data");
+    var clustering_type = ((current_URL.searchParams.get("clustering") == null) ? 'fiedler' : current_URL.searchParams.get("clustering"));
 
     //update the VH data
-    visualizationHandler.setData('/data/' + data_id + "?type=fiedler");
+    visualizationHandler.setData('/data/' + data_id + "?type=" + clustering_type);
     //makes the current matrix the one to show.
 
     //disable the anti-aliasing.
