@@ -6,6 +6,13 @@
  */
 
 
+/**
+ * Main handler for the visualization canvas.
+ * @type {VisualizationHandler}
+ */
+var GVH = new VisualizationHandler();
+
+
 var visualizationSketch = function (v) {
 
     /**
@@ -20,10 +27,17 @@ var visualizationSketch = function (v) {
      */
     v.visualizationHandler;
 
+    /**
+     * Set the visualization canvas parent
+     * @param {div} parent
+     */
+    v.setParent = function (parent) {
+        v.parent = parent;
+    };
+
     //basic setup and buffer for matrix to prevent redrawing.
     v.setup = function () {
         v.colorMode(v.HSL, 100);
-
         v.visualizationCanvas = v.createCanvas(window.innerWidth, window.innerHeight);
 
         v.frameRate(999);
@@ -31,10 +45,10 @@ var visualizationSketch = function (v) {
         v.rectMode(v.CENTER);
 
         //puts the canvas under the 'canvas' div
-        v.visualizationCanvas.parent('canvas');
+        v.visualizationCanvas.parent(v.parent);
 
         //iniate the main handler
-        v.visualizationHandler = new VisualizationHandler();
+        v.visualizationHandler = GVH;
         v.visualizationHandler.setCanvas(this);
         v.visualizationHandler.setDiv(v.visualizationCanvas);
 
@@ -51,8 +65,7 @@ var visualizationSketch = function (v) {
         //makes the current matrix the one to show.
 
         //disable the anti-aliasing.
-        v.context = document.getElementById("defaultCanvas0");
-        v.ctx = v.context.getContext('2d');
+        v.ctx = v.canvas.getContext('2d');
         v.ctx.imageSmoothingEnabled = false;
 
         v.setupListeners();
@@ -85,7 +98,7 @@ var visualizationSketch = function (v) {
      */
     v.setupListeners = function () {
         //for zooming
-        document.getElementById("defaultCanvas0").onwheel = function (event) {
+        v.canvas.onwheel = function (event) {
             if (event.deltaY < 0) {
                 //zoom in
                 v.zoom(true);
@@ -97,7 +110,7 @@ var visualizationSketch = function (v) {
             event.preventDefault();
         };
         //onmousewheel has different support than onwheel for some reason.
-        document.getElementById("defaultCanvas0").onmousewheel = function (event) {
+        v.canvas.onmousewheel = function (event) {
             if (event.deltaY < 0) {
                 v.zoom(true);
             } else {
@@ -106,7 +119,7 @@ var visualizationSketch = function (v) {
             event.preventDefault();
         };
         //on click
-        document.getElementById("defaultCanvas0").onmousedown = function (event) {
+        v.canvas.onmousedown = function (event) {
             v.mouseFlag = true;
             v.dragFlag = false;
 
@@ -117,7 +130,7 @@ var visualizationSketch = function (v) {
             v.newMouse.y = v.mouseY;
         };
         //on release
-        document.getElementById("defaultCanvas0").onmouseup = function (event) {
+        v.canvas.onmouseup = function (event) {
             v.mouseFlag = false;
 
             //if mouse has not been dragged, send click to visualization.
@@ -183,18 +196,33 @@ var visualizationSketch = function (v) {
     };
 
 
+
     /**
      * Rescales the canvas when the windows has been changed
      */
     window.onresize = function () {
         v.w = window.innerWidth;
         v.h = window.innerHeight;
-        //visualizationCanvas.resizeCanvas(w, h);
-        v.loadingAnimation.onresize();
+        v.resizeCanvas(v.w, v.h);
     };
 
 };
 
-window.vis0 = new p5(visualizationSketch);
+/**
+ * Create a new visualization and add it to a div
+ * @param {div} div to add the visualization to.
+ * @return {p5}
+ */
+var createVisCanvas = function (div) {
+    var sketch = new p5(visualizationSketch);
+    sketch.setParent(div);
+    return sketch;
+};
 
+window.vis0 = new createVisCanvas('canvas');
+
+/**
+ * Global namespace for p5 functions.
+ * @type {p5}
+ */
 window.P$ = new p5(function (p){}, "global sketch");

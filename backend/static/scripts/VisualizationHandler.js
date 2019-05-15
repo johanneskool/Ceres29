@@ -7,6 +7,8 @@
  * Main VisualizationHandler (VH) class
  * @constructor
  */
+
+//TODO CHange how the handler works, instead of having multiple visualizations inside a canvas the handler must be changed to map a visualization to a single canvas. !!a LOT of WORK.
 var VisualizationHandler = function () {
 
     /**
@@ -273,9 +275,23 @@ var VisualizationHandler = function () {
 
     /**
      * Set the data for each visualization handled by this VH
+     * Difference with update data is that this only runs if data is null/undefined.
      * @param url url of the json to set.
      */
     this.setData = function (url) {
+        if (this.data === undefined || this.data === null) {
+            this.data = url;
+            for (let i = 0; i < this.visualizations.length; i++) {
+                this.visualizations[i].setData(url);
+            }
+        }
+    };
+
+    /**
+     * Updates all the visualization data.
+     * @param url url of the json to set.
+     */
+    this.updateData = function (url) {
         this.data = url;
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].setData(url);

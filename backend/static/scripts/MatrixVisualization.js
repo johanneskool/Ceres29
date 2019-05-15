@@ -127,14 +127,16 @@ MatrixVisualization.prototype.drawMatrix = function () {
             if (weight < 0) {
                 weight = 0;
             }
-            if (weight > max) {
-                console.log(weight);
-            }
-            //use the weight to color the cell.
-            var hue = P$.map(weight, min, max, 65, 55);
-            var brightness = P$.map(weight, min, max, 22, 49);
 
-            this.matrix.fill(hue, 100, brightness,100);
+            var ratio = P$.map(weight, min, max, 0, 1);
+            P$.colorMode(P$.HSB, 100);
+            let from = P$.color(65, 100, 10);
+            let to = P$.color(40, 100, 100);
+            //use the weight to color the cell.
+            let fillColor = P$.lerpColor(from, to, ratio);
+
+
+            this.matrix.fill(fillColor);
             this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
             this.matrix.translate(this.nodeSize, 0);
         }
