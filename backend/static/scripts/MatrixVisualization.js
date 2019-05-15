@@ -88,7 +88,6 @@ MatrixVisualization.prototype.updateNodeSize = function () {
  * @param {url} url the json url of the data
  */
 MatrixVisualization.prototype.setData = function (url) {
-    print(url);
     loadJSON(url, loadNodes);
 
     //the json callback forgets what matrix called it.
@@ -97,6 +96,8 @@ MatrixVisualization.prototype.setData = function (url) {
     function loadNodes(data) {
         currentMatrix.data = data;
         currentMatrix.nodeCount = currentMatrix.data.weights.length;
+        currentMatrix.minWeight = currentMatrix.data.minWeight;
+        currentMatrix.maxWeight = currentMatrix.data.maxWeight;
         currentMatrix.updateNodeSize();
         currentMatrix.load();
     }
@@ -126,25 +127,20 @@ MatrixVisualization.prototype.drawMatrix = function () {
     //this.weights = this.getKeyAtIndex(1);
 
     //loop through all the edges and create a rectangle.
-    for (let row = this.startPositon; row < this.nodeCount; row++) {
+    for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
-        for (let col = 0; col < this.nodeCount; col++) {
+        for (let row = 0; row < this.nodeCount; row++) {
             let weight = this.data.weights[col][row];
             //use the weight to color the cell.
-            var hue = map(log(weight), 0, 2, 65, 55);     //fixed variable oringal range TODO
-            var brightness = map(log(weight), 0, 2, 22, 49);
-            /*if (hue < 0) {
-                hue += 100;
-            }*/
+            var hue = map(log(weight+0.000001), this.minWeight, this.maxWeight, 65, 55);
+            var brightness = map(log(weight+0.000001), this.minWeight, this.maxWeight, 22, 49);
 
             this.matrix.fill(hue, 100, brightness, 100);
-            this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
-            this.matrix.translate(0, this.nodeSize);
+            this.matrix.rect(this.nodeSize*row, this.nodeSize*col, this.nodeSize, this.nodeSize);
         }
         this.matrix.pop();
-        this.matrix.translate(this.nodeSize, 0);
 
-        if (row > this.startPositon + this.stepSize()) {
+        if (col > this.startPositon + this.stepSize()) {
             break;
         }
     }
