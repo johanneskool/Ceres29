@@ -29,9 +29,10 @@
     background-color: #4DCCBD;
 }
 
-.display-3 {
+.display-3, .display-4 {
     color: #D6FFF6;
 }
+
 
 body, main {
     color: #25274D;
