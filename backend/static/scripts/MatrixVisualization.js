@@ -28,14 +28,6 @@ var MatrixVisualization = function () {
      * @type {number}
      */
     this.startPositon = 0;
-
-    /**
-     * Amount of nodes that should be generated each time drawMatrix is called.
-     * @return {number}
-     */
-    this.stepSize = function () {
-        return P$.ceil(this.nodeCount / 100);
-    };
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
@@ -96,8 +88,8 @@ MatrixVisualization.prototype.setData = function (url) {
     function loadNodes(data) {
         currentMatrix.data = data;
         currentMatrix.nodeCount = currentMatrix.data.weights.length;
-        currentMatrix.minWeight = currentMatrix.data.minWeight;
-        currentMatrix.maxWeight = currentMatrix.data.maxWeight;
+        currentMatrix.minWeight = currentMatrix.getMinWeight();
+        currentMatrix.maxWeight = currentMatrix.getMaxWeight();
         currentMatrix.updateNodeSize();
         currentMatrix.load();
     }
@@ -122,47 +114,36 @@ MatrixVisualization.prototype.generateNodes = function () {
  * Draws a matrix to the graphics based of the input nodes
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-    var done = false;
-    //get the key to the weights
-    //this.weights = this.getKeyAtIndex(1);
-
+    let min = Math.log(this.minWeight);
+    if (min < 0) {
+        min = 0;
+    }
+    let max = Math.log(this.maxWeight);
     //loop through all the edges and create a rectangle.
-    for (let row = this.startPositon; row < this.nodeCount; row++) {
+    for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
-        for (let col = 0; col < this.nodeCount; col++) {
-            let weight = this.data.weights[col][row];
+        for (let row = 0; row < this.nodeCount; row++) {
+            let weight = Math.log(this.data.weights[col][row]);
+            if (weight < 0) {
+                weight = 0;
+            }
+            if (weight > max) {
+                console.log(weight);
+            }
             //use the weight to color the cell.
-            var hue = P$.map(P$.log(weight+0.000001), this.minWeight, this.maxWeight, 65, 55);
-            var brightness = P$.map(P$.log(weight+0.000001), this.minWeight, this.maxWeight, 22, 49);
+            var hue = P$.map(weight, min, max, 65, 55);
+            var brightness = P$.map(weight, min, max, 22, 49);
 
-            this.matrix.fill(hue, 100, brightness, 100);
+            this.matrix.fill(hue, 100, brightness,100);
             this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
-            this.matrix.translate(0, this.nodeSize);
+            this.matrix.translate(this.nodeSize, 0);
         }
         this.matrix.pop();
-        this.matrix.translate(this.nodeSize, 0);
-
-        if (row > this.startPositon + this.stepSize()) {
-            break;
-        }
+        this.matrix.translate(0, this.nodeSize);
     }
 
-    //if we have drawn all nodes we are done
-    if (this.startPositon > this.nodeCount) {
-        done = true
-    }
-
-    //split the generation in steps so that we can have a animation.
-    if (!done) {
-        this.startPositon += this.stepSize();
-    } else {
-
-        this.loaded = true;
-
-        //used to control animation flow.
-        this.vH.setLoadedVisualization(true);
-        //visIsLoaded = true;
-    }
+    this.loaded = true;
+    this.vH.setLoadedVisualization(true);
 };
 
 /**
@@ -175,11 +156,10 @@ MatrixVisualization.prototype.draw = function () {
         if (this.data != null) {
             this.drawMatrix(this);
         }
-        return;
     }
 
     //draw the image and the overlay
-    if (arguments.length === 0) {
+    if (this.matrix !== undefined) {
         this.vH.visualizationCanvas.image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
         this.vH.visualizationCanvas.image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
     }
@@ -231,8 +211,8 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
     try {
         var cellVector = this.getCell(xCord, yCord);
-        var y = cellVector.x;
-        var x = cellVector.y;
+        var y = cellVector.y;
+        var x = cellVector.x;
     } catch (error) {
         document.getElementById('matrix-visualization-edge-info').style.display = 'none';
         throw new RangeError("clicked outside of visualization");
@@ -250,6 +230,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // show debugging info in console
     var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
     console.log(text);
+    console.log('x cord: ' + x + ', y cord: ' + y);
 
     // update sidebar with informatino
     document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';

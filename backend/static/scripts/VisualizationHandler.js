@@ -308,5 +308,3 @@ var VisualizationHandler = function () {
     };
 
 };
-
-var first = true;

@@ -109,6 +109,26 @@ Visualization.prototype.getDataAtPosition = function (x,y) {
 };
 
 /**
+ * Function to find and return the minimum weight in the data set
+ * @return {number} minimum weight
+ */
+Visualization.prototype.getMinWeight = function () {
+    var array = this.data.weights;
+    const min = P$.min(array.map(x => P$.min(x)));
+    return min;
+};
+
+/**
+ * Function to find and return the maximum weight in the data set
+ * @return {number} maximum weight
+ */
+Visualization.prototype.getMaxWeight = function () {
+    var array = this.data.weights;
+    const max = P$.max(array.map(x => P$.max(x)));
+    return max;
+};
+
+/**
  * Function that should be able to handle a click to the canvas with the given coords.
  * @param posX
  * @param posY
