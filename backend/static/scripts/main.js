@@ -1,194 +1,200 @@
 /**
- * @fileoverview This is the main file of the visualization which handels the creating
+ * @fileoverview This is the main file of the visualization which handles the creating
  * and the canvas which displays the data.
  *
  * @author Samuel Oosterholt
  */
 
-/**
- * Factor by which the scale should change
- * @type {number}
- */
-const zoomFactor = 1.5;
 
-/**
- * Canvas which shows the current visualization(s)
- * @type {canvas}
- */
-let visualizationCanvas;
+var visualizationSketch = function (v) {
 
-/**
- * Main handler for the visualization canvas.
- * @type {VisualizationHandler}
- */
-let visualizationHandler;
+    /**
+     * Canvas which shows the current visualization(s)
+     * @type {canvas}
+     */
+    v.visualizationCanvas;
 
-//basic setup and buffer for matrix to prevent redrawing.
-function setup() {
-    colorMode(HSL,100);
-    visualizationCanvas = createCanvas(window.innerWidth, window.innerHeight);
+    /**
+     * Main handler for the visualization canvas.
+     * @type {VisualizationHandler}
+     */
+    v.visualizationHandler;
 
-    frameRate(999);
-    imageMode(CENTER);
-    rectMode(CENTER);
+    //basic setup and buffer for matrix to prevent redrawing.
+    v.setup = function () {
+        v.colorMode(v.HSL, 100);
 
-    //puts the canvas under the 'canvas' div
-    visualizationCanvas.parent('canvas');
+        v.visualizationCanvas = v.createCanvas(window.innerWidth, window.innerHeight);
 
-    //iniate the main handler
-    visualizationHandler = new VisualizationHandler();
-    visualizationHandler.setCanvas(visualizationCanvas);
+        v.frameRate(999);
+        v.imageMode(v.CENTER);
+        v.rectMode(v.CENTER);
 
-    //create a new matrix object
-    visualizationHandler.newVisualization('matrix');
+        //puts the canvas under the 'canvas' div
+        v.visualizationCanvas.parent('canvas');
 
-    // fetch data
-    var current_URL = new URL(window.location.href);
-    var data_id = current_URL.searchParams.get("data");
-    var clustering_type = ((current_URL.searchParams.get("clustering") == null) ? 'fiedler' : current_URL.searchParams.get("clustering"));
+        //iniate the main handler
+        v.visualizationHandler = new VisualizationHandler();
+        v.visualizationHandler.setCanvas(this);
+        v.visualizationHandler.setDiv(v.visualizationCanvas);
 
-    //update the VH data
-    visualizationHandler.setData('/data/' + data_id + "?type=" + clustering_type);
-    //makes the current matrix the one to show.
+        //create a new matrix object
+        v.visualizationHandler.newVisualization('matrix');
 
-    //disable the anti-aliasing.
-    let context = document.getElementById("defaultCanvas0");
-    let ctx = context.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
+        // fetch data
+        v.data_id = new URL(window.location.href).searchParams.get("data");
 
-    setupListeners();
+        console.log(v.data_id);
 
-    //I can only create vectors in a function. (or I would have to namespace main.js, and I wont.)
-    oldMouse = createVector();
-    newMouse = createVector();
-}
+        //update the VH data
+        v.visualizationHandler.setData('/data/' + v.data_id + "?type=fiedler");
+        //makes the current matrix the one to show.
 
-/**
- * Mouse position vector at the begin of the loop.
- * @Type {vector}
- */
-var oldMouse;
+        //disable the anti-aliasing.
+        v.context = document.getElementById("defaultCanvas0");
+        v.ctx = v.context.getContext('2d');
+        v.ctx.imageSmoothingEnabled = false;
 
-/**
- * Mouse position vector at the end of the loop.
- * @Type {vector}
- */
-var newMouse;
+        v.setupListeners();
 
-/**
- * Flag is true if mouse is (currently) clicked.
- * @type {boolean}
- */
-var mouseFlag = false;
+        //I can only create vectors in a function. (or I would have to namespace main.js, and I wont.)
+        v.oldMouse = v.createVector();
+        v.newMouse = v.createVector();
+    };
 
-/**
- * Setup for the canvas listeners, zooming scrolling and clicking.
- */
-function setupListeners () {
-    //for zooming
-    document.getElementById( "defaultCanvas0" ).onwheel = function(event){
-        if (event.deltaY < 0) {
-            //zoom in
-            zoom(true, zoomFactor);
+    /**
+     * Mouse position vector at the begin of the loop.
+     * @Type {vector}
+     */
+    v.oldMouse;
+
+    /**
+     * Mouse position vector at the end of the loop.
+     * @Type {vector}
+     */
+    v.newMouse;
+
+    /**
+     * Flag is true if mouse is (currently) clicked.
+     * @type {boolean}
+     */
+    v.mouseFlag = false;
+
+    /**
+     * Setup for the canvas listeners, zooming scrolling and clicking.
+     */
+    v.setupListeners = function () {
+        //for zooming
+        document.getElementById("defaultCanvas0").onwheel = function (event) {
+            if (event.deltaY < 0) {
+                //zoom in
+                v.zoom(true);
+            } else {
+                //else zoom out
+                v.zoom(false);
+            }
+            //prevent the page from scrolling
+            event.preventDefault();
+        };
+        //onmousewheel has different support than onwheel for some reason.
+        document.getElementById("defaultCanvas0").onmousewheel = function (event) {
+            if (event.deltaY < 0) {
+                v.zoom(true);
+            } else {
+                v.zoom(false);
+            }
+            event.preventDefault();
+        };
+        //on click
+        document.getElementById("defaultCanvas0").onmousedown = function (event) {
+            v.mouseFlag = true;
+            v.dragFlag = false;
+
+            //fix that prevents the visualization from moving when the window regains focus.
+            v.oldMouse.x = v.mouseX;
+            v.oldMouse.y = v.mouseY;
+            v.newMouse.x = v.mouseX;
+            v.newMouse.y = v.mouseY;
+        };
+        //on release
+        document.getElementById("defaultCanvas0").onmouseup = function (event) {
+            v.mouseFlag = false;
+
+            //if mouse has not been dragged, send click to visualization.
+            if (!v.dragFlag) {
+                v.visualizationHandler.click(v.mouseX, v.mouseY);
+            }
+
+            //reset dragFlag flag.
+            v.dragFlag = false;
+        };
+    };
+
+    /**
+     * Flag is true if mouse has been dragged since click. Else false.
+     * @type {boolean}
+     */
+    v.dragFlag = false;
+
+    v.mouseDragged = function () {
+        if (v.mouseFlag) {
+            //mouse was dragged, so update the dragFlag.
+            v.dragFlag = true;
+
+            //update mouse vector
+            v.newMouse.x = v.mouseX;
+            v.newMouse.y = v.mouseY;
+
+            v.visualizationHandler.moveActive(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y);
+
+            //update old mouse vector positions.
+            v.oldMouse.x = v.mouseX;
+            v.oldMouse.y = v.mouseY;
+        }
+    };
+
+    /**
+     * Function that handles the zooming.
+     * Updates the Zoomscale by the zoomfactor and transform the visualization such
+     * that the mouse does not change position relative to the visualization.
+     * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
+     */
+    v.zoom = function (zoomIn) {
+        v.zoomFactor = v.visualizationHandler.active.getZoomFactor();
+        if (zoomIn) {
+            //hard to explain in code, get some pen and paper and visualize the transformation.
+            v.visualizationHandler.moveActive(-(v.mouseX - v.visualizationHandler.getActivePosition().x) * (v.zoomFactor - 1), -(v.mouseY - v.visualizationHandler.getActivePosition().y) * (v.zoomFactor - 1));
+            v.visualizationHandler.setActiveZoomScale(v.visualizationHandler.active.getZoomScale() / v.zoomFactor);
         } else {
-            //else zoom out
-            zoom(false, zoomFactor);
+            //idem.
+            v.visualizationHandler.moveActive((v.mouseX - v.visualizationHandler.getActivePosition().x) * (v.zoomFactor - 1) / v.zoomFactor, (v.mouseY - v.visualizationHandler.getActivePosition().y) * (v.zoomFactor - 1) / v.zoomFactor);
+            v.visualizationHandler.setActiveZoomScale(v.visualizationHandler.active.getZoomScale() * v.zoomFactor);
         }
-        //prevent the page from scrolling
-        event.preventDefault();
     };
-    //onmousewheel has different support than onwheel for some reason.
-    document.getElementById( "defaultCanvas0" ).onmousewheel = function(event){
-        if (event.deltaY < 0) {
-            zoom(true, zoomFactor);
-        } else {
-            zoom(false, zoomFactor);
+
+    v.draw = function () {
+        //wipe background
+        v.background(66, 35, 22);
+        v.fill(0, 0, 0, 100);
+        if (v.visualizationHandler.active.matrix !== undefined) {
+            v.visualizationCanvas.image(v.visualizationHandler.active.matrix, v.width/2, v.height/2);
         }
-        event.preventDefault();
+        v.visualizationHandler.drawAll();
     };
-    //on click
-    document.getElementById( "defaultCanvas0" ).onmousedown = function(event){
-        mouseFlag = true;
-        dragFlag = false;
 
-        //fix that prevents the visualization from moving when the window regains focus.
-        oldMouse.x = mouseX;
-        oldMouse.y = mouseY;
-        newMouse.x = mouseX;
-        newMouse.y = mouseY;
+
+    /**
+     * Rescales the canvas when the windows has been changed
+     */
+    window.onresize = function () {
+        v.w = window.innerWidth;
+        v.h = window.innerHeight;
+        //visualizationCanvas.resizeCanvas(w, h);
+        v.loadingAnimation.onresize();
     };
-    //on release
-    document.getElementById("defaultCanvas0").onmouseup = function (event) {
-        mouseFlag = false;
 
-        //if mouse has not been dragged, send click to visualization.
-        if (!dragFlag) {
-            visualizationHandler.click(mouseX, mouseY);
-        }
-
-        //reset dragFlag flag.
-        dragFlag = false;
-    };
-}
-
-/**
- * Flag is true if mouse has been dragged since click. Else false.
- * @type {boolean}
- */
-var dragFlag = false;
-
-function mouseDragged() {
-    console.log('drag');
-    if (mouseFlag) {
-        //mouse was dragged, so update the dragFlag.
-        dragFlag = true;
-
-        //update mouse vector
-        newMouse.x = mouseX;
-        newMouse.y = mouseY;
-
-        visualizationHandler.moveActive(newMouse.x - oldMouse.x, newMouse.y - oldMouse.y);
-
-        //update old mouse vector positions.
-        oldMouse.x = mouseX;
-        oldMouse.y= mouseY;
-    }
-}
-
-/**
- * Function that handles the zooming.
- * Updates the Zoomscale by the zoomfactor and transform the visualization such
- * that the mouse does not change position relative to the visualization.
- * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
- * @param zoomFactor {number} factor by which the zoomScale should change.
- */
-function zoom(zoomIn, zoomFactor) {
-    if (zoomIn) {
-        //hard to explain in code, get some pen and paper and visualize the transformation.
-        visualizationHandler.moveActive(-(mouseX - visualizationHandler.getActivePosition().x)*(zoomFactor - 1), -(mouseY - visualizationHandler.getActivePosition().y)*(zoomFactor - 1));
-        visualizationHandler.setActiveZoomScale(visualizationHandler.active.getZoomScale()/zoomFactor);
-    } else {
-        //idem.
-        visualizationHandler.moveActive((mouseX - visualizationHandler.getActivePosition().x)*(zoomFactor - 1)/zoomFactor, (mouseY - visualizationHandler.getActivePosition().y)*(zoomFactor - 1)/zoomFactor);
-        visualizationHandler.setActiveZoomScale(visualizationHandler.active.getZoomScale() * zoomFactor);
-    }
-}
-
-function draw() {
-    //wipe background
-    background(66, 35, 22);
-    fill(0, 0, 0, 100);
-
-    visualizationHandler.drawAll();
-}
-
-
-/**
- * Rescales the canvas when the windows has been changed
- */
-window.onresize = function() {
-    let w = window.innerWidth;
-    let h = window.innerHeight;
-    //visualizationCanvas.resizeCanvas(w, h);
-    loadingAnimation.onresize();
 };
+
+window.vis0 = new p5(visualizationSketch);
+
+window.P$ = new p5(function (p){}, "global sketch");

@@ -13,7 +13,7 @@ var VisualizationHandler = function () {
      * Create an animation to go with the handler
      * @type {p5}
      */
-    this.loadingAnimation = new p5(sketch);
+    this.loadingAnimation = new p5(loadingAnimationSketch);
     this.loadingAnimation.setHandler(this);
 
     /**
@@ -21,6 +21,12 @@ var VisualizationHandler = function () {
      * @type {Array}
      */
     this.visualizations = [];
+
+    /**
+     * Div where the canvas is
+     * @type {div}
+     */
+    this.visualizationDiv;
 
     /**
      * Canvas on which this handler works
@@ -170,6 +176,15 @@ var VisualizationHandler = function () {
     };
 
     /**
+     * Sets the current div
+     * @param {div} div on which the VH should work.
+     */
+    this.setDiv = function (div) {
+        this.visualizationDiv = div;
+    };
+
+
+    /**
      * Delete the active visualization from the handler.
      */
     this.deleteActive = function () {
@@ -210,32 +225,34 @@ var VisualizationHandler = function () {
         switch (visualization) {
             case "matrix":
                 let newMatrixVisualization = new MatrixVisualization();
-                this.visualizations.push(newMatrixVisualization);
-                this.active = newMatrixVisualization;
-
-                //if this VH has data
-                if (this.data != null) {
-                    newMatrixVisualization.setData(this.data);
-                }
-
-                newMatrixVisualization.setVH(this);
-                this.active.setZoomScale(1);
+                this._createVis(newMatrixVisualization);
                 this.centerActive();
                 break;
             case "roundNodeLink":
                 let newRoundNodeLink = new RoundNodeLink();
-                this.visualizations.push(newRoundNodeLink);
-                this.active = newRoundNodeLink;
-
-                //if this VH has data
-                if (this.data != null) {
-                    newRoundNodeLink.setData(this.data);
-                }
-                newRoundNodeLink.setVH(this);
+                this._createVis(newRoundNodeLink);
                 this.active.setZoomScale(1);
                 break;
         }
     };
+
+    /**
+     * Create vis Object
+     * @private
+     */
+    this._createVis = function (visualizationObject) {
+        this.visualizations.push(visualizationObject);
+        this.active = visualizationObject;
+
+        //if this VH has data
+        if (this.data != null) {
+            visualizationObject.setData(this.data);
+        }
+
+        visualizationObject.setVH(this);
+        this.active.setZoomScale(1);
+    };
+
 
     /**
      * Set the position of the active visualization
@@ -270,13 +287,13 @@ var VisualizationHandler = function () {
      */
     this.centerActive = function () {
         //id of the current canvas
-        let id = this.visualizationCanvas.id();
+        let id = this.visualizationDiv.id();
 
         //container of the canvas
         let container = document.getElementById(id).parentElement;
 
         //use the container width / height otherwise it wont be centered.
-        let position = createVector(container.offsetWidth / 2, container.offsetHeight / 2);
+        let position = P$.createVector(container.offsetWidth / 2, container.offsetHeight / 2);
 
         this.active.setPosition(position);
     };
@@ -291,3 +308,5 @@ var VisualizationHandler = function () {
     };
 
 };
+
+var first = true;

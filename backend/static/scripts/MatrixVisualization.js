@@ -34,19 +34,18 @@ var MatrixVisualization = function () {
      * @return {number}
      */
     this.stepSize = function () {
-        return ceil(this.nodeCount / 100);
-    }
+        return P$.ceil(this.nodeCount / 100);
+    };
 };
 
 MatrixVisualization.prototype = Object.create(Visualization.prototype);
 MatrixVisualization.prototype.constructor = MatrixVisualization;
 
-
 /***
  * Basic load function that draws the matrix to a buffer.
  */
 MatrixVisualization.prototype.load = function () {
-
+    console.log('load call');
     //update the node count
     this.nodeCount = this.data.tags.length;
     this.startPositon = 0;
@@ -54,22 +53,22 @@ MatrixVisualization.prototype.load = function () {
 
     //create a matrix and the buffer graphics
     const matrixSize = this.nodeCount * this.nodeSize;
-    this.matrix = createGraphics(matrixSize, matrixSize);
-    this.matrix.colorMode(HSL, 100);
+    this.matrix = P$.createGraphics(matrixSize, matrixSize);
+    this.matrix.colorMode(P$.HSL, 100);
     this.matrix.textSize(this.nodeSize / 2);
-    this.matrix.imageMode(CENTER);
+    this.matrix.imageMode(P$.CENTER);
     this.matrix.noStroke();
 
     //initial matrix size
-    this.drawWidth = ceil(min(windowHeight, windowWidth) / 1.3);
+    this.drawWidth = P$.ceil(P$.min(P$.windowHeight, P$.windowWidth) / 1.3);
 
     //draw the nodes from the data to the buffer
     this.drawMatrix(this);
 
     //where we can show selected nodes.
-    this.overlayGraphics = createGraphics(matrixSize, matrixSize);
-    this.overlayGraphics.imageMode(CORNER);
-    this.overlayGraphics.colorMode(HSL, 100);
+    this.overlayGraphics = P$.createGraphics(matrixSize, matrixSize);
+    this.overlayGraphics.imageMode(P$.CORNER);
+    this.overlayGraphics.colorMode(P$.HSL, 100);
     this.overlayGraphics.noStroke();
 
     //unused since the later updates.
@@ -80,7 +79,7 @@ MatrixVisualization.prototype.load = function () {
  * Function to update the node size of the matrix.
  */
 MatrixVisualization.prototype.updateNodeSize = function () {
-    this.nodeSize = floor(this.maxSize / this.nodeCount);
+    this.nodeSize = P$.floor(this.maxSize / this.nodeCount);
 };
 
 /**
@@ -88,7 +87,8 @@ MatrixVisualization.prototype.updateNodeSize = function () {
  * @param {url} url the json url of the data
  */
 MatrixVisualization.prototype.setData = function (url) {
-    loadJSON(url, loadNodes);
+    P$.print(url);
+    P$.loadJSON(url, loadNodes);
 
     //the json callback forgets what matrix called it.
     var currentMatrix = this;
@@ -127,20 +127,22 @@ MatrixVisualization.prototype.drawMatrix = function () {
     //this.weights = this.getKeyAtIndex(1);
 
     //loop through all the edges and create a rectangle.
-    for (let col = this.startPositon; col < this.nodeCount; col++) {
+    for (let row = this.startPositon; row < this.nodeCount; row++) {
         this.matrix.push();
-        for (let row = 0; row < this.nodeCount; row++) {
+        for (let col = 0; col < this.nodeCount; col++) {
             let weight = this.data.weights[col][row];
             //use the weight to color the cell.
-            var hue = map(log(weight+0.000001), this.minWeight, this.maxWeight, 65, 55);
-            var brightness = map(log(weight+0.000001), this.minWeight, this.maxWeight, 22, 49);
+            var hue = P$.map(P$.log(weight+0.000001), this.minWeight, this.maxWeight, 65, 55);
+            var brightness = P$.map(P$.log(weight+0.000001), this.minWeight, this.maxWeight, 22, 49);
 
             this.matrix.fill(hue, 100, brightness, 100);
-            this.matrix.rect(this.nodeSize*row, this.nodeSize*col, this.nodeSize, this.nodeSize);
+            this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
+            this.matrix.translate(0, this.nodeSize);
         }
         this.matrix.pop();
+        this.matrix.translate(this.nodeSize, 0);
 
-        if (col > this.startPositon + this.stepSize()) {
+        if (row > this.startPositon + this.stepSize()) {
             break;
         }
     }
@@ -159,7 +161,7 @@ MatrixVisualization.prototype.drawMatrix = function () {
 
         //used to control animation flow.
         this.vH.setLoadedVisualization(true);
-        visIsLoaded = true;
+        //visIsLoaded = true;
     }
 };
 
@@ -178,8 +180,8 @@ MatrixVisualization.prototype.draw = function () {
 
     //draw the image and the overlay
     if (arguments.length === 0) {
-        image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
-        image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        this.vH.visualizationCanvas.image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        this.vH.visualizationCanvas.image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
     }
 };
 
@@ -204,13 +206,13 @@ MatrixVisualization.prototype.colorCell = function (x, y) {
  */
 MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed
-    var topLeft = createVector(this.position.x - (this.drawWidth / this.zoomScale)/2, this.position.y - (this.drawWidth / this.zoomScale)/2);
-    var mouse = createVector(xCord, yCord);
+    var topLeft = P$.createVector(this.position.x - (this.drawWidth / this.zoomScale)/2, this.position.y - (this.drawWidth / this.zoomScale)/2);
+    var mouse = P$.createVector(xCord, yCord);
     var cell = p5.Vector.sub(mouse, topLeft);
     var nodeSize = (this.drawWidth / this.zoomScale)/this.nodeCount;
-    var x = floor(cell.x / nodeSize);
-    var y = floor(cell.y / nodeSize);
-    var cellVector = createVector(x, y);
+    var x = P$.floor(cell.x / nodeSize);
+    var y = P$.floor(cell.y / nodeSize);
+    var cellVector = P$.createVector(x, y);
 
     if (x < 0 || y < 0 || x > this.nodeCount ||  y > this.nodeCount) {
         throw new RangeError("clicked outside of visualization");
