@@ -10,7 +10,8 @@ from backend import app
 
 filenames = {
     'default': 'default.json',
-    'fiedler': 'fiedler.json'
+    'fiedler': 'fiedler.json',
+    'pagerank': 'pagerank.json'
 }
 
 
@@ -29,7 +30,7 @@ class Network:
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         self.graph = self.__parse__(filepath)
         self.directory_name = directory_name
-
+        print(self.graph.get_adjacency(attribute="weight"))
         # processing and saving files
 
         # create folder to save all files in
@@ -45,6 +46,14 @@ class Network:
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
         )
+
+        # convert to pagerank
+        self.reorder_with_pagerank()
+        print(self.graph.get_adjacency())
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
+        )
+
     @staticmethod
     def __parse__(filename):
         """
@@ -93,6 +102,8 @@ class Network:
         to_be_converted = {}
         to_be_converted["name"] = self.name
         to_be_converted["tags"] = self.graph.vs["label"]
+        to_be_converted["minWeight"] = min(self.graph.es["weight"])
+        to_be_converted["maxWeight"] = max(self.graph.es["weight"])
         to_be_converted["weights"] = []
         matrix = self.graph.get_adjacency(attribute="weight")
         for row in range(self.graph.vcount()):
@@ -134,4 +145,9 @@ class Network:
         # find the reordering based on the Fiedler vector
         order = np.argsort(fiedler)
         # sort matrix on both the rows and columns
+        self.graph = self.graph.permute_vertices(order.tolist())
+
+    def reorder_with_pagerank(self):
+        scores = self.graph.pagerank(weights=self.graph.es["weight"])
+        order = np.argsort(scores)
         self.graph = self.graph.permute_vertices(order.tolist())
