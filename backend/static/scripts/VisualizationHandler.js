@@ -184,6 +184,7 @@ var VisualizationHandler = function () {
             this.colorCell(this.active.getCell(xPos, yPos));
             return;
         } catch (error) {
+            console.log(error);
             //check if we have clicked on another vis, we do this by running through the array and checking for click errors.
             if (error instanceof RangeError) {
                 for (let i = 0; i <= this.visualizations.length; i++) {
