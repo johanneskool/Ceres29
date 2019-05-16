@@ -88,8 +88,8 @@ MatrixVisualization.prototype.setData = function (url) {
     function loadNodes(data) {
         currentMatrix.data = data;
         currentMatrix.nodeCount = currentMatrix.data.weights.length;
-        currentMatrix.minWeight = currentMatrix.getMinWeight();
-        currentMatrix.maxWeight = currentMatrix.getMaxWeight();
+        currentMatrix.minWeight = currentMatrix.data.minWeight;
+        currentMatrix.maxWeight = currentMatrix.data.maxWeight;
         currentMatrix.updateNodeSize();
         currentMatrix.load();
     }
