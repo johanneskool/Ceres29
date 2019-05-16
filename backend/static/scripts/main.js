@@ -49,11 +49,9 @@ var visualizationSketch = function (v) {
 
         //iniate the main handler
         v.visualizationHandler = GVH;
-        v.visualizationHandler.setCanvas(this);
-        v.visualizationHandler.setDiv(v.visualizationCanvas);
 
         //create a new matrix object
-        v.visualizationHandler.newVisualization('matrix');
+        v.visualizationHandler.newVisualization('matrix', v);
 
         // fetch data
         v.data_id = new URL(window.location.href).searchParams.get("data");
@@ -61,7 +59,7 @@ var visualizationSketch = function (v) {
         console.log(v.data_id);
 
         //update the VH data
-        v.visualizationHandler.setData('/data/' + v.data_id + "?type=fiedler");
+        v.visualizationHandler.setData('/data/' + v.data_id + "?type=fiedler", v);
         //makes the current matrix the one to show.
 
         //disable the anti-aliasing.
@@ -135,7 +133,7 @@ var visualizationSketch = function (v) {
 
             //if mouse has not been dragged, send click to visualization.
             if (!v.dragFlag) {
-                v.visualizationHandler.click(v.mouseX, v.mouseY);
+                v.visualizationHandler.clickSelected(v.mouseX, v.mouseY, v);
             }
 
             //reset dragFlag flag.
@@ -158,7 +156,7 @@ var visualizationSketch = function (v) {
             v.newMouse.x = v.mouseX;
             v.newMouse.y = v.mouseY;
 
-            v.visualizationHandler.moveActive(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y);
+            v.visualizationHandler.moveSelected(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y, v);
 
             //update old mouse vector positions.
             v.oldMouse.x = v.mouseX;
@@ -173,15 +171,15 @@ var visualizationSketch = function (v) {
      * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
      */
     v.zoom = function (zoomIn) {
-        v.zoomFactor = v.visualizationHandler.active.getZoomFactor();
+        v.zoomFactor = v.visualizationHandler.visDictionary.get(v).getZoomFactor();
         if (zoomIn) {
             //hard to explain in code, get some pen and paper and visualize the transformation.
-            v.visualizationHandler.moveActive(-(v.mouseX - v.visualizationHandler.getActivePosition().x) * (v.zoomFactor - 1), -(v.mouseY - v.visualizationHandler.getActivePosition().y) * (v.zoomFactor - 1));
-            v.visualizationHandler.setActiveZoomScale(v.visualizationHandler.active.getZoomScale() / v.zoomFactor);
+            v.visualizationHandler.moveSelected(-(v.mouseX - v.visualizationHandler.getSelectedPosition(v).x) * (v.zoomFactor - 1),-(v.mouseY - v.visualizationHandler.getSelectedPosition(v).y) * (v.zoomFactor - 1), v);
+            v.visualizationHandler.setSelectedZoomScale(v.visualizationHandler.getSelectedZoomScale(v) / v.zoomFactor, v);
         } else {
             //idem.
-            v.visualizationHandler.moveActive((v.mouseX - v.visualizationHandler.getActivePosition().x) * (v.zoomFactor - 1) / v.zoomFactor, (v.mouseY - v.visualizationHandler.getActivePosition().y) * (v.zoomFactor - 1) / v.zoomFactor);
-            v.visualizationHandler.setActiveZoomScale(v.visualizationHandler.active.getZoomScale() * v.zoomFactor);
+            v.visualizationHandler.moveSelected((v.mouseX - v.visualizationHandler.getSelectedPosition(v).x) * (v.zoomFactor - 1) / v.zoomFactor, (v.mouseY - v.visualizationHandler.getSelectedPosition(v).y) * (v.zoomFactor - 1) / v.zoomFactor, v);
+            v.visualizationHandler.setSelectedZoomScale(v.visualizationHandler.getSelectedZoomScale(v) * v.zoomFactor, v);
         }
     };
 
@@ -189,12 +187,8 @@ var visualizationSketch = function (v) {
         //wipe background
         v.background(66, 35, 22);
         v.fill(0, 0, 0, 100);
-        if (v.visualizationHandler.active.matrix !== undefined) {
-            v.visualizationCanvas.image(v.visualizationHandler.active.matrix, v.width/2, v.height/2);
-        }
-        v.visualizationHandler.drawAll();
+        v.visualizationHandler.drawSelected(v);
     };
-
 
 
     /**
@@ -220,6 +214,8 @@ var createVisCanvas = function (div) {
 };
 
 window.vis0 = new createVisCanvas('canvas');
+window.vis1 = new createVisCanvas('canvas1');
+
 
 /**
  * Global namespace for p5 functions.

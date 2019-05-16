@@ -162,8 +162,8 @@ MatrixVisualization.prototype.draw = function () {
 
     //draw the image and the overlay
     if (this.matrix !== undefined) {
-        this.vH.visualizationCanvas.image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
-        this.vH.visualizationCanvas.image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        this.canvas.image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
+        this.canvas.image(this.overlayGraphics, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
     }
 };
 
