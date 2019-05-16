@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
 {% block scripts %}
+    <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/VisualizationClass.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>
 {% endblock %}
@@ -32,6 +32,7 @@
                     </div>
                 </div>
                 <div id="canvas" style="overflow:hidden;"></div>
+                <div id="canvas1" style="overflow:hidden;"></div>
             </div>
           </div>
         </div>

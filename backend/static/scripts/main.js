@@ -6,6 +6,13 @@
  */
 
 
+/**
+ * Main handler for the visualization canvas.
+ * @type {VisualizationHandler}
+ */
+var GVH = new VisualizationHandler();
+
+
 var visualizationSketch = function (v) {
 
     /**
@@ -20,10 +27,17 @@ var visualizationSketch = function (v) {
      */
     v.visualizationHandler;
 
+    /**
+     * Set the visualization canvas parent
+     * @param {div} parent
+     */
+    v.setParent = function (parent) {
+        v.parent = parent;
+    };
+
     //basic setup and buffer for matrix to prevent redrawing.
     v.setup = function () {
         v.colorMode(v.HSL, 100);
-
         v.visualizationCanvas = v.createCanvas(window.innerWidth, window.innerHeight);
 
         v.frameRate(999);
@@ -31,15 +45,13 @@ var visualizationSketch = function (v) {
         v.rectMode(v.CENTER);
 
         //puts the canvas under the 'canvas' div
-        v.visualizationCanvas.parent('canvas');
+        v.visualizationCanvas.parent(v.parent);
 
         //iniate the main handler
-        v.visualizationHandler = new VisualizationHandler();
-        v.visualizationHandler.setCanvas(this);
-        v.visualizationHandler.setDiv(v.visualizationCanvas);
+        v.visualizationHandler = GVH;
 
         //create a new matrix object
-        v.visualizationHandler.newVisualization('matrix');
+        v.visualizationHandler.newVisualization('matrix', v);
 
         // fetch data
         v.data_id = new URL(window.location.href).searchParams.get("data");
@@ -47,12 +59,11 @@ var visualizationSketch = function (v) {
         console.log(v.data_id);
 
         //update the VH data
-        v.visualizationHandler.setData('/data/' + v.data_id + "?type=fiedler");
+        v.visualizationHandler.setData('/data/' + v.data_id + "?type=fiedler", v);
         //makes the current matrix the one to show.
 
         //disable the anti-aliasing.
-        v.context = document.getElementById("defaultCanvas0");
-        v.ctx = v.context.getContext('2d');
+        v.ctx = v.canvas.getContext('2d');
         v.ctx.imageSmoothingEnabled = false;
 
         v.setupListeners();
@@ -85,7 +96,7 @@ var visualizationSketch = function (v) {
      */
     v.setupListeners = function () {
         //for zooming
-        document.getElementById("defaultCanvas0").onwheel = function (event) {
+        v.canvas.onwheel = function (event) {
             if (event.deltaY < 0) {
                 //zoom in
                 v.zoom(true);
@@ -97,7 +108,7 @@ var visualizationSketch = function (v) {
             event.preventDefault();
         };
         //onmousewheel has different support than onwheel for some reason.
-        document.getElementById("defaultCanvas0").onmousewheel = function (event) {
+        v.canvas.onmousewheel = function (event) {
             if (event.deltaY < 0) {
                 v.zoom(true);
             } else {
@@ -106,7 +117,7 @@ var visualizationSketch = function (v) {
             event.preventDefault();
         };
         //on click
-        document.getElementById("defaultCanvas0").onmousedown = function (event) {
+        v.canvas.onmousedown = function (event) {
             v.mouseFlag = true;
             v.dragFlag = false;
 
@@ -117,12 +128,12 @@ var visualizationSketch = function (v) {
             v.newMouse.y = v.mouseY;
         };
         //on release
-        document.getElementById("defaultCanvas0").onmouseup = function (event) {
+        v.canvas.onmouseup = function (event) {
             v.mouseFlag = false;
 
             //if mouse has not been dragged, send click to visualization.
             if (!v.dragFlag) {
-                v.visualizationHandler.click(v.mouseX, v.mouseY);
+                v.visualizationHandler.clickSelected(v.mouseX, v.mouseY, v);
             }
 
             //reset dragFlag flag.
@@ -145,7 +156,7 @@ var visualizationSketch = function (v) {
             v.newMouse.x = v.mouseX;
             v.newMouse.y = v.mouseY;
 
-            v.visualizationHandler.moveActive(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y);
+            v.visualizationHandler.moveSelected(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y, v);
 
             //update old mouse vector positions.
             v.oldMouse.x = v.mouseX;
@@ -160,15 +171,15 @@ var visualizationSketch = function (v) {
      * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
      */
     v.zoom = function (zoomIn) {
-        v.zoomFactor = v.visualizationHandler.active.getZoomFactor();
+        v.zoomFactor = v.visualizationHandler.visDictionary.get(v).getZoomFactor();
         if (zoomIn) {
             //hard to explain in code, get some pen and paper and visualize the transformation.
-            v.visualizationHandler.moveActive(-(v.mouseX - v.visualizationHandler.getActivePosition().x) * (v.zoomFactor - 1), -(v.mouseY - v.visualizationHandler.getActivePosition().y) * (v.zoomFactor - 1));
-            v.visualizationHandler.setActiveZoomScale(v.visualizationHandler.active.getZoomScale() / v.zoomFactor);
+            v.visualizationHandler.moveSelected(-(v.mouseX - v.visualizationHandler.getSelectedPosition(v).x) * (v.zoomFactor - 1),-(v.mouseY - v.visualizationHandler.getSelectedPosition(v).y) * (v.zoomFactor - 1), v);
+            v.visualizationHandler.setSelectedZoomScale(v.visualizationHandler.getSelectedZoomScale(v) / v.zoomFactor, v);
         } else {
             //idem.
-            v.visualizationHandler.moveActive((v.mouseX - v.visualizationHandler.getActivePosition().x) * (v.zoomFactor - 1) / v.zoomFactor, (v.mouseY - v.visualizationHandler.getActivePosition().y) * (v.zoomFactor - 1) / v.zoomFactor);
-            v.visualizationHandler.setActiveZoomScale(v.visualizationHandler.active.getZoomScale() * v.zoomFactor);
+            v.visualizationHandler.moveSelected((v.mouseX - v.visualizationHandler.getSelectedPosition(v).x) * (v.zoomFactor - 1) / v.zoomFactor, (v.mouseY - v.visualizationHandler.getSelectedPosition(v).y) * (v.zoomFactor - 1) / v.zoomFactor, v);
+            v.visualizationHandler.setSelectedZoomScale(v.visualizationHandler.getSelectedZoomScale(v) * v.zoomFactor, v);
         }
     };
 
@@ -176,10 +187,7 @@ var visualizationSketch = function (v) {
         //wipe background
         v.background(66, 35, 22);
         v.fill(0, 0, 0, 100);
-        if (v.visualizationHandler.active.matrix !== undefined) {
-            v.visualizationCanvas.image(v.visualizationHandler.active.matrix, v.width/2, v.height/2);
-        }
-        v.visualizationHandler.drawAll();
+        v.visualizationHandler.drawSelected(v);
     };
 
 
@@ -189,12 +197,28 @@ var visualizationSketch = function (v) {
     window.onresize = function () {
         v.w = window.innerWidth;
         v.h = window.innerHeight;
-        //visualizationCanvas.resizeCanvas(w, h);
-        v.loadingAnimation.onresize();
+        v.resizeCanvas(v.w, v.h);
     };
 
 };
 
-window.vis0 = new p5(visualizationSketch);
+/**
+ * Create a new visualization and add it to a div
+ * @param {div} div to add the visualization to.
+ * @return {p5}
+ */
+var createVisCanvas = function (div) {
+    var sketch = new p5(visualizationSketch);
+    sketch.setParent(div);
+    return sketch;
+};
 
+window.vis0 = new createVisCanvas('canvas');
+window.vis1 = new createVisCanvas('canvas1');
+
+
+/**
+ * Global namespace for p5 functions.
+ * @type {p5}
+ */
 window.P$ = new p5(function (p){}, "global sketch");
