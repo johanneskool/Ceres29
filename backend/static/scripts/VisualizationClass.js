@@ -1,3 +1,4 @@
+
 /***
  * Inheritance of all other visualizations.
  * @abstract
@@ -13,8 +14,43 @@ var Visualization = function () {
      */
     this.data = null;
     this.zoomScale;
-    this.position = createVector();
+    this.position = P$.createVector();
     this.vH;
+    this.canvas;
+    this.zoomFactor = 1.5;
+};
+
+/**
+ * canvas getter
+ * @return {canvas} current canvas on which the visualization is drawn.
+ */
+Visualization.prototype.getCanvas = function () {
+    return this.canvas;
+};
+
+/**
+ * Canvas setter
+ * @param {canvas} p5canvas - canvas to draw the visualization on.
+ */
+Visualization.prototype.setCanvas = function (p5canvas) {
+    this.canvas = p5canvas;
+};
+
+
+/**
+ * zoomFactor setter
+ * @param {number} zoomFactor new zoomFactor.
+ */
+Visualization.prototype.setZoomFactor = function (zoomFactor) {
+    this.zoomFactor = zoomFactor;
+};
+
+/**
+ * zoomFactor getter
+ * @return {number} this visualization zoom factor.
+ */
+Visualization.prototype.getZoomFactor = function () {
+    return this.zoomFactor;
 };
 
 /**
@@ -25,7 +61,7 @@ Visualization.prototype.load = function () {
 };
 
 /**
- * Should update the visualization data vrom the json url.
+ * Should update the visualization data from the json url.
  * @abstract
  * @param url
  */
@@ -34,7 +70,7 @@ Visualization.prototype.setData = function (url) {
 };
 
 /**
- * Should draw the image to the VH canvas.
+ * Should draw the image to this.canvas.
  * @abstract
  */
 Visualization.prototype.draw = function () {
@@ -81,12 +117,32 @@ Visualization.prototype.getArrayAtIndex = function (x) {
 };
 
 Visualization.prototype.moveVisualization = function (xOff, yOff) {
-    let offset = createVector(xOff, yOff);
+    let offset = P$.createVector(xOff, yOff);
     this.position.add(offset);
 };
 
 Visualization.prototype.getDataAtPosition = function (x,y) {
     return this.data[Object.keys(this.data)[x]][y];
+};
+
+/**
+ * Function to find and return the minimum weight in the data set
+ * @return {number} minimum weight
+ */
+Visualization.prototype.getMinWeight = function () {
+    var array = this.data.weights;
+    const min = P$.min(array.map(x => P$.min(x)));
+    return min;
+};
+
+/**
+ * Function to find and return the maximum weight in the data set
+ * @return {number} maximum weight
+ */
+Visualization.prototype.getMaxWeight = function () {
+    var array = this.data.weights;
+    const max = P$.max(array.map(x => P$.max(x)));
+    return max;
 };
 
 /**

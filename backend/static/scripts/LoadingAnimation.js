@@ -4,7 +4,7 @@
  */
 
 
-var sketch = function (animation) {
+var loadingAnimationSketch = function (animation) {
     animation.centerX = window.innerWidth / 2;
     animation.centerY = window.innerHeight / 2;
     animation.radius = 100;

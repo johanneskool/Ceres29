@@ -1,3 +1,4 @@
+//Author: Akam
 var sizeCircle = (window.innerHeight - 125);
 var xValues = [];
 var yValues = [];
