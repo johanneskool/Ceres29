@@ -256,13 +256,14 @@ var VisualizationHandler = function () {
     /**
      * Create a new visualization and add it to the handler
      * @param visualization the visualization to add.
+     * @param v
      */
     this.newVisualization = function (visualization, v) {
         switch (visualization) {
             case "matrix":
                 let newMatrixVisualization = new MatrixVisualization();
                 this._createVis(newMatrixVisualization, v);
-                this.centerActive();
+                this.centerSelected(v);
                 break;
             case "roundNodeLink":
                 let newRoundNodeLink = new RoundNodeLink();
@@ -341,6 +342,20 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].setData(url);
         }
+    };
+
+    /**
+     * Centers the selected visualization
+     * @param {p5.Element} v the canvas on which the visualization is.l
+     */
+    this.centerSelected = function (v) {
+        let vis = this.visDictionary.get(v);
+        let id  = vis.parent;
+        let container = document.getElementById(id)
+
+        let position = P$.createVector(container.offsetWidth / 2, container.offsetHeight / 2);
+
+        vis.setPosition(position);
     };
 
     /**

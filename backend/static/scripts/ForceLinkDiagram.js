@@ -3,7 +3,7 @@
 
 let graph = {
     nodes: [],
-    edges: [],
+    edges: []
 };
 
 let url;
@@ -49,7 +49,7 @@ function setup() {
         scaleNodes: 1.05,
         gridSize: 75,
         easing: 'quadraticInOut', // animation transition function
-        duration: 1000,
+        duration: 1000
     });
 
     //adds nodes to the graph
@@ -77,7 +77,7 @@ function setup() {
                     source: graph.nodes[indexNodes].id,
                     target: graph.nodes[indexEdges].id,
                     color: pickColor(data.weights[indexNodes][indexEdges]),
-                    type: 'arrow',
+                    type: 'arrow'
                 });
                 i++
             }

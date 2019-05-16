@@ -131,7 +131,8 @@ Visualization.prototype.getDataAtPosition = function (x,y) {
  */
 Visualization.prototype.getMinWeight = function () {
     var array = this.data.weights;
-    const min = P$.min(array.map(x => P$.min(x)));
+    const min = P$.min(array.map(x = > P$.min(x))
+)
     return min;
 };
 
@@ -141,7 +142,8 @@ Visualization.prototype.getMinWeight = function () {
  */
 Visualization.prototype.getMaxWeight = function () {
     var array = this.data.weights;
-    const max = P$.max(array.map(x => P$.max(x)));
+    const max = P$.max(array.map(x = > P$.max(x))
+)
     return max;
 };
 

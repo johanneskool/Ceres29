@@ -76,12 +76,12 @@ RoundNodeLink.prototype.setData = function (url) {
                         if (some_node.number === i) {
                             toNode = some_node;
                         }
-                    });
+                })
                     let edge = new OutGoingEdge(weight, toNode);
                     node.outGoingEdges.push(edge);
                 }
-            }});
-
+            }
+    })
         currentActive = nodes[0];
         nodes[0].active = true;
     }
@@ -97,8 +97,7 @@ MatrixVisualization.prototype.draw = function () {
     // draw each node
     nodes.forEach(node => {
         node.drawNode();
-    });
-
+})
     // rotate all nodes if needed
     if (currentActive.angle > 0.1) {
         nodes.forEach(node => {

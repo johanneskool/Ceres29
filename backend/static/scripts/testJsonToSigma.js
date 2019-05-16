@@ -21,7 +21,7 @@ function setup() {
                 animationsTime: 1000,
                 enableHovering: true,
                 doubleClickEnabled: false,
-                edgeHoverExtremities: true,
+                edgeHoverExtremities: true
             }
         }
     );
