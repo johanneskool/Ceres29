@@ -54,12 +54,12 @@ var visualizationSketch = function (v) {
         v.visualizationHandler.newVisualization('matrix', v);
 
         // fetch data
-        v.data_id = new URL(window.location.href).searchParams.get("data");
-
-        console.log(v.data_id);
+        v.current_URL = new URL(window.location.href);
+        v.data_id = v.current_URL.searchParams.get("data");
+        v.clustering_type = ((v.current_URL.searchParams.get("clustering") == null) ? 'fiedler' : v.current_URL.searchParams.get("clustering"));
 
         //update the VH data
-        v.visualizationHandler.setData('/data/' + v.data_id + "?type=fiedler", v);
+        v.visualizationHandler.setData('/data/' + v.data_id + "?type=" + v.clustering_type, v);
         //makes the current matrix the one to show.
 
         //disable the anti-aliasing.
