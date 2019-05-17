@@ -100,20 +100,8 @@ Visualization.prototype.getZoomScale = function () {
     return this.zoomScale;
 };
 
-Visualization.prototype.getArrayAtKey = function (key) {
-    return this.data[key];
-};
-
-Visualization.prototype.getKeyAtIndex = function (index) {
-    return Object.keys(this.data)[index];
-};
-
 Visualization.prototype.setVH = function (vH) {
     this.vH = vH;
-};
-
-Visualization.prototype.getArrayAtIndex = function (x) {
-    return this.data[Object.keys(this.data)[x]];
 };
 
 Visualization.prototype.moveVisualization = function (xOff, yOff) {
@@ -123,28 +111,6 @@ Visualization.prototype.moveVisualization = function (xOff, yOff) {
 
 Visualization.prototype.getDataAtPosition = function (x,y) {
     return this.data[Object.keys(this.data)[x]][y];
-};
-
-/**
- * Function to find and return the minimum weight in the data set
- * @return {number} minimum weight
- */
-Visualization.prototype.getMinWeight = function () {
-    var array = this.data.weights;
-    const min = P$.min(array.map(x = > P$.min(x))
-)
-    return min;
-};
-
-/**
- * Function to find and return the maximum weight in the data set
- * @return {number} maximum weight
- */
-Visualization.prototype.getMaxWeight = function () {
-    var array = this.data.weights;
-    const max = P$.max(array.map(x = > P$.max(x))
-)
-    return max;
 };
 
 /**

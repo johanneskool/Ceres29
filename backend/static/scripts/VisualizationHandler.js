@@ -8,16 +8,7 @@
  * @constructor
  */
 
-//TODO CHange how the handler works, instead of having multiple visualizations inside a canvas the handler must be changed to map a visualization to a single canvas. !!a LOT of WORK.
 var VisualizationHandler = function () {
-
-    /**
-     * Create an animation to go with the handler
-     * @type {p5}
-     */
-    /*this.loadingAnimation = new p5(loadingAnimationSketch);
-    this.loadingAnimation.setHandler(this);
-*/
     /**
      * Main array containing all the visualizations handled by this handler.
      * @type {Array}
@@ -29,12 +20,6 @@ var VisualizationHandler = function () {
      * @type {dictionary}
      */
     this.visDictionary = new dictionary();
-
-    /**
-     * The active visualization is the visualization that is being interacted with.
-     * @type {Visualization}
-     */
-    this.active = null;
 
     /**
      * The vector of the currently selected node, vector representation in the matrix.
@@ -55,39 +40,6 @@ var VisualizationHandler = function () {
     this.hasLoadedVisualization = false;
 
     /**
-     * Active getter
-     * @returns {Visualization}
-     */
-    this.getActive = function () {
-        return this.active;
-    };
-
-    /**
-     * Active setter
-     * @param active
-     */
-    this.setActive = function (active) {
-        this.active = active;
-    };
-
-    /**
-     * Draw the active function to the canvas
-     */
-    this.drawActive = function () {
-        this.active.draw();
-    };
-
-    /**
-     * Move the active visualization.
-     * @param xOff horizontal displacement
-     * @param yOff vertical displacement
-     * @deprecated use {@link VisualizationHandler#moveSelected} instead.
-     */
-    this.moveActive = function (xOff, yOff) {
-        this.active.moveVisualization(xOff, yOff);
-    };
-
-    /**
      * Move the visualization mapped to the given canvas.
      * @param {number} xOff horizontal displacement
      * @param {number} yOff vertical displacement
@@ -99,15 +51,6 @@ var VisualizationHandler = function () {
     };
 
     /**
-     * Set the zoomScale of the active visualization
-     * @param zoomScale
-     * @deprecated
-     */
-    this.setActiveZoomScale = function (zoomScale) {
-        this.active.setZoomScale(zoomScale);
-    };
-
-    /**
      * Set the zoomScale of the selected visualization
      * @param {number} zoomScale
      * @param {p5.Element} v
@@ -115,14 +58,6 @@ var VisualizationHandler = function () {
     this.setSelectedZoomScale = function (zoomScale, v) {
         let vis = this.visDictionary.get(v);
         vis.setZoomScale(zoomScale);
-    };
-
-    /**
-     * Get the zoomscale of the active visualization.
-     * @deprecated
-     */
-    this.getActiveZoomScale = function () {
-        this.active.getZoomScale();
     };
 
     /**
@@ -344,36 +279,18 @@ var VisualizationHandler = function () {
         }
     };
 
-    /**
-     * Centers the selected visualization
-     * @param {p5.Element} v the canvas on which the visualization is.l
-     */
+
     this.centerSelected = function (v) {
         let vis = this.visDictionary.get(v);
-        let id  = vis.parent;
-        let container = document.getElementById(id)
-
-        let position = P$.createVector(container.offsetWidth / 2, container.offsetHeight / 2);
-
-        vis.setPosition(position);
-    };
-
-    /**
-     * Centers the active visualization, does not reset zoomScale.
-     * @deprecated
-     */
-    this.centerActive = function () {
-        //id of the current canvas
-        let id = this.active.canvas.parent;
-
-        //container of the canvas
+        let id = v.parent;
         let container = document.getElementById(id);
 
         //use the container width / height otherwise it wont be centered.
         let position = P$.createVector(container.offsetWidth / 2, container.offsetHeight / 2);
 
-        this.active.setPosition(position);
+        vis.setPosition(position);
     };
+
 
     /**
      * Draw visualization mapped to the canvas
