@@ -149,18 +149,20 @@ var visualizationSketch = function (v) {
 
     v.mouseDragged = function () {
         if (v.mouseFlag) {
-            //mouse was dragged, so update the dragFlag.
-            v.dragFlag = true;
-
             //update mouse vector
             v.newMouse.x = v.mouseX;
             v.newMouse.y = v.mouseY;
 
-            v.visualizationHandler.moveSelected(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y, v);
+            //mouse was dragged, so update the dragFlag.
+            if ((v.newMouse.x - v.oldMouse.x) != 0 || (v.newMouse.y - v.oldMouse.y) != 0) {
+              v.dragFlag = true;
 
-            //update old mouse vector positions.
-            v.oldMouse.x = v.mouseX;
-            v.oldMouse.y = v.mouseY;
+              v.visualizationHandler.moveSelected(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y, v);
+
+              //update old mouse vector positions.
+              v.oldMouse.x = v.mouseX;
+              v.oldMouse.y = v.mouseY;
+            }
         }
     };
 
