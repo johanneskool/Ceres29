@@ -26,16 +26,9 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 if not os.path.exists(app.config['JSON_FOLDER']):
     os.makedirs(app.config['JSON_FOLDER'])
 
-# Create database from example db if it does not yet exist
-if not os.path.isfile(app.config['SQLALCHEMY_DATABASE_PATH']):
-    try:
-        copyfile(app.config['SQLALCHEMY_DATABASE_PATH'].replace('.db', '.example.db'), app.config['SQLALCHEMY_DATABASE_PATH'])
-    except FileNotFoundError:
-        # if the db file is not there
-        pass
-
 # initialize db
 db = SQLAlchemy(app)
 from backend.orm import models
+db.create_all() #it conditionally creates tables, so it is allowed to always call it
 
 import backend.views
