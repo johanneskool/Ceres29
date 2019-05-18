@@ -33,6 +33,10 @@
     color: #D6FFF6;
 }
 
+.top-spacing-sm {
+  margin-top:20px;
+}
+
 
 body, main {
     color: #25274D;
@@ -68,7 +72,7 @@ a {
 
 /* page height 100% */
 html, body {
-    height: 100%;
+    height: calc(100% - 40px);
 }
 
 main {

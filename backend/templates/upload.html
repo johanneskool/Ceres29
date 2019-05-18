@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col-md-6">
           <h2>Upload new file</h2>
-          <p>Choose a file using "Browse" and click on "Upload". Uploading a file may take a while depending on the speed of your network connection and the current server load. Read more about the file specifications <a href='#'>here</a>.</p>
+          <p>Choose a file using "Browse" and click on "Upload". Uploading a file may take a while depending on the speed of your network connection and the current server load. Read more about the file specifications <a href='#h-filespecs'>here</a>.</p>
           <form method=post enctype=multipart/form-data>
             <div class="input-group">
               <div class="custom-file">
@@ -35,7 +35,7 @@
         <div class="col-md-6">
           <h2>or open an existing file:</h2>
           <p>Start gaining insight in datasets quickly by picking one of the {{ files_available|length }} files uploaded by users of {{ config['APP_TITLE'] }} from all over the world. Commercial use of these files is not allowed. </p>
-          <form method=get enctype=multipart/form-data action="/vis">
+          <form method=get enctype=multipart/form-data action="{{ url_for('vis') }}">
             <div class="input-group">
               <select class="custom-select" id="data" name="data">
                 <option selected value="" disabled>Choose a file</option>
@@ -53,6 +53,11 @@
               </div>
             </div>
           </form>
+        </div>
+      </div>
+      <div class="row top-spacing-sm">
+        <div class="col-md-12">
+          <h2 id="h-filespecs">File specifications:</h2>
         </div>
       </div>
     </div>
