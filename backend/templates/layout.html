@@ -28,13 +28,13 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/general.js') }}"></script>
 
-    <link rel="preload" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
 
     {% block scripts %}
     {% endblock %}

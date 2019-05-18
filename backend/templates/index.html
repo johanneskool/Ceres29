@@ -4,6 +4,10 @@
 
 {% extends "layout.html" %}
 
+{% block scripts %}
+  <link rel="prerender" href="{{ url_for('upload') }}">
+{% endblock %}
+
 {% block header %}
 <div class="jumbotron">
     <div class="container">
