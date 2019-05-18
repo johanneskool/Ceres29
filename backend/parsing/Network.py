@@ -30,7 +30,6 @@ class Network:
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         self.graph = self.__parse__(filepath)
         self.directory_name = directory_name
-        print(self.graph.get_adjacency(attribute="weight"))
         # processing and saving files
 
         # create folder to save all files in
@@ -49,7 +48,6 @@ class Network:
 
         # convert to pagerank
         self.reorder_with_pagerank()
-        print(self.graph.get_adjacency())
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
         )
