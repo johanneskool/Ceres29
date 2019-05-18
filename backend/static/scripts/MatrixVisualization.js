@@ -227,8 +227,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     from = from.replace(/_/g,' ');
     let to = this.data.tags[y];
     to = to.replace(/_/g,' ');
-    let weight = this.data.weights[x][y];
-
+    let weight = this.data.weights[y][x];  //we store it as weights[col][row], so get correct weight
     // show debugging info in console
     var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
     console.log(text);
