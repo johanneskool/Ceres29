@@ -1,25 +1,33 @@
 {% extends "layout.html" %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
-    <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/VisualizationClass.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
-    <!--<script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>-->
+<script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
+<script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/sigma.min.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/sigma.settings.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/plugins/sigma.layout.forceAtlas2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/plugins/sigma.plugins.filter.min.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/sigma.plugins.animate.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/plugins/sigma.plugins.relativeSize.min.js') }}"></script>
+<script src="{{ url_for('static', filename='Sigma/plugins/sigma.plugins.dragNodes.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/VisualizationClass.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/ForceLinkDiagramVisClass.js') }}"></script>
+<!--<script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>-->
 {% endblock %}
 
 {% block content %}
-    <!-- AUTHORS
-    Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide
-    -->
+<!-- AUTHORS
+Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide
+-->
 
-    {% if data %}
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12" style='height: calc(100% - 100px);'>
+{% if data %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style='height: calc(100% - 100px);'>
             <div class="wrapper">
                 <div class="sidebar">
                     <p><b>Filename: </b>{{ data }}</p>
@@ -34,17 +42,18 @@
                 <div id="canvas" style="overflow:hidden;"></div>
                 <div id="canvas1" style="overflow:hidden;"></div>
             </div>
-          </div>
         </div>
-      </div>
-    {% else %}
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-          Upload or choose a file to see a visualisation here. After choosing you will be automatically redirected to this page.
-          </div>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            Upload or choose a file to see a visualisation here. After choosing you will be automatically redirected to
+            this page.
         </div>
-      </div>
-    {% endif %}
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}
