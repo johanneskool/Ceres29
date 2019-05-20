@@ -23,12 +23,12 @@ var RoundNodeLink = function () {
     /**
      * All variables that describe the circle around which the nodes are drawn
      */
-    this.circleRadius = Math.min(windowWidth/3, windowHeight/3);
-    this.circleLocation = createVector(windowWidth/2, windowHeight/2);
+    this.circleRadius = Math.min(P$.windowWidth/3, P$.windowHeight/3);
+    this.circleLocation = P$.createVector(P$.windowWidth/2, P$.windowHeight/2);
 
     this.currentActive = null; // node which is clicked
     this.limit = 100; // at most 100 nodes can be put on the circle
-    console.log("ok")
+    console.log("Constructor finished.")
 };
 
 RoundNodeLink.prototype = Object.create(Visualization.prototype);
@@ -41,7 +41,7 @@ RoundNodeLink.prototype.constructor = RoundNodeLink;
  */
 RoundNodeLink.prototype.setData = function (url) {
     let currentVisualization = this;
-    loadJSON(url, loadNodes);
+    P$.loadJSON(url, loadNodes);
 
     function loadNodes(data) {
         let weights = data["weights"];
