@@ -1,10 +1,12 @@
 __author__ = "Rick Luiken, Tristan Trouwen"
 
 import os
-import numpy as np
-from scipy.sparse.linalg import eigs
-import ujson
+
 import igraph as ig
+import numpy as np
+import ujson
+from scipy.sparse.linalg import eigs
+
 from backend import app
 
 filenames = {
@@ -39,7 +41,7 @@ class Network:
         # save default json
         self.reorder_alphabetically()
         self.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
         )
 
         # convert to fiedler
@@ -112,7 +114,8 @@ class Network:
         """
         to_be_converted = {}
         to_be_converted["name"] = self.name
-        to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in range(self.graph.vcount())]
+        to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
+                                                                                         range(self.graph.vcount())]
         to_be_converted["minWeight"] = min(self.graph.es["weight"])
         to_be_converted["maxWeight"] = max(self.graph.es["weight"])
         to_be_converted["weights"] = []

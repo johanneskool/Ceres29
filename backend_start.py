@@ -1,6 +1,7 @@
 __author__ = 'Tristan Trouwen'
 
 from os import environ
+
 from backend import app
 
 if __name__ == '__main__':

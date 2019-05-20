@@ -1,6 +1,5 @@
 __author__ = 'Tristan Trouwen'
 
-
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))  # absolute path to project
