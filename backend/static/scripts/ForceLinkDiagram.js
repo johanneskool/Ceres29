@@ -1,8 +1,9 @@
+//Author: Akam
 //http://localhost:5555/static/test/ForceLinkDiagram.html
 
 let graph = {
     nodes: [],
-    edges: [],
+    edges: []
 };
 
 let url;
@@ -20,10 +21,10 @@ function setup() {
             graph: data,
             renderer: {
                 container: document.getElementById('sigma-container'),
-                type: 'canvas'
+                type: 'webGL'
             },
             settings: {
-                minEdgeSize: 0.001,
+                minEdgeSize: 0.01,
                 maxEdgeSize: 0.2,
                 minNodeSize: 2,
                 maxNodeSize: 5,
@@ -32,11 +33,11 @@ function setup() {
                 enableHovering: true,
                 doubleClickEnabled: false,
                 edgeHoverExtremities: true,
-                'sigma.layout.forceAtlas2': {
-                    edgeWeightInfluence  : true,
-                    NodeRadius: 5.0,
-                    ScalingRatio: 2.0,
-                    adjustSizes: true
+                "sigma.layout.forceAtlas2": {
+                    edgeWeightInfluence  : 1000,
+                    NodeRadius: 4.0,
+                    ScalingRatio: 3.0,
+                    adjustSizes: false
                 }
             }
         }
@@ -44,11 +45,11 @@ function setup() {
 
     //function to fix the overlaps
     let noverlapListener = s.configNoverlap({
-        nodeMargin: 1,
+        nodeMargin: 2,
         scaleNodes: 1.05,
         gridSize: 75,
         easing: 'quadraticInOut', // animation transition function
-        duration: 1000,
+        duration: 1000
     });
 
     //adds nodes to the graph
@@ -56,8 +57,8 @@ function setup() {
             graph.nodes.push({
                 id: index,
                 label: data.tags[index],
-                x: random(),
-                y: random(),
+                x: random(-2000, 2000),
+                y: random(-1000, 1000),
                 size: random(2, 4),
                 color: '#0099ff'
             });
@@ -68,14 +69,15 @@ function setup() {
     for (let indexNodes in data.tags) {
         for (let indexEdges in data.weights) {
             //console.log(data.weights[indexNodes][indexEdges]);
-            if ((data.weights[indexNodes][indexEdges]) > 0.5) {
+            if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                 graph.edges.push({
                     id: i,
+                    weight: data.weights[indexNodes][indexEdges]/4,
                     size: data.weights[indexNodes][indexEdges]/4,
                     source: graph.nodes[indexNodes].id,
                     target: graph.nodes[indexEdges].id,
-                    color: '#000000',
-                    type: 'arrow',
+                    color: pickColor(data.weights[indexNodes][indexEdges]),
+                    type: 'arrow'
                 });
                 i++
             }
@@ -88,18 +90,23 @@ function setup() {
     s.refresh();
     //setup events
     animateGraph();
+    sigma.plugins.relativeSize(s, 1);
+
     //may the force be with you (start the physics).
     s.startForceAtlas2();
     //stops after 10 sec with the physics
-    window.setTimeout(function() {s.killForceAtlas2(); s.startNoverlap();}, 8000);
+    window.setTimeout(function() {s.killForceAtlas2();}, 4000);
+    //Initialize the dragNodes plugin:
+    dragNodes();
 }
+
 
 function animateGraph() {
 // Bind the events:
-    s.bind('overNode outNode doubleClickNode rightClickNode', function (e) {
+    s.bind('overNode outNode clickNode rightClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
     });
-    s.bind('clickNode', function (e) {
+    s.bind('doubleClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
         //colors the node when clicked on
         if (e.data.node.isSelected) {
@@ -114,9 +121,8 @@ function animateGraph() {
         filter.neighborsOf(e.data.node.id);
         filter.apply();
         filter.undo();
-        //newGraph(e.data.node.id);
         s.refresh();
-    });
+        });
     s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
     });
@@ -138,9 +144,32 @@ function newGraph(startIndex) {
 
 function keyPressed() {
     if(keyCode === BACKSPACE) {
+        s.killForceAtlas2();
         let filter = new sigma.plugins.filter(s);
         filter.undo();
         filter.apply();
         s.refresh();
     }
+}
+
+function pickColor(weight) {
+    let weightColor = map(weight, 0, 1, 0, 40);
+    return "#" + (127 - weightColor).toString(16) + (127 - weightColor).toString(16) + (127 - weightColor).toString(16);
+}
+
+function dragNodes(){
+    // Initialize the dragNodes plugin:
+    let dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    dragListener.bind('startdrag', function(event) {
+        console.log(event);
+    });
+    dragListener.bind('drag', function(event) {
+        console.log(event);
+    });
+    dragListener.bind('drop', function(event) {
+        console.log(event);
+    });
+    dragListener.bind('dragend', function(event) {
+        console.log(event);
+    });
 }

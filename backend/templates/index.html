@@ -4,6 +4,10 @@
 
 {% extends "layout.html" %}
 
+{% block scripts %}
+  <link rel="prerender" href="{{ url_for('upload') }}">
+{% endblock %}
+
 {% block header %}
 <div class="jumbotron">
     <div class="container">
@@ -15,7 +19,7 @@
             <br>
             This tool provides an adjacency matrix and three different types of node-link diagrams.
             <br>
-            Upload your own files to analyze your network data!
+            Upload your own files to analyse your network data!
         </p>
     </div>
 </div>
@@ -29,7 +33,7 @@
         <p>
         When you click "Choose a file", you can upload your own, new file, or choose a file that is already used before.
         After uploading a new file, go the this menu again, and choose your file from the on the right.
-        After loading the data, you can choose from different types of visualizations to compare the network in multiple ways.
+        After loading the data, you can choose from different types of visualisations to compare the network in multiple ways.
         When clicking a node in one of the node-link diagrams, you will be able to see details about the node and the edges to and from that node.
         When clicking a cell in the adjacency matrix, you will see the details about the current relation.
         </p>

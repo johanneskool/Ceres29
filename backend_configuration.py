@@ -11,7 +11,7 @@ class Config(object):
     HOST = 'localhost'
     PORT = '5555'
     TESTING = False
-    APP_TITLE = "Network visualization tool"
+    APP_TITLE = "Network visualisation tool"
     APP_AUTHOR = "Ceres 29"
     APP_VERSION = "v0.1a"
     SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'app.db')

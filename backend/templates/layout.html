@@ -7,7 +7,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Visualization of datasets">
+    <meta name="description" content="Visualisation of datasets">
 
     {% if title %}
         <title>{{ title }} | {{ config['APP_TITLE'] }}</title>
@@ -28,14 +28,13 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/general.js') }}"></script>
 
-    <link rel="preload" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
-    <link rel="preload" href="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
+    <link rel="prefetch" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
 
     {% block scripts %}
     {% endblock %}
@@ -74,7 +73,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
         {% if request.path == url_for('vis') %}
         <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('vis') }}">Visualization <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ url_for('vis') }}">Visualisation <span class="sr-only">(current)</span></a>
         </li>
         {% endif %}
       </ul>

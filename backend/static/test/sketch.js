@@ -17,12 +17,12 @@ function preload() {
 function setup() {
   circleX = windowWidth/2;
   circleY = windowHeight/2;
-  
+
   createCanvas(windowWidth, windowHeight);
   radius = Math.min(windowWidth/3, windowHeight/3);
 
   let number = 0;
-  
+
   // create all nodes
   for (let entry in data) {
     let new_node = new Node(
@@ -32,14 +32,14 @@ function setup() {
       radius,
       data[entry]
     );
-        
+
     nodes.push(new_node); // put in array
     number++;
     if (number > limit) {
       break; // stop adding nodes if the limit of nodes is reached
     }
   }
-  
+
   // create the outgoing edges
   nodes.forEach((node) => {
     let outgoing = data[node.name];
@@ -57,10 +57,10 @@ function setup() {
         node.edges.push(edge);
       }
   }});
-  
+
   currentActive = nodes[0];
   nodes[0].active = true;
-  
+
 }
 
 function draw() {
@@ -112,13 +112,13 @@ function Node(name, number, angle, outside_radius) {
   this.radius = 10;
   this.active = false;
   this.edges = [];
-  
+
   this.draw_node = function() {
     stroke(0,0,0);
     circle(this.location_x(), this.location_y(), this.radius);
     // draw label
     push();
-    // black color
+    // black colour
     stroke(0,0,0);
     this.outside_radius += this.radius; // hack to make the text go outward a bit, revert after drawing text
     translate(this.location_x(), this.location_y());
@@ -132,7 +132,7 @@ function Node(name, number, angle, outside_radius) {
     }
   };
 
-  this.drawEdges = function() {  
+  this.drawEdges = function() {
     // draw edges
     for (let i = 0; i < this.edges.length; i++) {
       try {

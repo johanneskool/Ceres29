@@ -29,9 +29,14 @@
     background-color: #4DCCBD;
 }
 
-.display-3 {
+.display-3, .display-4 {
     color: #D6FFF6;
 }
+
+.top-spacing-sm {
+  margin-top:20px;
+}
+
 
 body, main {
     color: #25274D;
@@ -67,7 +72,7 @@ a {
 
 /* page height 100% */
 html, body {
-    height: 100%;
+    height: calc(100% - 40px);
 }
 
 main {

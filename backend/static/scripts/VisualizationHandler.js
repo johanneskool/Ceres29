@@ -7,15 +7,8 @@
  * Main VisualizationHandler (VH) class
  * @constructor
  */
+
 var VisualizationHandler = function () {
-
-    /**
-     * Create an animation to go with the handler
-     * @type {p5}
-     */
-    this.loadingAnimation = new p5(sketch);
-    this.loadingAnimation.setHandler(this);
-
     /**
      * Main array containing all the visualizations handled by this handler.
      * @type {Array}
@@ -23,16 +16,10 @@ var VisualizationHandler = function () {
     this.visualizations = [];
 
     /**
-     * Canvas on which this handler works
-     * @type {canvas}
+     * Dictionary mapping visualization to canvas.
+     * @type {dictionary}
      */
-    this.visualizationCanvas;
-
-    /**
-     * The active visualization is the visualization that is being interacted with.
-     * @type {Visualization}
-     */
-    this.active = null;
+    this.visDictionary = new dictionary();
 
     /**
      * The vector of the currently selected node, vector representation in the matrix.
@@ -53,50 +40,53 @@ var VisualizationHandler = function () {
     this.hasLoadedVisualization = false;
 
     /**
-     * Active getter
-     * @returns {Visualization}
+     * Move the visualization mapped to the given canvas.
+     * @param {number} xOff horizontal displacement
+     * @param {number} yOff vertical displacement
+     * @param {p5.Element} v
      */
-    this.getActive = function () {
-        return this.active;
+    this.moveSelected = function (xOff, yOff, v) {
+        let vis = this.visDictionary.get(v);
+        vis.moveVisualization(xOff, yOff);
     };
 
     /**
-     * Active setter
-     * @param active
+     * Set the zoomScale of the selected visualization
+     * @param {number} zoomScale
+     * @param {p5.Element} v
      */
-    this.setActive = function (active) {
-        this.active = active;
+    this.setSelectedZoomScale = function (zoomScale, v) {
+        let vis = this.visDictionary.get(v);
+        vis.setZoomScale(zoomScale);
     };
 
     /**
-     * Draw the active function to the canvas
+     * Get the zoomscale of the selected visualization.
+     * @param {p5.Element} v
+     * return {number} zoomScale
      */
-    this.drawActive = function () {
-        this.active.draw();
+    this.getSelectedZoomScale = function (v) {
+        let vis = this.visDictionary.get(v);
+        return vis.getZoomScale()
     };
 
     /**
-     * Move the active visualization.
-     * @param xOff horizontal displacement
-     * @param yOff vertical displacement
+     * Function that handles the canvas click.
+     * Every visualization should throw an error if a click
+     * was unsuccessful but should also have a function to identify which cell was clicked (or edge)
+     *
+     * @param xPos x position of the click
+     * @param yPos y position of the click
+     * @param {p5.Element} v
      */
-    this.moveActive = function (xOff, yOff) {
-        this.active.moveVisualization(xOff, yOff);
-    };
-
-    /**
-     * Set the zoomScale of the active visualization
-     * @param zoomScale
-     */
-    this.setActiveZoomScale = function (zoomScale) {
-        this.active.setZoomScale(zoomScale);
-    };
-
-    /**
-     * Get the zoomscale of the active visualization.
-     */
-    this.getActiveZoomScale = function () {
-        this.active.getZoomScale();
+    this.clickSelected = function (xPos, yPos, v) {
+        try {
+            let vis = this.visDictionary.get(v);
+            vis.click(xPos, yPos);
+            this.colorCell(vis.getCell(xPos, yPos));
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     /**
@@ -106,6 +96,7 @@ var VisualizationHandler = function () {
      * (i.e. click on a visualization to make it active.)
      * @param xPos x position of the click
      * @param yPos y position of the click
+     * @deprecated
      */
     this.click = function (xPos, yPos) {
         //first try to see if any other visualization on top are a click.
@@ -128,6 +119,7 @@ var VisualizationHandler = function () {
             this.colorCell(this.active.getCell(xPos, yPos));
             return;
         } catch (error) {
+            console.log(error);
             //check if we have clicked on another vis, we do this by running through the array and checking for click errors.
             if (error instanceof RangeError) {
                 for (let i = 0; i <= this.visualizations.length; i++) {
@@ -151,8 +143,8 @@ var VisualizationHandler = function () {
     };
 
     /**
-     * Colro a cell in all the visualization in the VH
-     * @param {P5.Vector} vector the vector of the cell.
+     * Color a cell in all the visualization in the VH
+     * @param {p5.Vector} vector the vector of the cell.
      */
     this.colorCell = function (vector) {
         this.activeCell = vector;
@@ -161,16 +153,10 @@ var VisualizationHandler = function () {
         }
     };
 
-    /**
-     * Sets the current canvas
-     * @param {canvas} canvas on which the VH should work.
-     */
-    this.setCanvas = function (canvas) {
-        this.visualizationCanvas = canvas;
-    };
 
     /**
      * Delete the active visualization from the handler.
+     * @deprecated
      */
     this.deleteActive = function () {
         let activeIndex = this.visualizations.indexOf(this.active);
@@ -205,41 +191,49 @@ var VisualizationHandler = function () {
     /**
      * Create a new visualization and add it to the handler
      * @param visualization the visualization to add.
+     * @param v
      */
-    this.newVisualization = function (visualization) {
+    this.newVisualization = function (visualization, v) {
         switch (visualization) {
             case "matrix":
                 let newMatrixVisualization = new MatrixVisualization();
-                this.visualizations.push(newMatrixVisualization);
-                this.active = newMatrixVisualization;
-
-                //if this VH has data
-                if (this.data != null) {
-                    newMatrixVisualization.setData(this.data);
-                }
-
-                newMatrixVisualization.setVH(this);
-                this.active.setZoomScale(1);
-                this.centerActive();
+                this._createVis(newMatrixVisualization, v);
+                this.centerSelected(v);
                 break;
             case "roundNodeLink":
                 let newRoundNodeLink = new RoundNodeLink();
-                this.visualizations.push(newRoundNodeLink);
-                this.active = newRoundNodeLink;
-
-                //if this VH has data
-                if (this.data != null) {
-                    newRoundNodeLink.setData(this.data);
-                }
-                newRoundNodeLink.setVH(this);
+                this._createVis(newRoundNodeLink);
                 this.active.setZoomScale(1);
                 break;
         }
     };
 
     /**
+     * Create vis Object
+     * @private
+     */
+    this._createVis = function (visualizationObject, v) {
+        this.visualizations.push(visualizationObject);
+        this.active = visualizationObject;
+
+        //add the visualization-canvas pair to the dictionary.
+        this.visDictionary.put(v, visualizationObject);
+        //if this VH has data
+        if (this.data != null) {
+            visualizationObject.setData(this.data);
+        }
+
+        visualizationObject.setCanvas(v);
+        visualizationObject.setVH(this);
+
+        this.active.setZoomScale(1);
+    };
+
+
+    /**
      * Set the position of the active visualization
      * @param position
+     * @deprecated
      */
     this.setActivePosition = function (position) {
         this.active.setPosition(position);
@@ -248,41 +242,68 @@ var VisualizationHandler = function () {
     /**
      * Returns the active position as a p5 vector
      * @returns {p5.Vector}
+     * @deprecated
      */
     this.getActivePosition = function () {
         return this.active.getPosition();
     };
 
+    /**
+     * Returns the selected position as a p5 vector
+     * @param {p5.Element} v
+     * @returns {p5.Vector}
+     */
+    this.getSelectedPosition = function (v) {
+        let vis = this.visDictionary.get(v);
+        return vis.getPosition();
+    };
 
     /**
-     * Set the data for each visualization handled by this VH
+     * Set the data for a selected visualization
+     * @param url url of the json to set.
+     * @param {p5.Element} v the selected canvas.
+     */
+    this.setData = function (url, v) {
+        let vis = this.visDictionary.get(v);
+        vis.setData(url);
+    };
+
+    /**
+     * Updates all the visualization data.
      * @param url url of the json to set.
      */
-    this.setData = function (url) {
+    this.updateData = function (url) {
         this.data = url;
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].setData(url);
         }
     };
 
-    /**
-     * Centers the active visualization, does not reset zoomScale.
-     */
-    this.centerActive = function () {
-        //id of the current canvas
-        let id = this.visualizationCanvas.id();
 
-        //container of the canvas
-        let container = document.getElementById(id).parentElement;
+    this.centerSelected = function (v) {
+        let vis = this.visDictionary.get(v);
+        let id = v.parent;
+        let container = document.getElementById(id);
 
         //use the container width / height otherwise it wont be centered.
-        let position = createVector(container.offsetWidth / 2, container.offsetHeight / 2);
+        let position = P$.createVector(container.offsetWidth / 2, container.offsetHeight / 2);
 
-        this.active.setPosition(position);
+        vis.setPosition(position);
+    };
+
+
+    /**
+     * Draw visualization mapped to the canvas
+     * @param v
+     */
+    this.drawSelected = function (v) {
+        let vis = this.visDictionary.get(v);
+        vis.draw();
     };
 
     /**
      * Draws all the visualization handled by this VH.
+     * @deprecated
      */
     this.drawAll = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
@@ -290,4 +311,110 @@ var VisualizationHandler = function () {
         }
     };
 
+};
+
+/**
+ * My own key-value pair dictionary.
+ * (implemented most java dictionary functions)
+ * @constructor
+ */
+var dictionary = function () {
+    /**
+     * Key-value pairs in the dictionary
+     * @type {array} the data
+     * @private
+     * data[0] are the keys
+     * data[1] are the values
+     */
+    this._data = [[],[]];
+
+    /**
+     * All the keys in the dictionary.
+     * @type {array}
+     */
+    this._keys = this._data[0];
+
+    /**
+     * All the values in the dictionary
+     * @type {array}
+     */
+    this._values = this._data[1];
+
+    /**
+     * Returns the elements in the dictionary as an array.
+     * @return {array} values
+     */
+    this.elements = function () {
+        return this._values;
+    };
+
+    /**
+     * Returns the keys in the dictionary as an array.
+     * @return {array}
+     */
+    this.keys = function () {
+        return this._keys;
+    };
+
+    /**
+     * Returns the value to which the key is mapped in this dictionary
+     * @param k
+     * @return {value} the value mapped to the key
+     */
+    this.get = function (k) {
+        let index = this._keys.indexOf(k);
+        if (index < 0) {
+            throw new ReferenceError(k + ' is not a valid key');
+        }
+        return this._values[index];
+    };
+
+    /**
+     * Tests if this dictionary maps no keys to value.
+     * @return {boolean}
+     */
+    this.isEmpty = function () {
+        return this._keys.length === 0 || this._values.length === 0;
+    };
+
+    /**
+     * Maps the specified key to the specified value in this dictionary.
+     * @param {*} k the key
+     * @param {*} v the value
+     */
+    this.put = function (k, v) {
+        //new key
+        if (this._keys.indexOf(k) < 0) {
+            this._keys.push(k);
+            this._values.push(v);
+        } else {
+            //if not new key update v.
+            let index = this._keys.indexOf(k);
+            this._values[index] = v;
+            return v;
+        }
+    };
+
+    /**
+     * Removes key-value pair from dictionary
+     * @param {*} k key to remove
+     * @throws {ReferenceError} if key is not in dictionary
+     */
+    this.remove = function (k) {
+        let index = this._keys.indexOf(k);
+        if (index > -1) {
+            this._keys.splice(index, 1);
+            this._values.splice(index, 1);
+        } else {
+            throw new ReferenceError(k + ' is not a valid key');
+        }
+    };
+
+    /**
+     * Size of the dictionary
+     * @return {number}
+     */
+    this.size = function () {
+        return this._keys.length;
+    }
 };

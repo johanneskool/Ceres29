@@ -621,6 +621,7 @@ $RECYCLE.BIN/
 ##Do not share uploads, but make sure the uploads folder is copied, because else we might crash during uploads
 backend/static/uploads/*
 !backend/static/uploads/readme.md
+!backend/static/uploads/Quick_Test_10x10_sparse.csv
 backend/static/json/*
 !backend/static/json/readme.md
 
@@ -629,6 +630,8 @@ docs/*
 !docs/readme.md
 !docs/ujson-1.35-cp36-cp36m-win_amd64.whl
 !docs/ujson-1.35-cp37-cp37m-win_amd64.whl
+!docs/pycairo-1.18.0-cp36-cp36m-win_amd64.whl
+!docs/python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl
 
 ##Don't sync app.db file
 app.db

@@ -2,7 +2,7 @@ __author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 
 import os
 
-from flask import render_template, request, redirect, flash, url_for, send_from_directory
+from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
 from werkzeug.utils import secure_filename
 
 from backend import app, db
@@ -73,7 +73,7 @@ def upload():
 def vis():
     data_id = request.args.get('data')
     if data_id is None:
-        custom_flash('Please select a file before going to the visualization')
+        custom_flash('Please select a file before going to the visualisation')
         return redirect(url_for('upload'))
     data_name = File.query.get(data_id).name
     if request.method == 'GET':
@@ -86,9 +86,19 @@ def data(id):
     file = File.query.get(id)
     if type == 'fiedler':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "fiedler.json") # clean up later but good for now
+    elif type == 'pagerank':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
     else:
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "default.json") # clean up later but good for now
 
+
+@app.before_request
+def a_little_bit_of_security_is_allowed():
+    if '/static/uploads' in request.path \
+    and '/static/uploads/Quick_Test_10x10_sparse.csv' not in request.path:
+        abort(403)
+    if '/static/json' in request.path:
+        abort(403)
 
 @app.after_request
 def add_header(response):

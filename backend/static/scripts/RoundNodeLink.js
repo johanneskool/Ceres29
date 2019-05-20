@@ -28,6 +28,7 @@ var RoundNodeLink = function () {
 
     this.currentActive = null; // node which is clicked
     this.limit = 100; // at most 100 nodes can be put on the circle
+    console.log("ok")
 };
 
 RoundNodeLink.prototype = Object.create(Visualization.prototype);
@@ -39,11 +40,12 @@ RoundNodeLink.prototype.constructor = RoundNodeLink;
  * @param {url} url the json url of the data
  */
 RoundNodeLink.prototype.setData = function (url) {
-    loadJSON(url, loadNodes);
     let currentVisualization = this;
+    loadJSON(url, loadNodes);
 
     function loadNodes(data) {
         let weights = data["weights"];
+
         let number = 0;
 
         for (let node_index in weights) {
@@ -51,9 +53,10 @@ RoundNodeLink.prototype.setData = function (url) {
                 node_index, // node id
                 number,    // number in circle
                 number*2*Math.PI/(Math.min(Object.keys(data).length, currentVisualization.limit)+1),
-                currentVisualization.circleRadius,
                 currentVisualization.circleLocation,
+                currentVisualization.circleRadius
             );
+            print(currentVisualization.circleLocation);
             currentVisualization.nodes.push(new_node); // put in array
             number++;
             if (number > currentVisualization.limit) {
@@ -73,31 +76,31 @@ RoundNodeLink.prototype.setData = function (url) {
                         if (some_node.number === i) {
                             toNode = some_node;
                         }
-                    });
+                })
                     let edge = new OutGoingEdge(weight, toNode);
                     node.outGoingEdges.push(edge);
                 }
-            }});
-
-        currentVisualization.currentActive = currentVisualization.nodes[0];
-        currentVisualization.nodes[0].active = true;
+            }
+    })
+        currentActive = nodes[0];
+        nodes[0].active = true;
     }
 };
 
 /**
  * Draw the visualization.
  */
-RoundNodeLink.prototype.draw = function () {
+MatrixVisualization.prototype.draw = function () {
     background(141,141,141);
     noFill();
-    // draw each node
-    this.nodes.forEach(node => {
-        node.drawNode();
-    });
 
+    // draw each node
+    nodes.forEach(node => {
+        node.drawNode();
+})
     // rotate all nodes if needed
-    if (this.currentActive && this.currentActive.angle > 0.1) {
-        this.nodes.forEach(node => {
+    if (currentActive.angle > 0.1) {
+        nodes.forEach(node => {
             node.angle = (node.angle + 0.1) % (Math.PI * 2);
         })
     }
@@ -111,7 +114,7 @@ RoundNodeLink.prototype.draw = function () {
  * @return {p5.Vector} vector of the cell at the given position.
  * @throws RangeError if you click a cell that is outside of the matrix, i.e. a bad click.
  */
-RoundNodeLink.prototype.getCell = function (xCord, yCord) {
+MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed not implemented
     throw new RangeError("clicked outside of visualization");
 
@@ -124,7 +127,7 @@ RoundNodeLink.prototype.getCell = function (xCord, yCord) {
  * @param yCord mouse y
  * @throws RangeError if you click outside of the matrix.
  */
-RoundNodeLink.prototype.click = function (xCord, yCord) {
+MatrixVisualization.prototype.click = function (xCord, yCord) {
     //nothing implemented yet;
 };
 
@@ -196,7 +199,7 @@ function Node(id, number, angle, outsideRadius, outsideCircleMiddle) {
     }
 }
 
-function OutGoingEdge(weight, toNode) {
+function outGoingEdge(weight, toNode) {
     this.weight = weight;
     this.toNode = toNode;
 }
