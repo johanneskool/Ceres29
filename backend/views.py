@@ -99,12 +99,3 @@ def a_little_bit_of_security_is_allowed():
         abort(403)
     if '/static/json' in request.path:
         abort(403)
-
-@app.after_request
-def add_header(response):
-    """
-    Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also to cache the rendered page for 10 minutes.
-    """
-    response.cache_control.max_age = 0
-    return response
