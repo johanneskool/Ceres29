@@ -51,7 +51,7 @@ var visualizationSketch = function (v) {
         v.visualizationHandler = GVH;
 
         //create a new matrix object
-        v.visualizationHandler.newVisualization('matrix', v);
+        v.visualizationHandler.newVisualization('forceLink', v);
 
         // fetch data
         v.current_URL = new URL(window.location.href);

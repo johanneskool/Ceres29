@@ -205,6 +205,11 @@ var VisualizationHandler = function () {
                 this._createVis(newRoundNodeLink);
                 this.active.setZoomScale(1);
                 break;
+            case "forceLink":
+                let newForceLink = new ForceLink();
+                this._createVis(newForceLink);
+                this.centerSelected(v);
+                break;
         }
     };
 

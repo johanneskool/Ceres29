@@ -4,16 +4,24 @@
     <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/sigma.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/sigma.settings.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/plugins/sigma.layout.forceAtlas2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/plugins/sigma.plugins.filter.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/sigma.plugins.animate.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/plugins/sigma.plugins.relativeSize.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='Sigma/plugins/sigma.plugins.dragNodes.min.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/LoadingAnimation.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/VisualizationClass.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/ForceLinkDiagramVisClass.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>
 {% endblock %}
 
 {% block content %}
     <!-- AUTHORS
-    Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide
+    Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide, Akam Bilbas
     -->
 
     {% if data %}

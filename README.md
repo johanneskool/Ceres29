@@ -1,5 +1,5 @@
 # DBL29 Ceres
-> Webapp that visualizes weighted directed graphs
+> Webapp that visualises weighted directed graphs
 
 ## Features
 
