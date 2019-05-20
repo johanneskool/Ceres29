@@ -28,7 +28,7 @@ var VisualizationHandler = function () {
     this.activeCell;
 
     /**
-     * Url of the current json used by this VH
+     * Url of the current json usd by this VH
      * @type {url}
      */
     this.data = null;
@@ -207,8 +207,8 @@ var VisualizationHandler = function () {
                 break;
             case "forceLink":
                 let newForceLink = new ForceLink();
-                this._createVis(newForceLink);
-                this.centerSelected(v);
+                this._createVis(newForceLink, v);
+                //this.centerSelected(v);
                 break;
         }
     };

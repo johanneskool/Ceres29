@@ -23,7 +23,7 @@ ForceLink.prototype.constructor = ForceLink;
 */
 ForceLink.prototype.setData = function (url) {
     let currentVisualization = this;
-    loadJSON(url, loadNodes);
+    P$.loadJSON(url, loadNodes);
     this.graph = {
         nodes: [],
         edges: []
