@@ -208,7 +208,7 @@ var VisualizationHandler = function () {
             case "forceLink":
                 let newForceLink = new ForceLink();
                 this._createVis(newForceLink);
-                this.active.setZoomScale(1);
+                this.centerSelected(v);
                 break;
         }
     };

@@ -88,9 +88,9 @@ ForceLink.prototype.setData = function (url) {
             }
         }
 
-        // Load the graph in sigma
+        // Load the graph in sigma to draw
         s.graph.read(graph);
-        // Ask sigma to draw it
+        // Ask sigma to draw it and refresh
         s.refresh();
     }
 };
