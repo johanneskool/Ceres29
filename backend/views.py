@@ -88,6 +88,10 @@ def data(id):
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "fiedler.json") # clean up later but good for now
     elif type == 'pagerank':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
+    elif type == 'cluster':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
+    elif type == 'test':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "test.json")
     else:
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "default.json") # clean up later but good for now
 
