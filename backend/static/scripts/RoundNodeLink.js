@@ -53,8 +53,8 @@ RoundNodeLink.prototype.setData = function (url) {
                 node_index, // node id
                 number,    // number in circle
                 number*2*Math.PI/(Math.min(Object.keys(data).length, currentVisualization.limit)+1),
-                currentVisualization.circleLocation,
-                currentVisualization.circleRadius
+                currentVisualization.circleRadius,
+                currentVisualization.circleLocation
             );
             print(currentVisualization.circleLocation);
             currentVisualization.nodes.push(new_node); // put in array
@@ -76,31 +76,31 @@ RoundNodeLink.prototype.setData = function (url) {
                         if (some_node.number === i) {
                             toNode = some_node;
                         }
-                })
+                });
                     let edge = new OutGoingEdge(weight, toNode);
                     node.outGoingEdges.push(edge);
                 }
             }
-    })
-        currentActive = nodes[0];
-        nodes[0].active = true;
+    });
+        currentVisualization.currentActive = currentVisualization.nodes[0];
+        currentVisualization.nodes[0].active = true;
     }
 };
 
 /**
  * Draw the visualization.
  */
-MatrixVisualization.prototype.draw = function () {
+RoundNodeLink.prototype.draw = function () {
     background(141,141,141);
     noFill();
 
     // draw each node
-    nodes.forEach(node => {
+    this.nodes.forEach(node => {
         node.drawNode();
-})
+});
     // rotate all nodes if needed
-    if (currentActive.angle > 0.1) {
-        nodes.forEach(node => {
+    if (this.currentActive && this.currentActive.angle > 0.1) {
+        this.nodes.forEach(node => {
             node.angle = (node.angle + 0.1) % (Math.PI * 2);
         })
     }
@@ -114,7 +114,7 @@ MatrixVisualization.prototype.draw = function () {
  * @return {p5.Vector} vector of the cell at the given position.
  * @throws RangeError if you click a cell that is outside of the matrix, i.e. a bad click.
  */
-MatrixVisualization.prototype.getCell = function (xCord, yCord) {
+RoundNodeLink.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed not implemented
     throw new RangeError("clicked outside of visualization");
 
@@ -127,7 +127,7 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
  * @param yCord mouse y
  * @throws RangeError if you click outside of the matrix.
  */
-MatrixVisualization.prototype.click = function (xCord, yCord) {
+RoundNodeLink.prototype.click = function (xCord, yCord) {
     //nothing implemented yet;
 };
 
