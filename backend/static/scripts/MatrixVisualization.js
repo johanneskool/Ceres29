@@ -79,22 +79,13 @@ MatrixVisualization.prototype.updateNodeSize = function () {
  * Updates the matrix data.
  * @param {url} url the json url of the data
  */
-MatrixVisualization.prototype.setData = function (url) {
-    P$.print(url);
-    P$.loadJSON(url, loadNodes);
-
-    //the json callback forgets what matrix called it.
-    var currentMatrix = this;
-
-    function loadNodes(data) {
-        currentMatrix.data = data;
-        currentMatrix.nodeCount = currentMatrix.data.weights.length;
-        currentMatrix.minWeight = currentMatrix.data.minWeight;
-        currentMatrix.maxWeight = currentMatrix.data.maxWeight;
-        currentMatrix.updateNodeSize();
-        currentMatrix.load();
-    }
-
+MatrixVisualization.prototype.setData = function (data) {
+    this.data = data;
+    this.nodeCount = currentMatrix.data.weights.length;
+    this.minWeight = currentMatrix.data.minWeight;
+    this.maxWeight = currentMatrix.data.maxWeight;
+    this.updateNodeSize();
+    this.load();
 };
 
 

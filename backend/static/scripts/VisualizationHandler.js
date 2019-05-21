@@ -268,9 +268,9 @@ var VisualizationHandler = function () {
      * @param url url of the json to set.
      * @param {p5.Element} v the selected canvas.
      */
-    this.setData = function (url, v) {
+    this.setData = function (data, v) {
         let vis = this.visDictionary.get(v);
-        vis.setData(url);
+        vis.setData(data);
     };
 
     /**
@@ -278,9 +278,15 @@ var VisualizationHandler = function () {
      * @param url url of the json to set.
      */
     this.updateData = function (url) {
-        this.data = url;
-        for (let i = 0; i < this.visualizations.length; i++) {
-            this.visualizations[i].setData(url);
+        P$.loadJSON(url, updateAllCallback);
+
+        var visHandler = this;
+
+        function updateAllCallback(data) {
+            visHandler.data = data;
+            for (let i = 0; i < visHandler.visualizations.length; i++) {
+                visHandler.visualizations[i].setData(data);
+            }
         }
     };
 
