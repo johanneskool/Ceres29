@@ -45,7 +45,7 @@ def handle_file_upload(request_upload):
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         # process file into different forms and track this in db
-        new_file = File(filename, name=filename.split('.csv')[0])
+        new_file = File(filename, name=filename.split('.csv')[0].replace('_', ' '))
         db.session.add(new_file)
         db.session.commit()
 

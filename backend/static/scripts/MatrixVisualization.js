@@ -2,6 +2,7 @@
  * @fileoverview Contains the matrix visualization class and the functions needed to draw it to the canvas
  * @author Samuel Oosterholt
  * @author Tristan Trouwem
+ * @author Rink Pieters
  */
 
 

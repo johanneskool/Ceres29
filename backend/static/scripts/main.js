@@ -3,6 +3,7 @@
  * and the canvas which displays the data.
  *
  * @author Samuel Oosterholt
+ * @author Rink Pieters
  */
 
 
