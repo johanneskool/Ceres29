@@ -114,19 +114,22 @@ MatrixVisualization.prototype.generateNodes = function () {
  * Draws a matrix to the graphics based of the input nodes
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-    let min = Math.log(this.minWeight);
-    if (min < 0) {
-        min = 0;
+    let min; let max; let useLog = false; //because we need them outside the if-statement
+    if (this.maxWeight <= 1) { //actually we don't need logarithmic scaling here
+        min = Math.min(0, this.minWeight);
+        max = this.maxWeight;
+    } else {
+        min = Math.log(this.minWeight/1.2); //excend the range a little since we are not sure whether there is a 0
+        max = Math.log(this.maxWeight);
+        useLog = true;
     }
-    let max = Math.log(this.maxWeight);
     //loop through all the edges and create a rectangle.
     for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
         for (let row = 0; row < this.nodeCount; row++) {
-            let weight = Math.log(this.data.weights[col][row]);
-            if (weight < 0) {
-                weight = 0;
-            }
+            let weight; //for use in the for-loop
+            if (useLog) weight = Math.log(this.data.weights[col][row]);
+            else weight = this.data.weights[col][row];
 
             var ratio = P$.map(weight, min, max, 0, 1);
             P$.colorMode(P$.HSB, 100);
