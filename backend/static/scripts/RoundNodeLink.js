@@ -40,6 +40,7 @@ RoundNodeLink.prototype.constructor = RoundNodeLink;
  * @param {url} url the json url of the data
  */
 RoundNodeLink.prototype.setData = function (url) {
+    console.log('Start setting data');
     let currentVisualization = this;
     P$.loadJSON(url, loadNodes);
 
@@ -56,7 +57,6 @@ RoundNodeLink.prototype.setData = function (url) {
                 currentVisualization.circleRadius,
                 currentVisualization.circleLocation
             );
-            print(currentVisualization.circleLocation);
             currentVisualization.nodes.push(new_node); // put in array
             number++;
             if (number > currentVisualization.limit) {
@@ -91,13 +91,13 @@ RoundNodeLink.prototype.setData = function (url) {
  * Draw the visualization.
  */
 RoundNodeLink.prototype.draw = function () {
-    background(141,141,141);
-    noFill();
+    P$.background(141,141,141);
+    P$.noFill();
 
     // draw each node
     this.nodes.forEach(node => {
         node.drawNode();
-});
+    });
     // rotate all nodes if needed
     if (this.currentActive && this.currentActive.angle > 0.1) {
         this.nodes.forEach(node => {
@@ -161,18 +161,18 @@ function Node(id, number, angle, outsideRadius, outsideCircleMiddle) {
     };
 
     this.drawNode = function() {
-        stroke(0,0,0);
-        circle(this.locationX(), this.locationY(), this.radius);
+        P$.stroke(0,0,0);
+        P$.circle(this.locationX(), this.locationY(), this.radius);
         // draw label
-        push();
+        P$.push();
         // black color
-        stroke(0,0,0);
+        P$.stroke(0,0,0);
         this.outsideRadius += this.radius; // hack to make the text go outward a bit, revert after drawing text
-        translate(this.locationX(), this.locationY());
-        rotate(this.angle);
-        text(this.name, 0,0);
+        P$.translate(this.locationX(), this.locationY());
+        P$.rotate(this.angle);
+        P$.text(this.name, 0,0);
         this.outsideRadius -= this.radius;
-        pop();
+        P$.pop();
         // only draw edges of ac
         if (this.active) {
             this.drawEdges();
@@ -185,12 +185,12 @@ function Node(id, number, angle, outsideRadius, outsideCircleMiddle) {
             try {
                 let edgeWeight = this.outGoingEdges[i];
                 if (edgeWeight !== 0) {
-                    noFill();
-                    push();
-                    stroke(this.outGoingEdges[i].outGoingEdges*10,this.outGoingEdges[i].weight*10,0);
-                    bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
+                    P$.noFill();
+                    P$.push();
+                    P$.stroke(this.outGoingEdges[i].outGoingEdges*10,this.outGoingEdges[i].weight*10,0);
+                    P$.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
                         toNode.locationX(), toNode.locationY(), toNode.locationX(), toNode.locationY());
-                    pop();
+                    P$.pop();
                 }
             } catch(e) {
                 // to_node is not defined (the case when to_node was not drawn due to lack of space)
@@ -199,7 +199,7 @@ function Node(id, number, angle, outsideRadius, outsideCircleMiddle) {
     }
 }
 
-function outGoingEdge(weight, toNode) {
+function OutGoingEdge(weight, toNode) {
     this.weight = weight;
     this.toNode = toNode;
 }
