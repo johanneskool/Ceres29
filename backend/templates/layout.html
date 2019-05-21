@@ -51,7 +51,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
-        {% if request.path == "/" %}
+        {% if request.endpoint == 'index' %}
         <li class="nav-item active">
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
@@ -61,7 +61,7 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         </li>
         {% endif %}
 
-        {% if request.path == url_for('upload') %}
+        {% if request.endpoint == 'upload' %}
         <li class="nav-item active">
           <a class="nav-link" href="{{ url_for('upload') }}">Choose a file <span class="sr-only">(current)</span></a>
         </li>
@@ -71,9 +71,9 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
         </li>
         {% endif %}
 
-        {% if request.path == url_for('vis') %}
+        {% if request.endpoint == 'vis' %}
         <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('vis') }}">Visualisation <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ url_for('vis', data_id=data_id) }}">Visualisation <span class="sr-only">(current)</span></a>
         </li>
         {% endif %}
       </ul>
