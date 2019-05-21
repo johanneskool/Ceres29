@@ -236,7 +236,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     console.log(text);
     console.log('x cord: ' + x + ', y cord: ' + y);
 
-    // update sidebar with informatino
+    // update sidebar with information
     document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
     document.getElementById('matrix-visualization-edge-info-from').innerHTML = from;
     document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;

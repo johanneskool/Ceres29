@@ -151,6 +151,7 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].colorCell(vector.x, vector.y);
         }
+        window.history.replaceState({}, data_id, "/vis/" + data_id + "?clustering=" + this.clustering_type + "&x=" + vector.x + "&y=" + vector.y);
     };
 
 
