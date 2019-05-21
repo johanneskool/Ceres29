@@ -148,17 +148,25 @@ var visualizationSketch = function (v) {
      */
     v.dragFlag = false;
 
+    /**
+     * Calls the drag function for this canvas
+     * the xOff and yOff are the difference in the mouse positions from this and the last frame.
+     * The drag function is only called for non 0 situaions.
+     */
     v.mouseDragged = function () {
         if (v.mouseFlag) {
             //update mouse vector
             v.newMouse.x = v.mouseX;
             v.newMouse.y = v.mouseY;
 
+            let xOff = v.newMouse.x - v.oldMouse.x;
+            let yOff = v.newMouse.y - v.oldMouse.y;
+
             //mouse was dragged, so update the dragFlag.
-            if ((v.newMouse.x - v.oldMouse.x) != 0 || (v.newMouse.y - v.oldMouse.y) != 0) {
+            if (xOff != 0 || yOff != 0) {
               v.dragFlag = true;
 
-              v.visualizationHandler.moveSelected(v.newMouse.x - v.oldMouse.x, v.newMouse.y - v.oldMouse.y, v);
+              v.visualizationHandler.dragSelected(xOff, yOff, v);
 
               //update old mouse vector positions.
               v.oldMouse.x = v.mouseX;
@@ -174,16 +182,7 @@ var visualizationSketch = function (v) {
      * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
      */
     v.zoom = function (zoomIn) {
-        v.zoomFactor = v.visualizationHandler.visDictionary.get(v).getZoomFactor();
-        if (zoomIn) {
-            //hard to explain in code, get some pen and paper and visualize the transformation.
-            v.visualizationHandler.moveSelected(-(v.mouseX - v.visualizationHandler.getSelectedPosition(v).x) * (v.zoomFactor - 1),-(v.mouseY - v.visualizationHandler.getSelectedPosition(v).y) * (v.zoomFactor - 1), v);
-            v.visualizationHandler.setSelectedZoomScale(v.visualizationHandler.getSelectedZoomScale(v) / v.zoomFactor, v);
-        } else {
-            //idem.
-            v.visualizationHandler.moveSelected((v.mouseX - v.visualizationHandler.getSelectedPosition(v).x) * (v.zoomFactor - 1) / v.zoomFactor, (v.mouseY - v.visualizationHandler.getSelectedPosition(v).y) * (v.zoomFactor - 1) / v.zoomFactor, v);
-            v.visualizationHandler.setSelectedZoomScale(v.visualizationHandler.getSelectedZoomScale(v) * v.zoomFactor, v);
-        }
+        v.visualizationHandler.zoomSelected(zoomIn, mouseX, mouseY, v);
     };
 
     v.draw = function () {

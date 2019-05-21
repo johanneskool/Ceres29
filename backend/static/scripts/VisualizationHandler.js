@@ -188,6 +188,11 @@ var VisualizationHandler = function () {
         this.hasLoadedVisualization = boolean;
     };
 
+    this.dragSelected = function (xOff, yOff, v) {
+        let vis = this.visDictionary.get(v);
+        vis.drag(xOff, yOff);
+    };
+
     /**
      * Create a new visualization and add it to the handler
      * @param visualization the visualization to add.
@@ -213,6 +218,7 @@ var VisualizationHandler = function () {
         }
     };
 
+
     /**
      * Create vis Object
      * @private
@@ -234,6 +240,17 @@ var VisualizationHandler = function () {
         this.active.setZoomScale(1);
     };
 
+    /**
+     *
+     * @param zoomIn {boolean} true if it is zooming in
+     * @param mouseX {number} x cordinate of the mouse
+     * @param mouseY {number} y cordinate of the mouse
+     * @param v {p5.Element} canvas which called the function
+     */
+    this.zoomSelected = function (zoomIn, mouseX, mouseY, v) {
+        let vis = this.visDictionary.get(v);
+        vis.zoom(zoomIn, mouseX, mouseY);
+    };
 
     /**
      * Set the position of the active visualization
