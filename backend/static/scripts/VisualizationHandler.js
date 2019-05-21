@@ -203,7 +203,7 @@ var VisualizationHandler = function () {
                 break;
             case "roundNodeLink":
                 let newRoundNodeLink = new RoundNodeLink();
-                this._createVis(newRoundNodeLink);
+                this._createVis(newRoundNodeLink, v);
                 this.active.setZoomScale(1);
                 break;
             case "forceLink":
