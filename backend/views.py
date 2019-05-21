@@ -2,7 +2,7 @@ __author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 
 import os
 
-from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
+from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort, make_response
 from werkzeug.utils import secure_filename
 
 from backend import app, db
@@ -85,7 +85,7 @@ def vis():
         return redirect(url_for('upload'))
     data_name = File.query.get(data_id).name
     if request.method == 'GET':
-        return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name)
+        return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name, data_id=data_id)
 
 
 @app.route('/data/<int:id>', methods=['GET'])
@@ -93,18 +93,18 @@ def data(id):
     type = request.args.get('type')
     file = File.query.get(id)
     if type == 'fiedler':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
-                                   "fiedler.json")  # clean up later but good for now
+        response = make_response(send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "fiedler.json"))  # clean up later but good for now
     elif type == 'pagerank':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
+        response = make_response(send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json"))
     elif type == 'cluster':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
+        response = make_response(send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json"))
     elif type == 'test':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "test.json")
+        response = make_response(send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "test.json"))
     else:
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
-                                   "default.json")  # clean up later but good for now
-
+        response = make_response(send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "default.json"))
+    response.headers['Date'] = file.timestamp
+    response.headers['Content-Type'] = "application/json"
+    return response
 
 @app.before_request
 def a_little_bit_of_security_is_allowed():

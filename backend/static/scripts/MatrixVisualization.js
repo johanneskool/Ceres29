@@ -81,10 +81,23 @@ MatrixVisualization.prototype.updateNodeSize = function () {
  */
 MatrixVisualization.prototype.setData = function (url) {
     P$.print(url);
-    P$.loadJSON(url, loadNodes);
+    $.ajax({
+      url: url,
+      accepts: {
+        all: "*/*"
+      },
+      dataType: 'json',
+      success: loadNodes,
+      beforeSend: setAccept
+    }); //I wasn't gonna rewrite P5s getJson and performance is identical with jQuery. Content-Type header is wrong IN THE REQUEST using p5 since the URL doesn't end with .json and then P5 httpDo doesn't work correctly (see p5; line 62940)
 
     //the json callback forgets what matrix called it.
     var currentMatrix = this;
+
+    function setAccept(xhr) {
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.setRequestHeader('X-Requested-With', '');
+    }
 
     function loadNodes(data) {
         currentMatrix.data = data;

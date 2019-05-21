@@ -19,7 +19,7 @@
     <script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>
 
     <!-- Just get the data a little faster -->
-    <link rel="preload" href="{{ url_for('data', id=4, type='fiedler') }}" as="fetch">
+    <link rel="preload" href="{{ url_for('data', id=data_id, type='fiedler') }}" as="fetch">
 
 {% endblock %}
 
