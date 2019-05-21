@@ -138,7 +138,6 @@ MatrixVisualization.prototype.drawMatrix = function () {
             //use the weight to color the cell.
             let fillColor = P$.lerpColor(from, to, ratio);
 
-
             this.matrix.fill(fillColor);
             this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
             this.matrix.translate(this.nodeSize, 0);

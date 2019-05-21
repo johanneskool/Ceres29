@@ -30,7 +30,6 @@ def handle_file_upload(request_upload):
         custom_flash(
             'The webserver expected a file upload, but did not receive a file or files. Please select a file from your computer and click the upload button')
         return redirect(request_upload.url)
-        
     file = request_upload.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename

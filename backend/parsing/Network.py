@@ -62,11 +62,6 @@ class Network:
                 os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
             )
 
-            self.graph = self.communities.subgraph(24)
-            self.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['test'])
-            )
-
     @staticmethod
     def __parse__(filename):
         """

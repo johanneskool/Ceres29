@@ -2,6 +2,7 @@ __author__ = 'Tristan Trouwen'
 
 import os
 import secrets
+import pickle
 
 from datetime import datetime
 
@@ -37,7 +38,10 @@ class File(db.Model):
             count += 1
         self.name = name
 
-        Network.Network(self.name, self.filename, self.hash)  # converts to correct models and saves file in hash folder
+        network = Network.Network(self.name, self.filename, self.hash)  # converts to correct models and saves file in hash folder
+
+        with open(os.path.join(app.config['JSON_FOLDER'], self.hash, "network.p"), "wb") as f:
+            pickle.dump(network, f)
 
     @property
     def location_path(self):
