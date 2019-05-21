@@ -92,21 +92,18 @@ RoundNodeLink.prototype.setData = function (url) {
  * Draw the visualization.
  */
 RoundNodeLink.prototype.draw = function () {
-    if (this.canvas !== undefined) {
-        this.canvas.noFill();
-        this.canvas.background(144,14,144);
+    this.canvas.noFill();
+    this.canvas.background(144,14,144);
 
-        // draw each node
+    // draw each node
+    this.nodes.forEach(node => {
+        node.drawNode();
+    });
+    // rotate all nodes if needed
+    if (this.currentActive && this.currentActive.angle > 0.1) {
         this.nodes.forEach(node => {
-            node.drawNode();
-        });
-        // rotate all nodes if needed
-        if (this.currentActive && this.currentActive.angle > 0.1) {
-            this.nodes.forEach(node => {
-                node.angle = (node.angle + 0.1) % (Math.PI * 2);
-            })
-        }
-
+            node.angle = (node.angle + 0.1) % (Math.PI * 2);
+        })
     }
 };
 
@@ -187,25 +184,25 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
         this.canvas.text(this.name, 0,0);
         this.canvas.pop();
         // only draw edges of ac
-        if (this.active) {
-            this.drawEdges();
-        }
+        this.drawEdges();
     };
 
     this.drawEdges = function() {
         // draw edges
         for (let nodeIndex = 0; nodeIndex < this.outGoingEdges.length; nodeIndex++) {
             try {
-                let edgeWeight = this.outGoingEdges[i];
+                let toNode = this.outGoingEdges[nodeIndex].toNode;
+                let edgeWeight = this.outGoingEdges[nodeIndex].weight;
                 if (edgeWeight !== 0) {
                     this.canvas.noFill();
                     this.canvas.push();
-                    this.canvas.stroke(this.outGoingEdges[i].outGoingEdges*10,this.outGoingEdges[i].weight*10,0);
+                    this.canvas.stroke(0,0,0);
                     this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
                         toNode.locationX(), toNode.locationY(), toNode.locationX(), toNode.locationY());
                     this.canvas.pop();
                 }
             } catch(e) {
+                console.log(e)
                 // to_node is not defined (the case when to_node was not drawn due to lack of space)
             }
         }
