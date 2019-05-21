@@ -72,6 +72,32 @@ Visualization.prototype.getCell = function (xPos, yPos) {
 
 };
 
+/**
+ * Function that handles the zooming, overwrite it if you need to change it or want to disable it.
+ * @param zoomIn
+ * @param mouseX
+ * @param mouseY
+ */
+Visualization.prototype.zoom = function (zoomIn, mouseX, mouseY) {
+    if (zoomIn) {
+        //hard to explain in code, get some pen and paper and visualize the transformation.
+        this.moveVisualization(-(mouseX - this.position.x) * (this.zoomFactor - 1),-(mouseY - this.position.y) * (this.zoomFactor - 1));
+        this.setZoomScale(this.zoomScale / this.zoomFactor);
+    } else {
+        //idem.
+        this.moveVisualization((mouseX - this.position.x) * (this.zoomFactor - 1) / this.zoomFactor ,(mouseY - this.position.y) * (this.zoomFactor - 1) / this.zoomFactor);
+        this.setZoomScale(this.zoomScale * this.zoomFactor);
+    }
+};
+
+/**
+ * A seperate function that is called by the canvas to drag the visualization in case you want to overwrite the dragging mechanic.
+ * @param xOff
+ * @param yOff
+ */
+Visualization.prototype.drag = function (xOff, yOff) {
+    this.moveVisualization(xOff, yOff);
+};
 
 /**
  * zoomFactor setter

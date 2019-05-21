@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 
-{% block scripts %}
+{% block scripts %}\
+    <script type="text/javascript">
+      var data_id = {{ data_id }}
+    </script>
     <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
@@ -17,10 +20,6 @@
     <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/ForceLinkDiagramVisClass.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>
-
-    <!-- Just get the data a little faster -->
-    <link rel="preload" href="{{ url_for('data', id=4, type='fiedler') }}" as="fetch">
-
 {% endblock %}
 
 {% block content %}
