@@ -92,16 +92,16 @@ def vis(data_id=None):
 
 @app.route('/data/<int:id>', methods=['GET'])
 def data(id):
-    type = request.args.get('type')
+    clustertype = request.args.get('type')
     file = File.query.get(id)
-    if type == 'fiedler':
+    if clustertype == 'fiedler':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
                                    "fiedler.json")  # clean up later but good for now
-    elif type == 'pagerank':
+    elif clustertype == 'pagerank':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
-    elif type == 'cluster':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
-    elif type == 'lexicographic':
+    elif clustertype == 'cluster':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash, "cluster_graph"), "cluster.json")
+    elif clustertype == 'lexicographic':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "lexicographic.json")
     else:
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
