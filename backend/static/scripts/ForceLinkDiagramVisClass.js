@@ -24,17 +24,17 @@ ForceLink.prototype.constructor = ForceLink;
 ForceLink.prototype.setData = function (url) {
     let currentVisualization = this;
     P$.loadJSON(url, loadNodes);
-    this.graph = {
-        nodes: [],
-        edges: []
-    };
     function loadNodes(data) {
+        this.graph = {
+            nodes: [],
+            edges: []
+        };
         //setup for sigma with setting for the graph
         s = new sigma(
             {
                 graph: data,
                 renderer: {
-                    container: document.getElementById('sigma-container'),
+                    container: this.canvas,
                     type: 'webGL'
                 },
                 settings: {
@@ -48,7 +48,7 @@ ForceLink.prototype.setData = function (url) {
                     doubleClickEnabled: false,
                     edgeHoverExtremities: true,
                     "sigma.layout.forceAtlas2": {
-                        edgeWeightInfluence  : 1000,
+                        edgeWeightInfluence  : 0.01,
                         NodeRadius: 4.0,
                         ScalingRatio: 3.0,
                         adjustSizes: false
@@ -62,9 +62,9 @@ ForceLink.prototype.setData = function (url) {
             graph.nodes.push({
                 id: index,
                 label: data.tags[index],
-                x: random(-2000, 2000),
-                y: random(-1000, 1000),
-                size: random(2, 4),
+                x: P$.random(-2000, 2000),
+                y: P$.random(-1000, 1000),
+                size: P$.random(2, 4),
                 color: '#0099ff'
             });
         }
@@ -80,7 +80,7 @@ ForceLink.prototype.setData = function (url) {
                         size: data.weights[indexNodes][indexEdges]/2,
                         source: graph.nodes[indexNodes].id,
                         target: graph.nodes[indexEdges].id,
-                        color: pickColor(data.weights[indexNodes][indexEdges]),
+                        color: "#FFFFFF",
                         type: 'arrow'
                     });
                     i++
@@ -92,5 +92,9 @@ ForceLink.prototype.setData = function (url) {
         s.graph.read(graph);
         // Ask sigma to draw it and refresh
         s.refresh();
+        //may the force be with you (start the physics).
+        s.startForceAtlas2();
+        //stops after 10 sec with the physics
+        window.setTimeout(function() {s.killForceAtlas2();}, 4000);
     }
 };
