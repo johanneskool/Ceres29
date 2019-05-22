@@ -184,7 +184,7 @@ var visualizationSketch = function (v) {
      * @param zoomIn {boolean} true if the function should zoom in, false if it should zoom out.
      */
     v.zoom = function (zoomIn) {
-        v.visualizationHandler.zoomSelected(zoomIn, mouseX, mouseY, v);
+        v.visualizationHandler.zoomSelected(zoomIn, v.mouseX, v.mouseY, v);
     };
 
     v.draw = function () {
