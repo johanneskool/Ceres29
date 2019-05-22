@@ -101,7 +101,7 @@ def data(id):
     elif clustertype == 'pagerank':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
     elif clustertype == 'cluster':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash, "cluster_graph"), "cluster.json")
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
     elif clustertype == 'lexicographic':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "lexicographic.json")
     else:
