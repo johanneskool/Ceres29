@@ -87,7 +87,8 @@ def vis(data_id=None):
         data_id = request.args.get('data')
     data_name = File.query.get(data_id).name
     if request.method == 'GET':
-        return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name, data_id=data_id)
+        return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name,
+                               data_id=data_id)
 
 
 @app.route('/data/<int:id>', methods=['GET'])

@@ -1,12 +1,12 @@
 __author__ = "Rick Luiken, Tristan Trouwen"
 
 import os
+from abc import abstractmethod
 
 import igraph as ig
 import numpy as np
 import ujson
 from scipy.sparse.linalg import eigs
-from abc import abstractmethod
 
 from backend import app
 
@@ -223,7 +223,8 @@ class TopNetwork(Network):
             cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
             cluster_network = SubNetwork(name, cluster_graph)
             cluster_network.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'], os.path.join(cluster_network.directory_name, filenames['cluster']))
+                os.path.join(app.config['JSON_FOLDER'],
+                             os.path.join(cluster_network.directory_name, filenames['cluster']))
             )
 
 

@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 
 {% block header %}
-<div class="jumbotron">
-    <div class="container">
-        <h2 class="display-4">
-            Choose a file
-        </h2>
+    <div class="jumbotron">
+        <div class="container">
+            <h2 class="display-4">
+                Choose a file
+            </h2>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 {% block content %}
@@ -15,56 +15,72 @@
     Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide
     -->
     <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h2>Upload new file...</h2>
-          <p>Choose a file using "Browse" and click on "Upload". Uploading a file may take a while depending on the size of the file, the speed of your network connection and the current server load. Read more about the file specifications <a href='#h-filespecs'>here</a>.</p>
-          <form method=post enctype=multipart/form-data>
-            <div class="input-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="{{ '.' + ', .'.join(config['ALLOWED_EXTENSIONS']) }}">
-                <label class="custom-file-label" for="file">No file selected</label>
-              </div>
-              <div class="input-group-append">
-                <input type=submit value=Upload class="btn btn-primary">
-              </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Upload new file...</h2>
+                <p>Choose a file using "Browse" and click on "Upload". Uploading a file may take a while depending on
+                    the size of the file, the speed of your network connection and the current server load. Read more
+                    about the file specifications <a href='#h-filespecs'>here</a>.</p>
+                <form method=post enctype=multipart/form-data>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file"
+                                   aria-describedby="inputGroupFileAddon01"
+                                   accept="{{ '.' + ', .'.join(config['ALLOWED_EXTENSIONS']) }}">
+                            <label class="custom-file-label" for="file">No file selected</label>
+                        </div>
+                        <div class="input-group-append">
+                            <input type=submit value=Upload class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
             </div>
-          </form>
-        </div>
 
-        <div class="col-md-6">
-          <h2>...or open an existing file:</h2>
-          <p>Start gaining insight in datasets quickly by picking one of the {{ files_available|length }} files shared by users of {{ config['APP_TITLE'] }} from all over the world. Commercial use of the uploaded datasets may not be allowed, but feel free to explore these datasets and gain some new insights. </p>
-          <form method=get enctype=multipart/form-data action="{{ url_for('vis') }}">
-            <div class="input-group">
-              <select class="custom-select" id="data" name="data">
-                <option selected value="" disabled>Choose a file</option>
-                {% set loopvars = {'lastdate': ""} %}
-                {% for file in files_available %}
-                  {% if loopvars.lastdate != file.timestamp.strftime('%A %B %d, %Y') %}
-                    {% if loopvars.update({'lastdate': file.timestamp.strftime('%A %B %d, %Y')}) %}{% endif %}
-                    <option  disabled value="">{{ loopvars.lastdate }}</option>
-                  {% endif %}
-                  <option value="{{ file.id }}">&nbsp; &nbsp;{{ file.name + ' (' + file.timestamp.strftime('%H:%M:%S') + ')'}}</option>
-                {% endfor %}
-              </select>
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Load</button>
-              </div>
+            <div class="col-md-6">
+                <h2>...or open an existing file:</h2>
+                <p>Start gaining insight in datasets quickly by picking one of the {{ files_available|length }} files
+                    shared by users of {{ config['APP_TITLE'] }} from all over the world. Commercial use of the uploaded
+                    datasets may not be allowed, but feel free to explore these datasets and gain some new
+                    insights. </p>
+                <form method=get enctype=multipart/form-data action="{{ url_for('vis') }}">
+                    <div class="input-group">
+                        <select class="custom-select" id="data" name="data">
+                            <option selected value="" disabled>Choose a file</option>
+                            {% set loopvars = {'lastdate': ""} %}
+                            {% for file in files_available %}
+                                {% if loopvars.lastdate != file.timestamp.strftime('%A %B %d, %Y') %}
+                                    {% if loopvars.update({'lastdate': file.timestamp.strftime('%A %B %d, %Y')}) %}{% endif %}
+                                    <option disabled value="">{{ loopvars.lastdate }}</option>
+                                {% endif %}
+                                <option value="{{ file.id }}">&nbsp;
+                                    &nbsp;{{ file.name + ' (' + file.timestamp.strftime('%H:%M:%S') + ')' }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Load</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </form>
         </div>
-      </div>
-      <div class="row top-spacing-sm">
-        <div class="col-md-12">
-          <h2 id="h-filespecs">File specifications:</h2>
-          <p>The tool expects to receive a comma separated file, a .csv file with semicolons as delimiters (i.e. the way Microsoft Excel creates them). These may or may not contain an extra semicolon at the end of each line. The expected encoding for the file is UTF-8.
-            If your file does not adhere to the specifications, it may not get processed properly or in some cases don't get processed at all. In these cases, please try to format your data in such a way that it does comply to the standad.<br>
-            The first row (the table heading) of the file should contain all node names. All further rows should start with these same node names, and these should be in the same order (it is not allowed to omit a row with all zeroes).<br>
-            To start creating files to visualize, please see <a href="{{ url_for('static', filename='uploads/Quick_Test_10x10_sparse.csv') }}">this</a> example file. 
-            </p>
+        <div class="row top-spacing-sm">
+            <div class="col-md-12">
+                <h2 id="h-filespecs">File specifications:</h2>
+                <p>The tool expects to receive a comma separated file, a .csv file with semicolons as delimiters (i.e.
+                    the way Microsoft Excel creates them). These may or may not contain an extra semicolon at the end of
+                    each line. The expected encoding for the file is UTF-8.
+                    If your file does not adhere to the specifications, it may not get processed properly or in some
+                    cases don't get processed at all. In these cases, please try to format your data in such a way that
+                    it does comply to the standad.<br>
+                    The first row (the table heading) of the file should contain all node names. All further rows should
+                    start with these same node names, and these should be in the same order (it is not allowed to omit a
+                    row with all zeroes).<br>
+                    To start creating files to visualize, please see <a
+                            href="{{ url_for('static', filename='uploads/Quick_Test_10x10_sparse.csv') }}">this</a>
+                    example file.
+                </p>
+            </div>
         </div>
-      </div>
     </div>
 
 {% endblock %}

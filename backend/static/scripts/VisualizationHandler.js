@@ -1,6 +1,7 @@
 /**
  * @fileoverview Handler that serves as the communication between the canvasses and all the visualizations.
  * @author Samuel Oosterholt
+ * @author Rink Pieters
  */
 
 /**
@@ -19,7 +20,7 @@ var VisualizationHandler = function () {
      * Dictionary mapping visualization to canvas.
      * @type {dictionary}
      */
-    this.visDictionary = new Object();
+    this.visDictionary = {};
 
     /**
      * The vector of the currently selected node, vector representation in the matrix.
@@ -100,13 +101,13 @@ var VisualizationHandler = function () {
      */
     this.click = function (xPos, yPos) {
         //first try to see if any other visualization on top are a click.
-        for (let i = 0; i <this.visualizations.length; i++) {
+        for (let i = 0; i < this.visualizations.length; i++) {
             let index = this.visualizations.length - i;
             if (this.visualizations[index] !== this.active) {
                 try {
                     this.visualizations[index].getCell(xPos, yPos);
                 } catch (e) {
-                   continue;
+                    continue;
                 }
                 this.setActive(this.visualizations[index]);
                 return;
@@ -163,7 +164,7 @@ var VisualizationHandler = function () {
         let activeIndex = this.visualizations.indexOf(this.active);
         console.log(activeIndex);
         if (activeIndex > -1) {
-            this.visualizations.splice(activeIndex,1)
+            this.visualizations.splice(activeIndex, 1)
         }
         if (this.visualizations.length > 0) {
             this.active = this.visualizations[activeIndex - 1];

@@ -5,39 +5,42 @@
 {% extends "layout.html" %}
 
 {% block scripts %}
-  <link rel="prerender" href="{{ url_for('upload') }}">
+    <link rel="prerender" href="{{ url_for('upload') }}">
 {% endblock %}
 
 {% block header %}
-<div class="jumbotron">
-    <div class="container">
-        <h1 class="display-3">
-            {{ config['APP_TITLE'] }}
-        </h1>
-        <p>
-            TU/e DBL Project HTI + Webtech by {{ config['APP_AUTHOR'] }}.
-            <br>
-            This tool provides an adjacency matrix and three different types of node-link diagrams.
-            <br>
-            Upload your own files to analyse your network data!
-        </p>
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">
+                {{ config['APP_TITLE'] }}
+            </h1>
+            <p>
+                TU/e DBL Project HTI + Webtech by {{ config['APP_AUTHOR'] }}.
+                <br>
+                This tool provides an adjacency matrix and three different types of node-link diagrams.
+                <br>
+                Upload your own files to analyse your network data!
+            </p>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <p>
-        When you click "Choose a file", you can upload your own, new file, or choose a file that is already used before.
-        After uploading a new file, go the this menu again, and choose your file from the on the right.
-        After loading the data, you can choose from different types of visualisations to compare the network in multiple ways.
-        When clicking a node in one of the node-link diagrams, you will be able to see details about the node and the edges to and from that node.
-        When clicking a cell in the adjacency matrix, you will see the details about the current relation.
-        </p>
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>
+                    When you click "Choose a file", you can upload your own, new file, or choose a file that is already
+                    used before.
+                    After uploading a new file, go the this menu again, and choose your file from the on the right.
+                    After loading the data, you can choose from different types of visualisations to compare the network
+                    in multiple ways.
+                    When clicking a node in one of the node-link diagrams, you will be able to see details about the
+                    node and the edges to and from that node.
+                    When clicking a cell in the adjacency matrix, you will see the details about the current relation.
+                </p>
+            </div>
+        </div>
     </div>
-  </div>
 {% endblock %}

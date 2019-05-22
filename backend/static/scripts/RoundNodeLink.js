@@ -23,8 +23,8 @@ var RoundNodeLink = function () {
     /**
      * All variables that describe the circle around which the nodes are drawn
      */
-    this.circleRadius = Math.min(P$.windowWidth/3, P$.windowHeight/3);
-    this.circleLocation = P$.createVector(P$.windowWidth/2, P$.windowHeight/2);
+    this.circleRadius = Math.min(P$.windowWidth / 3, P$.windowHeight / 3);
+    this.circleLocation = P$.createVector(P$.windowWidth / 2, P$.windowHeight / 2);
 
     this.currentActive = null; // node which is clicked
     this.limit = 100; // at most 100 nodes can be put on the circle
@@ -54,7 +54,7 @@ RoundNodeLink.prototype.setData = function (url) {
                 node_index, // node id
                 data['tags'][node_index], // node name/label
                 number,    // number in circle
-                number*2*Math.PI/(Math.min(Object.keys(weights).length, currentVisualization.limit)+1),
+                number * 2 * Math.PI / (Math.min(Object.keys(weights).length, currentVisualization.limit) + 1),
                 currentVisualization.circleLocation,
                 currentVisualization.canvas
             );
@@ -77,12 +77,12 @@ RoundNodeLink.prototype.setData = function (url) {
                         if (some_node.number === i) {
                             toNode = some_node;
                         }
-                });
+                    });
                     let edge = new OutGoingEdge(weight, toNode);
                     node.outGoingEdges.push(edge);
                 }
             }
-    });
+        });
         currentVisualization.currentActive = currentVisualization.nodes[0];
         currentVisualization.nodes[0].active = true;
     }
@@ -93,7 +93,7 @@ RoundNodeLink.prototype.setData = function (url) {
  */
 RoundNodeLink.prototype.draw = function () {
     this.canvas.noFill();
-    this.canvas.background(144,14,144);
+    this.canvas.background(144, 14, 144);
 
     // draw each node
     this.nodes.forEach(node => {
@@ -157,37 +157,37 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
     this.canvas = canvas;
 
 
-    this.outsideRadius = function(text=false) {
+    this.outsideRadius = function (text = false) {
         if (text === true) {
             return (Math.min(this.canvas.width, this.canvas.height) / 3 + 10);
         } else {
-            return Math.min(this.canvas.width, this.canvas.height)/3;
+            return Math.min(this.canvas.width, this.canvas.height) / 3;
         }
     };
 
-    this.locationX = function(text=false) {
-        return Math.cos(this.angle)*this.outsideRadius(text) + this.outsideCircleMiddle.x;
+    this.locationX = function (text = false) {
+        return Math.cos(this.angle) * this.outsideRadius(text) + this.outsideCircleMiddle.x;
     };
-    this.locationY = function(text=false) {
-        return Math.sin(this.angle)*this.outsideRadius(text) + this.outsideCircleMiddle.y;
+    this.locationY = function (text = false) {
+        return Math.sin(this.angle) * this.outsideRadius(text) + this.outsideCircleMiddle.y;
     };
 
-    this.drawNode = function() {
-        this.canvas.stroke(0,0,0);
+    this.drawNode = function () {
+        this.canvas.stroke(0, 0, 0);
         this.canvas.circle(this.locationX(), this.locationY(), this.radius);
         // draw label
         this.canvas.push();
         // black color
-        this.canvas.stroke(0,0,0);
-        this.canvas.translate(this.locationX(text=true), this.locationY(text=true));
+        this.canvas.stroke(0, 0, 0);
+        this.canvas.translate(this.locationX(text = true), this.locationY(text = true));
         this.canvas.rotate(this.angle);
-        this.canvas.text(this.name, 0,0);
+        this.canvas.text(this.name, 0, 0);
         this.canvas.pop();
         // only draw edges of ac
         this.drawEdges();
     };
 
-    this.drawEdges = function() {
+    this.drawEdges = function () {
         // draw edges
         for (let nodeIndex = 0; nodeIndex < this.outGoingEdges.length; nodeIndex++) {
             try {
@@ -196,12 +196,12 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
                 if (edgeWeight !== 0) {
                     this.canvas.noFill();
                     this.canvas.push();
-                    this.canvas.stroke(0,0,0);
+                    this.canvas.stroke(0, 0, 0);
                     this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
                         toNode.locationX(), toNode.locationY(), toNode.locationX(), toNode.locationY());
                     this.canvas.pop();
                 }
-            } catch(e) {
+            } catch (e) {
                 console.log(e)
                 // to_node is not defined (the case when to_node was not drawn due to lack of space)
             }
