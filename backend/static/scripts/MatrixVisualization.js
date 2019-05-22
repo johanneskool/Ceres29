@@ -116,21 +116,20 @@ MatrixVisualization.prototype.generateNodes = function () {
  */
 MatrixVisualization.prototype.drawMatrix = function () {
     let min; let max; let useLog = false; //because we need them outside the if-statement
-    if (this.maxWeight <= 1) { //actually we don't need logarithmic scaling here
-        min = Math.min(0, this.minWeight);
-        max = this.maxWeight;
-    } else {
-        min = Math.log(this.minWeight/1.2); //excend the range a little since we are not sure whether there is a 0
-        max = Math.log(this.maxWeight);
-        useLog = true;
-    }
+
+    min = Math.log(this.minWeight/1.5); //excend the range a little since we are not sure whether there is a 0
+    max = Math.log(this.maxWeight);
+
+    this.matrix.fill(0,0,0);
+    this.matrix.rect(0, 0, this.maxSize, this.maxSize);
+
     //loop through all the edges and create a rectangle.
     for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
         for (let row = 0; row < this.nodeCount; row++) {
+            if (this.data.weights[col][row] == 0) continue;
             let weight; //for use in the for-loop
-            if (useLog) weight = Math.log(this.data.weights[col][row]);
-            else weight = this.data.weights[col][row];
+            weight = Math.log(this.data.weights[col][row]);
 
             var ratio = P$.map(weight, min, max, 0, 1);
             P$.colorMode(P$.HSB, 100);
@@ -140,11 +139,8 @@ MatrixVisualization.prototype.drawMatrix = function () {
             let fillColor = P$.lerpColor(from, to, ratio);
 
             this.matrix.fill(fillColor);
-            this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
-            this.matrix.translate(this.nodeSize, 0);
+            this.matrix.rect(this.nodeSize*col, this.nodeSize*row, this.nodeSize, this.nodeSize);
         }
-        this.matrix.pop();
-        this.matrix.translate(0, this.nodeSize);
     }
 
     this.loaded = true;
