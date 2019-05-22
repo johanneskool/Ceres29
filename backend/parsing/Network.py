@@ -6,16 +6,19 @@ import igraph as ig
 import numpy as np
 import ujson
 from scipy.sparse.linalg import eigs
+from abc import abstractmethod
 
 from backend import app
 
 filenames = {
     'default': 'default.json',
     'fiedler': 'fiedler.json',
+    'lexicographic': 'lexicographic.json',
     'pagerank': 'pagerank.json',
     'cluster': 'cluster.json',
-    'test': 'test.json'
 }
+
+cluster_threshold = 200
 
 
 class Network:
@@ -28,39 +31,10 @@ class Network:
     @return nothing
     """
 
-    def __init__(self, name, filename, directory_name):
+    @abstractmethod
+    def __init__(self, name, directory_name):
         self.name = name
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        self.graph = self.__parse__(filepath)
         self.directory_name = directory_name
-        # processing and saving files
-
-        # create folder to save all files in
-        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
-
-        # save default json
-        self.reorder_alphabetically()
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
-        )
-
-        # convert to fiedler
-        self.reorder_with_fiedler()
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
-        )
-
-        # convert to pagerank
-        self.reorder_with_pagerank()
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
-        )
-
-        if self.graph.vcount() > 500:
-            self.communities = self.get_cluster_graph()
-            self.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
-            )
 
     @staticmethod
     def __parse__(filename):
@@ -125,7 +99,7 @@ class Network:
         with open(filename, "w+", encoding='utf-8') as f:
             f.write(jsonstring)
 
-    def reorder_alphabetically(self):
+    def reorder_lexicographic(self):
         order = np.argsort(self.graph.vs["label"])
         self.graph = self.graph.permute_vertices(order.tolist())
 
@@ -145,7 +119,8 @@ class Network:
                           vector
         """
 
-        L = np.array(self.graph.laplacian(), dtype=float)
+        L = np.array(self.graph.laplacian(weights=self.graph.es['weight']), dtype=float)
+        print(L)
         # calculate eigenvalues and eigenvectors from the laplacian
         # TODO: look into making this more efficient, not all eigenvalues have
         # to be calculated
@@ -154,9 +129,10 @@ class Network:
         eigvals, eigvec = eigs(L, k=2, which="SM")
 
         fiedler = eigvec[:, 1]
-
         # find the reordering based on the Fiedler vector
         order = np.argsort(fiedler)
+
+        print(fiedler[order])
         # sort matrix on both the rows and columns
         self.graph = self.graph.permute_vertices(order.tolist())
 
@@ -165,7 +141,72 @@ class Network:
         order = np.argsort(scores)
         self.graph = self.graph.permute_vertices(order.tolist())
 
-    def get_cluster_graph(self):
-        communities = self.graph.as_undirected(combine_edges="sum").community_multilevel(weights="weight")
-        self.graph = communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
-        return communities
+    def find_communities(self):
+        self.communities = self.graph.as_undirected(combine_edges="sum").community_multilevel(weights="weight")
+
+    def get_subnetwork(self, index):
+        if index >= len(self.communities):
+            raise IndexError('Índex is outside of community range')
+
+
+class TopNetwork(Network):
+    """
+    Helper class to convert and save network data in appropriate folders
+    @:param string with name of data
+    @:param filename String with name of file (already saved) in upload folder
+    @:param id that is not equal to the name of a folder in the json folder
+
+    @return nothing
+    """
+
+    def __init__(self, name, filename, directory_name):
+        super().__init__(name, directory_name)
+
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        self.graph = self.__parse__(filepath)
+        # processing and saving files
+
+        # create folder to save all files in
+        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
+
+        # save default json
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
+        )
+
+        # convert to alphabetically sorted json
+        self.reorder_lexicographic()
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['lexicographic'])
+        )
+
+        # convert to fiedler
+        self.reorder_with_fiedler()
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
+        )
+
+        # convert to pagerank
+        self.reorder_with_pagerank()
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
+        )
+
+        self.communities = False
+        if self.graph.vcount() > cluster_threshold:
+            self.find_communities()
+            cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
+            cluster_network = SubNetwork(name, cluster_graph, directory_name)
+            cluster_network.save_as_json(
+                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
+            )
+
+
+class SubNetwork(Network):
+
+    def __init__(self, name, graph, directory_name):
+        super().__init__(name, directory_name)
+        self.graph = graph
+
+        if self.graph.vcount() > 200:
+            self.find_communities()
