@@ -18,12 +18,13 @@ ForceLink.prototype = Object.create(Visualization.prototype);
 ForceLink.prototype.constructor = ForceLink;
 
 /**
-* Updates the matrix data.
-* @param {url} url the json url of the data
-*/
+ * Updates the matrix data.
+ * @param {url} url the json url of the data
+ */
 ForceLink.prototype.setData = function (url) {
     let currentVisualization = this;
     P$.loadJSON(url, loadNodes);
+
     function loadNodes(data) {
         this.graph = {
             nodes: [],
@@ -48,7 +49,7 @@ ForceLink.prototype.setData = function (url) {
                     doubleClickEnabled: false,
                     edgeHoverExtremities: true,
                     "sigma.layout.forceAtlas2": {
-                        edgeWeightInfluence  : 0.01,
+                        edgeWeightInfluence: 0.01,
                         NodeRadius: 4.0,
                         ScalingRatio: 3.0,
                         adjustSizes: false
@@ -76,8 +77,8 @@ ForceLink.prototype.setData = function (url) {
                 if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                     graph.edges.push({
                         id: i,
-                        weight: data.weights[indexNodes][indexEdges]/2,
-                        size: data.weights[indexNodes][indexEdges]/2,
+                        weight: data.weights[indexNodes][indexEdges] / 2,
+                        size: data.weights[indexNodes][indexEdges] / 2,
                         source: graph.nodes[indexNodes].id,
                         target: graph.nodes[indexEdges].id,
                         color: "#FFFFFF",
@@ -95,6 +96,8 @@ ForceLink.prototype.setData = function (url) {
         //may the force be with you (start the physics).
         s.startForceAtlas2();
         //stops after 10 sec with the physics
-        window.setTimeout(function() {s.killForceAtlas2();}, 4000);
+        window.setTimeout(function () {
+            s.killForceAtlas2();
+        }, 4000);
     }
 };

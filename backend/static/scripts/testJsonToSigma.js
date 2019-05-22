@@ -29,7 +29,7 @@ function setup() {
     sigma.parsers.json(
         'http://localhost:5555/static/json/test.json',
         s,
-        function() {
+        function () {
             // this below adds x, y attributes as well as size = degree of the node
             let i,
                 nodes = s.graph.nodes(),
