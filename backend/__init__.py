@@ -42,6 +42,9 @@ if not os.path.isfile(app.config['SQLALCHEMY_DATABASE_PATH']):
     new_file = models.File("Quick_Test_10x10_sparse.csv", name="Quick Test (10x10; sparse)")
     db.session.add(new_file)
     db.session.commit()
+    new_file = models.File("WI_Full_professors_research_groups_38x38_sparse.csv", name="W&I Full professors research groups - Good for clustering (39x39; sparse)")
+    db.session.add(new_file)
+    db.session.commit()
 else:
     db = SQLAlchemy(app)
     from backend.orm import models

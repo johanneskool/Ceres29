@@ -622,6 +622,7 @@ $RECYCLE.BIN/
 backend/static/uploads/*
 !backend/static/uploads/readme.md
 !backend/static/uploads/Quick_Test_10x10_sparse.csv
+!backend/static/uploads/WI_Full_professors_research_groups_38x38_sparse.csv
 backend/static/json/*
 !backend/static/json/readme.md
 
