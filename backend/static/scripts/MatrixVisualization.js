@@ -171,7 +171,7 @@ MatrixVisualization.prototype.draw = function () {
  * @param x the x cords of the matrix
  * @param y the y cords of the matrix
  */
-MatrixVisualization.prototype.colorCell = function (x, y) {
+MatrixVisualization.prototype.colorActiveCell = function (x, y) {
     this.overlayGraphics.clear();
     this.overlayGraphics.fill(50,75,75);
     this.overlayGraphics.rect(x*this.overlayRatio*this.nodeSize, y*this.overlayRatio*this.nodeSize, this.overlayRatio*this.nodeSize, this.overlayRatio*this.nodeSize);
@@ -220,7 +220,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     }
 
     // mark this cell
-    this.colorCell(x, y);
+    this.colorActiveCell(x, y);
 
     let from = this.data.tags[x];
     from = from.replace(/_/g,' ');
