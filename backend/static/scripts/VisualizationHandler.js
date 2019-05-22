@@ -83,7 +83,7 @@ var VisualizationHandler = function () {
         try {
             let vis = this.visDictionary.get(v);
             vis.click(xPos, yPos);
-            this.colorCell(vis.getCell(xPos, yPos));
+            this.colorActiveCell(vis.getCell(xPos, yPos));
         } catch (e) {
             console.log(e);
         }
@@ -116,7 +116,7 @@ var VisualizationHandler = function () {
         //If the active visualization throws an error
         try {
             this.active.click(xPos, yPos);
-            this.colorCell(this.active.getCell(xPos, yPos));
+            this.colorActiveCell(this.active.getCell(xPos, yPos));
             return;
         } catch (error) {
             console.log(error);
@@ -137,7 +137,7 @@ var VisualizationHandler = function () {
         }
         //clicked nothing, unload active cell and clear overlay.
         for (let i = 0; i < this.visualizations.length; i++) {
-            this.visualizations[i].colorCell(-1, -1);
+            this.visualizations[i].colorActiveCell(-1, -1);
         }
         this.activeCell = null;
     };
@@ -146,10 +146,10 @@ var VisualizationHandler = function () {
      * Color a cell in all the visualization in the VH
      * @param {p5.Vector} vector the vector of the cell.
      */
-    this.colorCell = function (vector) {
+    this.colorActiveCell = function (vector) {
         this.activeCell = vector;
         for (let i = 0; i < this.visualizations.length; i++) {
-            this.visualizations[i].colorCell(vector.x, vector.y);
+            this.visualizations[i].colorActiveCell(vector.x, vector.y);
         }
         window.history.replaceState({}, data_id, "/vis/" + data_id + "?clustering=" + this.clustering_type + "&x=" + vector.x + "&y=" + vector.y);
     };

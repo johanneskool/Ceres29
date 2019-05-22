@@ -166,13 +166,13 @@ var visualizationSketch = function (v) {
 
             //mouse was dragged, so update the dragFlag.
             if (xOff != 0 || yOff != 0) {
-              v.dragFlag = true;
+                v.dragFlag = true;
 
-              v.visualizationHandler.dragSelected(xOff, yOff, v);
+                v.visualizationHandler.dragSelected(xOff, yOff, v);
 
-              //update old mouse vector positions.
-              v.oldMouse.x = v.mouseX;
-              v.oldMouse.y = v.mouseY;
+                //update old mouse vector positions.
+                v.oldMouse.x = v.mouseX;
+                v.oldMouse.y = v.mouseY;
             }
         }
     };
@@ -225,4 +225,5 @@ window.vis0 = new createVisCanvas('canvas');
  * Global namespace for p5 functions.
  * @type {p5}
  */
-window.P$ = new p5(function (p){}, "global sketch");
+window.P$ = new p5(function (p) {
+}, "global sketch");
