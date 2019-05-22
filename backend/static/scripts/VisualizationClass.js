@@ -159,7 +159,7 @@ Visualization.prototype.getPosition = function () {
  * @param {number} zoomScale
  */
 Visualization.prototype.setZoomScale = function (zoomScale) {
-    this.zoomScale = zoomScale;
+    this.zoomScale = Math.max(0.01, Math.min(5, zoomScale));
 };
 
 /**
