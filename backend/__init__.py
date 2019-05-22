@@ -29,7 +29,8 @@ if not os.path.exists(app.config['JSON_FOLDER']):
 if not os.path.isfile(app.config['SQLALCHEMY_DATABASE_PATH']):
     db = SQLAlchemy(app)
     from backend.orm import models
-    db.create_all() #it conditionally creates tables, so it is allowed to always call it
+
+    db.create_all()  # it conditionally creates tables, so it is allowed to always call it
     new_file = models.File("Quick_Test_10x10_sparse.csv", name="Quick Test (10x10; sparse)")
     db.session.add(new_file)
     db.session.commit()

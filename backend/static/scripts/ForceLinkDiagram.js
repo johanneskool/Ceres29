@@ -34,7 +34,7 @@ function setup() {
                 doubleClickEnabled: false,
                 edgeHoverExtremities: true,
                 "sigma.layout.forceAtlas2": {
-                    edgeWeightInfluence  : 1000,
+                    edgeWeightInfluence: 1000,
                     NodeRadius: 4.0,
                     ScalingRatio: 3.0,
                     adjustSizes: false
@@ -54,14 +54,14 @@ function setup() {
 
     //adds nodes to the graph
     for (let index in data.tags) {
-            graph.nodes.push({
-                id: index,
-                label: data.tags[index],
-                x: random(-2000, 2000),
-                y: random(-1000, 1000),
-                size: random(2, 4),
-                color: '#0099ff'
-            });
+        graph.nodes.push({
+            id: index,
+            label: data.tags[index],
+            x: random(-2000, 2000),
+            y: random(-1000, 1000),
+            size: random(2, 4),
+            color: '#0099ff'
+        });
     }
 
     //add edges to the graph
@@ -72,8 +72,8 @@ function setup() {
             if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                 graph.edges.push({
                     id: i,
-                    weight: data.weights[indexNodes][indexEdges]/4,
-                    size: data.weights[indexNodes][indexEdges]/4,
+                    weight: data.weights[indexNodes][indexEdges] / 4,
+                    size: data.weights[indexNodes][indexEdges] / 4,
                     source: graph.nodes[indexNodes].id,
                     target: graph.nodes[indexEdges].id,
                     color: pickColor(data.weights[indexNodes][indexEdges]),
@@ -95,7 +95,9 @@ function setup() {
     //may the force be with you (start the physics).
     s.startForceAtlas2();
     //stops after 10 sec with the physics
-    window.setTimeout(function() {s.killForceAtlas2();}, 4000);
+    window.setTimeout(function () {
+        s.killForceAtlas2();
+    }, 4000);
     //Initialize the dragNodes plugin:
     dragNodes();
 }
@@ -122,7 +124,7 @@ function animateGraph() {
         filter.apply();
         filter.undo();
         s.refresh();
-        });
+    });
     s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
     });
@@ -143,7 +145,7 @@ function newGraph(startIndex) {
 }
 
 function keyPressed() {
-    if(keyCode === BACKSPACE) {
+    if (keyCode === BACKSPACE) {
         s.killForceAtlas2();
         let filter = new sigma.plugins.filter(s);
         filter.undo();
@@ -157,19 +159,19 @@ function pickColor(weight) {
     return "#" + (127 - weightColor).toString(16) + (127 - weightColor).toString(16) + (127 - weightColor).toString(16);
 }
 
-function dragNodes(){
+function dragNodes() {
     // Initialize the dragNodes plugin:
     let dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-    dragListener.bind('startdrag', function(event) {
+    dragListener.bind('startdrag', function (event) {
         console.log(event);
     });
-    dragListener.bind('drag', function(event) {
+    dragListener.bind('drag', function (event) {
         console.log(event);
     });
-    dragListener.bind('drop', function(event) {
+    dragListener.bind('drop', function (event) {
         console.log(event);
     });
-    dragListener.bind('dragend', function(event) {
+    dragListener.bind('dragend', function (event) {
         console.log(event);
     });
 }
