@@ -2,8 +2,7 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        var data_id =;
-        {{ data_id }}
+        var data_id = {{ data_id }};
     </script>
     <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
