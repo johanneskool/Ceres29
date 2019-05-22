@@ -74,7 +74,7 @@ ForceLink.prototype.setData = function (url) {
         let i = 0;
         for (let indexNodes in data.tags) {
             for (let indexEdges in data.weights) {
-                if ((data.weights[indexNodes][indexEdges]) > 0.6) {
+                if ((data.weights[indexNodes][indexEdges]) > 0) {
                     graph.edges.push({
                         id: i,
                         weight: data.weights[indexNodes][indexEdges] / 2,
@@ -82,7 +82,8 @@ ForceLink.prototype.setData = function (url) {
                         source: graph.nodes[indexNodes].id,
                         target: graph.nodes[indexEdges].id,
                         color: "#FFFFFF",
-                        type: 'arrow'
+                        type: 'arrow',
+                        __proto__: null
                     });
                     i++
                 }
