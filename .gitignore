@@ -631,7 +631,13 @@ docs/*
 !docs/ujson-1.35-cp36-cp36m-win_amd64.whl
 !docs/ujson-1.35-cp37-cp37m-win_amd64.whl
 !docs/pycairo-1.18.0-cp36-cp36m-win_amd64.whl
+!docs/pycairo-1.18.0-cp37-cp37m-win_amd64.whl
+!docs/pycares-3.0.0-cp36-cp36m-win32.whl
+!docs/pycares-3.0.0-cp37-cp37m-win32.whl
 !docs/python_igraph-0.7.1.post6-cp36-cp36m-win_amd64.whl
+!docs/python_igraph-0.7.1.post6-cp37-cp37m-win_amd64.whl
+!docs/python_igraph-0.7.1.post6-cp36-cp36m-win32.whl
+!docs/python_igraph-0.7.1.post6-cp37-cp37m-win32.whl
 
 ##Don't sync app.db file
 app.db

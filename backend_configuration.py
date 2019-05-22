@@ -1,6 +1,5 @@
 __author__ = 'Tristan Trouwen'
 
-
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))  # absolute path to project
@@ -12,7 +11,7 @@ class Config(object):
     PORT = '5555'
     TESTING = False
     APP_TITLE = "Network visualisation tool"
-    APP_AUTHOR = "Ceres 29"
+    APP_AUTHOR = "Ceres29"
     APP_VERSION = "v0.1a"
     SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'app.db')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + SQLALCHEMY_DATABASE_PATH

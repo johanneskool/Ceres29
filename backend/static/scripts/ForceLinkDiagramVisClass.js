@@ -9,16 +9,8 @@ var ForceLink = function () {
      * Flag is true if visualization is done loading
      * @type {boolean}
      */
-    this.loaded = true;
+    this.loaded = false;
 
-    /**
-     * Where the drawRoundNodeLink should start drawing.
-     * @type {number}
-     */
-    this.graph = {
-        nodes: [],
-        edges: []
-    };
     console.log("ok");
 };
 
@@ -31,8 +23,11 @@ ForceLink.prototype.constructor = ForceLink;
 */
 ForceLink.prototype.setData = function (url) {
     let currentVisualization = this;
-    loadJSON(url, loadNodes);
-
+    P$.loadJSON(url, loadNodes);
+    this.graph = {
+        nodes: [],
+        edges: []
+    };
     function loadNodes(data) {
         //setup for sigma with setting for the graph
         s = new sigma(
@@ -81,8 +76,8 @@ ForceLink.prototype.setData = function (url) {
                 if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                     graph.edges.push({
                         id: i,
-                        weight: data.weights[indexNodes][indexEdges]/4,
-                        size: data.weights[indexNodes][indexEdges]/4,
+                        weight: data.weights[indexNodes][indexEdges]/2,
+                        size: data.weights[indexNodes][indexEdges]/2,
                         source: graph.nodes[indexNodes].id,
                         target: graph.nodes[indexEdges].id,
                         color: pickColor(data.weights[indexNodes][indexEdges]),
@@ -92,5 +87,10 @@ ForceLink.prototype.setData = function (url) {
                 }
             }
         }
+
+        // Load the graph in sigma to draw
+        s.graph.read(graph);
+        // Ask sigma to draw it and refresh
+        s.refresh();
     }
 };

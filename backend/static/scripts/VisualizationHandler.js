@@ -28,7 +28,7 @@ var VisualizationHandler = function () {
     this.activeCell;
 
     /**
-     * Url of the current json used by this VH
+     * Url of the current json usd by this VH
      * @type {url}
      */
     this.data = null;
@@ -151,6 +151,7 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].colorCell(vector.x, vector.y);
         }
+        window.history.replaceState({}, data_id, "/vis/" + data_id + "?clustering=" + this.clustering_type + "&x=" + vector.x + "&y=" + vector.y);
     };
 
 
@@ -188,6 +189,11 @@ var VisualizationHandler = function () {
         this.hasLoadedVisualization = boolean;
     };
 
+    this.dragSelected = function (xOff, yOff, v) {
+        let vis = this.visDictionary.get(v);
+        vis.drag(xOff, yOff);
+    };
+
     /**
      * Create a new visualization and add it to the handler
      * @param visualization the visualization to add.
@@ -202,11 +208,17 @@ var VisualizationHandler = function () {
                 break;
             case "roundNodeLink":
                 let newRoundNodeLink = new RoundNodeLink();
-                this._createVis(newRoundNodeLink);
+                this._createVis(newRoundNodeLink, v);
                 this.active.setZoomScale(1);
+                break;
+            case "forceLink":
+                let newForceLink = new ForceLink();
+                this._createVis(newForceLink, v);
+                //this.centerSelected(v);
                 break;
         }
     };
+
 
     /**
      * Create vis Object
@@ -229,6 +241,17 @@ var VisualizationHandler = function () {
         this.active.setZoomScale(1);
     };
 
+    /**
+     *
+     * @param zoomIn {boolean} true if it is zooming in
+     * @param mouseX {number} x cordinate of the mouse
+     * @param mouseY {number} y cordinate of the mouse
+     * @param v {p5.Element} canvas which called the function
+     */
+    this.zoomSelected = function (zoomIn, mouseX, mouseY, v) {
+        let vis = this.visDictionary.get(v);
+        vis.zoom(zoomIn, mouseX, mouseY);
+    };
 
     /**
      * Set the position of the active visualization

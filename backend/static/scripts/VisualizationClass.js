@@ -13,12 +13,38 @@ var Visualization = function () {
      * @type {json|null}
      */
     this.data = null;
+
+    /**
+     * zoomScale for the visualization
+     * @type {number}
+     */
     this.zoomScale;
+
+    /**
+     * Vector position of this visualization
+     * @type {p5.Vector}
+     */
     this.position = P$.createVector();
+
+    /**
+     * visualizationHandler linked to this visualization
+     * @type {visualizationHandler}
+     */
     this.vH;
+
+    /**
+     * Canvas on which the visualization is drawn
+     * @type {p5.Element}
+     */
     this.canvas;
+
+    /**
+     * Factor by which the zoomScale should increase / decrease
+     * @type {number}
+     */
     this.zoomFactor = 1.5;
 };
+
 
 /**
  * canvas getter
@@ -36,6 +62,42 @@ Visualization.prototype.setCanvas = function (p5canvas) {
     this.canvas = p5canvas;
 };
 
+/**
+ * Should return the cell that is at canvas coords
+ * @param xPos
+ * @param yPos
+ * @abstract
+ */
+Visualization.prototype.getCell = function (xPos, yPos) {
+
+};
+
+/**
+ * Function that handles the zooming, overwrite it if you need to change it or want to disable it.
+ * @param zoomIn
+ * @param mouseX
+ * @param mouseY
+ */
+Visualization.prototype.zoom = function (zoomIn, mouseX, mouseY) {
+    if (zoomIn) {
+        //hard to explain in code, get some pen and paper and visualize the transformation.
+        this.moveVisualization(-(mouseX - this.position.x) * (this.zoomFactor - 1),-(mouseY - this.position.y) * (this.zoomFactor - 1));
+        this.setZoomScale(this.zoomScale / this.zoomFactor);
+    } else {
+        //idem.
+        this.moveVisualization((mouseX - this.position.x) * (this.zoomFactor - 1) / this.zoomFactor ,(mouseY - this.position.y) * (this.zoomFactor - 1) / this.zoomFactor);
+        this.setZoomScale(this.zoomScale * this.zoomFactor);
+    }
+};
+
+/**
+ * A seperate function that is called by the canvas to drag the visualization in case you want to overwrite the dragging mechanic.
+ * @param xOff
+ * @param yOff
+ */
+Visualization.prototype.drag = function (xOff, yOff) {
+    this.moveVisualization(xOff, yOff);
+};
 
 /**
  * zoomFactor setter
@@ -92,25 +154,38 @@ Visualization.prototype.getPosition = function () {
     return this.position;
 };
 
+/**
+ * Setter for this zoomScale
+ * @param {number} zoomScale
+ */
 Visualization.prototype.setZoomScale = function (zoomScale) {
     this.zoomScale = zoomScale;
 };
 
+/**
+ * getter for this zoomscale
+ * @return {number}
+ */
 Visualization.prototype.getZoomScale = function () {
     return this.zoomScale;
 };
 
+/**
+ * visualizationHandler setter for this visualization
+ * @param {VisualizationHandler} vH
+ */
 Visualization.prototype.setVH = function (vH) {
     this.vH = vH;
 };
 
+/**
+ * Moves this visualization by the given offset.
+ * @param xOff
+ * @param yOff
+ */
 Visualization.prototype.moveVisualization = function (xOff, yOff) {
     let offset = P$.createVector(xOff, yOff);
     this.position.add(offset);
-};
-
-Visualization.prototype.getDataAtPosition = function (x,y) {
-    return this.data[Object.keys(this.data)[x]][y];
 };
 
 /**
