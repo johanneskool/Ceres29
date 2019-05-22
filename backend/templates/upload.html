@@ -65,6 +65,16 @@
         </div>
         <div class="row top-spacing-sm">
             <div class="col-md-12">
+                <h2 id="h-highlighted">Recommended datasets:</h2>
+                <p>Don't know where to start? Check out <a href='{{ url_for('vis', data_id=2) }}'>this file</a>,
+                  which contains all 38 full professors of the Department of Mathematics and Computer Science from
+                  Eindhoven University of Technology. It is an undirected graph wherein edges are drawn if and only if
+                  the professors are working on the same research project. One would expect clusters to appear in the dataset.
+                </p>
+            </div>
+        </div>
+        <div class="row top-spacing-sm">
+            <div class="col-md-12">
                 <h2 id="h-filespecs">File specifications:</h2>
                 <p>The tool expects to receive a comma separated file, a .csv file with semicolons as delimiters (i.e.
                     the way Microsoft Excel creates them). These may or may not contain an extra semicolon at the end of
