@@ -33,12 +33,8 @@ class Network:
     """
 
     @abstractmethod
-    def __init__(self, name, directory_name):
+    def __init__(self, name):
         self.name = name
-        self.directory_name = directory_name
-
-        # create folder to save all files in
-        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
 
     @staticmethod
     def __parse__(filename):
@@ -171,7 +167,7 @@ class Network:
 
         subgraph = self.communities.subgraph(index)
 
-        return SubNetwork(self.name + "." + index, subgraph, os.path.join(self.directory_name, str(index)))
+        return SubNetwork(self.name + "." + index, subgraph)
 
 
 class TopNetwork(Network):
@@ -185,10 +181,15 @@ class TopNetwork(Network):
     """
 
     def __init__(self, name, filename, directory_name):
-        super().__init__(name, directory_name)
+        super().__init__(name)
 
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         self.graph = self.__parse__(filepath)
+
+        self.directory_name = directory_name
+
+        # create folder to save all files in
+        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
 
         # processing and saving files
 
@@ -220,7 +221,7 @@ class TopNetwork(Network):
         if self.graph.vcount() > cluster_threshold:
             self.find_communities()
             cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
-            cluster_network = SubNetwork(name, cluster_graph, os.path.join(self.directory_name, "cluster_graph"))
+            cluster_network = SubNetwork(name, cluster_graph)
             cluster_network.save_as_json(
                 os.path.join(app.config['JSON_FOLDER'], os.path.join(cluster_network.directory_name, filenames['cluster']))
             )
@@ -228,8 +229,8 @@ class TopNetwork(Network):
 
 class SubNetwork(Network):
 
-    def __init__(self, name, graph, directory_name):
-        super().__init__(name, directory_name)
+    def __init__(self, name, graph):
+        super().__init__(name)
         self.graph = graph
 
         if self.graph.vcount() > cluster_threshold:
