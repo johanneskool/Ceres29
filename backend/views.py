@@ -87,22 +87,23 @@ def vis(data_id=None):
         data_id = request.args.get('data')
     data_name = File.query.get(data_id).name
     if request.method == 'GET':
-        return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name, data_id=data_id)
+        return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name,
+                               data_id=data_id)
 
 
 @app.route('/data/<int:id>', methods=['GET'])
 def data(id):
-    type = request.args.get('type')
+    clustertype = request.args.get('type')
     file = File.query.get(id)
-    if type == 'fiedler':
+    if clustertype == 'fiedler':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
                                    "fiedler.json")  # clean up later but good for now
-    elif type == 'pagerank':
+    elif clustertype == 'pagerank':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
-    elif type == 'cluster':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
-    elif type == 'test':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "test.json")
+    elif clustertype == 'cluster':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash, "cluster_graph"), "cluster.json")
+    elif clustertype == 'lexicographic':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "lexicographic.json")
     else:
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
                                    "default.json")  # clean up later but good for now

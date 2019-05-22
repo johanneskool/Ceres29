@@ -1,4 +1,3 @@
-
 /***
  * Inheritance of all other visualizations.
  * @abstract
@@ -81,11 +80,11 @@ Visualization.prototype.getCell = function (xPos, yPos) {
 Visualization.prototype.zoom = function (zoomIn, mouseX, mouseY) {
     if (zoomIn) {
         //hard to explain in code, get some pen and paper and visualize the transformation.
-        this.moveVisualization(-(mouseX - this.position.x) * (this.zoomFactor - 1),-(mouseY - this.position.y) * (this.zoomFactor - 1));
+        this.moveVisualization(-(mouseX - this.position.x) * (this.zoomFactor - 1), -(mouseY - this.position.y) * (this.zoomFactor - 1));
         this.setZoomScale(this.zoomScale / this.zoomFactor);
     } else {
         //idem.
-        this.moveVisualization((mouseX - this.position.x) * (this.zoomFactor - 1) / this.zoomFactor ,(mouseY - this.position.y) * (this.zoomFactor - 1) / this.zoomFactor);
+        this.moveVisualization((mouseX - this.position.x) * (this.zoomFactor - 1) / this.zoomFactor, (mouseY - this.position.y) * (this.zoomFactor - 1) / this.zoomFactor);
         this.setZoomScale(this.zoomScale * this.zoomFactor);
     }
 };
@@ -159,7 +158,7 @@ Visualization.prototype.getPosition = function () {
  * @param {number} zoomScale
  */
 Visualization.prototype.setZoomScale = function (zoomScale) {
-    this.zoomScale = zoomScale;
+    this.zoomScale = Math.max(0.01, Math.min(5, zoomScale));
 };
 
 /**

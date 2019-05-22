@@ -65,7 +65,7 @@ MatrixVisualization.prototype.load = function () {
     this.overlayGraphics.noStroke();
 
     //unused since the later updates.
-    this.overlayRatio =  1;
+    this.overlayRatio = 1;
 };
 
 /**
@@ -115,36 +115,36 @@ MatrixVisualization.prototype.generateNodes = function () {
  * Draws a matrix to the graphics based of the input nodes
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-    let min; let max; let useLog = false; //because we need them outside the if-statement
-    if (this.maxWeight <= 1) { //actually we don't need logarithmic scaling here
-        min = Math.min(0, this.minWeight);
-        max = this.maxWeight;
-    } else {
-        min = Math.log(this.minWeight/1.2); //excend the range a little since we are not sure whether there is a 0
-        max = Math.log(this.maxWeight);
-        useLog = true;
-    }
+    let min;
+    let max;
+    let useLog = false; //because we need them outside the if-statement
+
+    min = Math.log(this.minWeight / 1.5); //excend the range a little since we are not sure whether there is a 0
+    max = Math.log(this.maxWeight);
+
+    this.matrix.fill(0, 0, 0);
+    this.matrix.rect(0, 0, this.maxSize, this.maxSize);
+
+    P$.colorMode(P$.HSB, 100);
+    let from = P$.color(65, 100, 10);
+    let to = P$.color(40, 100, 100);
+    
     //loop through all the edges and create a rectangle.
     for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
         for (let row = 0; row < this.nodeCount; row++) {
+            if (this.data.weights[col][row] == 0) continue;
             let weight; //for use in the for-loop
-            if (useLog) weight = Math.log(this.data.weights[col][row]);
-            else weight = this.data.weights[col][row];
+            weight = Math.log(this.data.weights[col][row]);
 
             var ratio = P$.map(weight, min, max, 0, 1);
-            P$.colorMode(P$.HSB, 100);
-            let from = P$.color(65, 100, 10);
-            let to = P$.color(40, 100, 100);
+
             //use the weight to color the cell.
             let fillColor = P$.lerpColor(from, to, ratio);
 
             this.matrix.fill(fillColor);
-            this.matrix.rect(0, 0, this.nodeSize, this.nodeSize);
-            this.matrix.translate(this.nodeSize, 0);
+            this.matrix.rect(this.nodeSize * col, this.nodeSize * row, this.nodeSize, this.nodeSize);
         }
-        this.matrix.pop();
-        this.matrix.translate(0, this.nodeSize);
     }
 
     this.loaded = true;
@@ -175,10 +175,10 @@ MatrixVisualization.prototype.draw = function () {
  * @param x the x cords of the matrix
  * @param y the y cords of the matrix
  */
-MatrixVisualization.prototype.colorCell = function (x, y) {
+MatrixVisualization.prototype.colorActiveCell = function (x, y) {
     this.overlayGraphics.clear();
-    this.overlayGraphics.fill(50,75,75);
-    this.overlayGraphics.rect(x*this.overlayRatio*this.nodeSize, y*this.overlayRatio*this.nodeSize, this.overlayRatio*this.nodeSize, this.overlayRatio*this.nodeSize);
+    this.overlayGraphics.fill(50, 75, 75);
+    this.overlayGraphics.rect(x * this.overlayRatio * this.nodeSize, y * this.overlayRatio * this.nodeSize, this.overlayRatio * this.nodeSize, this.overlayRatio * this.nodeSize);
 
 };
 
@@ -191,15 +191,15 @@ MatrixVisualization.prototype.colorCell = function (x, y) {
  */
 MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed
-    var topLeft = P$.createVector(this.position.x - (this.drawWidth / this.zoomScale)/2, this.position.y - (this.drawWidth / this.zoomScale)/2);
+    var topLeft = P$.createVector(this.position.x - (this.drawWidth / this.zoomScale) / 2, this.position.y - (this.drawWidth / this.zoomScale) / 2);
     var mouse = P$.createVector(xCord, yCord);
     var cell = p5.Vector.sub(mouse, topLeft);
-    var nodeSize = (this.drawWidth / this.zoomScale)/this.nodeCount;
+    var nodeSize = (this.drawWidth / this.zoomScale) / this.nodeCount;
     var x = P$.floor(cell.x / nodeSize);
     var y = P$.floor(cell.y / nodeSize);
     var cellVector = P$.createVector(x, y);
 
-    if (x < 0 || y < 0 || x > this.nodeCount ||  y > this.nodeCount) {
+    if (x < 0 || y < 0 || x > this.nodeCount || y > this.nodeCount) {
         throw new RangeError("clicked outside of visualization");
     }
 
@@ -224,12 +224,12 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     }
 
     // mark this cell
-    this.colorCell(x, y);
+    this.colorActiveCell(x, y);
 
     let from = this.data.tags[x];
-    from = from.replace(/_/g,' ');
+    from = from.replace(/_/g, ' ');
     let to = this.data.tags[y];
-    to = to.replace(/_/g,' ');
+    to = to.replace(/_/g, ' ');
     let weight = this.data.weights[y][x];  //we store it as weights[col][row], so get correct weight
     // show debugging info in console
     var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
