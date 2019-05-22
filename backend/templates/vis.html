@@ -33,7 +33,8 @@
                 <div class="col-md-12" style='height: calc(100% - 100px);'>
                     <div class="wrapper">
                         <div class="sidebar">
-                            <p><b>Filename: </b>{{ data }}</p>
+                            <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
+                            <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
                             <hr>
                             <div id="matrix-visualization-edge-info" style="display: none">
                                 <h6>Edge information</h6>
