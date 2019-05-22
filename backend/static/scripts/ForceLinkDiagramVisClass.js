@@ -40,20 +40,13 @@ ForceLink.prototype.setData = function (url) {
                 },
                 settings: {
                     minEdgeSize: 0.01,
-                    maxEdgeSize: 0.2,
+                    maxEdgeSize: 1,
                     minNodeSize: 2,
                     maxNodeSize: 5,
-                    minArrowSize: 4,
-                    animationsTime: 1000,
+                    animationTime: 1000,
+                    minArrowSize: 12,
                     enableHovering: true,
                     doubleClickEnabled: false,
-                    edgeHoverExtremities: true,
-                    "sigma.layout.forceAtlas2": {
-                        edgeWeightInfluence: 0.01,
-                        NodeRadius: 4.0,
-                        ScalingRatio: 3.0,
-                        adjustSizes: false
-                    }
                 }
             }
         );
@@ -77,8 +70,8 @@ ForceLink.prototype.setData = function (url) {
                 if ((data.weights[indexNodes][indexEdges]) > 0) {
                     graph.edges.push({
                         id: i,
-                        weight: data.weights[indexNodes][indexEdges] / 2,
-                        size: data.weights[indexNodes][indexEdges] / 2,
+                        weight: data.weights[indexNodes][indexEdges],
+                        size: data.weights[indexNodes][indexEdges],
                         source: graph.nodes[indexNodes].id,
                         target: graph.nodes[indexEdges].id,
                         color: "#FFFFFF",
@@ -94,11 +87,24 @@ ForceLink.prototype.setData = function (url) {
         s.graph.read(graph);
         // Ask sigma to draw it and refresh
         s.refresh();
-        //may the force be with you (start the physics).
-        s.startForceAtlas2();
-        //stops after 10 sec with the physics
+
+        //configuring Force Atlas
+        const forceAtlas2Config = {
+            strongGravityMode: true,
+            gravity: 0.1,
+            worker: true,
+            scalingRatio: 1,
+            slowDown: 4,
+            barnesHutOptimize: true,
+            barnesHutTheta: 0.1,
+            nodeSize: 'original'
+        };
+        s.configForceAtlas2(forceAtlas2Config);
+
+        //Starting Force Atlas and stops after 8 seconds
+        s.startForceAtlas2(forceAtlas2Config);
         window.setTimeout(function () {
             s.killForceAtlas2();
-        }, 4000);
-    }
-};
+        }, 8000);
+    };
+}
