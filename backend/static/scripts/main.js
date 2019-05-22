@@ -52,7 +52,7 @@ var visualizationSketch = function (v) {
         v.visualizationHandler = GVH;
 
         //create a new matrix object
-        v.visualizationHandler.newVisualization('forceLink', v);
+        v.visualizationHandler.newVisualization('treeNodeLink', v);
 
         // fetch data
         v.current_URL = new URL(window.location.href);

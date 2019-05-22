@@ -216,6 +216,14 @@ var VisualizationHandler = function () {
                 this._createVis(newForceLink, v);
                 //this.centerSelected(v);
                 break;
+            case "treeNodeLink":
+                let newTreeNodeLink = new TreeNodeLink();
+                this._createVis(newTreeNodeLink, v);
+                break;
+            case "treeNodeLink2":
+                let newTreeNodeLink2 = new TreeNodeLink2();
+                this._createVis(newTreeNodeLink2, v);
+                break;
         }
     };
 
