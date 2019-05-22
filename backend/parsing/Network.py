@@ -224,7 +224,7 @@ class TopNetwork(Network):
             cluster_network = SubNetwork(name, cluster_graph)
             cluster_network.save_as_json(
                 os.path.join(app.config['JSON_FOLDER'],
-                             os.path.join(cluster_network.directory_name, filenames['cluster']))
+                             os.path.join(self.directory_name, filenames['cluster']))
             )
 
 
