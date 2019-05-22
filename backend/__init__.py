@@ -1,6 +1,6 @@
 __author__ = 'Tristan Trouwen, Rick Luiken, Rink Pieters'
 
-import os
+import os, shutil
 from os import environ
 
 from flask import Flask
@@ -27,6 +27,14 @@ if not os.path.exists(app.config['JSON_FOLDER']):
 
 # initialize db
 if not os.path.isfile(app.config['SQLALCHEMY_DATABASE_PATH']):
+    #if there was an update clean all existing shit except for a possible production db. Just to be safe
+    for file in os.listdir(os.path.dirname(app.config['SQLALCHEMY_DATABASE_PATH'])):
+        if file.endswith(".db") and file != "prod.db":
+            os.remove(os.path.join(os.path.dirname(app.config['SQLALCHEMY_DATABASE_PATH']), file))
+
+    for dirs in os.walk(app.config['JSON_FOLDER']):
+        if dirs[0] != app.config['JSON_FOLDER']: shutil.rmtree(dirs[0])
+
     db = SQLAlchemy(app)
     from backend.orm import models
 

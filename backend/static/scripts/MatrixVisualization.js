@@ -80,7 +80,6 @@ MatrixVisualization.prototype.updateNodeSize = function () {
  * @param {url} url the json url of the data
  */
 MatrixVisualization.prototype.setData = function (url) {
-    document.getElementById('matrix-visualization-fileinfo-type').innerHTML = (new URL(url, window.location.href)).searchParams.get("type");
     P$.print(url);
     P$.loadJSON(url, loadNodes);
 
@@ -96,6 +95,7 @@ MatrixVisualization.prototype.setData = function (url) {
         currentMatrix.load();
 
         document.getElementById('matrix-visualization-fileinfo-name').innerHTML = currentMatrix.data.name;
+        document.getElementById('matrix-visualization-fileinfo-type').innerHTML = currentMatrix.data.type;
     }
 
 };

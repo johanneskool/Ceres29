@@ -639,8 +639,8 @@ docs/*
 !docs/python_igraph-0.7.1.post6-cp36-cp36m-win32.whl
 !docs/python_igraph-0.7.1.post6-cp37-cp37m-win32.whl
 
-##Don't sync app.db file
-app.db
+##Don't sync .db files
+*.db
 
 ##don't copy virtual environment
 venv/

@@ -35,6 +35,7 @@ class Network:
     @abstractmethod
     def __init__(self, name):
         self.name = name
+        self.type = "Ordered as uploaded"
 
     @staticmethod
     def __parse__(filename):
@@ -74,6 +75,7 @@ class Network:
 
         to_be_converted = {}
         to_be_converted["name"] = self.name
+        to_be_converted["type"] = self.type
         to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
                                                                                          range(self.graph.vcount())]
         to_be_converted["minWeight"] = min(self.graph.es["weight"])
@@ -200,18 +202,21 @@ class TopNetwork(Network):
 
         # convert to alphabetically sorted json
         self.reorder_lexicographic()
+        self.type = 'Lexicographically reordered'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['lexicographic'])
         )
 
         # convert to fiedler
         self.reorder_with_fiedler()
+        self.type = 'Reordered using Fiedler-vector'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
         )
 
         # convert to pagerank
         self.reorder_with_pagerank()
+        self.type = 'Reordered using pagerank-vector'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
         )
