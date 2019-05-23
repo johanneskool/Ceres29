@@ -104,6 +104,8 @@ def data(id):
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
     elif clustertype == 'lexicographic':
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "lexicographic.json")
+    elif clustertype == 'cluster_graph':
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster_graph.json")
     else:
         return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
                                    "default.json")  # clean up later but good for now
