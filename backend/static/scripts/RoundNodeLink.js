@@ -24,7 +24,8 @@ var RoundNodeLink = function () {
      * All variables that describe the circle around which the nodes are drawn
      */
     this.circleRadius = Math.min(P$.windowWidth / 3, P$.windowHeight / 3);
-    this.circleLocation = P$.createVector(P$.windowWidth / 2, P$.windowHeight / 2);
+    this.setPosition(P$.createVector(P$.windowWidth / 2, P$.windowHeight / 2));
+    this.circleLocation = this.getPosition();
 
     this.currentActive = null; // node which is clicked
     this.limit = 100; // at most 100 nodes can be put on the circle
@@ -129,8 +130,18 @@ RoundNodeLink.prototype.getCell = function (xCord, yCord) {
  * @throws RangeError if you click outside of the matrix.
  */
 RoundNodeLink.prototype.click = function (xCord, yCord) {
-    //nothing implemented yet;
+    this.nodes.forEach( (node) => {
+        if (P$.dist(node.locationX(), node.locationY(), xCord, yCord) < node.radius) {
+            this.currentActive.active = false;
+            this.currentActive = node;
+            this.currentActive.active = true;
+        }
+    });
 };
+
+
+RoundNodeLink.prototype.zoom = function (a,b,c) {}; // no zoom (maybe later)
+
 
 
 /**
@@ -184,19 +195,27 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
         this.canvas.text(this.name, 0, 0);
         this.canvas.pop();
         // only draw edges of ac
-        this.drawEdges();
+        if (this.active) {
+            this.drawEdges(solid=true);
+        } else {
+            this.drawEdges()
+        }
     };
 
-    this.drawEdges = function () {
+    this.drawEdges = function (solid=false) {
         // draw edges
         for (let nodeIndex = 0; nodeIndex < this.outGoingEdges.length; nodeIndex++) {
             try {
                 let toNode = this.outGoingEdges[nodeIndex].toNode;
                 let edgeWeight = this.outGoingEdges[nodeIndex].weight;
                 if (edgeWeight !== 0) {
-                    this.canvas.noFill();
                     this.canvas.push();
-                    this.canvas.stroke(0, 0, 0);
+                    this.canvas.noFill();
+                    if (solid) {
+                        this.canvas.stroke('#000000');
+                    } else {
+                        this.canvas.stroke('#CCCCCC')
+                    }
                     this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
                         toNode.locationX(), toNode.locationY(), toNode.locationX(), toNode.locationY());
                     this.canvas.pop();
