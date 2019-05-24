@@ -81,7 +81,7 @@ MatrixVisualization.prototype.updateNodeSize = function () {
  */
 MatrixVisualization.prototype.setData = function (url) {
     P$.print(url);
-    P$.loadJSON(url, loadNodes);
+    P$.loadJSON(url, loadNodes, loadFailed);
 
     //the json callback forgets what matrix called it.
     var currentMatrix = this;
@@ -96,6 +96,10 @@ MatrixVisualization.prototype.setData = function (url) {
 
         document.getElementById('matrix-visualization-fileinfo-name').innerHTML = currentMatrix.data.name;
         document.getElementById('matrix-visualization-fileinfo-type').innerHTML = currentMatrix.data.type;
+    }
+
+    function loadFailed(response) {
+        errorMessage("There was an error getting the data. Perhaps we requested a non-existing data-type. If this issue persists, try uploading the file again.");
     }
 
 };

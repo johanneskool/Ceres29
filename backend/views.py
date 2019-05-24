@@ -3,69 +3,26 @@ __author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 import os
 
 from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
-from werkzeug.utils import secure_filename
 
-from backend import app, db
+from backend import app
 from backend.orm.models import File
 
+from backend.functions_file import allowed_file, get_available_files, handle_file_upload
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-
-
-def get_available_files():
-    return File.query.order_by(File.timestamp.desc()).limit(
-        20).all()  # newest file on top; max 20 files. Possibly add some default files always in a separate category
-
-
-def custom_flash(message, type='danger'):
-    if type not in ['info', 'success', 'warning', 'danger']: type = 'danger'
-    return flash('<div class="alert alert-' + type + '">' + message + '</div>')
-
-
-def handle_file_upload(request_upload):
-    # check if the post request has the file part
-    if 'file' not in request_upload.files:  # if we encounter this the input for the file isn't shown or disabled; that should not happen
-        custom_flash(
-            'The webserver expected a file upload, but did not receive a file or files. Please select a file from your computer and click the upload button')
-        return redirect(request_upload.url)
-    file = request_upload.files['file']
-    # if user does not select file, browser also
-    # submit a empty part without filename
-    if file.filename == '':
-        custom_flash('Please select a file from your computer and click the upload button')
-        return redirect(request_upload.url)
-    if not allowed_file(file.filename):
-        custom_flash('The file you uploaded is a .' + file.filename.rsplit('.', 1)[
-            1].lower() + ' file. Please select one of the following: .' + ', .'.join(app.config['ALLOWED_EXTENSIONS']))
-        return redirect(request_upload.url)
-    if file:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        # process file into different forms and track this in db
-        new_file = File(filename, name=filename.split('.csv')[0].replace('_', ' '))
-        db.session.add(new_file)
-        db.session.commit()
-
-        custom_flash(new_file.filename + " successfully uploaded as " + new_file.name + ", showing it below", 'success')
-        return redirect(url_for('vis', data_id=str(new_file.id)))
-
-
+#Index page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     data_id = request.args.get('data')
     if request.method == 'GET':
-        if app.config['DEVELOPMENT'] == True: custom_flash(
-            'Flask is currently running development mode. This is an example to show how we handle messages in our layout. Possible types for custom_flash are info, warning, danger and success',
+        if app.config['DEVELOPMENT'] == True: flash(
+            'Flask is currently running development mode. This is an example to show how we handle messages in our layout. Possible types for flash are info, warning, danger, success, and Flask\'s default category message is also allowed. HTML is no longer allowed in the messages for safety reasons',
             'info')
         return render_template("index.html", data=data_id, title="Home")
 
     if request.method == 'POST':
         return handle_file_upload(request)
 
-
+#Choose file page
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     data_id = request.args.get('data')
@@ -76,7 +33,7 @@ def upload():
     if request.method == 'POST':
         return handle_file_upload(request)
 
-
+#Visualisation page
 @app.route('/vis', methods=['GET'])
 @app.route('/vis/<int:data_id>', methods=['GET'])
 def vis(data_id=None):
@@ -90,27 +47,17 @@ def vis(data_id=None):
         return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name,
                                data_id=data_id)
 
-
+#Get data endpoint
 @app.route('/data/<int:id>', methods=['GET'])
 def data(id):
     clustertype = request.args.get('type')
     file = File.query.get(id)
-    if clustertype == 'fiedler':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
-                                   "fiedler.json")  # clean up later but good for now
-    elif clustertype == 'pagerank':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "pagerank.json")
-    elif clustertype == 'cluster':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster.json")
-    elif clustertype == 'lexicographic':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "lexicographic.json")
-    elif clustertype == 'cluster_graph':
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), "cluster_graph.json")
-    else:
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash),
-                                   "default.json")  # clean up later but good for now
+    #If unknown type do a 400 Bad Request; type does not exist
+    if clustertype not in ['fiedler', 'pagerank', 'cluster', 'lexicographic', 'cluster_graph', 'default']: abort(400)
 
+    return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), clustertype + ".json")
 
+#Block some requests to static
 @app.before_request
 def a_little_bit_of_security_is_allowed():
     if '/static/uploads' in request.path \
