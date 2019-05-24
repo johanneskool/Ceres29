@@ -52,13 +52,14 @@ var visualizationSketch = function (v) {
         v.visualizationHandler = GVH;
 
         //create a new matrix object
-        v.visualizationHandler.newVisualization('matrix', v);
+        v.current_URL = new URL(window.location.href);
+        v.visualizationHandler.mainvis_type = ((v.current_URL.searchParams.get("vistype") == null) ? 'matrix' : v.current_URL.searchParams.get("vistype"));
+        v.visualizationHandler.newVisualization(v.visualizationHandler.mainvis_type, v);
 
         // fetch data
-        v.current_URL = new URL(window.location.href);
         v.data_id = data_id;
         v.visualizationHandler.clustering_type = ((v.current_URL.searchParams.get("clustering") == null) ? 'cluster' : v.current_URL.searchParams.get("clustering"));
-        //window.history.replaceState({}, data_id, "/vis/" + data_id + "?clustering=" + v.visualizationHandler.clustering_type); //change URL but don't fill history
+        //window.history.replaceState({}, data_id, "/vis/" + data_id + "?vistype=" + v.visualizationHandler.mainvis_type + "&clustering=" + v.visualizationHandler.clustering_type); //change URL but don't fill history
         if (v.current_URL.searchParams.get("x") != null && v.current_URL.searchParams.get("y") != null) v.visualizationHandler.activeCell = P$.createVector(v.current_URL.searchParams.get("x"), v.current_URL.searchParams.get("y"));
 
         //update the VH data
