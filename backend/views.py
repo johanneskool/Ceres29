@@ -38,7 +38,7 @@ def upload():
 @app.route('/vis/<int:data_id>', methods=['GET'])
 def vis(data_id=None):
     if (data_id is None) and (request.args.get('data') is None):
-        custom_flash('Please select a file before going to the visualisation')
+        flash('Please select a file before going to the visualisation')
         return redirect(url_for('upload'))
     elif data_id is None:
         data_id = request.args.get('data')

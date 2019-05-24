@@ -56,6 +56,25 @@
                                     &nbsp;{{ file.name + ' (' + file.timestamp.strftime('%H:%M:%S') + ')' }}</option>
                             {% endfor %}
                         </select>
+                    </div>
+                    <div class="input-group">
+                        <select class="custom-select" id="vistype" name="vistype">
+                            <option value="" disabled>Choose a visualisation</option>
+                            <option selected value="matrix">&nbsp;Adjacency Matrix</option>
+                            <option value="forceLink">&nbsp;Force-directed node-link</option>
+                            <option value="roundNodeLink">&nbsp;Round node-link</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <select class="custom-select" id="clustering" name="clustering">
+                            <option value="" disabled>Choose a ordering</option>
+                            <option value="fiedler">Fiedler</option>
+                            <option value="pagerank">Pagerank</option>
+                            <option selected value="cluster">Clustered</option>
+                            <option value="lexicographic">Lexicographic</option>
+                            <option value="cluster_graph">Cluster-graph</option>
+                            <option value="default">As uploaded</option>
+                        </select>
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">Load</button>
                         </div>
