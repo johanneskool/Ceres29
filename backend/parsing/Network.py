@@ -16,10 +16,8 @@ filenames = {
     'lexicographic': 'lexicographic.json',
     'pagerank': 'pagerank.json',
     'cluster': 'cluster.json',
+    'cluster_graph': 'cluster_graph.json'
 }
-
-# amount of nodes we're showing the cluster graph instead of the actual graph
-cluster_threshold = 200
 
 
 class Network:
@@ -35,6 +33,7 @@ class Network:
     @abstractmethod
     def __init__(self, name):
         self.name = name
+        self.type = "Ordered as uploaded"
 
     @staticmethod
     def __parse__(filename):
@@ -74,10 +73,11 @@ class Network:
 
         to_be_converted = {}
         to_be_converted["name"] = self.name
+        to_be_converted["type"] = self.type
         to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
                                                                                          range(self.graph.vcount())]
-        to_be_converted["minWeight"] = min(self.graph.es["weight"])
-        to_be_converted["maxWeight"] = max(self.graph.es["weight"])
+        to_be_converted["minWeight"] = min(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
+        to_be_converted["maxWeight"] = max(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
         to_be_converted["weights"] = []
         matrix = self.graph.get_adjacency(attribute="weight")
         for row in range(self.graph.vcount()):
@@ -105,8 +105,9 @@ class Network:
         @:returns nothing
         """
 
-        order = np.argsort(self.graph.vs["label"])
-        self.graph = self.graph.permute_vertices(order.tolist())
+        vertices = np.argsort(self.graph.vs["label"]).tolist()
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
+        self.graph = self.graph.permute_vertices(order)
 
     def reorder_with_fiedler(self):
         """
@@ -122,14 +123,22 @@ class Network:
         # to be calculated
 
         # calculate the k eigenvalues/vectors with the lowest magnitude
-        eigvals, eigvec = eigs(L, k=2, which="SM")
+        eigvals, eigvec = eigs(L, k=np.linalg.matrix_rank(L), sigma=0.001, which="LM")
 
-        fiedler = eigvec[:, 1]
+        eigorder = np.argsort(eigvals)
+        eigvals = eigvals[eigorder]
+        eigvec = eigvec[:, eigorder]
+
+        for i, val in enumerate(eigvals):
+            if not np.isclose(val, 0):
+                fiedler = eigvec[:, i]
+                break
+
         # find the reordering based on the Fiedler vector
-        order = np.argsort(fiedler)
-
+        vertices = np.argsort(fiedler).tolist()
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
         # sort matrix on both the rows and columns
-        self.graph = self.graph.permute_vertices(order.tolist())
+        self.graph = self.graph.permute_vertices(order)
 
     def reorder_with_pagerank(self):
         """
@@ -139,8 +148,14 @@ class Network:
         """
 
         scores = self.graph.pagerank(weights=self.graph.es["weight"])
-        order = np.argsort(scores)
-        self.graph = self.graph.permute_vertices(order.tolist())
+        vertices = np.argsort(scores).tolist()
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
+        self.graph = self.graph.permute_vertices(order)
+
+    def reorder_with_clustering(self):
+        vertices = [vtx for cluster in self.communities for vtx in cluster]
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
+        self.graph = self.graph.permute_vertices(order)
 
     def find_communities(self):
         """"
@@ -200,31 +215,42 @@ class TopNetwork(Network):
 
         # convert to alphabetically sorted json
         self.reorder_lexicographic()
+        self.type = 'Lexicographically reordered'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['lexicographic'])
         )
 
         # convert to fiedler
         self.reorder_with_fiedler()
+        self.type = 'Reordered using Fiedler-vector'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
         )
 
         # convert to pagerank
         self.reorder_with_pagerank()
+        self.type = 'Reordered using pagerank-vector'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
         )
 
-        # find communities if the graph has more vertices than the threshold
-        self.communities = False
-        if self.graph.vcount() > cluster_threshold:
-            self.find_communities()
+        # convert to sorted by cluster
+
+        # find communities (based on the indices made by last ordering)
+        self.find_communities()
+
+        self.reorder_with_clustering()
+        self.type = 'Reordered using clustering of vertices'
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
+        )
+
+        # make cluster graph if there are multiple clusters
+        if len(self.communities) > 1:
             cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
             cluster_network = SubNetwork(name, cluster_graph)
             cluster_network.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'],
-                             os.path.join(self.directory_name, filenames['cluster']))
+                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster_graph'])
             )
 
 
@@ -234,5 +260,4 @@ class SubNetwork(Network):
         super().__init__(name)
         self.graph = graph
 
-        if self.graph.vcount() > cluster_threshold:
-            self.find_communities()
+        self.find_communities()

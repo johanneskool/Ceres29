@@ -26,11 +26,14 @@ class Config(object):
 
 class ProductionConfig(Config):
     PORT = 6798
-    # DATABASE_URI = os.path.join(basedir, 'file.sql')
+    SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'prod.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + SQLALCHEMY_DATABASE_PATH
 
 
 class DevelopmentConfig(Config):
-    APP_VERSION = "v0.2a (development)"
+    APP_VERSION = "v0.2b (development)"
     DEVELOPMENT = True
     DEBUG = True
     TEMPLATES_AUTO_RELOAD = True
+    SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'dev-v0.2b.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + SQLALCHEMY_DATABASE_PATH

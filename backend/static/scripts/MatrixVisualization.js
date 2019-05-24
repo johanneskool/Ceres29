@@ -93,6 +93,9 @@ MatrixVisualization.prototype.setData = function (url) {
         currentMatrix.maxWeight = currentMatrix.data.maxWeight;
         currentMatrix.updateNodeSize();
         currentMatrix.load();
+
+        document.getElementById('matrix-visualization-fileinfo-name').innerHTML = currentMatrix.data.name;
+        document.getElementById('matrix-visualization-fileinfo-type').innerHTML = currentMatrix.data.type;
     }
 
 };
@@ -128,7 +131,7 @@ MatrixVisualization.prototype.drawMatrix = function () {
     P$.colorMode(P$.HSB, 100);
     let from = P$.color(65, 100, 10);
     let to = P$.color(40, 100, 100);
-    
+
     //loop through all the edges and create a rectangle.
     for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
