@@ -223,13 +223,51 @@ window.vis0 = new createVisCanvas('canvas');
 
 /**
  * Global namespace for p5 functions.
- * @type {p5}
+ * @type {p5.Element}
  */
 window.P$ = new p5(function (p) {
+    /**
+     * Create and hide the global namespace / canvas
+     */
     p.setup = function () {
         p.canvas = p.createCanvas(0, 0);
         p.canvas.style('display', 'none');
         p.canvas.id("P$");
-        i
     };
+
+    p.colorMode(p.HSB, 100);
+    p.PRIMARY_COLOR = p.color(65, 100, 10);
+    p.SECONDARY_COLOR = p.color(40, 100, 100);
+
+    /**
+     * Global function that makes a color corresponding to the weight.
+     * @param weight
+     * @param minWeight
+     * @param maxWeight
+     * @return {p5.Color}
+     */
+    p.getWeightedColor = function (weight, minWeight, maxWeight) {
+        var ratio = P$.map(weight, minWeight, maxWeight, 0, 1);
+
+        //use the weight to color the cell.
+        let weightedColor = P$.lerpColor(p.PRIMARY_COLOR, p.SECONDARY_COLOR, ratio);
+        return weightedColor;
+    }
+
+    /**
+     * Changes the primary color used, note that this does not update the visualizations.
+     * @param primaryColor
+     */
+    p.setPrimaryColor = function (primaryColor) {
+        p.PRIMARY_COLOR = primaryColor;
+    }
+
+    /**
+     * Changes the primary color used, note that this does not update the visualizations.
+     * @param primaryColor
+     */
+    p.setSecondaryColor = function (secondaryColor) {
+        p.SECONDARY_COLOR = secondaryColor;
+    }
+
 }, "global sketch");

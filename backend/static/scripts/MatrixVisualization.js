@@ -135,8 +135,6 @@ MatrixVisualization.prototype.drawMatrix = function () {
     this.matrix.rect(0, 0, this.maxSize, this.maxSize);
 
     P$.colorMode(P$.HSB, 100);
-    let from = P$.color(65, 100, 10);
-    let to = P$.color(40, 100, 100);
 
     //loop through all the edges and create a rectangle.
     for (let col = this.startPositon; col < this.nodeCount; col++) {
@@ -146,10 +144,8 @@ MatrixVisualization.prototype.drawMatrix = function () {
             let weight; //for use in the for-loop
             weight = Math.log(this.data.weights[col][row]);
 
-            var ratio = P$.map(weight, min, max, 0, 1);
-
             //use the weight to color the cell.
-            let fillColor = P$.lerpColor(from, to, ratio);
+            let fillColor = P$.getWeightedColor(weight, min, max);
 
             this.matrix.fill(fillColor);
             this.matrix.rect(this.nodeSize * col, this.nodeSize * row, this.nodeSize, this.nodeSize);
