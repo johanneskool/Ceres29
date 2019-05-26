@@ -36,6 +36,7 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
 
 /***
  * Basic load function that draws the matrix to a buffer.
+ * @override
  */
 MatrixVisualization.prototype.load = function () {
     console.log('load call');
@@ -78,6 +79,7 @@ MatrixVisualization.prototype.updateNodeSize = function () {
 /**
  * Updates the matrix data.
  * @param {url} url the json url of the data
+ * @override
  */
 MatrixVisualization.prototype.setData = function (url) {
     P$.print(url);
@@ -160,6 +162,7 @@ MatrixVisualization.prototype.drawMatrix = function () {
 
 /**
  * Draw the visualization.
+ * @override
  */
 MatrixVisualization.prototype.draw = function () {
     //disregard draw calls that happen whilst it is still loading.
@@ -181,6 +184,7 @@ MatrixVisualization.prototype.draw = function () {
  * Color the cell at the given coords
  * @param x the x cords of the matrix
  * @param y the y cords of the matrix
+ * @override
  */
 MatrixVisualization.prototype.colorActiveCell = function (x, y) {
     this.overlayGraphics.clear();
@@ -195,6 +199,7 @@ MatrixVisualization.prototype.colorActiveCell = function (x, y) {
  * @param yCord
  * @return {p5.Vector} vector of the cell at the given position.
  * @throws RangeError if you click a cell that is outside of the matrix, i.e. a bad click.
+ * @override
  */
 MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed
@@ -218,6 +223,7 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
  * @param xCord mouse x
  * @param yCord mouse y
  * @throws RangeError if you click outside of the matrix.
+ * @override
  */
 MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
@@ -249,3 +255,11 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;
     document.getElementById('matrix-visualization-edge-info-weight').innerHTML = weight;
 };
+
+/**
+ * Function that deselects the cell by coloring the cell -1, -1
+ * @override
+ */
+MatrixVisualization.prototype.deselectCell = function () {
+    this.colorActiveCell(-1, -1);
+}

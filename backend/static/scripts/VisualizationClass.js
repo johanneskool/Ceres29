@@ -196,3 +196,11 @@ Visualization.prototype.moveVisualization = function (xOff, yOff) {
 Visualization.prototype.click = function (posX, posY) {
 
 };
+
+/**
+ * Function that should be able to deselect / decolor any selected nodes in the visualization.
+ * @abstract
+ */
+Visualization.prototype.deselectCell = function () {
+
+}

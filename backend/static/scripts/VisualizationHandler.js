@@ -86,7 +86,11 @@ var VisualizationHandler = function () {
             vis.click(xPos, yPos);
             this.colorActiveCell(vis.getCell(xPos, yPos));
         } catch (e) {
-            console.log(e);
+            this.activeCell = null;
+            //clicked nothing, unload active cell and clear overlay.
+            for (let i = 0; i < this.visualizations.length; i++) {
+                this.visualizations[i].deselectCell();
+            }
         }
     };
 
