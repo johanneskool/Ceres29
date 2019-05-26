@@ -39,9 +39,8 @@ MatrixVisualization.prototype.constructor = MatrixVisualization;
  * @override
  */
 MatrixVisualization.prototype.load = function () {
-    console.log('load call');
     //update the node count
-    this.nodeCount = this.data.tags.length;
+    this.nodeCount = this.dataJSON.tags.length;
     this.startPositon = 0;
     this.updateNodeSize();
 
@@ -88,22 +87,39 @@ MatrixVisualization.prototype.setData = function (url) {
     //the json callback forgets what matrix called it.
     var currentMatrix = this;
 
-    function loadNodes(data) {
-        currentMatrix.data = data;
-        currentMatrix.nodeCount = currentMatrix.data.weights.length;
-        currentMatrix.minWeight = currentMatrix.data.minWeight;
-        currentMatrix.maxWeight = currentMatrix.data.maxWeight;
-        currentMatrix.updateNodeSize();
-        currentMatrix.load();
+    function loadNodes(dataJSON) {
+        console.log("loading json from" + url)
 
-        document.getElementById('matrix-visualization-fileinfo-name').innerHTML = currentMatrix.data.name;
-        document.getElementById('matrix-visualization-fileinfo-type').innerHTML = currentMatrix.data.type;
+        //data is new so send the json to load.
+        currentMatrix.vH.jsonDictionary[url] = dataJSON;
+
+        //resolve waiting list for this data if applicable.
+        currentMatrix.vH.resolveWaitingList(url);
+
+        currentMatrix.useJSON(dataJSON);
     }
 
     function loadFailed(response) {
         errorMessage("There was an error getting the data. Perhaps we requested a non-existing data-type. If this issue persists, try uploading the file again.");
     }
 
+};
+
+/**
+ * Function that loads the JSON into the matrix, should be used when json has already been get, else use setData.
+ * @param {JSOS} dataJSON the JSON to load.
+ */
+MatrixVisualization.prototype.useJSON = function (dataJSON) {
+    console.log(dataJSON);
+    this.dataJSON = dataJSON;
+    this.nodeCount = this.dataJSON.weights.length;
+    this.minWeight = this.dataJSON.minWeight;
+    this.maxWeight = this.dataJSON.maxWeight;
+    this.updateNodeSize();
+    this.load();
+
+    document.getElementById('matrix-visualization-fileinfo-name').innerHTML = this.dataJSON.name;
+    document.getElementById('matrix-visualization-fileinfo-type').innerHTML = this.dataJSON.type;
 };
 
 
@@ -140,9 +156,9 @@ MatrixVisualization.prototype.drawMatrix = function () {
     for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
         for (let row = 0; row < this.nodeCount; row++) {
-            if (this.data.weights[col][row] == 0) continue;
+            if (this.dataJSON.weights[col][row] == 0) continue;
             let weight; //for use in the for-loop
-            weight = Math.log(this.data.weights[col][row]);
+            weight = Math.log(this.dataJSON.weights[col][row]);
 
             //use the weight to color the cell.
             let fillColor = P$.getWeightedColor(weight, min, max);
@@ -164,7 +180,7 @@ MatrixVisualization.prototype.draw = function () {
     //disregard draw calls that happen whilst it is still loading.
     if (!this.loaded) {
         //matrix can be unloaded without data
-        if (this.data != null) {
+        if (this.dataJSON != null) {
             this.drawMatrix(this);
         }
     }
@@ -235,11 +251,11 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // mark this cell
     this.colorActiveCell(x, y);
 
-    let from = this.data.tags[x];
+    let from = this.dataJSON.tags[x];
     from = from.replace(/_/g, ' ');
-    let to = this.data.tags[y];
+    let to = this.dataJSON.tags[y];
     to = to.replace(/_/g, ' ');
-    let weight = this.data.weights[y][x];  //we store it as weights[col][row], so get correct weight
+    let weight = this.dataJSON.weights[y][x];  //we store it as weights[col][row], so get correct weight
     // show debugging info in console
     var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
     console.log(text);

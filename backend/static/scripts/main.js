@@ -218,8 +218,8 @@ var createVisCanvas = function (div) {
     return sketch;
 };
 
-window.vis0 = new createVisCanvas('canvas');
-//window.vis1 = new createVisCanvas('canvas1');
+window.vis1 = new createVisCanvas('canvas1');
+//window.vis0 = new createVisCanvas('canvas');
 
 /**
  * Global namespace for p5 functions.
