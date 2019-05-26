@@ -222,9 +222,17 @@ window.vis0 = new createVisCanvas('canvas');
 //window.vis1 = new createVisCanvas('canvas1');
 
 
+let globalthing;
+
 /**
  * Global namespace for p5 functions.
  * @type {p5}
  */
 window.P$ = new p5(function (p) {
+    p.setup = function () {
+        p.canvas = p.createCanvas(0, 0);
+        p.canvas.style('display', 'none');
+        p.canvas.id("P$");
+        i
+    };
 }, "global sketch");
