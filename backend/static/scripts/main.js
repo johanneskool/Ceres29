@@ -221,9 +221,6 @@ var createVisCanvas = function (div) {
 window.vis0 = new createVisCanvas('canvas');
 //window.vis1 = new createVisCanvas('canvas1');
 
-
-let globalthing;
-
 /**
  * Global namespace for p5 functions.
  * @type {p5}
