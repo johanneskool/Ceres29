@@ -47,6 +47,7 @@ RoundNodeLink.prototype.setData = function (url) {
 
     function loadNodes(data) {
         let weights = data["weights"];
+        console.log(data['minWeight'], data['maxWeight']);
 
         let number = 0;
 
@@ -57,7 +58,9 @@ RoundNodeLink.prototype.setData = function (url) {
                 number,    // number in circle
                 number * 2 * Math.PI / (Math.min(Object.keys(weights).length, currentVisualization.limit) + 1),
                 currentVisualization.circleLocation,
-                currentVisualization.canvas
+                currentVisualization.canvas,
+                data['minWeight'],
+                data['maxWeight']
             );
             currentVisualization.nodes.push(new_node); // put in array
             number++;
@@ -153,10 +156,13 @@ RoundNodeLink.prototype.zoom = function (a,b,c) {}; // no zoom (maybe later)
  * @param outsideCircleMiddle pVector with middle point around which to draw nodes
  * @constructor
  */
-function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
+function Node(id, name, number, angle, outsideCircleMiddle, canvas, minWeightValue, maxWeightValue) {
     this.number = number;
     this.id = id;
     this.name = name;
+
+    this.minWeightValue = minWeightValue;
+    this.maxWeightValue = maxWeightValue;
 
     this.angle = angle;
     this.outsideCircleMiddle = outsideCircleMiddle;
@@ -213,6 +219,7 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
                     this.canvas.noFill();
                     if (solid) {
                         this.canvas.stroke('#000000');
+                        this.canvas.stroke(P$.getWeightedColor(edgeWeight, this.minWeightValue, this.maxWeightValue))
                     } else {
                         this.canvas.stroke('#CCCCCC')
                     }
@@ -221,7 +228,6 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas) {
                     this.canvas.pop();
                 }
             } catch (e) {
-                console.log(e)
                 // to_node is not defined (the case when to_node was not drawn due to lack of space)
             }
         }
