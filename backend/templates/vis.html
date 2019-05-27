@@ -32,7 +32,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12" style='height: calc(100% - 100px);'>
-                    <div class="wrapper">
+                    <div class="wrapper" id="parentofcanvas">
                         <div class="sidebar">
                             <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
                             <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
@@ -42,6 +42,7 @@
                                 <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
                                 <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
                                 <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
+
                             </div>
                         </div>
                         <div id="canvas" style="overflow:hidden;"></div>
