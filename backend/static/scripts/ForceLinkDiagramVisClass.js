@@ -26,7 +26,8 @@ ForceLink.prototype.setData = function (url) {
     P$.loadJSON(url, loadNodes);
 
     function loadNodes(data) {
-        this.graph = {
+        currentVisualization.data = url;
+        currentVisualization.graph = {
             nodes: [],
             edges: []
         };
@@ -35,7 +36,7 @@ ForceLink.prototype.setData = function (url) {
             {
                 graph: data,
                 renderer: {
-                    container: this.canvas,
+                    container: document.getElementById(currentVisualization.canvas.canvas),
                     type: 'webGL'
                 },
                 settings: {
@@ -55,12 +56,12 @@ ForceLink.prototype.setData = function (url) {
 
         //adds nodes to the graph
         for (let index in data.tags) {
-            graph.nodes.push({
+            currentVisualization.graph.nodes.push({
                 id: index,
                 label: data.tags[index],
                 x: P$.random(-2000, 2000),
                 y: P$.random(-1000, 1000),
-                size: P$.random(2, 4),
+                size: P$.random(2, 4)
             });
         }
 
@@ -69,12 +70,12 @@ ForceLink.prototype.setData = function (url) {
         for (let indexNodes in data.tags) {
             for (let indexEdges in data.weights) {
                 if ((data.weights[indexNodes][indexEdges]) > 0) {
-                    graph.edges.push({
+                    currentVisualization.graph.edges.push({
                         id: i,
                         weight: data.weights[indexNodes][indexEdges],
                         size: data.weights[indexNodes][indexEdges],
-                        source: graph.nodes[indexNodes].id,
-                        target: graph.nodes[indexEdges].id,
+                        source: currentVisualization.graph.nodes[indexNodes].id,
+                        target: currentVisualization.graph.nodes[indexEdges].id,
                         color: "#FFFFFF",
                         __proto__: null
                     });
@@ -86,7 +87,7 @@ ForceLink.prototype.setData = function (url) {
         bindEvents();
 
         // Load the graph in sigma to draw
-        s.graph.read(graph);
+        s.graph.read(currentVisualization.graph);
         // Ask sigma to draw it and refresh
         s.refresh();
 
@@ -109,8 +110,7 @@ ForceLink.prototype.setData = function (url) {
         window.setTimeout(function () {
             s.killForceAtlas2();
         }, 12000);
-    };
-
+    }
     function bindEvents() {
         let nodeId = "0";
         let oldNode;
@@ -129,10 +129,9 @@ ForceLink.prototype.setData = function (url) {
             nodeId = e.data.node.id;
             s.graph.adjacentEdgesOut(nodeId).forEach(
                 function (ee) {
-                    if (ee.color === '#ff9900' && ee.source === nodeId){
+                    if (ee.color === '#ff9900' && ee.source === nodeId) {
                         ee.color = "#FFFFFF";
-                    }
-                    else if (ee.source === nodeId){
+                    } else if (ee.source === nodeId) {
                         ee.color = '#ff9900';
                     }
                 }
@@ -173,7 +172,7 @@ ForceLink.prototype.setData = function (url) {
             console.log(e.type, e.data.captor);
         });
     }
-}
+};
 
 //Method for finding the adjacent edges return them in an array
 sigma.classes.graph.addMethod('adjacentEdgesOut', function(id) {
