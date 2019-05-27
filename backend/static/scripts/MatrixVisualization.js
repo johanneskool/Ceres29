@@ -88,10 +88,10 @@ MatrixVisualization.prototype.setData = function (url) {
     var currentMatrix = this;
 
     function loadNodes(dataJSON) {
-        console.log("loading json from" + url)
+        console.log("loading json from" + url);
 
         //data is new so send the json to load.
-        currentMatrix.vH.jsonDictionary[url] = dataJSON;
+        currentMatrix.vH.jsonDictionary.put(url, dataJSON);
 
         //resolve waiting list for this data if applicable.
         currentMatrix.vH.resolveWaitingList(url);
@@ -156,7 +156,7 @@ MatrixVisualization.prototype.drawMatrix = function () {
     for (let col = this.startPositon; col < this.nodeCount; col++) {
         this.matrix.push();
         for (let row = 0; row < this.nodeCount; row++) {
-            if (this.dataJSON.weights[col][row] == 0) continue;
+            if (this.dataJSON.weights[col][row] === 0) continue;
             let weight; //for use in the for-loop
             weight = Math.log(this.dataJSON.weights[col][row]);
 
