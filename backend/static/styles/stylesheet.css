@@ -17,6 +17,10 @@
     display: grid;
 }
 
+#canvas1 {
+    display: grid;
+}
+
 #defaultCanvas0, #defaultCanvas1 {
     grid-column: 1;
     grid-row: 1;
