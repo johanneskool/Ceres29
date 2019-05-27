@@ -90,27 +90,28 @@ TreeNodeLink.prototype.setData = function (url) {
             });
             s.bind('doubleClickNode', function (e) {
                 console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-                let filter1 = new sigma.plugins.filter(s);
-                let filter2 = new sigma.plugins.filter(s);
-                let filter3 = new sigma.plugins.filter(s);
-                filter1.neighborsOf(e.data.node.id);
-                //gen1 = filter1.neighborsOf(e.data.node.id);
-                //for (node_gen2 in gen1) {
-                //    filter2.neighborsOf(node_gen2);
-                //}
-                filter1.apply();
-                //filter2.apply();
-                filter1.undo();
-                //filter2.undo();
+                s.graph.nodes(e.data.node.id).x = 0;
+                s.graph.nodes(e.data.node.id).y = 0;
+                let filter = new sigma.plugins.filter(s);
+                filter.neighborsOf(e.data.node.id);
+                filter.apply();
+                filter.undo();
                 s.refresh();
-                });
+            });
+            s.bind('doubleClickStage', function (e) {
+                console.log(e.type, e.data.captor);
+                let filter = new sigma.plugins.filter(s);
+                filter.apply();
+                filter.undo();
+                s.refresh();
+            });
             s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
                 console.log(e.type, e.data.edge, e.data.captor);
             });
             s.bind('clickStage', function (e) {
                 console.log(e.type, e.data.captor);
             });
-            s.bind('doubleClickStage rightClickStage', function (e) {
+            s.bind('rightClickStage', function (e) {
                 console.log(e.type, e.data.captor);
             });
         }
@@ -122,3 +123,16 @@ TreeNodeLink.prototype.setData = function (url) {
         animateGraph();
     }
 };
+
+//Method for finding the adjacent edges return them in an array
+sigma.classes.graph.addMethod('childOff', function(id) {
+    if (typeof id !== 'string')
+        throw 'childOff: the node id must be a string.';
+    let a = this.allNeighborsIndex[id],
+        target,
+        nodes = [];
+    for(target in a) {
+        nodes.push(a[target]);
+    }
+    return nodes;
+});
