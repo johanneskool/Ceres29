@@ -19,7 +19,7 @@ var VisualizationHandler = function () {
      * Dictionary mapping visualization to canvas.
      * @type {dictionary}
      */
-    this.visDictionary = {};
+    this.visDictionary = new dictionary();
 
     /**
      * The vector of the currently selected node, vector representation in the matrix.
@@ -59,7 +59,7 @@ var VisualizationHandler = function () {
      * @param {p5.Element} v
      */
     this.moveSelected = function (xOff, yOff, v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         vis.moveVisualization(xOff, yOff);
     };
 
@@ -69,7 +69,7 @@ var VisualizationHandler = function () {
      * @param {p5.Element} v
      */
     this.setSelectedZoomScale = function (zoomScale, v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         vis.setZoomScale(zoomScale);
     };
 
@@ -79,7 +79,7 @@ var VisualizationHandler = function () {
      * return {number} zoomScale
      */
     this.getSelectedZoomScale = function (v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         return vis.getZoomScale()
     };
 
@@ -94,7 +94,7 @@ var VisualizationHandler = function () {
      */
     this.clickSelected = function (xPos, yPos, v) {
         try {
-            let vis = this.visDictionary[v];
+            let vis = this.visDictionary.get(v);
             vis.click(xPos, yPos);
             this.colorActiveCell(vis.getCell(xPos, yPos));
         } catch (e) {
@@ -207,7 +207,7 @@ var VisualizationHandler = function () {
     };
 
     this.dragSelected = function (xOff, yOff, v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         vis.drag(xOff, yOff);
     };
 
@@ -255,7 +255,7 @@ var VisualizationHandler = function () {
         this.active = visualizationObject;
 
         //add the visualization-canvas pair to the dictionary.
-        this.visDictionary[v] = visualizationObject;
+        this.visDictionary.put(v, visualizationObject);
 
         visualizationObject.setCanvas(v);
         visualizationObject.setVH(this);
@@ -271,7 +271,7 @@ var VisualizationHandler = function () {
      * @param v {p5.Element} canvas which called the function
      */
     this.zoomSelected = function (zoomIn, mouseX, mouseY, v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         vis.zoom(zoomIn, mouseX, mouseY);
     };
 
@@ -299,7 +299,7 @@ var VisualizationHandler = function () {
      * @returns {p5.Vector}
      */
     this.getSelectedPosition = function (v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         return vis.getPosition();
     };
 
@@ -309,7 +309,7 @@ var VisualizationHandler = function () {
      * @param {p5.Element} v the selected canvas.
      */
     this.setData = function (url, v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         if (this.jsonDictionary[this.data] != undefined) {
             //data was already called
             console.log("old");
@@ -339,7 +339,7 @@ var VisualizationHandler = function () {
 
 
     this.centerSelected = function (v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         let id = v.parent;
         let container = document.getElementById(id);
 
@@ -355,7 +355,7 @@ var VisualizationHandler = function () {
      * @param v
      */
     this.drawSelected = function (v) {
-        let vis = this.visDictionary[v];
+        let vis = this.visDictionary.get(v);
         vis.draw();
     };
 
@@ -381,5 +381,111 @@ var VisualizationHandler = function () {
             //wipe waitinglist
             this.jsonWaitingList[data] = undefined;
         }
+    }
+};
+
+/**
+ * My own key-value pair dictionary.
+ * (implemented most java dictionary functions)
+ * @constructor
+ */
+var dictionary = function () {
+    /**
+     * Key-value pairs in the dictionary
+     * @type {array} the data
+     * @private
+     * data[0] are the keys
+     * data[1] are the values
+     */
+    this._data = [[],[]];
+
+     /**
+     * All the keys in the dictionary.
+     * @type {array}
+     */
+    this._keys = this._data[0];
+
+     /**
+     * All the values in the dictionary
+     * @type {array}
+     */
+    this._values = this._data[1];
+
+     /**
+     * Returns the elements in the dictionary as an array.
+     * @return {array} values
+     */
+    this.elements = function () {
+        return this._values;
+    };
+
+     /**
+     * Returns the keys in the dictionary as an array.
+     * @return {array}
+     */
+    this.keys = function () {
+        return this._keys;
+    };
+
+     /**
+     * Returns the value to which the key is mapped in this dictionary
+     * @param k
+     * @return {value} the value mapped to the key
+     */
+    this.get = function (k) {
+        let index = this._keys.indexOf(k);
+        if (index < 0) {
+            throw new ReferenceError(k + ' is not a valid key');
+        }
+        return this._values[index];
+    };
+
+     /**
+     * Tests if this dictionary maps no keys to value.
+     * @return {boolean}
+     */
+    this.isEmpty = function () {
+        return this._keys.length === 0 || this._values.length === 0;
+    };
+
+     /**
+     * Maps the specified key to the specified value in this dictionary.
+     * @param {*} k the key
+     * @param {*} v the value
+     */
+    this.put = function (k, v) {
+        //new key
+        if (this._keys.indexOf(k) < 0) {
+            this._keys.push(k);
+            this._values.push(v);
+        } else {
+            //if not new key update v.
+            let index = this._keys.indexOf(k);
+            this._values[index] = v;
+            return v;
+        }
+    };
+
+     /**
+     * Removes key-value pair from dictionary
+     * @param {*} k key to remove
+     * @throws {ReferenceError} if key is not in dictionary
+     */
+    this.remove = function (k) {
+        let index = this._keys.indexOf(k);
+        if (index > -1) {
+            this._keys.splice(index, 1);
+            this._values.splice(index, 1);
+        } else {
+            throw new ReferenceError(k + ' is not a valid key');
+        }
+    };
+
+     /**
+     * Size of the dictionary
+     * @return {number}
+     */
+    this.size = function () {
+        return this._keys.length;
     }
 };
