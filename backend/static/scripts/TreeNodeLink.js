@@ -77,7 +77,7 @@ TreeNodeLink.prototype.setData = function (url) {
                         size: data.weights[indexNodes][indexEdges]/2,
                         source: currentVisualization.graph.nodes[indexNodes].id,
                         target: currentVisualization.graph.nodes[indexEdges].id,
-                        color: "#FFFFFF",
+                        color: "#000000",
                         type: 'arrow'
                     });
                     i++
@@ -85,26 +85,44 @@ TreeNodeLink.prototype.setData = function (url) {
             }
         }
 
-        function animateGraph() {
+        bindEvents();
+
+        // Load the graph in sigma to draw
+        s.graph.read(currentVisualization.graph);
+        // Ask sigma to draw it and refresh
+        s.refresh();
+
+        function bindEvents() {
+            let nodeId = "0";
+
         // Bind the events:
             s.bind('overNode outNode clickNode rightClickNode', function (e) {
                 console.log(e.type, e.data.node.label, e.data.captor);
             });
             s.bind('doubleClickNode', function (e) {
                 console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
+                nodeId = e.data.node.id;
+                s.graph.nodes().forEach(
+                    function(e) {
+                        e.hidden = true;
+                });
                 s.graph.nodes(e.data.node.id).x = 0;
                 s.graph.nodes(e.data.node.id).y = 0;
-                let filter = new sigma.plugins.filter(s);
-                filter.neighborsOf(e.data.node.id);
-                filter.apply();
-                filter.undo();
+                s.graph.nodes(e.data.node.id).hidden = false;
+                s.graph.childOf(nodeId).forEach(
+                    function (ee) {
+                        ee.x = P$.random(-500, 500);
+                        ee.y = P$.random(-500, 500);
+                        ee.hidden = false;
+                });
                 s.refresh();
             });
             s.bind('doubleClickStage', function (e) {
                 console.log(e.type, e.data.captor);
-                let filter = new sigma.plugins.filter(s);
-                filter.apply();
-                filter.undo();
+                s.graph.nodes().forEach(
+                    function(e) {
+                        e.hidden = false;
+                });
                 s.refresh();
             });
             s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
@@ -118,18 +136,13 @@ TreeNodeLink.prototype.setData = function (url) {
             });
         }
 
-        // Load the graph in sigma to draw
-        s.graph.read(currentVisualization.graph);
-        // Ask sigma to draw it and refresh
-        s.refresh();
-        animateGraph();
     }
 };
 
 //Method for finding the adjacent edges return them in an array
-sigma.classes.graph.addMethod('childOff', function(id) {
+sigma.classes.graph.addMethod('childOf', function(id) {
     if (typeof id !== 'string')
-        throw 'childOff: the node id must be a string.';
+        throw 'childOf: the node id must be a string.';
     let a = this.allNeighborsIndex[id],
         target,
         nodes = [];
