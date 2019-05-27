@@ -77,7 +77,7 @@ TreeNodeLink.prototype.setData = function (url) {
                         size: data.weights[indexNodes][indexEdges]/2,
                         source: currentVisualization.graph.nodes[indexNodes].id,
                         target: currentVisualization.graph.nodes[indexEdges].id,
-                        color: "#000000",
+                        color: "#FFFFFF",
                         type: 'arrow'
                     });
                     i++

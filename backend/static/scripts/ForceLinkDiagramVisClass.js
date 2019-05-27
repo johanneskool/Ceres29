@@ -177,7 +177,7 @@ ForceLink.prototype.setData = function (url) {
 //Method for finding the adjacent edges return them in an array
 sigma.classes.graph.addMethod('adjacentEdgesOut', function(id) {
     if (typeof id !== 'string')
-        throw 'adjacentEdges: the node id must be a string.';
+        throw 'adjacentEdgesOut: the node id must be a string.';
     let a = this.allNeighborsIndex[id],
         eid,
         target,
