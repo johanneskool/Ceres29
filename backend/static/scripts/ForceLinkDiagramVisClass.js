@@ -127,7 +127,7 @@ ForceLink.prototype.setData = function (url) {
             );
             console.log(e.type, e.data.node.label, e.data.captor);
             nodeId = e.data.node.id;
-            s.graph.adjacentEdges(nodeId).forEach(
+            s.graph.adjacentEdgesOut(nodeId).forEach(
                 function (ee) {
                     if (ee.color === '#ff9900' && ee.source === nodeId){
                         ee.color = "#FFFFFF";
@@ -176,7 +176,7 @@ ForceLink.prototype.setData = function (url) {
 }
 
 //Method for finding the adjacent edges return them in an array
-sigma.classes.graph.addMethod('adjacentEdges', function(id) {
+sigma.classes.graph.addMethod('adjacentEdgesOut', function(id) {
     if (typeof id !== 'string')
         throw 'adjacentEdges: the node id must be a string.';
     let a = this.allNeighborsIndex[id],
