@@ -36,7 +36,7 @@ ForceLink.prototype.setData = function (url) {
             {
                 graph: data,
                 renderer: {
-                    container: document.getElementById(currentVisualization.canvas.canvas),
+                    container: document.getElementById(currentVisualization.canvas.parent),
                     type: 'webGL'
                 },
                 settings: {

@@ -25,8 +25,10 @@ TreeNodeLink.prototype.constructor = TreeNodeLink;
 TreeNodeLink.prototype.setData = function (url) {
     let currentVisualization = this;
     P$.loadJSON(url, loadNodes);
+
     function loadNodes(data) {
-        this.graph = {
+        currentVisualization.data = url;
+        currentVisualization.graph = {
             nodes: [],
             edges: []
         };
@@ -35,7 +37,7 @@ TreeNodeLink.prototype.setData = function (url) {
             {
                 graph: data,
                 renderer: {
-                    container: this.canvas,
+                    container: document.getElementById(currentVisualization.canvas.parent),
                     type: 'webGL'
                 },
                 settings: {
@@ -54,7 +56,7 @@ TreeNodeLink.prototype.setData = function (url) {
 
         //adds nodes to the graph
         for (let index in data.tags) {
-            graph.nodes.push({
+            currentVisualization.graph.nodes.push({
                 id: index,
                 label: data.tags[index],
                 x: P$.random(-2000, 2000),
@@ -69,12 +71,12 @@ TreeNodeLink.prototype.setData = function (url) {
         for (let indexNodes in data.tags) {
             for (let indexEdges in data.weights) {
                 if ((data.weights[indexNodes][indexEdges]) > 0.6) {
-                    graph.edges.push({
+                    currentVisualization.graph.edges.push({
                         id: i,
                         weight: data.weights[indexNodes][indexEdges]/2,
                         size: data.weights[indexNodes][indexEdges]/2,
-                        source: graph.nodes[indexNodes].id,
-                        target: graph.nodes[indexEdges].id,
+                        source: currentVisualization.graph.nodes[indexNodes].id,
+                        target: currentVisualization.graph.nodes[indexEdges].id,
                         color: "#FFFFFF",
                         type: 'arrow'
                     });
@@ -117,7 +119,7 @@ TreeNodeLink.prototype.setData = function (url) {
         }
 
         // Load the graph in sigma to draw
-        s.graph.read(graph);
+        s.graph.read(currentVisualization.graph);
         // Ask sigma to draw it and refresh
         s.refresh();
         animateGraph();
