@@ -8,7 +8,6 @@
  * Main VisualizationHandler (VH) class
  * @constructor
  */
-
 var VisualizationHandler = function () {
     /**
      * Main array containing all the visualizations handled by this handler.
@@ -35,10 +34,23 @@ var VisualizationHandler = function () {
     this.data = null;
 
     /**
+     * Dictionary mapping url to jsons to prevent double loading.
+     * @type {dictionary}
+     */
+    this.jsonDictionary = {}
+
+    /**
      * Flag that is true if the Handler is actively showing a loaded visualization.
      * @type {boolean}
      */
     this.hasLoadedVisualization = false;
+
+    /**
+     * When loading multiple visualization with the same url, only the first will actually load the json,
+     * the rest will be added to this list and resolved later to prevent double loading.
+     * @type {list}
+     */
+    this.jsonWaitingList = {}
 
     /**
      * Move the visualization mapped to the given canvas.
@@ -86,7 +98,11 @@ var VisualizationHandler = function () {
             vis.click(xPos, yPos);
             this.colorActiveCell(vis.getCell(xPos, yPos));
         } catch (e) {
-            console.log(e);
+            this.activeCell = null;
+            //clicked nothing, unload active cell and clear overlay.
+            for (let i = 0; i < this.visualizations.length; i++) {
+                this.visualizations[i].deselectCell();
+            }
         }
     };
 
@@ -152,7 +168,7 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].colorActiveCell(vector.x, vector.y);
         }
-        window.history.replaceState({}, data_id, "/vis/" + data_id + "?clustering=" + this.clustering_type + "&x=" + vector.x + "&y=" + vector.y);
+        window.history.replaceState({}, data_id, "/vis/" + data_id + "?vistype=" + GVH.mainvis_type + "&clustering=" + this.clustering_type + "&x=" + vector.x + "&y=" + vector.y);
     };
 
 
@@ -228,6 +244,7 @@ var VisualizationHandler = function () {
         }
     };
 
+    this.test = [];
 
     /**
      * Create vis Object
@@ -239,10 +256,6 @@ var VisualizationHandler = function () {
 
         //add the visualization-canvas pair to the dictionary.
         this.visDictionary[v] = visualizationObject;
-        //if this VH has data
-        if (this.data != null) {
-            visualizationObject.setData(this.data);
-        }
 
         visualizationObject.setCanvas(v);
         visualizationObject.setVH(this);
@@ -297,7 +310,20 @@ var VisualizationHandler = function () {
      */
     this.setData = function (url, v) {
         let vis = this.visDictionary[v];
-        vis.setData(url);
+        if (this.jsonDictionary[this.data] != undefined) {
+            //data was already called
+            console.log("old");
+            visualizationObject.useJSON(this.jsonDictionary[this.data]);
+        } else if (this.jsonWaitingList[url] != undefined) {
+            //data is being called
+            console.log("delay");
+            this.jsonWaitingList[url].push(vis);
+        } else {
+            console.log("new");
+            //create waiting list for this url
+            this.jsonWaitingList[url] = [];
+            vis.setData(url);
+        }
     };
 
     /**
@@ -343,4 +369,17 @@ var VisualizationHandler = function () {
         }
     };
 
+    /**
+     * Loops through the waining visualizations
+     */
+    this.resolveWaitingList = function (data) {
+        //loop through all visualizations that were waiting on JSON
+        if (this.jsonWaitingList[data] != undefined) {
+            for (let i = 0; i < this.jsonWaitingList[data].length; i++) {
+                this.jsonWaitingList[data][i].useJSON(this.jsonDictionary[data]);
+            }
+            //wipe waitinglist
+            this.jsonWaitingList[data] = undefined;
+        }
+    }
 };

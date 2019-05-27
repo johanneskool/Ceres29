@@ -80,11 +80,6 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
                 </li>
             {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" disabled type="text" placeholder="Search (not implemented yet)"
-                   aria-label="Search">
-            <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-        </form>
     </div>
 </nav>
 
@@ -95,11 +90,16 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
 
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                {% with messages = get_flashed_messages() %}
+            <div id='divErrorMessages' class="col-md-12">
+                {% with messages = get_flashed_messages(with_categories=true, category_filter=['info', 'success', 'warning', 'danger', 'message']) %}
                     {% if messages %}
-                        {% for message in messages %}
-                            {{ message|safe }}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} alert-dismissable fade show">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ message }}
+                          </div>
                         {% endfor %}
                     {% endif %}
                 {% endwith %}

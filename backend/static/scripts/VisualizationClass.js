@@ -123,6 +123,7 @@ Visualization.prototype.load = function () {
 
 /**
  * Should update the visualization data from the json url.
+ * Must also add the data / json combo to the jsondictionary for loading improvement.
  * @abstract
  * @param url
  */
@@ -194,5 +195,22 @@ Visualization.prototype.moveVisualization = function (xOff, yOff) {
  * @throws RangeError if you click outside the visualization. !important.
  */
 Visualization.prototype.click = function (posX, posY) {
+
+};
+
+/**
+ * Function that should be able to deselect / decolor any selected nodes in the visualization.
+ * @abstract
+ */
+Visualization.prototype.deselectCell = function () {
+}
+
+
+/**
+ * Function that should be called when a json url has already been loaded.
+ * @param {JSON} The data that should be loaded into this visualization.
+ * @abstract
+ */
+Visualization.prototype.useJSON = function (JSON) {
 
 };

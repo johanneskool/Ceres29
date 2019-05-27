@@ -70,9 +70,29 @@ a {
     color: #2E9CCA;
 }
 
+/* weird canvasses outside the page
+ * hide all canvasses except for those which have an id starting with defaultCanvas, but not the p5Canvasses
+ */
+canvas {
+  display: none;
+}
+canvas[id^='defaultCanvas']  {
+  display: inherit;
+}
+.p5Canvas {
+  display: none;
+}
+
+/* because Flask default message category is message, we need a alert-message */
+.alert-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
 /* page height 100% */
 html, body {
-    height: calc(100% - 40px);
+    height: calc(97% - 20px);
 }
 
 main {

@@ -52,13 +52,14 @@ var visualizationSketch = function (v) {
         v.visualizationHandler = GVH;
 
         //create a new matrix object
-        v.visualizationHandler.newVisualization('matrix', v);
+        v.current_URL = new URL(window.location.href);
+        v.visualizationHandler.mainvis_type = ((v.current_URL.searchParams.get("vistype") == null) ? 'matrix' : v.current_URL.searchParams.get("vistype"));
+        v.visualizationHandler.newVisualization(v.visualizationHandler.mainvis_type, v);
 
         // fetch data
-        v.current_URL = new URL(window.location.href);
         v.data_id = data_id;
         v.visualizationHandler.clustering_type = ((v.current_URL.searchParams.get("clustering") == null) ? 'cluster' : v.current_URL.searchParams.get("clustering"));
-        //window.history.replaceState({}, data_id, "/vis/" + data_id + "?clustering=" + v.visualizationHandler.clustering_type); //change URL but don't fill history
+        //window.history.replaceState({}, data_id, "/vis/" + data_id + "?vistype=" + v.visualizationHandler.mainvis_type + "&clustering=" + v.visualizationHandler.clustering_type); //change URL but don't fill history
         if (v.current_URL.searchParams.get("x") != null && v.current_URL.searchParams.get("y") != null) v.visualizationHandler.activeCell = P$.createVector(v.current_URL.searchParams.get("x"), v.current_URL.searchParams.get("y"));
 
         //update the VH data
@@ -217,13 +218,56 @@ var createVisCanvas = function (div) {
     return sketch;
 };
 
-window.vis0 = new createVisCanvas('canvas');
-//window.vis1 = new createVisCanvas('canvas1');
-
+window.vis1 = new createVisCanvas('canvas1');
+//window.vis0 = new createVisCanvas('canvas');
 
 /**
  * Global namespace for p5 functions.
- * @type {p5}
+ * @type {p5.Element}
  */
 window.P$ = new p5(function (p) {
+    /**
+     * Create and hide the global namespace / canvas
+     */
+    p.setup = function () {
+        p.canvas = p.createCanvas(0, 0);
+        p.canvas.style('display', 'none');
+        p.canvas.id("P$");
+    };
+
+    p.colorMode(p.HSB, 100);
+    p.PRIMARY_COLOR = p.color(65, 100, 10);
+    p.SECONDARY_COLOR = p.color(40, 100, 100);
+
+    /**
+     * Global function that makes a color corresponding to the weight.
+     * @param weight
+     * @param minWeight
+     * @param maxWeight
+     * @return {p5.Color}
+     */
+    p.getWeightedColor = function (weight, minWeight, maxWeight) {
+        var ratio = P$.map(weight, minWeight, maxWeight, 0, 1);
+
+        //use the weight to color the cell.
+        let weightedColor = P$.lerpColor(p.PRIMARY_COLOR, p.SECONDARY_COLOR, ratio);
+        return weightedColor;
+    }
+
+    /**
+     * Changes the primary color used, note that this does not update the visualizations.
+     * @param primaryColor
+     */
+    p.setPrimaryColor = function (primaryColor) {
+        p.PRIMARY_COLOR = primaryColor;
+    }
+
+    /**
+     * Changes the primary color used, note that this does not update the visualizations.
+     * @param primaryColor
+     */
+    p.setSecondaryColor = function (secondaryColor) {
+        p.SECONDARY_COLOR = secondaryColor;
+    }
+
 }, "global sketch");
