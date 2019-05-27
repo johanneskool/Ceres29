@@ -37,7 +37,7 @@ var VisualizationHandler = function () {
      * Dictionary mapping url to jsons to prevent double loading.
      * @type {dictionary}
      */
-    this.jsonDictionary = {}
+    this.jsonDictionary = new dictionary();
 
     /**
      * Flag that is true if the Handler is actively showing a loaded visualization.
@@ -48,9 +48,9 @@ var VisualizationHandler = function () {
     /**
      * When loading multiple visualization with the same url, only the first will actually load the json,
      * the rest will be added to this list and resolved later to prevent double loading.
-     * @type {list}
+     * @type {dictionary}
      */
-    this.jsonWaitingList = {}
+    this.jsonWaitingList = new dictionary();
 
     /**
      * Move the visualization mapped to the given canvas.
@@ -310,18 +310,18 @@ var VisualizationHandler = function () {
      */
     this.setData = function (url, v) {
         let vis = this.visDictionary.get(v);
-        if (this.jsonDictionary[this.data] != undefined) {
+        if (this.jsonDictionary.contains(url)) {
             //data was already called
             console.log("old");
-            visualizationObject.useJSON(this.jsonDictionary[this.data]);
-        } else if (this.jsonWaitingList[url] != undefined) {
+            visualizationObject.useJSON(this.jsonDictionary.get(url));
+        } else if (this.jsonWaitingList.contains(url)) {
             //data is being called
             console.log("delay");
-            this.jsonWaitingList[url].push(vis);
+            this.jsonWaitingList.pushData(url, v);
         } else {
             console.log("new");
             //create waiting list for this url
-            this.jsonWaitingList[url] = [];
+            this.jsonWaitingList.put(url, []);
             vis.setData(url);
         }
     };
@@ -374,12 +374,12 @@ var VisualizationHandler = function () {
      */
     this.resolveWaitingList = function (data) {
         //loop through all visualizations that were waiting on JSON
-        if (this.jsonWaitingList[data] != undefined) {
-            for (let i = 0; i < this.jsonWaitingList[data].length; i++) {
-                this.jsonWaitingList[data][i].useJSON(this.jsonDictionary[data]);
+        if (this.jsonWaitingList.contains(data)) {
+            for (let i = 0; i < this.jsonWaitingList.get(data).length; i++) {
+                this.visDictionary.get(this.jsonWaitingList.get(data)[i]).useJSON(this.jsonDictionary.get(data));
             }
             //wipe waitinglist
-            this.jsonWaitingList[data] = undefined;
+            this.jsonWaitingList.remove(data);
         }
     }
 };
@@ -466,6 +466,15 @@ var dictionary = function () {
         }
     };
 
+    /**
+     * Checks if the dictionary contains key k
+     * @param k
+     * @returns {boolean}
+     */
+    this.contains = function (k) {
+        return this._keys.indexOf(k) > -1;
+    };
+
      /**
      * Removes key-value pair from dictionary
      * @param {*} k key to remove
@@ -476,6 +485,20 @@ var dictionary = function () {
         if (index > -1) {
             this._keys.splice(index, 1);
             this._values.splice(index, 1);
+        } else {
+            throw new ReferenceError(k + ' is not a valid key');
+        }
+    };
+
+    /**
+     * Function that adds a value to a key if the key points to a array/list.
+     * @param k
+     * @param v
+     */
+    this.pushData = function (k, v) {
+        let index = this._keys.indexOf(k);
+        if (index > -1) {
+            this._values[index].push(v);
         } else {
             throw new ReferenceError(k + ' is not a valid key');
         }
