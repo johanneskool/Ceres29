@@ -111,10 +111,8 @@ TreeNodeLink.prototype.setData = function (url) {
                 s.graph.nodes(e.data.node.id).hidden = false;
                 s.graph.childOf(nodeId).forEach(
                     function (ee) {
-                        ee.x = P$.random(-500, 500);
-                        ee.y = P$.random(-500, 500);
-                        ee.color = "#FFFFFF";
-                        ee.hidden = false;
+                        console.log(ee)
+                        s.graph.nodes(ee.data.node.id).hidden = false;
                 });
                 s.refresh();
             });
@@ -140,10 +138,11 @@ TreeNodeLink.prototype.setData = function (url) {
     }
 };
 
-//Method for finding the adjacent edges return them in an array
+//Method for finding the nodes which the current node links to
+//Return them in an array
 sigma.classes.graph.addMethod('childOf', function(id) {
     if (typeof id !== 'string')
-        throw 'adjacentEdgesOut: the node id must be a string.';
+        throw 'childOf: the node id must be a string.';
     let a = this.allNeighborsIndex[id],
         target,
         nodes = [];
