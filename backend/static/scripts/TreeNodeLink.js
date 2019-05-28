@@ -103,8 +103,8 @@ TreeNodeLink.prototype.setData = function (url) {
                 console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
                 nodeId = e.data.node.id;
                 s.graph.nodes().forEach(
-                    function(e) {
-                        e.hidden = true;
+                    function(ee) {
+                        ee.hidden = true;
                 });
                 s.graph.nodes(e.data.node.id).x = 0;
                 s.graph.nodes(e.data.node.id).y = 0;
@@ -113,6 +113,7 @@ TreeNodeLink.prototype.setData = function (url) {
                     function (ee) {
                         ee.x = P$.random(-500, 500);
                         ee.y = P$.random(-500, 500);
+                        ee.color = "#FFFFFF";
                         ee.hidden = false;
                 });
                 s.refresh();
@@ -142,12 +143,13 @@ TreeNodeLink.prototype.setData = function (url) {
 //Method for finding the adjacent edges return them in an array
 sigma.classes.graph.addMethod('childOf', function(id) {
     if (typeof id !== 'string')
-        throw 'childOf: the node id must be a string.';
+        throw 'adjacentEdgesOut: the node id must be a string.';
     let a = this.allNeighborsIndex[id],
         target,
         nodes = [];
     for(target in a) {
-        nodes.push(a[target]);
+        nodes.push(target);
     }
+    console.log(nodes);
     return nodes;
 });
