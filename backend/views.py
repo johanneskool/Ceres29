@@ -5,9 +5,9 @@ import os
 from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
 
 from backend import app
+from backend.functions_file import get_available_files, handle_file_upload
 from backend.orm.models import File
 
-from backend.functions_file import allowed_file, get_available_files, handle_file_upload
 
 #Index page
 @app.route('/', methods=['GET', 'POST'])
@@ -65,3 +65,14 @@ def a_little_bit_of_security_is_allowed():
         abort(403)
     if '/static/json' in request.path:
         abort(403)
+
+
+# Endpoint for different visualisations
+@app.route('/subgraphs/<int:id>', methods=['GET'])
+def subgraph(id):
+    trace = [int(i) for i in request.args.get('trace').split(',')]
+    file = File.query.get(id)
+    network = file.get_pickle()
+    for i in trace:
+        network = network.get_subnetwork(i)
+    return network.json_string

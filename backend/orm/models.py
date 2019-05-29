@@ -45,7 +45,7 @@ class File(db.Model):
 
     @property
     def location_path(self):
-        return os.path.join(app.config['JSON_FOLDER_RELATIVE'], self.hash)
+        return os.path.join(app.config['JSON_FOLDER'], self.hash)
 
     @property
     def default(self):
@@ -55,5 +55,8 @@ class File(db.Model):
     def fiedler(self):
         return os.path.join(app.config["JSON_FOLDER"], self.location_path, Network.filenames['fiedler'])
 
+    def get_pickle(self):
+        with open(os.path.join(self.location_path, "network.p"), 'rb') as f:
+            return pickle.load(f)
     def __repr__(self):
         return "<File {}>".format(self.name)

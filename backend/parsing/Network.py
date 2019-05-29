@@ -64,7 +64,7 @@ class Network:
         return g
 
     @property
-    def __json_string__(self):
+    def json_string(self):
         """
         Converts this network to a json string
 
@@ -94,7 +94,7 @@ class Network:
         @:returns nothing
         """
 
-        jsonstring = self.__json_string__
+        jsonstring = self.json_string
         with open(filename, "w+", encoding='utf-8') as f:
             f.write(jsonstring)
 
@@ -182,7 +182,7 @@ class Network:
 
         subgraph = self.communities.subgraph(index)
 
-        return SubNetwork(self.name + "." + index, subgraph)
+        return SubNetwork(self.name + "." + str(index), subgraph)
 
 
 class TopNetwork(Network):
