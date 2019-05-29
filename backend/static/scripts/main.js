@@ -38,8 +38,13 @@ var visualizationSketch = function (v) {
 
     //basic setup and buffer for matrix to prevent redrawing.
     v.setup = function () {
-        v.colorMode(v.HSL, 100);
+        type = gType.pop();
         v.visualizationCanvas = v.createCanvas(window.innerWidth, window.innerHeight);
+        //append sketch to given container
+        container = pipeline.pop();
+        container.appendChild(v.canvas);
+        v.canvas.style.visibility = "visible"
+        v.colorMode(v.HSL, 100);
 
         v.frameRate(999);
         v.imageMode(v.CENTER);
@@ -54,7 +59,13 @@ var visualizationSketch = function (v) {
         //create a new matrix object
         v.current_URL = new URL(window.location.href);
         v.visualizationHandler.mainvis_type = ((v.current_URL.searchParams.get("vistype") == null) ? 'matrix' : v.current_URL.searchParams.get("vistype"));
-        v.visualizationHandler.newVisualization(v.visualizationHandler.mainvis_type, v);
+
+        //use argument defined type if specified.
+        if (type != null) {
+            v.visualizationHandler.newVisualization(type, v);
+        } else {
+            v.visualizationHandler.newVisualization(v.visualizationHandler.mainvis_type, v);
+        }
 
         // fetch data
         v.data_id = data_id;
@@ -75,6 +86,7 @@ var visualizationSketch = function (v) {
         //I can only create vectors in a function. (or I would have to namespace main.js, and I wont.)
         v.oldMouse = v.createVector();
         v.newMouse = v.createVector();
+        gType = null;
     };
 
     /**
@@ -212,14 +224,78 @@ var visualizationSketch = function (v) {
  * @param {div} div to add the visualization to.
  * @return {p5}
  */
-var createVisCanvas = function (div) {
+var createVisCanvas = function (type, div) {
+    gType.push(type);
+    canvasContainer = document.createElement("div");
+    canvasContainer.id = div;
+
+    pipeline.push(canvasContainer);
+
     var sketch = new p5(visualizationSketch);
-    sketch.setParent(div);
-    return sketch;
+
+    let parent = document.getElementById("parentofcanvas");
+    parent.appendChild(canvasContainer);
+    canvasContainer.style.overflow = "hidden";
+    GVH.centerAll();
 };
 
-window.vis1 = new createVisCanvas('canvas1');
-//window.vis0 = new createVisCanvas('canvas');
+/**
+ * Function that gets called when the div parentofcanvas is made.
+ * Initializes the visualization loading.
+ * Here we can add the standart visualization.
+ */
+var parentLoad = function () {
+    new createVisCanvas(null, 'canvas1');
+    // new createVisCanvas(null, 'canvas');
+};
+
+/**
+ * Because we can't pass arguments to the creation of the canvas,
+ * the requested type is a global variable (sadly)
+ * @type {array}
+ */
+var gType = [];
+
+/**
+ * Prevents the canvas from being appended to the wrong parent.
+ * @type {Array}
+ */
+var pipeline = [];
+
+/**
+ * Function that creates a new visualization, name is the div name containing the canvas.
+ * Type null means that it uses the type from the url.
+ * @param type
+ * @param name
+ */
+var addVisualization = function (type, name) {
+    new createVisCanvas(type, name)
+}
+
+
+/**
+ * Removes a visualization based on name
+ * @param name
+ */
+var removeVisualization = function (name) {
+    let node = document.getElementById(name);
+
+    while (node.hasChildNodes()) {
+        let canvas = node.lastChild;
+        for (let i = 0; i < GVH.visDictionary.size(); i++) {
+            let key = GVH.visDictionary.keys()[i];
+            if (key.canvas == canvas) {
+                //key.noLoop();
+                GVH.visDictionary.remove(GVH.visDictionary.keys()[i]);
+            }
+        }
+        node.removeChild(node.lastChild);
+    }
+    node.parentElement.removeChild(node);
+
+    GVH.centerAll();
+};
+
 
 /**
  * Global namespace for p5 functions.
@@ -252,7 +328,7 @@ window.P$ = new p5(function (p) {
         //use the weight to color the cell.
         let weightedColor = P$.lerpColor(p.PRIMARY_COLOR, p.SECONDARY_COLOR, ratio);
         return weightedColor;
-    }
+    };
 
     /**
      * Changes the primary color used, note that this does not update the visualizations.
@@ -260,7 +336,7 @@ window.P$ = new p5(function (p) {
      */
     p.setPrimaryColor = function (primaryColor) {
         p.PRIMARY_COLOR = primaryColor;
-    }
+    };
 
     /**
      * Changes the primary color used, note that this does not update the visualizations.

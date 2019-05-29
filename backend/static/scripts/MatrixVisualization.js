@@ -66,6 +66,7 @@ MatrixVisualization.prototype.load = function () {
 
     //unused since the later updates.
     this.overlayRatio = 1;
+    console.log(this.position);
 };
 
 /**
@@ -88,8 +89,6 @@ MatrixVisualization.prototype.setData = function (url) {
     var currentMatrix = this;
 
     function loadNodes(dataJSON) {
-        console.log("loading json from" + url);
-
         //data is new so send the json to load.
         currentMatrix.vH.jsonDictionary.put(url, dataJSON);
 
@@ -184,7 +183,6 @@ MatrixVisualization.prototype.draw = function () {
             this.drawMatrix(this);
         }
     }
-
     //draw the image and the overlay
     if (this.matrix !== undefined) {
         this.canvas.image(this.matrix, this.position.x, this.position.y, this.drawWidth / this.zoomScale, this.drawWidth / this.zoomScale);
@@ -217,7 +215,9 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     // calculate which edge is pressed
     var topLeft = P$.createVector(this.position.x - (this.drawWidth / this.zoomScale) / 2, this.position.y - (this.drawWidth / this.zoomScale) / 2);
     var mouse = P$.createVector(xCord, yCord);
-    var cell = P$.Vector.sub(mouse, topLeft);
+    //Fixed bug where it wouldnt recognize the p5.Vector.sub function.
+    var cell = mouse.copy();
+    cell.sub(topLeft);
     var nodeSize = (this.drawWidth / this.zoomScale) / this.nodeCount;
     var x = P$.floor(cell.x / nodeSize);
     var y = P$.floor(cell.y / nodeSize);
@@ -245,7 +245,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
         var x = cellVector.x;
     } catch (error) {
         document.getElementById('matrix-visualization-edge-info').style.display = 'none';
-        throw new RangeError("clicked outside of visualization");
+        throw error;
     }
 
     // mark this cell
@@ -254,7 +254,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     let from = this.dataJSON.tags[x];
     from = from.replace(/_/g, ' ');
     let to = this.dataJSON.tags[y];
-    from = '<button type="button" id="cluster0" value="' + from + '">' + from + '</button>'
+    from = '<button type="button" id="cluster0" value="' + from + '">' + from + '</button>';
     to = to.replace(/_/g, ' ');
     let weight = this.dataJSON.weights[y][x];  //we store it as weights[col][row], so get correct weight
     to = '<button type="button" id="cluster1" value="' + to + '">' + to + '</button>';
@@ -262,6 +262,9 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
     console.log(text);
     console.log('x cord: ' + x + ', y cord: ' + y);
+
+    //make this a scope variable
+    let currentMatrix = this;
 
     // update sidebar with information
     document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
@@ -271,11 +274,11 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // Handle the buttons for the clusters
     var clusterbutton0 = document.getElementById('cluster0');
     clusterbutton0.addEventListener('click', function (event) {
-        vis0.visualizationHandler.updateData("/data/1?type=default");
+        currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
     });
     var clusterbutton1 = document.getElementById('cluster1');
     clusterbutton1.addEventListener('click', function (event) {
-        vis0.visualizationHandler.updateData("/data/1?type=default");
+        currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
 
     });
 };
@@ -286,4 +289,4 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
  */
 MatrixVisualization.prototype.deselectCell = function () {
     this.colorActiveCell(-1, -1);
-}
+};

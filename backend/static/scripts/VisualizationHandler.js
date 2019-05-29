@@ -98,6 +98,7 @@ var VisualizationHandler = function () {
             vis.click(xPos, yPos);
             this.colorActiveCell(vis.getCell(xPos, yPos));
         } catch (e) {
+            console.log(e);
             this.activeCell = null;
             //clicked nothing, unload active cell and clear overlay.
             for (let i = 0; i < this.visualizations.length; i++) {
@@ -221,7 +222,6 @@ var VisualizationHandler = function () {
             case "matrix":
                 let newMatrixVisualization = new MatrixVisualization();
                 this._createVis(newMatrixVisualization, v);
-                this.centerSelected(v);
                 break;
             case "roundNodeLink":
                 let newRoundNodeLink = new RoundNodeLink();
@@ -260,7 +260,8 @@ var VisualizationHandler = function () {
         visualizationObject.setCanvas(v);
         visualizationObject.setVH(this);
 
-        this.active.setZoomScale(1);
+        this.setSelectedZoomScale(1, v);
+        this.centerSelected(v);
     };
 
     /**
@@ -312,14 +313,11 @@ var VisualizationHandler = function () {
         let vis = this.visDictionary.get(v);
         if (this.jsonDictionary.contains(url)) {
             //data was already called
-            console.log("old");
-            visualizationObject.useJSON(this.jsonDictionary.get(url));
+            vis.useJSON(this.jsonDictionary.get(url));
         } else if (this.jsonWaitingList.contains(url)) {
             //data is being called
-            console.log("delay");
             this.jsonWaitingList.pushData(url, v);
         } else {
-            console.log("new");
             //create waiting list for this url
             this.jsonWaitingList.put(url, []);
             vis.setData(url);
@@ -340,15 +338,17 @@ var VisualizationHandler = function () {
 
     this.centerSelected = function (v) {
         let vis = this.visDictionary.get(v);
-        let id = v.parent;
-        let container = document.getElementById(id);
-
+        let container = v.canvas.parentElement;
         //use the container width / height otherwise it wont be centered.
         let position = P$.createVector(container.offsetWidth / 2, container.offsetHeight / 2);
-
         vis.setPosition(position);
     };
 
+    this.centerAll = function () {
+        for (let i = 0; i < this.visDictionary.size(); i++) {
+            this.centerSelected(this.visDictionary.keys()[i]);
+        }
+    }
 
     /**
      * Draw visualization mapped to the canvas
