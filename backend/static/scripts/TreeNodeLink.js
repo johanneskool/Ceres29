@@ -61,7 +61,7 @@ TreeNodeLink.prototype.setData = function (url) {
                 label: data.tags[index],
                 x: P$.random(-2000, 2000),
                 y: P$.random(-1000, 1000),
-                size: P$.random(2, 4),
+                size: 3,
                 color: '#0099ff'
             });
         }
@@ -89,38 +89,57 @@ TreeNodeLink.prototype.setData = function (url) {
 
         // Load the graph in sigma to draw
         s.graph.read(currentVisualization.graph);
+        // Make circle lay-out
+        var radius = 10;
+        s.graph.nodes().forEach(function(n, i, a) {
+            n.x = Math.cos(Math.PI * 2 * i / a.length);
+            n.y = Math.sin(Math.PI * 2 * i / a.length);
+        });
         // Ask sigma to draw it and refresh
         s.refresh();
 
         function bindEvents() {
-            let nodeId = "0";
-
         // Bind the events:
             s.bind('overNode outNode clickNode rightClickNode', function (e) {
                 console.log(e.type, e.data.node.label, e.data.captor);
             });
             s.bind('doubleClickNode', function (e) {
                 console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-                nodeId = e.data.node.id;
+                //Hides all nodes
                 s.graph.nodes().forEach(
                     function(ee) {
                         ee.hidden = true;
                 });
-                s.graph.nodes(e.data.node.id).x = 0;
-                s.graph.nodes(e.data.node.id).y = 0;
-                s.graph.nodes(e.data.node.id).hidden = false;
-                s.graph.childOf(nodeId).forEach(
-                    function (ee) {
-                        console.log(ee)
-                        s.graph.nodes(ee.data.node.id).hidden = false;
-                });
+
+                //Shows all first generation nodes
+                var nodeId = e.data.node.id,
+			        generation1 = s.graph.findNeighbors(nodeId);
+                console.log(generation1);
+			        generation1[nodeId] = e.data.node;
+			        let nr_of_nodes = generation1.length;
+		        s.graph.nodes().forEach(function(n, i, a) {
+			        if (generation1[n.id]) {
+                        n.hidden = false;
+                        n.x = 0.3 * Math.cos(Math.PI * 2 * i / a.length);
+                        n.y = 0.3 * Math.sin(Math.PI * 2 * i / a.length);
+                    }
+		        });
+
+		        //Places selected node in centre
+                let centreNode = s.graph.nodes(e.data.node.id);
+                centreNode.x = 0;
+                centreNode.y = 0;
+
                 s.refresh();
             });
             s.bind('doubleClickStage', function (e) {
                 console.log(e.type, e.data.captor);
+                //Shows all nodes in initial circle
                 s.graph.nodes().forEach(
-                    function(e) {
-                        e.hidden = false;
+                    function(n, i, a) {
+                        n.x = Math.cos(Math.PI * 2 * i / a.length);
+                        n.y = Math.sin(Math.PI * 2 * i / a.length);
+                        n.hidden = false;
                 });
                 s.refresh();
             });
@@ -138,17 +157,16 @@ TreeNodeLink.prototype.setData = function (url) {
     }
 };
 
-//Method for finding the nodes which the current node links to
-//Return them in an array
-sigma.classes.graph.addMethod('childOf', function(id) {
-    if (typeof id !== 'string')
-        throw 'childOf: the node id must be a string.';
-    let a = this.allNeighborsIndex[id],
-        target,
-        nodes = [];
-    for(target in a) {
-        nodes.push(target);
+sigma.classes.graph.addMethod('findNeighbors', function(nodeId) {
+	var k,
+		neighbors = {},
+		index = this.allNeighborsIndex[nodeId] || {};
+
+	for (k in index) {
+        if (k !== nodeId) {
+            neighbors[k] = this.nodesIndex[k];
+        }
     }
-    console.log(nodes);
-    return nodes;
+
+	return neighbors;
 });
