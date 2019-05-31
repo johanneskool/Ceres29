@@ -3,6 +3,7 @@
  * @author Samuel Oosterholt
  * @author Tristan Trouwem
  * @author Rink Pieters
+ * @author Johannes Kool
  */
 
 
@@ -274,11 +275,17 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // Handle the buttons for the clusters
     var clusterbutton0 = document.getElementById('cluster0');
     clusterbutton0.addEventListener('click', function (event) {
-        currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
+        // currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
+        let id = data_id;
+        let vistype = currentMatrix.vH.mainvis_type;
+        let clustering = currentMatrix.vH.clustering_type;
+        let trace = x;
+        alert("/subgraphs/" + id + "?type=" + vistype + "&clustering=" + clustering + "&trace=" + trace)
+        currentMatrix.vH.setData("/subgraphs/" + id + "?vistype=" + vistype + "&clustering=" + clustering + "&trace=" + trace, currentMatrix.canvas);
     });
     var clusterbutton1 = document.getElementById('cluster1');
     clusterbutton1.addEventListener('click', function (event) {
-        currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
+        currentMatrix.vH.setData("/subgraphs/" + 5 + "?vistype=default", currentMatrix.canvas);
 
     });
 };

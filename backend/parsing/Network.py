@@ -178,7 +178,7 @@ class Network:
             raise ReferenceError("This network does not contain any communities")
 
         if index >= len(self.communities):
-            raise IndexError('Índex is outside of community range')
+            raise IndexError('Index is outside of community range')
 
         subgraph = self.communities.subgraph(index)
 
