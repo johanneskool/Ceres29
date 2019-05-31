@@ -33,6 +33,7 @@
                             <input type=submit value=Upload class="btn btn-primary">
                         </div>
                     </div>
+                    <small id="fileinputNote" class="form-text"></small>
                 </form>
             </div>
 
@@ -42,9 +43,9 @@
                     shared by users of {{ config['APP_TITLE'] }} from all over the world. Commercial use of the uploaded
                     datasets may not be allowed, but feel free to explore these datasets and gain some new
                     insights. </p>
-                <form method=get enctype=multipart/form-data action="{{ url_for('vis') }}">
+                <form method=get class="needs-validation" enctype=multipart/form-data action="{{ url_for('vis') }}">
                     <div class="input-group">
-                        <select class="custom-select" id="data" name="data">
+                        <select required class="custom-select" id="data" name="data">
                             <option selected value="" disabled>Choose a file</option>
                             {% set loopvars = {'lastdate': ""} %}
                             {% for file in files_available %}
@@ -58,22 +59,21 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <select class="custom-select" id="vistype" name="vistype">
+                        <select required class="custom-select" id="sel_vistype" name="vistype" onchange="updateOrderingOptions(this);">
                             <option value="" disabled>Choose a visualisation</option>
-                            <option selected value="matrix">&nbsp;Adjacency Matrix</option>
-                            <option value="forceLink">&nbsp;Force-directed node-link</option>
-                            <option value="roundNodeLink">&nbsp;Round node-link</option>
+                            <option selected value="matrix">&nbsp;&nbsp;Adjacency Matrix</option>
+                            <option value="forceLink">&nbsp;&nbsp;Force-directed node-link</option>
+                            <option value="roundNodeLink">&nbsp;&nbsp;Round node-link</option>
                         </select>
-                    </div>
-                    <div class="input-group">
-                        <select class="custom-select" id="clustering" name="clustering">
+                        <select class="custom-select" id="sel_clustering" name="clustering">
                             <option value="" disabled>Choose a ordering</option>
-                            <option value="fiedler">Fiedler</option>
-                            <option value="pagerank">Pagerank</option>
-                            <option selected value="cluster">Clustered</option>
-                            <option value="lexicographic">Lexicographic</option>
-                            <option value="cluster_graph">Cluster-graph</option>
-                            <option value="default">As uploaded</option>
+                            <option value="n/a" disabled hidden>Not applicable</option>
+                            <option value="default">&nbsp;&nbsp;As uploaded</option>
+                            <option value="fiedler">&nbsp;&nbsp;Fiedler</option>
+                            <option value="pagerank">&nbsp;&nbsp;Pagerank</option>
+                            <option selected value="cluster">&nbsp;&nbsp;Clustered</option>
+                            <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
+                            <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
                         </select>
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">Load</button>

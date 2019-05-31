@@ -98,7 +98,7 @@ var VisualizationHandler = function () {
             vis.click(xPos, yPos);
             this.colorActiveCell(vis.getCell(xPos, yPos));
         } catch (e) {
-            console.log(e);
+            console.error(e);
             this.activeCell = null;
             //clicked nothing, unload active cell and clear overlay.
             for (let i = 0; i < this.visualizations.length; i++) {
@@ -137,7 +137,7 @@ var VisualizationHandler = function () {
             this.colorActiveCell(this.active.getCell(xPos, yPos));
             return;
         } catch (error) {
-            console.log(error);
+            console.error(error);
             //check if we have clicked on another vis, we do this by running through the array and checking for click errors.
             if (error instanceof RangeError) {
                 for (let i = 0; i <= this.visualizations.length; i++) {

@@ -52,6 +52,10 @@ body, main {
     background-color: #25274D !important;
 }
 
+.form-text {
+  padding-left: 3px;
+}
+
 .btn-primary {
     background-color: #2E9CCA;
     border-color: #25274D;
