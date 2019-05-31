@@ -252,15 +252,15 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // mark this cell
     this.colorActiveCell(x, y);
 
-    let from = this.dataJSON.tags[x];
+    let from = "Cluster #" + y;
     from = from.replace(/_/g, ' ');
-    let to = this.dataJSON.tags[y];
+    let to = "Cluster #" + x;
     from = '<button type="button" id="cluster0" value="' + from + '">' + from + '</button>';
     to = to.replace(/_/g, ' ');
     let weight = this.dataJSON.weights[y][x];  //we store it as weights[col][row], so get correct weight
     to = '<button type="button" id="cluster1" value="' + to + '">' + to + '</button>';
     // show debugging info in console
-    var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
+    var text = "Edge from :" + x + " to " + y + " has a weight of: " + weight;
     console.log(text);
     console.log('x cord: ' + x + ', y cord: ' + y);
 
@@ -273,21 +273,30 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;
     document.getElementById('matrix-visualization-edge-info-weight').innerHTML = weight;
     // Handle the buttons for the clusters
-    var clusterbutton0 = document.getElementById('cluster0');
-    clusterbutton0.addEventListener('click', function (event) {
-        // currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
-        let id = data_id;
-        let vistype = currentMatrix.vH.mainvis_type;
-        let clustering = currentMatrix.vH.clustering_type;
-        let trace = x;
-        alert("/subgraphs/" + id + "?type=" + vistype + "&clustering=" + clustering + "&trace=" + trace)
-        currentMatrix.vH.setData("/subgraphs/" + id + "?vistype=" + vistype + "&clustering=" + clustering + "&trace=" + trace, currentMatrix.canvas);
-    });
-    var clusterbutton1 = document.getElementById('cluster1');
-    clusterbutton1.addEventListener('click', function (event) {
-        currentMatrix.vH.setData("/subgraphs/" + 5 + "?vistype=default", currentMatrix.canvas);
+    if (currentMatrix.vH.clustering_type == 'cluster_graph') {
+        var clusterbutton0 = document.getElementById('cluster0');
+        clusterbutton0.addEventListener('click', function (event) {
+            // currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
+            let id = data_id;
+            let vistype = currentMatrix.vH.mainvis_type;
+            let clustering = currentMatrix.vH.clustering_type;
+            let trace = x;
+            url = "/subgraphs/" + id + "?type=" + vistype + "&clustering=" + clustering + "&trace=" + trace
+            history.pushState({}, "", url);
+            currentMatrix.vH.setData(url, currentMatrix.canvas);
+        });
+        var clusterbutton1 = document.getElementById('cluster1');
+        clusterbutton1.addEventListener('click', function (event) {
+            let id = data_id;
+            let vistype = currentMatrix.vH.mainvis_type;
+            let clustering = currentMatrix.vH.clustering_type;
+            let trace = y;
+            url = "/subgraphs/" + id + "?type=" + vistype + "&clustering=" + clustering + "&trace=" + trace
+            history.pushState({}, "", url);
+            currentMatrix.vH.setData(url, currentMatrix.canvas);
 
-    });
+        });
+    }
 };
 
 /**

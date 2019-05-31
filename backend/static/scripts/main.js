@@ -11,6 +11,7 @@
  * Main handler for the visualization canvas.
  * @type {VisualizationHandler}
  */
+
 var GVH = new VisualizationHandler();
 
 
