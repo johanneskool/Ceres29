@@ -110,7 +110,7 @@ MatrixVisualization.prototype.setData = function (url) {
  * @param {JSOS} dataJSON the JSON to load.
  */
 MatrixVisualization.prototype.useJSON = function (dataJSON) {
-    console.log(dataJSON);
+    console.groupCollapsed("Loading " + dataJSON.name);
     this.dataJSON = dataJSON;
     this.nodeCount = this.dataJSON.weights.length;
     this.minWeight = this.dataJSON.minWeight;
@@ -120,6 +120,7 @@ MatrixVisualization.prototype.useJSON = function (dataJSON) {
 
     document.getElementById('matrix-visualization-fileinfo-name').innerHTML = this.dataJSON.name;
     document.getElementById('matrix-visualization-fileinfo-type').innerHTML = this.dataJSON.type;
+    console.groupEnd();
 };
 
 
@@ -255,14 +256,16 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     let from = this.dataJSON.tags[x];
     from = from.replace(/_/g, ' ');
     let to = this.dataJSON.tags[y];
-    from = '<button type="button" id="cluster0" value="' + from + '">' + from + '</button>';
     to = to.replace(/_/g, ' ');
     let weight = this.dataJSON.weights[y][x];  //we store it as weights[col][row], so get correct weight
-    to = '<button type="button" id="cluster1" value="' + to + '">' + to + '</button>';
     // show debugging info in console
-    var text = "Edge from :" + from + " to " + to + " has a weight of: " + weight;
-    console.log(text);
+    var text = "Edge from '" + from + "' to '" + to + "' has a weight of: '" + weight + "'";
+    console.groupCollapsed(text);
     console.log('x cord: ' + x + ', y cord: ' + y);
+    console.groupEnd();
+
+    from = '<button type="button" id="cluster0" value="' + from + '">' + from + '</button>';
+    to = '<button type="button" id="cluster1" value="' + to + '">' + to + '</button>';
 
     //make this a scope variable
     let currentMatrix = this;
