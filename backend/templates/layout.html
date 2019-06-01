@@ -23,12 +23,6 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <!-- favicon (good browsers only) -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='styles/favicon.ico') }}">
 
-    <!-- including javascript scripts -->
-    <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/general.js') }}"></script>
-
-    <link rel="prefetch" href="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}" as="script">
     <link rel="prefetch" href="{{ url_for('static', filename='p5/p5.min.js') }}" as="script">
     <link rel="prefetch" href="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}" as="script">
     <link rel="prefetch" href="{{ url_for('static', filename='Sigma/sigma.min.js') }}" as="script">
@@ -43,11 +37,8 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <link rel="prefetch" href="{{ url_for('static', filename='scripts/main.js') }}" as="script">
     <link rel="prefetch" href="{{ url_for('static', filename='scripts/VisualizationClass.js') }}" as="script">
     <link rel="prefetch" href="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}" as="script">
-    <link rel="prefetch" href="{{ url_for('static', filename='scripts/ForceLinkDiagramVisClass.js') }}" as="script">
-    <link rel="prefetch" href="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}" as="script">
-    <link rel="prefetch" href="{{ url_for('static', filename='scripts/TreeNodeLink.js') }}" as="script">
-    
-    {% block scripts %}
+
+    {% block scripts_head %}
     {% endblock %}
 
 </head>
@@ -123,5 +114,11 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     <p>&copy; {{ config['APP_AUTHOR'] }} - {{ config['APP_TITLE'] + " " + config['APP_VERSION'] }}</p>
 </footer>
 
+<!-- including javascript scripts not neccessarily before body -->
+<script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/general.js') }}"></script>
+{% block scripts %}
+{% endblock %}
 </body>
 </html>
