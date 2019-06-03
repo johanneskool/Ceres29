@@ -17,6 +17,10 @@
     display: grid;
 }
 
+#canvas1 {
+    display: grid;
+}
+
 #defaultCanvas0, #defaultCanvas1 {
     grid-column: 1;
     grid-row: 1;
@@ -46,6 +50,10 @@ body, main {
 .navbar-dark {
     border-bottom: 2px solid #D6FFF6;
     background-color: #25274D !important;
+}
+
+.form-text {
+  padding-left: 3px;
 }
 
 .btn-primary {

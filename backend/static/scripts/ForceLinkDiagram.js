@@ -10,7 +10,7 @@ let url;
 
 function preload() {
     // get json data
-    url = "http://localhost:5555/static/json/f.json";
+    url = "http://localhost:5555/static/json/default.json";
     data = loadJSON(url);
 }
 

@@ -1,9 +1,12 @@
 {% extends "layout.html" %}
 
-{% block scripts %}
+{% block scripts_head %}
     <script type="text/javascript">
         var data_id = {{ data_id }};
     </script>
+{% endblock %}
+
+{% block scripts %}
     <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
@@ -21,6 +24,8 @@
     <script src="{{ url_for('static', filename='scripts/MatrixVisualization.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/ForceLinkDiagramVisClass.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/TreeNodeLink.js') }}"></script>
+    <script type="text/javascript">parentLoad();</script>
 {% endblock %}
 
 {% block content %}
@@ -28,38 +33,25 @@
     Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters, Fabienne vd Weide, Akam Bilbas
     -->
 
-    {% if data %}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12" style='height: calc(100% - 100px);'>
-                    <div class="wrapper" id="parentofcanvas">
-                        <div class="sidebar">
-                            <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
-                            <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
-                            <hr>
-                            <div id="matrix-visualization-edge-info" style="display: none">
-                                <h6>Edge information</h6>
-                                <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
-                                <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
-                                <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12" style='height: calc(100% - 100px);'>
+                <div class="wrapper" id="parentofcanvas">
+                    <div class="sidebar">
+                        <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
+                        <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
+                        <hr>
+                        <div id="matrix-visualization-edge-info" style="display: none">
+                            <h6>Edge information</h6>
+                            <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
+                            <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
+                            <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
 
-                            </div>
                         </div>
-                        <div id="canvas" style="overflow:hidden;"></div>
-                        <div id="canvas1" style="overflow:hidden;"></div>
                     </div>
                 </div>
             </div>
         </div>
-    {% else %}
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    Upload or choose a file to see a visualisation here. After choosing you will be automatically
-                    redirected to this page.
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    </div>
 
 {% endblock %}

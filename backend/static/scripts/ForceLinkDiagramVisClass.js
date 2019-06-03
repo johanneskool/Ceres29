@@ -36,7 +36,7 @@ ForceLink.prototype.setData = function (url) {
             {
                 graph: data,
                 renderer: {
-                    container: document.getElementById(currentVisualization.canvas.canvas),
+                    container: document.getElementById(currentVisualization.canvas.parent),
                     type: 'webGL'
                 },
                 settings: {
@@ -120,7 +120,7 @@ ForceLink.prototype.setData = function (url) {
         });
         s.bind('clickNode', function (e) {
             //colors the edges when clicked on a node
-            s.graph.adjacentEdges(nodeId).forEach(
+            s.graph.adjacentEdgesOut(nodeId).forEach(
                 function (ee) {
                     ee.color = "#FFFFFF";
                 }
@@ -177,7 +177,7 @@ ForceLink.prototype.setData = function (url) {
 //Method for finding the adjacent edges return them in an array
 sigma.classes.graph.addMethod('adjacentEdgesOut', function(id) {
     if (typeof id !== 'string')
-        throw 'adjacentEdges: the node id must be a string.';
+        throw 'adjacentEdgesOut: the node id must be a string.';
     let a = this.allNeighborsIndex[id],
         eid,
         target,

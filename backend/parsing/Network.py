@@ -64,7 +64,7 @@ class Network:
         return g
 
     @property
-    def __json_string__(self):
+    def json_string(self):
         """
         Converts this network to a json string
 
@@ -94,7 +94,7 @@ class Network:
         @:returns nothing
         """
 
-        jsonstring = self.__json_string__
+        jsonstring = self.json_string
         with open(filename, "w+", encoding='utf-8') as f:
             f.write(jsonstring)
 
@@ -178,11 +178,11 @@ class Network:
             raise ReferenceError("This network does not contain any communities")
 
         if index >= len(self.communities):
-            raise IndexError('Índex is outside of community range')
+            raise IndexError('Index is outside of community range')
 
         subgraph = self.communities.subgraph(index)
 
-        return SubNetwork(self.name + "." + index, subgraph)
+        return SubNetwork(self.name + "." + str(index), subgraph)
 
 
 class TopNetwork(Network):
@@ -249,6 +249,7 @@ class TopNetwork(Network):
         if len(self.communities) > 1:
             cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
             cluster_network = SubNetwork(name, cluster_graph)
+            cluster_network.type = 'Cluster graph'
             cluster_network.save_as_json(
                 os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster_graph'])
             )

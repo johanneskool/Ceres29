@@ -58,7 +58,6 @@ Visualization.prototype.getCanvas = function () {
  * @param {canvas} p5canvas - canvas to draw the visualization on.
  */
 Visualization.prototype.setCanvas = function (p5canvas) {
-    console.log(p5canvas, this);
     this.canvas = p5canvas;
 };
 
@@ -204,7 +203,7 @@ Visualization.prototype.click = function (posX, posY) {
  * @abstract
  */
 Visualization.prototype.deselectCell = function () {
-}
+};
 
 
 /**
