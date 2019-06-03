@@ -128,8 +128,27 @@ Visualization.prototype.load = function () {
  * @param url
  */
 Visualization.prototype.setData = function (url) {
-    this.data = url;
+    P$.loadJSON(url, loadNodes, loadFailed);
+
+    //the json callback forgets what matrix called it.
+    var currentVisualization = this;
+
+    function loadNodes(dataJSON) {
+        //data is new so send the json to load.
+        currentVisualization.vH.jsonDictionary.put(url, dataJSON);
+
+        //resolve waiting list for this data if applicable.
+        currentVisualization.vH.resolveWaitingList(url);
+
+        currentVisualization.useJSON(dataJSON);
+    }
+
+    function loadFailed(response) {
+        errorMessage("There was an error getting the data. Perhaps we requested a non-existing data-type. If this issue persists, try uploading the file again.");
+    }
+
 };
+
 
 /**
  * Should draw the image to this.canvas.
@@ -212,5 +231,5 @@ Visualization.prototype.deselectCell = function () {
  * @abstract
  */
 Visualization.prototype.useJSON = function (JSON) {
-
+    console.log("Absract call");
 };

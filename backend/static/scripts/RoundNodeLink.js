@@ -40,62 +40,55 @@ var RoundNodeLink = function () {
 RoundNodeLink.prototype = Object.create(Visualization.prototype);
 RoundNodeLink.prototype.constructor = RoundNodeLink;
 
+RoundNodeLink.prototype.useJSON = function (data) {
+    let weights = data["weights"];
+    console.log(data['minWeight'], data['maxWeight']);
 
-/**
- * Updates the data.
- * @param {url} url the json url of the data
- */
-RoundNodeLink.prototype.setData = function (url) {
-    console.log('Start setting data');
-    let currentVisualization = this;
-    P$.loadJSON(url, loadNodes);
+    let number = 0;
 
-    function loadNodes(data) {
-        let weights = data["weights"];
-        console.log(data['minWeight'], data['maxWeight']);
+    for (let node_index in weights) {
+        let new_node = new Node(
+            node_index, // node id
+            data['tags'][node_index], // node name/label
+            number,    // number in circle
+            number * 2 * Math.PI / (Math.min(Object.keys(weights).length, this.limit) + 1),
+            this.circleLocation,
+            this.canvas,
+            data['minWeight'],
+            data['maxWeight']
+        );
+        this.nodes.push(new_node); // put in array
+        number++;
+        if (number > this.limit) {
+            break; // stop adding nodes if the limit of nodes is reached
+        }
+    }
 
-        let number = 0;
-
-        for (let node_index in weights) {
-            let new_node = new Node(
-                node_index, // node id
-                data['tags'][node_index], // node name/label
-                number,    // number in circle
-                number * 2 * Math.PI / (Math.min(Object.keys(weights).length, currentVisualization.limit) + 1),
-                currentVisualization.circleLocation,
-                currentVisualization.canvas,
-                data['minWeight'],
-                data['maxWeight']
-            );
-            currentVisualization.nodes.push(new_node); // put in array
-            number++;
-            if (number > currentVisualization.limit) {
-                break; // stop adding nodes if the limit of nodes is reached
+    // create the outgoing edges
+    this.nodes.forEach((node) => {
+        let outgoing = weights[node.id];
+        for (let i = 0; i < outgoing.length; i++) {
+            let weight = outgoing[i];
+            let toNode;
+            // find corresponding node (not optimal)
+            if (weight > 0) {
+                this.nodes.forEach((some_node) => {
+                    if(some_node.number === i
+            )
+                {
+                    toNode = some_node;
+                }
+            });
+                let edge = new OutGoingEdge(weight, toNode);
+                node.outGoingEdges.push(edge);
             }
         }
+    });
+    this.currentActive = this.nodes[0];
+    this.nodes[0].active = true;
 
-        // create the outgoing edges
-        currentVisualization.nodes.forEach((node) => {
-            let outgoing = weights[node.id];
-            for (let i = 0; i < outgoing.length; i++) {
-                let weight = outgoing[i];
-                let toNode;
-                // find corresponding node (not optimal)
-                if (weight > 0) {
-                    currentVisualization.nodes.forEach((some_node) => {
-                        if (some_node.number === i) {
-                            toNode = some_node;
-                        }
-                    });
-                    let edge = new OutGoingEdge(weight, toNode);
-                    node.outGoingEdges.push(edge);
-                }
-            }
-        });
-        currentVisualization.currentActive = currentVisualization.nodes[0];
-        currentVisualization.nodes[0].active = true;
-    }
 };
+
 
 /**
  * Draw the visualization.

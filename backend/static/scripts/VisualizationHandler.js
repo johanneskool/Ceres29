@@ -218,6 +218,7 @@ var VisualizationHandler = function () {
      * @param v
      */
     this.newVisualization = function (visualization, v) {
+        console.log(visualization);
         switch (visualization) {
             case "matrix":
                 let newMatrixVisualization = new MatrixVisualization();

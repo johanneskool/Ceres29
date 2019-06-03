@@ -44,7 +44,7 @@ var visualizationSketch = function (v) {
         //append sketch to given container
         container = pipeline.pop();
         container.appendChild(v.canvas);
-        v.canvas.style.visibility = "visible"
+        v.canvas.style.visibility = "visible";
         v.colorMode(v.HSL, 100);
 
         v.frameRate(999);
@@ -87,7 +87,6 @@ var visualizationSketch = function (v) {
         //I can only create vectors in a function. (or I would have to namespace main.js, and I wont.)
         v.oldMouse = v.createVector();
         v.newMouse = v.createVector();
-        gType = null;
     };
 
     /**
@@ -226,6 +225,7 @@ var visualizationSketch = function (v) {
  * @return {p5}
  */
 var createVisCanvas = function (type, div) {
+    console.log(gType);
     gType.push(type);
     canvasContainer = document.createElement("div");
     canvasContainer.id = div;
