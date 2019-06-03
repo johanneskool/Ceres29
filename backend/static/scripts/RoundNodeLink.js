@@ -21,6 +21,11 @@ var RoundNodeLink = function () {
     this.tags = [];
 
     /**
+     * Determines how fast to spin and in which direction
+     */
+    this.rotationVector = 0.1;
+
+    /**
      * All variables that describe the circle around which the nodes are drawn
      */
     this.circleRadius = Math.min(P$.windowWidth / 3, P$.windowHeight / 3);
@@ -106,7 +111,7 @@ RoundNodeLink.prototype.draw = function () {
     // rotate all nodes if needed
     if (this.currentActive && this.currentActive.angle > 0.1) {
         this.nodes.forEach(node => {
-            node.angle = (node.angle + 0.1) % (Math.PI * 2);
+            node.angle = ((node.angle + this.rotationVector) % (Math.PI * 2) + Math.PI*2) % (Math.PI*2);
         })
     }
 };
@@ -135,9 +140,17 @@ RoundNodeLink.prototype.getCell = function (xCord, yCord) {
 RoundNodeLink.prototype.click = function (xCord, yCord) {
     this.nodes.forEach( (node) => {
         if (P$.dist(node.locationX(), node.locationY(), xCord, yCord) < node.radius) {
+            // set new node active
             this.currentActive.active = false;
             this.currentActive = node;
             this.currentActive.active = true;
+
+            // update rotationVector direction
+            if (this.currentActive.isOnBottom()) {
+                this.rotationVector = -Math.abs(this.rotationVector);
+            } else {
+                this.rotationVector = Math.abs(this.rotationVector);
+            }
         }
     });
 };
@@ -189,6 +202,16 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas, minWeightVal
         return Math.sin(this.angle) * this.outsideRadius(text) + this.outsideCircleMiddle.y;
     };
 
+    this.isOnBottom = function () {
+        // returns true if node is on the bottom half of the circle
+        return !(this.angle > Math.PI);
+    };
+
+    this.isOnLeft = function () {
+        // returns true if node is on left half of circle
+        return (this.angle > (Math.PI/2) && this.angle < (3*(Math.PI/2)));
+    };
+
     this.drawNode = function () {
         this.canvas.stroke(0, 0, 0);
         this.canvas.circle(this.locationX(), this.locationY(), this.radius);
@@ -221,7 +244,7 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas, minWeightVal
                         this.canvas.stroke('#000000');
                         this.canvas.stroke(P$.getWeightedColor(edgeWeight, this.minWeightValue, this.maxWeightValue))
                     } else {
-                        this.canvas.stroke('#CCCCCC')
+                        this.canvas.stroke('#CCCCCC');
                     }
                     this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
                         toNode.locationX(), toNode.locationY(), toNode.locationX(), toNode.locationY());
