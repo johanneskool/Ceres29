@@ -31,12 +31,13 @@ ForceLink.prototype.setData = function (url) {
             nodes: [],
             edges: []
         };
+        console.log(currentVisualization.canvas.canvas);
         //setup for sigma with setting for the graph
         s = new sigma(
             {
                 graph: data,
                 renderer: {
-                    container: document.getElementById(currentVisualization.canvas.parent),
+                    container: currentVisualization.canvas.canvas.parentElement,
                     type: 'webGL'
                 },
                 settings: {
@@ -61,7 +62,7 @@ ForceLink.prototype.setData = function (url) {
                 label: data.tags[index],
                 x: P$.random(-2000, 2000),
                 y: P$.random(-1000, 1000),
-                size: P$.random(2, 4)
+                size: P$.random(4, 6)
             });
         }
 
