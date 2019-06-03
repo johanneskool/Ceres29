@@ -49,6 +49,8 @@ function updateOrderingOptions(vistype_select) {
         enableOrderings(['default']);
     } else if (type == "roundNodeLink") {
         enableOrderings([]);
+    } else if (type == "treeNodeLink") {
+        enableOrderings(['default']);
     } else {
         enableOrderings();
         throw "Unknown ordering type. Showing all options.";
