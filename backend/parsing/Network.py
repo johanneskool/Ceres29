@@ -168,7 +168,9 @@ class Network:
         self.graph = self.graph.permute_vertices(order)
 
     def reorder_with_clustering(self):
-        vertices = [vtx for cluster in self.communities for vtx in cluster]
+        clusters = list(self.communities)
+        clusters.sort(key=len, reverse=True)
+        vertices = [vtx for cluster in clusters for vtx in cluster]
         order = [vertices.index(i) for i in range(self.graph.vcount())]
         self.graph = self.graph.permute_vertices(order)
 
