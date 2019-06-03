@@ -46,9 +46,9 @@ function updateOrderingOptions(vistype_select) {
     if (type == "matrix") {
         enableOrderings();
     } else if (type == "forceLink") {
-        enableOrderings(['default']);
+        enableOrderings(['cluster']);
     } else if (type == "roundNodeLink") {
-        enableOrderings([]);
+        enableOrderings();
     } else if (type == "treeNodeLink") {
         enableOrderings(['default']);
     } else {
