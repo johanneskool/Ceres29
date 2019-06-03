@@ -10,6 +10,20 @@ var RoundNodeLink = function () {
      * @type {boolean}
      */
     this.loaded = true;
+    /**
+     * Minimum and maximum weight of edge
+     * Should be updated in useJSON
+     */
+    this.minWeight = 0;
+    this.maxWeight = 1000;
+
+    /**
+     * Minimum weight for edge to be shown
+     * @type {number}
+     */
+    this.filterWeightMin = 0.5;
+    this.filterWeightMax = 10000;
+
 
     /**
      * Where the drawRoundNodeLink should start drawing.
@@ -32,6 +46,7 @@ var RoundNodeLink = function () {
     this.setPosition(P$.createVector(P$.windowWidth / 2, P$.windowHeight / 2));
     this.circleLocation = this.getPosition();
 
+
     this.currentActive = null; // node which is clicked
     this.limit = 100; // at most 100 nodes can be put on the circle
     console.log("Constructor finished.")
@@ -42,7 +57,21 @@ RoundNodeLink.prototype.constructor = RoundNodeLink;
 
 RoundNodeLink.prototype.useJSON = function (data) {
     let weights = data["weights"];
-    console.log(data['minWeight'], data['maxWeight']);
+    this.minWeight = data['minWeight'];
+    this.maxWeight = data['maxWeight'];
+
+    /**
+     * Create sliders for filtering
+     * @type {p5.slider}
+     */
+    console.log((this.maxWeight-this.minWeight)/2);
+    this.minEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(this.maxWeight-this.minWeight)/4, "any");
+    this.minEdgeWeightFilterSlider.value(String(this.minWeight + this.maxWeight-this.minWeight)/4);
+    this.minEdgeWeightFilterSlider.parent(document.getElementById("minEdgeWeightFilter"));
+    // max
+    this.maxEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(3*(this.maxWeight-this.minWeight)/4), "any");
+    this.maxEdgeWeightFilterSlider.value(String(this.minWeight + 3*(this.maxWeight-this.minWeight)/4));
+    this.maxEdgeWeightFilterSlider.parent(document.getElementById("maxEdgeWeightFilter"));
 
     let number = 0;
 
@@ -52,10 +81,7 @@ RoundNodeLink.prototype.useJSON = function (data) {
             data['tags'][node_index], // node name/label
             number,    // number in circle
             number * 2 * Math.PI / (Math.min(Object.keys(weights).length, this.limit) + 1),
-            this.circleLocation,
-            this.canvas,
-            data['minWeight'],
-            data['maxWeight']
+            this,
         );
         this.nodes.push(new_node); // put in array
         number++;
@@ -96,6 +122,13 @@ RoundNodeLink.prototype.useJSON = function (data) {
 RoundNodeLink.prototype.draw = function () {
     this.canvas.noFill();
     this.canvas.background(144, 14, 144);
+
+    try {
+        this.filterWeightMin = this.minEdgeWeightFilterSlider.value();
+        this.filterWeightMax = this.maxEdgeWeightFilterSlider.value();
+    } catch {
+        // not yet defined
+    }
 
     // draw each node
     this.nodes.forEach(node => {
@@ -149,42 +182,36 @@ RoundNodeLink.prototype.click = function (xCord, yCord) {
 };
 
 
-RoundNodeLink.prototype.zoom = function (a,b,c) {}; // no zoom (maybe later)
-
-
-
 /**
  * The node which has to be drawn (This is kind of ugly right now)
  * @param id integer with with id of node
  * @param name of node
  * @param number which it is in circle
  * @param angle at which it is currently drawn
- * @param outsideCircleMiddle pVector with middle point around which to draw nodes
+ * @param nodelink instance
  * @constructor
  */
-function Node(id, name, number, angle, outsideCircleMiddle, canvas, minWeightValue, maxWeightValue) {
+function Node(id, name, number, angle, nodelink) {
     this.number = number;
     this.id = id;
     this.name = name;
 
-    this.minWeightValue = minWeightValue;
-    this.maxWeightValue = maxWeightValue;
-
     this.angle = angle;
-    this.outsideCircleMiddle = outsideCircleMiddle;
+    this.outsideCircleMiddle = nodelink.circleLocation;
 
     this.radius = 10; // radius of node
     this.active = false;
     this.outGoingEdges = []; // set manually after making nodes
 
-    this.canvas = canvas;
+    this.canvas = nodelink.canvas;
+    this.nodelink = nodelink;
 
 
     this.outsideRadius = function (text = false) {
         if (text === true) {
-            return (Math.min(this.canvas.width, this.canvas.height) / 3 + 10);
+            return (Math.min(this.canvas.width, this.canvas.height) / 4 + 10);
         } else {
-            return Math.min(this.canvas.width, this.canvas.height) / 3;
+            return Math.min(this.canvas.width, this.canvas.height) / 4;
         }
     };
 
@@ -230,12 +257,12 @@ function Node(id, name, number, angle, outsideCircleMiddle, canvas, minWeightVal
             try {
                 let toNode = this.outGoingEdges[nodeIndex].toNode;
                 let edgeWeight = this.outGoingEdges[nodeIndex].weight;
-                if (edgeWeight !== 0) {
+                if (edgeWeight > this.nodelink.filterWeightMin && edgeWeight < this.nodelink.filterWeightMax) {
                     this.canvas.push();
                     this.canvas.noFill();
                     if (solid) {
                         this.canvas.stroke('#000000');
-                        this.canvas.stroke(P$.getWeightedColor(edgeWeight, this.minWeightValue, this.maxWeightValue))
+                        this.canvas.stroke(P$.getWeightedColor(edgeWeight, this.nodelink.minWeight, this.nodelink.maxWeight))
                     } else {
                         this.canvas.stroke('#CCCCCC');
                     }
