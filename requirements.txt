@@ -13,5 +13,5 @@ Werkzeug==0.15.2
 scipy==1.2.1
 flask-sqlalchemy==2.4.0
 flask_compress==1.4.0
-pycairo==1.18.0
+# pycairo==1.18.0 #Pycairo isn't neccessary since we don't visualise on the server
 python-igraph==0.7.1.post6
