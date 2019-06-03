@@ -16,6 +16,7 @@ filenames = {
     'lexicographic': 'lexicographic.json',
     'pagerank': 'pagerank.json',
     'cluster': 'cluster.json',
+    'degrees': 'degrees.json',
     'cluster_graph': 'cluster_graph.json'
 }
 
@@ -111,6 +112,8 @@ class Network:
 
     def reorder_with_fiedler(self):
         """
+        OLD DO NOT USE
+
         Reorder the vertices in the graph based on the Fiedler vector
 
         @:returns nothing
@@ -138,6 +141,18 @@ class Network:
         vertices = np.argsort(fiedler).tolist()
         order = [vertices.index(i) for i in range(self.graph.vcount())]
         # sort matrix on both the rows and columns
+        self.graph = self.graph.permute_vertices(order)
+
+    def reorder_with_degrees(self):
+        """
+        Reorder the vertices in the graph based on the degree of the vertices
+
+        @:returns nothing
+        """
+
+        degrees = self.graph.degree()
+        vertices = np.argsort(degrees).tolist()[::-1]
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
         self.graph = self.graph.permute_vertices(order)
 
     def reorder_with_pagerank(self):
@@ -220,11 +235,11 @@ class TopNetwork(Network):
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['lexicographic'])
         )
 
-        # convert to fiedler
-        self.reorder_with_fiedler()
-        self.type = 'Reordered using Fiedler-vector'
+        # convert to degrees
+        self.reorder_with_degrees()
+        self.type = 'Reordered using the degree distribution'
         self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['fiedler'])
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['degrees'])
         )
 
         # convert to pagerank

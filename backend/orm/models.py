@@ -58,5 +58,6 @@ class File(db.Model):
     def get_pickle(self):
         with open(os.path.join(self.location_path, "network.p"), 'rb') as f:
             return pickle.load(f)
+
     def __repr__(self):
         return "<File {}>".format(self.name)
