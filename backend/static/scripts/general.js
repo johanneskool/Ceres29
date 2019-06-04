@@ -112,3 +112,7 @@ function formatBytes(bytes, decimals = 2) {
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+function visReorder(element) {
+    GVH.updateData("/data/" + data_id + "?type=" + element.value);
+}

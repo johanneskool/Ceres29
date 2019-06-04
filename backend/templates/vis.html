@@ -54,6 +54,19 @@
                         <p>Min</p><div id="minEdgeWeightFilter"></div>
                         <p>Max</p><div id="maxEdgeWeightFilter"></div>
                         <hr>
+                        <h6>Reorder</h6>
+                        <div class="input-group">
+                          <select class="custom-select" id="vis_sel_clustering" name="clustering" onchange="visReorder(this);">
+                              <option value="" disabled>Choose a ordering</option>
+                              <option value="n/a" disabled hidden>Not applicable</option>
+                              <option value="default">&nbsp;&nbsp;As uploaded</option>
+                              <option value="pagerank">&nbsp;&nbsp;Pagerank</option>
+                              <option selected value="cluster">&nbsp;&nbsp;Clustered</option>
+                              <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
+                              <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
+                              <option value="degrees">&nbsp;&nbsp;Sort on degree</option>
+                          </select>
+                        </div>
                     </div>
                 </div>
             </div>
