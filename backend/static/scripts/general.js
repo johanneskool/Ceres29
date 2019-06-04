@@ -114,5 +114,16 @@ function formatBytes(bytes, decimals = 2) {
 }
 
 function visReorder(element) {
+    updateLoadingState(true);
     GVH.updateData("/data/" + data_id + "?type=" + element.value);
+}
+
+function updateLoadingState(isLoading) {
+    Array.prototype.forEach.call(document.getElementsByClassName("disabled-when-loading"), function(element) {
+      if (isLoading == true) {
+        element.setAttribute("disabled", null);
+      } else {
+        element.removeAttribute("disabled");
+      }
+    });
 }

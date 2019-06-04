@@ -382,6 +382,7 @@ var VisualizationHandler = function () {
             //wipe waitinglist
             this.jsonWaitingList.remove(data);
         }
+        updateLoadingState(false);
     }
 };
 
