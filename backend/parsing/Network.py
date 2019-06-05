@@ -17,6 +17,7 @@ filenames = {
     'pagerank': 'pagerank.json',
     'cluster': 'cluster.json',
     'degrees': 'degrees.json',
+    'betweenness': 'betweenness.json',
     'cluster_graph': 'cluster_graph.json'
 }
 
@@ -163,11 +164,27 @@ class Network:
         """
 
         scores = self.graph.pagerank(weights=self.graph.es["weight"])
-        vertices = np.argsort(scores).tolist()
+        vertices = np.argsort(scores).tolist()[::-1]
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
+        self.graph = self.graph.permute_vertices(order)
+
+    def reorder_with_betweenness(self):
+        """
+        Reorder the vertices in the graph based on the betweenness of the vertices
+
+        @:returns nothing
+        """
+        betweenness = self.graph.betweenness(weights='weight')
+        vertices = np.argsort(betweenness).tolist()[::-1]
         order = [vertices.index(i) for i in range(self.graph.vcount())]
         self.graph = self.graph.permute_vertices(order)
 
     def reorder_with_clustering(self):
+        """
+        Reorder the matrix so the vertices are grouped in their clusters/communities
+
+        @:returns nothing
+        """
         clusters = list(self.communities)
         clusters.sort(key=len, reverse=True)
         vertices = [vtx for cluster in clusters for vtx in cluster]
@@ -180,6 +197,7 @@ class Network:
 
         @:returns nothing
         """
+
         self.communities = self.graph.as_undirected(combine_edges="sum").community_multilevel(weights="weight")
 
     def get_subnetwork(self, index):
@@ -242,6 +260,13 @@ class TopNetwork(Network):
         self.type = 'Reordered using the degree distribution'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['degrees'])
+        )
+
+        # convert to betweenness
+        self.reorder_with_betweenness()
+        self.type = 'Reordered using betweenness'
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['betweenness'])
         )
 
         # convert to pagerank

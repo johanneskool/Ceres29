@@ -53,7 +53,7 @@ def data(id):
     clustertype = request.args.get('type')
     file = File.query.get(id)
     #If unknown type do a 400 Bad Request; type does not exist
-    if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'default']: abort(400)
+    if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'betweenness', 'default']: abort(400)
 
     return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), clustertype + ".json")
 
