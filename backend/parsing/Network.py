@@ -17,6 +17,7 @@ filenames = {
     'pagerank': 'pagerank.json',
     'cluster': 'cluster.json',
     'degrees': 'degrees.json',
+    'betweenness': 'betweenness.json',
     'cluster_graph': 'cluster_graph.json'
 }
 
@@ -163,7 +164,13 @@ class Network:
         """
 
         scores = self.graph.pagerank(weights=self.graph.es["weight"])
-        vertices = np.argsort(scores).tolist()
+        vertices = np.argsort(scores).tolist()[::-1]
+        order = [vertices.index(i) for i in range(self.graph.vcount())]
+        self.graph = self.graph.permute_vertices(order)
+
+    def reorder_with_betweenness(self):
+        betweenness = self.graph.betweenness(weights='weight')
+        vertices = np.argsort(betweenness).tolist()[::-1]
         order = [vertices.index(i) for i in range(self.graph.vcount())]
         self.graph = self.graph.permute_vertices(order)
 
@@ -242,6 +249,13 @@ class TopNetwork(Network):
         self.type = 'Reordered using the degree distribution'
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['degrees'])
+        )
+
+        # convert to betweenness
+        self.reorder_with_betweenness()
+        self.type = 'Reordered using betweenness'
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['betweenness'])
         )
 
         # convert to pagerank
