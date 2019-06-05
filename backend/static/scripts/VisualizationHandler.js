@@ -245,8 +245,6 @@ var VisualizationHandler = function () {
         }
     };
 
-    this.test = [];
-
     /**
      * Create vis Object
      * @private

@@ -45,36 +45,40 @@ MatrixVisualization.prototype.load = function () {
     this.startPositon = 0;
     this.updateNodeSize();
 
-    //create a matrix and the buffer graphics
-    const matrixSize = this.nodeCount * this.nodeSize;
-    this.matrix = P$.createGraphics(matrixSize, matrixSize);
-    this.matrix.colorMode(P$.HSL, 100);
-    this.matrix.textSize(this.nodeSize / 2);
-    this.matrix.imageMode(P$.CENTER);
-    this.matrix.noStroke();
+    if (this.matrix == undefined) {
+        //create a matrix and the buffer graphics
+        const matrixSize = this.nodeCount * this.nodeSize;
+        this.matrix = P$.createGraphics(matrixSize, matrixSize);
+        this.matrix.colorMode(P$.HSL, 100);
+        this.matrix.textSize(this.nodeSize / 2);
+        this.matrix.imageMode(P$.CENTER);
+        this.matrix.noStroke();
+
+        //where we can show selected nodes.
+        this.overlayGraphics = P$.createGraphics(matrixSize, matrixSize);
+        this.overlayGraphics.imageMode(P$.CORNER);
+        this.overlayGraphics.colorMode(P$.HSL, 100);
+        this.overlayGraphics.noStroke();
+
+        //unused since the later updates.
+        this.overlayRatio = 1;
+    }
+
+    console.log(this.position);
 
     //initial matrix size
     this.drawWidth = P$.ceil(P$.min(P$.windowHeight, P$.windowWidth) / 1.3);
-
+    this.matrix.background(0, 0, 0);
     //draw the nodes from the data to the buffer
     this.drawMatrix(this);
-
-    //where we can show selected nodes.
-    this.overlayGraphics = P$.createGraphics(matrixSize, matrixSize);
-    this.overlayGraphics.imageMode(P$.CORNER);
-    this.overlayGraphics.colorMode(P$.HSL, 100);
-    this.overlayGraphics.noStroke();
-
-    //unused since the later updates.
-    this.overlayRatio = 1;
-    console.log(this.position);
 };
 
 /**
  * Function to update the node size of the matrix.
  */
 MatrixVisualization.prototype.updateNodeSize = function () {
-    this.nodeSize = P$.floor(this.maxSize / this.nodeCount);
+    // this.nodeSize = P$.floor(this.maxSize / this.nodeCount);
+    this.nodeSize = 1;
 };
 
 /**
@@ -152,10 +156,11 @@ MatrixVisualization.prototype.drawMatrix = function () {
     this.matrix.rect(0, 0, this.maxSize, this.maxSize);
 
     P$.colorMode(P$.HSB, 100);
+    this.matrix.loadPixels();
+    console.log(this.matrix.pixels)
 
     //loop through all the edges and create a rectangle.
-    for (let col = this.startPositon; col < this.nodeCount; col++) {
-        this.matrix.push();
+    for (let col = 0; col < this.nodeCount; col++) {
         for (let row = 0; row < this.nodeCount; row++) {
             if (this.dataJSON.weights[col][row] === 0) continue;
             let weight; //for use in the for-loop
@@ -164,11 +169,20 @@ MatrixVisualization.prototype.drawMatrix = function () {
             //use the weight to color the cell.
             let fillColor = P$.getWeightedColor(weight, min, max);
 
-            this.matrix.fill(fillColor);
-            this.matrix.rect(this.nodeSize * col, this.nodeSize * row, this.nodeSize, this.nodeSize);
+
+            let index = 4 * row * this.nodeCount + 4 * col
+
+            this.matrix.pixels[index] = P$.red(fillColor);
+            this.matrix.pixels[index + 1] = P$.green(fillColor);
+            this.matrix.pixels[index + 2] = P$.blue(fillColor);
+            this.matrix.pixels[index + 3] = 1000;
+
+
+            // this.matrix.rect(this.nodeSize * col, this.nodeSize * row, this.nodeSize, this.nodeSize);
         }
     }
 
+    this.matrix.updatePixels();
     this.loaded = true;
     this.vH.setLoadedVisualization(true);
 };
