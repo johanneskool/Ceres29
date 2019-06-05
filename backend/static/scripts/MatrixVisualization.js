@@ -257,7 +257,7 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     from = from.replace(/_/g, ' ');
     let to = "cluster #" + y;
     to = to.replace(/_/g, ' ');
-    let weight = this.dataJSON.weights[y][x];  //we store it as weights[col][row], so get correct weight
+    let weight = this.dataJSON.weights[x][y];  //we store it as weights[col][row], so get correct weight
     // show debugging info in console
     var text = "Edge from '" + from + "' to '" + to + "' has a weight of: '" + weight + "'";
     console.groupCollapsed(text);
