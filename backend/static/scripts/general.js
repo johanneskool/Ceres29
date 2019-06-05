@@ -43,14 +43,15 @@ function updateOrderingOptions(vistype_select) {
     let type = vistype_select.value;
     let ordering_element = vistype_select.nextElementSibling; //get the ordering selector
       //ordering_element = document.getElementById("sel_clustering")
+      //['default', 'pagerank', 'cluster', 'lexicographic', 'cluster_graph', 'degrees', 'betweenness']
     if (type == "matrix") {
         enableOrderings();
     } else if (type == "forceLink") {
-        enableOrderings(['cluster']);
+        enableOrderings(['default', 'pagerank', 'cluster', 'cluster_graph']);
     } else if (type == "roundNodeLink") {
-        enableOrderings();
+        enableOrderings(['default', 'pagerank', 'cluster', 'cluster_graph', 'degrees', 'betweenness']);
     } else if (type == "treeNodeLink") {
-        enableOrderings(['default']);
+        enableOrderings(['n/a']);
     } else {
         enableOrderings();
         throw "Unknown ordering type. Showing all options.";
@@ -147,10 +148,3 @@ function toggleFullScreen(fullScreen = null) {
     }
     return true;
 }
-
-$(window).on('load', function() {
-    if (document.fullscreenEnabled == true) { //we can enable full screen
-        document.getElementById("divViewOptions").style.display = "inherit";
-        toggleFullScreen(false); //exit full screen if we have it opened somewhere
-    }
-});

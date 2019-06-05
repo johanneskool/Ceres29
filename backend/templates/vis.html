@@ -25,7 +25,14 @@
     <script src="{{ url_for('static', filename='scripts/ForceLinkDiagramVisClass.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/RoundNodeLink.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/TreeNodeLink.js') }}"></script>
-    <script type="text/javascript">parentLoad();</script>
+    <script type="text/javascript">parentLoad();
+      $(window).on('load', function() {
+          if (document.fullscreenEnabled == true) { //we can enable full screen
+              document.getElementById("divViewOptions").style.display = "inherit";
+              toggleFullScreen(false); //exit full screen if we have it opened somewhere
+          }
+      });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -65,6 +72,7 @@
                               <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
                               <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
                               <option value="degrees">&nbsp;&nbsp;Sort on degree</option>
+                              <option value="betweenness">&nbsp;&nbsp;Betweenness</option>
                           </select>
                         </div>
 
