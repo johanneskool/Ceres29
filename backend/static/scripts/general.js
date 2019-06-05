@@ -127,3 +127,30 @@ function updateLoadingState(isLoading) {
       }
     });
 }
+
+function toggleFullScreen(fullScreen = null) {
+    let div = document.getElementById("divViewOptions");
+    if (fullScreen == null) {
+        if (document.fullscreenElement == null) toggleFullScreen(true);
+        else toggleFullScreen(false);
+        return true;
+    } else if (fullScreen == true) {
+        document.getElementsByTagName("main")[0].requestFullscreen();
+    } else if (fullScreen == false) {
+        document.exitFullscreen();
+    }
+    for (let child of div.children) {
+        if (child.innerText == "Fullscreen" && fullScreen == true) child.style.display = 'none';
+        else if (child.innerText == "Fullscreen" && fullScreen == false) child.style.display = 'inherit';
+        else if (child.innerText == "Window mode" && fullScreen == true) child.style.display = 'inherit';
+        else if (child.innerText == "Window mode" && fullScreen == false) child.style.display = 'none';
+    }
+    return true;
+}
+
+$(window).on('load', function() {
+    if (document.fullscreenEnabled == true) { //we can enable full screen
+        document.getElementById("divViewOptions").style.display = "inherit";
+        toggleFullScreen(false); //exit full screen if we have it opened somewhere
+    }
+});
