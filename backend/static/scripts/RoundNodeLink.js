@@ -56,6 +56,18 @@ RoundNodeLink.prototype = Object.create(Visualization.prototype);
 RoundNodeLink.prototype.constructor = RoundNodeLink;
 
 RoundNodeLink.prototype.useJSON = function (data) {
+    // make sure everything resets
+    this.nodes = [];
+    this.tags = [];
+    try {
+        this.minEdgeWeightFilterSlider.remove();
+        this.maxEdgeWeightFilterSlider.remove();
+    } catch (e) {
+        console.log(e)
+    }
+
+
+
     let weights = data["weights"];
     this.minWeight = data['minWeight'];
     this.maxWeight = data['maxWeight'];
@@ -64,7 +76,6 @@ RoundNodeLink.prototype.useJSON = function (data) {
      * Create sliders for filtering
      * @type {p5.slider}
      */
-    console.log((this.maxWeight-this.minWeight)/2);
     this.minEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(this.maxWeight-this.minWeight)/4, "any");
     this.minEdgeWeightFilterSlider.value(String(this.minWeight + this.maxWeight-this.minWeight)/4);
     this.minEdgeWeightFilterSlider.parent(document.getElementById("minEdgeWeightFilter"));
