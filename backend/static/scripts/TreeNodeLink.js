@@ -1,7 +1,7 @@
 /**
  * @fileoverview Contains the tree node link visualization
  * Sigma
- * @author Fabienne van der Weide
+ * @author Fabienne van der Weide, Akam Bilbas
   */
 
 var TreeNodeLink = function () {
@@ -30,7 +30,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
             graph: data,
             renderer: {
                 container: this.canvas.canvas.parentElement,
-                type: 'webGL'
+                type: 'canvas'
             },
             settings: {
                 minEdgeSize: 0.01,
@@ -65,8 +65,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
             if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                 this.graph.edges.push({
                     id: i,
-                    weight: data.weights[indexNodes][indexEdges]/2,
-                    size: data.weights[indexNodes][indexEdges]/2,
+                    size: 10,
                     source: this.graph.nodes[indexNodes].id,
                     target: this.graph.nodes[indexEdges].id,
                     color: "#FFFFFF",
@@ -90,72 +89,14 @@ TreeNodeLink.prototype.useJSON = function (data) {
     s.refresh();
 
     function bindEvents() {
+        let generationCount = 3;
         // Bind the events:
         s.bind('overNode outNode clickNode rightClickNode', function (e) {
             console.log(e.type, e.data.node.label, e.data.captor);
         });
         s.bind('doubleClickNode', function (e) {
             console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-
-            //Hide all nodes
-            s.graph.nodes().forEach(
-                function(ee) {
-                    ee.hidden = true;
-                });
-
-            //Show all first generation nodes
-            let nodeId0 = e.data.node.id;
-            let generation1 = s.graph.findNeighbors(nodeId0);
-            console.log(generation1);
-            generation1[nodeId0] = e.data.node;
-            console.log(generation1);
-            s.graph.nodes().forEach(function(n, i, a) {
-                if (generation1[n.id]) {
-                    n.hidden = false;
-                    n.x = 0.3 * Math.cos(Math.PI * 2 * i / a.length);
-                    n.y = 0.3 * Math.sin(Math.PI * 2 * i / a.length);
-                }
-            });
-
-            //Hide all edges
-            s.graph.edges().forEach(
-                function(ee) {
-                    ee.hidden = true;
-                }
-            );
-
-            //Unhide edges from centre to generation1
-            s.graph.adjacentEdgesOut(nodeId0).forEach(
-                function (ee) {
-                    if (ee.source === nodeId0) {
-                        ee.hidden = false;
-                    }
-                }
-            );
-            /*
-                            //Show all second generation nodes
-                            s.graph.nodes().forEach( function(n){
-                                if (n.id in generation1){
-                                    console.log(n);
-                                    let nodeId1 = n.data.node.id;
-                                    let generation2 = s.graph.findNeighbors(nodeId1);
-                                    generation2[nodeId1] = n.data.node;
-                                    s.graph.nodes().forEach(function(nn, i, a) {
-                                        if (generation2[nn.id]) {
-                                            nn.hidden = false;
-                                            n.x = 0.6 * Math.cos(Math.PI * 2 * i / a.length);
-                                            n.y = 0.6 * Math.sin(Math.PI * 2 * i / a.length);
-                                        }
-                                    });
-                                }
-                            });
-            */
-            //Place selected node in centre
-            let centreNode = s.graph.nodes(e.data.node.id);
-            centreNode.x = 0;
-            centreNode.y = 0;
-            centreNode.color = '#ff9900';
-
+            showNeighbours(e, generationCount, e.data.node.id);
             s.refresh();
         });
         s.bind('doubleClickStage', function (e) {
@@ -175,7 +116,6 @@ TreeNodeLink.prototype.useJSON = function (data) {
                     ee.hidden = false;
                 }
             );
-
             s.refresh();
         });
         s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
@@ -190,16 +130,89 @@ TreeNodeLink.prototype.useJSON = function (data) {
     }
 };
 
-sigma.classes.graph.addMethod('findNeighbors', function(nodeId) {
-	var k,
-		neighbors = {},
-		index = this.allNeighborsIndex[nodeId] || {};
+function showNeighbours(e, generationCount, nodeID) {
+    //hide all nodes
+    s.graph.nodes().forEach(
+        function(ee) {
+            ee.hidden = true;
+        });
 
-	for (k in index) {
+    //Hide all edges
+    s.graph.edges().forEach(
+        function(ee) {
+            ee.hidden = true;
+        }
+    );
+
+    //Show the first generation
+    let firstNode = s.graph.findNeighbors(nodeID);
+    firstNode[nodeID] = e.data.node;
+    showGeneration(e, firstNode, 0);
+
+    let nextGeneration = firstNode;
+    let nodes;
+
+    for (let i = 1; i < generationCount; i++) {
+        let nextGenerationNext = {};
+        let nextGenerationNew = {};
+
+        //Search the nodes in next Generation and put their neighbours in nextGenerationNew
+        for (nodes in nextGeneration) {
+            nextGenerationNext = s.graph.findNeighbors(nextGeneration[nodes].id);
+            nextGenerationNew = Object.assign({}, nextGenerationNew, nextGenerationNext);
+        }
+
+        //Giving the nodes in nextGenerationNew the nodes (not sure if needed)
+        for (nodes in nextGenerationNew) {
+            nextGenerationNew[nextGenerationNew[nodes].id] = s.graph.nodes(nextGenerationNew[nodes].id);
+        }
+
+        //Show the generation
+        console.log(nextGenerationNew);
+        showGeneration(e, nextGenerationNew, i);
+
+        //next generation will get the new nodes that are founded
+        nextGeneration = nextGenerationNew;
+    }
+
+    //Place selected node in centre
+    let centreNode = s.graph.nodes(e.data.node.id);
+    centreNode.x = 0;
+    centreNode.y = 0;
+    centreNode.color = '#ff9900';
+    e.data.node.id.hidden = false;
+}
+
+function showGeneration(e, generation, j) {
+    //Show all nodes in the generation
+    s.graph.nodes().forEach(function(n, i, a) {
+        if (generation[n.id]) {
+            n.hidden = false;
+            n.x = (0.3 + 0.3*j) * Math.cos(Math.PI * 2 * i / a.length);
+            n.y = (0.3 + 0.3*j) * Math.sin(Math.PI * 2 * i / a.length);
+            console.log("test");
+        }
+    });
+
+    //Unhide edges from centre to generation1
+    s.graph.adjacentEdgesOut(e.data.node.id).forEach(
+        function (ee) {
+            if (ee.source === e.data.node.id) {
+                ee.hidden = false;
+            }
+        }
+    );
+}
+
+//finds and returns the neighbours of the given node ID
+sigma.classes.graph.addMethod('findNeighbors', function(nodeId) {
+    var k,
+        neighbors = {},
+        index = this.allNeighborsIndex[nodeId] || {};
+    for (k in index) {
         if (k !== nodeId) {
             neighbors[k] = this.nodesIndex[k];
         }
     }
-
-	return neighbors;
+    return neighbors;
 });

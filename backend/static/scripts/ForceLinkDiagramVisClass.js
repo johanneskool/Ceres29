@@ -17,6 +17,29 @@ var ForceLink = function () {
 ForceLink.prototype = Object.create(Visualization.prototype);
 ForceLink.prototype.constructor = ForceLink;
 
+MatrixVisualization.prototype.setData = function (url) {
+    P$.print(url);
+    P$.loadJSON(url, loadForce, loadFailed);
+
+    //the json callback forgets what matrix called it.
+    var currentForce = this;
+
+    function loadForce(dataJSON) {
+        //data is new so send the json to load.
+        currentForce.vH.jsonDictionary.put(url, dataJSON);
+
+        //resolve waiting list for this data if applicable.
+        currentForce.vH.resolveWaitingList(url);
+
+        currentForce.useJSON(dataJSON);
+    }
+
+    function loadFailed(response) {
+        errorMessage("There was an error getting the data. Perhaps we requested a non-existing data-type. If this issue persists, try uploading the file again.");
+    }
+
+};
+
 /**
  * Updates the matrix data.
  * @param {url} url the json url of the data
