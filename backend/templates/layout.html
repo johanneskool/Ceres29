@@ -110,9 +110,6 @@ Tristan Trouwen, Rick Luiken, Rink Pieters, Fabienne vd Weide
     </div>
     {% block content %}{% endblock %}
 </main>
-<footer class="container">
-    <p>&copy; {{ config['APP_AUTHOR'] }} - {{ config['APP_TITLE'] + " " + config['APP_VERSION'] }}</p>
-</footer>
 
 <!-- including javascript scripts not neccessarily before body -->
 <script src="{{ url_for('static', filename='scripts/jquery-3.4.0.min.js') }}"></script>

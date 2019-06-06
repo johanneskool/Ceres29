@@ -42,47 +42,44 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12" style='height: calc(100% - 100px);'>
-                <div class="wrapper" id="parentofcanvas">
-                    <div class="sidebar">
-                        <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
-                        <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
-                        <hr>
-                        <div id="matrix-visualization-edge-info" style="display: none">
-                            <h6>Edge information</h6>
-                            <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
-                            <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
-                            <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
+            <div class="wrapper" id="parentofcanvas">
+                <div class="sidebar">
+                    <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
+                    <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
+                    <hr>
+                    <div id="matrix-visualization-edge-info" style="display: none">
+                        <h6>Edge information</h6>
+                        <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
+                        <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
+                        <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
+                    </div>
+                    <p><b>Interactions: </b><span id='visualisation-filter'></span></p>
+                    <hr>
+                    <h6>Filter edges on weight</h6>
+                    <p>Min</p><div id="minEdgeWeightFilter"></div>
+                    <p>Max</p><div id="maxEdgeWeightFilter"></div>
+                    <hr>
+                    <h6>Reorder</h6>
+                    <div class="input-group">
+                      <select class="custom-select disabled-when-loading" id="vis_sel_clustering" name="clustering" onchange="visReorder(this);">
+                          <option value="" disabled>Choose a ordering</option>
+                          <option value="n/a" disabled hidden>Not applicable</option>
+                          <option value="default">&nbsp;&nbsp;As uploaded</option>
+                          <option value="pagerank">&nbsp;&nbsp;Pagerank</option>
+                          <option selected value="cluster">&nbsp;&nbsp;Clustered</option>
+                          <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
+                          <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
+                          <option value="degrees">&nbsp;&nbsp;Sort on degree</option>
+                          <option value="betweenness">&nbsp;&nbsp;Betweenness</option>
+                      </select>
+                    </div>
 
-                        </div>
-                        <p><b>Interactions: </b><span id='visualisation-filter'></span></p>
-                        <hr>
-                        <h6>Filter edges on weight</h6>
-                        <p>Min</p><div id="minEdgeWeightFilter"></div>
-                        <p>Max</p><div id="maxEdgeWeightFilter"></div>
-                        <hr>
-                        <h6>Reorder</h6>
-                        <div class="input-group">
-                          <select class="custom-select disabled-when-loading" id="vis_sel_clustering" name="clustering" onchange="visReorder(this);">
-                              <option value="" disabled>Choose a ordering</option>
-                              <option value="n/a" disabled hidden>Not applicable</option>
-                              <option value="default">&nbsp;&nbsp;As uploaded</option>
-                              <option value="pagerank">&nbsp;&nbsp;Pagerank</option>
-                              <option selected value="cluster">&nbsp;&nbsp;Clustered</option>
-                              <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
-                              <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
-                              <option value="degrees">&nbsp;&nbsp;Sort on degree</option>
-                              <option value="betweenness">&nbsp;&nbsp;Betweenness</option>
-                          </select>
-                        </div>
-
-                        <div id="divViewOptions" style="display: none;">
-                          <hr>
-                          <h6>View options</h6>
-                          <!-- <button onclick="toggleFullScreen();" type="button" class="btn btn-dark">Toogle fullscreen</button> -->
-                          <button onclick="toggleFullScreen(true);" style="display:none;" type="button" class="btn btn-dark">Fullscreen</button>
-                          <button onclick="toggleFullScreen(false);" style="display:none;" type="button" class="btn btn-dark">Window mode</button>
-                        </div>
+                    <div id="divViewOptions" style="display: none;">
+                      <hr>
+                      <h6>View options</h6>
+                      <!-- <button onclick="toggleFullScreen();" type="button" class="btn btn-dark">Toogle fullscreen</button> -->
+                      <button onclick="toggleFullScreen(true);" style="display:none;" type="button" class="btn btn-dark">Fullscreen</button>
+                      <button onclick="toggleFullScreen(false);" style="display:none;" type="button" class="btn btn-dark">Window mode</button>
                     </div>
                 </div>
             </div>
