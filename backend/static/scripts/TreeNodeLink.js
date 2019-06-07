@@ -76,6 +76,16 @@ TreeNodeLink.prototype.useJSON = function (data) {
         }
     }
 
+
+    //moves the unused default canvas to the bottom, we cant remove it because
+    //it gives the dynamic size.
+    //only do it once ofcourse
+    if (!this.loaded) {
+        let parentElement = this.canvas.canvas.parentElement;
+        parentElement.appendChild(this.canvas.canvas);
+        this.loaded = true;
+    }
+
     bindEvents();
 
     // Load the graph in sigma to draw

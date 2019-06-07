@@ -10,7 +10,6 @@ var ForceLink = function () {
      * @type {boolean}
      */
     this.loaded = false;
-
     console.log("ok");
 };
 
@@ -100,6 +99,15 @@ ForceLink.prototype.useJSON = function (data) {
                 i++
             }
         }
+    }
+
+    //moves the unused default canvas to the bottom, we cant remove it because
+    //it gives the dynamic size.
+    //only do it once ofcourse
+    if (!this.loaded) {
+        let parentElement = this.canvas.canvas.parentElement;
+        parentElement.appendChild(this.canvas.canvas);
+        this.loaded = true;
     }
 
     bindEvents();
