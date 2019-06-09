@@ -42,47 +42,99 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="wrapper" id="parentofcanvas">
-                <div class="sidebar">
-                    <p><b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span></p>
-                    <p><b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span></p>
-                    <hr>
-                    <div id="matrix-visualization-edge-info" style="display: none">
-                        <h6>Edge information</h6>
-                        <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
-                        <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
-                        <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
-                    </div>
-                    <p><b>Interactions: </b><span id='visualisation-filter'></span></p>
-                    <hr>
-                    <h6>Filter edges on weight</h6>
-                    <p>Min</p><div id="minEdgeWeightFilter"></div>
-                    <p>Max</p><div id="maxEdgeWeightFilter"></div>
-                    <hr>
-                    <h6>Reorder</h6>
-                    <div class="input-group">
-                      <select class="custom-select disabled-when-loading" id="vis_sel_clustering" name="clustering" onchange="visReorder(this);">
-                          <option value="" disabled>Choose a ordering</option>
-                          <option value="n/a" disabled hidden>Not applicable</option>
-                          <option value="default">&nbsp;&nbsp;As uploaded</option>
-                          <option value="pagerank">&nbsp;&nbsp;Pagerank</option>
-                          <option selected value="cluster">&nbsp;&nbsp;Clustered</option>
-                          <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
-                          <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
-                          <option value="degrees">&nbsp;&nbsp;Sort on degree</option>
-                          <option value="betweenness">&nbsp;&nbsp;Betweenness</option>
-                      </select>
+            <div class="col-2 accordion" id="accordionExample" style="padding-left:0;padding-right:0;">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Info
+                            </button>
+                        </h5>
                     </div>
 
-                    <div id="divViewOptions" style="display: none;">
-                      <hr>
-                      <h6>View options</h6>
-                      <!-- <button onclick="toggleFullScreen();" type="button" class="btn btn-dark">Toogle fullscreen</button> -->
-                      <button onclick="toggleFullScreen(true);" style="display:none;" type="button" class="btn btn-dark">Fullscreen</button>
-                      <button onclick="toggleFullScreen(false);" style="display:none;" type="button" class="btn btn-dark">Window mode</button>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-target="#collapseOne">
+                        <div class="card-body">
+                            <b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span><br>
+                            <b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Settings
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-target="#collapseTwo">
+                        <div class="card-body">
+                            <h6>Reorder</h6>
+                            <div class="input-group">
+                                <select class="custom-select disabled-when-loading" id="vis_sel_clustering" name="clustering" onchange="visReorder(this);">
+                                    <option value="" disabled>Choose a ordering</option>
+                                    <option value="n/a" disabled hidden>Not applicable</option>
+                                    <option value="default">&nbsp;&nbsp;As uploaded</option>
+                                    <option value="pagerank">&nbsp;&nbsp;Pagerank</option>
+                                    <option selected value="cluster">&nbsp;&nbsp;Clustered</option>
+                                    <option value="lexicographic">&nbsp;&nbsp;Lexicographic</option>
+                                    <option value="cluster_graph">&nbsp;&nbsp;Cluster-graph</option>
+                                    <option value="degrees">&nbsp;&nbsp;Sort on degree</option>
+                                    <option value="betweenness">&nbsp;&nbsp;Betweenness</option>
+                                </select>
+                            </div>
+                            <h6>Add visualization</h6>
+                            <div class="input-group">
+                                <form id="addvis" onsubmit="addVisualization(document.getElementById('selectToAdd').value, 'hey');return false">
+                                    <select id="selectToAdd" required class="custom-select">
+                                    <option value="" disabled>Choose a visualisation</option>
+                                    <option value="matrix">&nbsp;&nbsp;Adjacency Matrix</option>
+                                    <option value="forceLink">&nbsp;&nbsp;Force-directed node-link</option>
+                                    <option value="roundNodeLink">&nbsp;&nbsp;Round node-link</option>
+                                    <option value="treeNodeLink">&nbsp;&nbsp;Tree node-link</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">Load</button>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div id="divViewOptions" style="display: none;">
+                                <hr>
+                                <h6>View options</h6>
+                                <!-- <button onclick="toggleFullScreen();" type="button" class="btn btn-dark">Toogle fullscreen</button> -->
+                                <button onclick="toggleFullScreen(true);" style="display:none;" type="button" class="btn btn-dark">Fullscreen</button>
+                                <button onclick="toggleFullScreen(false);" style="display:none;" type="button" class="btn btn-dark">Window mode</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Interactions
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-target="#collapseThree">
+                        <div class="card-body">
+                            <div id="matrix-visualization-edge-info" style="display: none">
+                                <h6>Edge information</h6>
+                                <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
+                                <p><b>To</b>: <span id="matrix-visualization-edge-info-to">/</span></p>
+                                <p><b>Weight</b>: <span id="matrix-visualization-edge-info-weight">/</span></p>
+                            </div>
+                            <h6>Filter edges on weight</h6>
+                            <p>Min</p><div id="minEdgeWeightFilter"></div>
+                            <p>Max</p><div id="maxEdgeWeightFilter"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+        <div class="wrapper col-10" id="parentofcanvas" style="padding-left: 0; padding-right: 0;"></div>
         </div>
     </div>
 
