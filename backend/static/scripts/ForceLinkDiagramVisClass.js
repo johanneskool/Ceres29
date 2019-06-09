@@ -3,6 +3,8 @@
  * @author Akam Bilbas
  */
 
+var s;
+
 var ForceLink = function () {
     Visualization.call(this, arguments);
     /**
@@ -44,6 +46,11 @@ MatrixVisualization.prototype.setData = function (url) {
  * @param {url} url the json url of the data
  */
 ForceLink.prototype.useJSON = function (data) {
+    if (s !== undefined) {
+        s.graph.clear();
+        s.refresh();
+        o
+    }
     this.graph = {
         nodes: [],
         edges: []

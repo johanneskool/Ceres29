@@ -174,24 +174,6 @@ var VisualizationHandler = function () {
 
 
     /**
-     * Delete the active visualization from the handler.
-     * @deprecated
-     */
-    this.deleteActive = function () {
-        let activeIndex = this.visualizations.indexOf(this.active);
-        console.log(activeIndex);
-        if (activeIndex > -1) {
-            this.visualizations.splice(activeIndex, 1)
-        }
-        if (this.visualizations.length > 0) {
-            this.active = this.visualizations[activeIndex - 1];
-        } else {
-            this.hasLoadedVisualization = false;
-        }
-        console.log(this.visualizations);
-    };
-
-    /**
      * Getter for hasLoadedVisualization.
      * @return {boolean}
      */
@@ -276,24 +258,6 @@ var VisualizationHandler = function () {
     };
 
     /**
-     * Set the position of the active visualization
-     * @param position
-     * @deprecated
-     */
-    this.setActivePosition = function (position) {
-        this.active.setPosition(position);
-    };
-
-    /**
-     * Returns the active position as a p5 vector
-     * @returns {p5.Vector}
-     * @deprecated
-     */
-    this.getActivePosition = function () {
-        return this.active.getPosition();
-    };
-
-    /**
      * Returns the selected position as a p5 vector
      * @param {p5.Element} v
      * @returns {p5.Vector}
@@ -360,7 +324,6 @@ var VisualizationHandler = function () {
 
     /**
      * Draws all the visualization handled by this VH.
-     * @deprecated
      */
     this.drawAll = function () {
         for (let i = 0; i < this.visualizations.length; i++) {
