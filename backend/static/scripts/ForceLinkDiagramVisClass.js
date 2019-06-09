@@ -49,7 +49,6 @@ ForceLink.prototype.useJSON = function (data) {
     if (s !== undefined) {
         s.graph.clear();
         s.refresh();
-        o
     }
     this.graph = {
         nodes: [],
