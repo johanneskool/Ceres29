@@ -106,7 +106,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
         });
         s.bind('doubleClickNode', function (e) {
             console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-            showNeighbours(e, generationCount, e.data.node.id);
+            showNeighbors(e, generationCount, e.data.node.id);
             s.refresh();
         });
         s.bind('doubleClickStage', function (e) {
@@ -140,7 +140,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
     }
 };
 
-function showNeighbours(e, generationCount, nodeID) {
+function showNeighbors(e, generationCount, nodeID) {
     //hide all nodes
     s.graph.nodes().forEach(
         function(ee) {
@@ -166,7 +166,7 @@ function showNeighbours(e, generationCount, nodeID) {
         let nextGenerationNext = {};
         let nextGenerationNew = {};
 
-        //Search the nodes in next Generation and put their neighbours in nextGenerationNew
+        //Search the nodes in next Generation and put their neighbors in nextGenerationNew
         for (nodes in nextGeneration) {
             nextGenerationNext = s.graph.findNeighbors(nextGeneration[nodes].id);
             nextGenerationNew = Object.assign({}, nextGenerationNew, nextGenerationNext);
@@ -214,7 +214,7 @@ function showGeneration(e, generation, j) {
     );
 }
 
-//finds and returns the neighbours of the given node ID
+//finds and returns the neighbors of the given node ID
 sigma.classes.graph.addMethod('findNeighbors', function(nodeId) {
     var k,
         neighbors = {},

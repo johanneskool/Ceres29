@@ -186,7 +186,7 @@ function bindEvents() {
         s.refresh();
     });
     s.bind('doubleClickNode', function (e) {
-        //show the neighbours of the node double clicked on
+        //show the neighbors of the node double clicked on
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
         s.killForceAtlas2();
         let filter = new sigma.plugins.filter(s);
