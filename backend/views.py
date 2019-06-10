@@ -33,12 +33,12 @@ def upload():
     if request.method == 'POST':
         return handle_file_upload(request)
 
-#Visualisation page
+#Visualization page
 @app.route('/vis', methods=['GET'])
 @app.route('/vis/<int:data_id>', methods=['GET'])
 def vis(data_id=None):
     if (data_id is None) and (request.args.get('data') is None):
-        flash('Please select a file before going to the visualisation')
+        flash('Please select a file before going to the visualization')
         return redirect(url_for('upload'))
     elif data_id is None:
         data_id = request.args.get('data')
@@ -67,7 +67,7 @@ def a_little_bit_of_security_is_allowed():
         abort(403)
 
 
-# Endpoint for different visualisations
+# Endpoint for different visualizations
 @app.route('/subgraphs/<int:id>', methods=['GET'])
 def subgraph(id):
     trace = [int(i) for i in request.args.get('trace').split(',')]

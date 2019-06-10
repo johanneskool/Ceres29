@@ -136,7 +136,7 @@ function animateGraph() {
     });
 }
 
-//clicking on a new should show its neighbours
+//clicking on a new should show its neighbors
 function newGraph(startIndex) {
     //this.startIndex = startIndex;
     s.killForceAtlas2();
