@@ -55,7 +55,19 @@
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-target="#collapseOne">
                         <div class="card-body">
                             <b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span><br>
-                            <b>Type: </b><span id='matrix-visualization-fileinfo-type'><!-- might as well just get it dynamically --></span>
+                            <b>Type: </b><span id='matrix-visualization-fileinfo-type'>/<!-- might as well just get it dynamically --></span><br>
+
+                            <b>Minimum edge weight: </b><span id="minimumEdgeWeightInfo"></span><br>
+                            <b>Maximum edge weight: </b><span id="maximumEdgeWeightInfo"></span><br>
+                            <h6>Edge Weight Legend</h6>
+                            <span>
+                                <p class="legend" id="legend0" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
+                                <p class="legend" id="legend1" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
+                                <p class="legend" id="legend2" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
+                                <p class="legend" id="legend3" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
+                                <p class="legend" id="legend4" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
+                                <p>Warning: numbers not accurate waiting for 'global min/max edgeweight first</p>
+                            </span><br>
                         </div>
                     </div>
                 </div>
@@ -94,7 +106,7 @@
                                     <option value="treeNodeLink">&nbsp;&nbsp;Tree node-link</option>
                                     </select>
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">Load</button>
+                                        <button class="btn btn-primary" type="submit">Add</button>
                                     </div>
                                 </form>
                             </div>
@@ -120,6 +132,12 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-target="#collapseThree">
                         <div class="card-body">
+                            <div id="selected-node">
+                                <h6>Node info</h6>
+                                <p><b>Name: </b><span id="selectedNodeName">/</span></p>
+                                <p><b>Degree: </b><span id="selectedNodeDegree">/</span></p>
+                            </div>
+
                             <div id="matrix-visualization-edge-info" style="display: none">
                                 <h6>Edge information</h6>
                                 <p><b>From</b>: <span id="matrix-visualization-edge-info-from">/</span></p>
