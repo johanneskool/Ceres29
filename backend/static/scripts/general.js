@@ -135,9 +135,9 @@ function toggleFullScreen(fullScreen = null) {
         if (document.fullscreenElement == null) toggleFullScreen(true);
         else toggleFullScreen(false);
         return true;
-    } else if (fullScreen == true) {
+    } else if (fullScreen == true && document.fullscreenElement == null) {
         document.getElementsByTagName("main")[0].requestFullscreen();
-    } else if (fullScreen == false) {
+    } else if (fullScreen == false && document.fullscreenElement != null) {
         document.exitFullscreen();
     }
     for (let child of div.children) {
