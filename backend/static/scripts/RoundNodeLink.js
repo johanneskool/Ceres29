@@ -77,11 +77,12 @@ RoundNodeLink.prototype.useJSON = function (data) {
      * @type {p5.slider}
      */
     this.minEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(this.maxWeight-this.minWeight)/4, "any");
-    this.minEdgeWeightFilterSlider.value(String(this.minWeight + this.maxWeight-this.minWeight)/4);
+    this.minEdgeWeightFilterSlider.value(this.minWeight + (this.maxWeight-this.minWeight)/4);
     this.minEdgeWeightFilterSlider.parent(document.getElementById("minEdgeWeightFilter"));
     // max
+    console.log(this.minWeight, this.maxWeight)
     this.maxEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(3*(this.maxWeight-this.minWeight)/4), "any");
-    this.maxEdgeWeightFilterSlider.value(String(this.minWeight + 3*(this.maxWeight-this.minWeight)/4));
+    this.maxEdgeWeightFilterSlider.value(this.minWeight + 3*(this.maxWeight-this.minWeight)/4);
     this.maxEdgeWeightFilterSlider.parent(document.getElementById("maxEdgeWeightFilter"));
 
     let number = 0;
@@ -268,7 +269,7 @@ function Node(id, name, number, angle, nodelink) {
             try {
                 let toNode = this.outGoingEdges[nodeIndex].toNode;
                 let edgeWeight = this.outGoingEdges[nodeIndex].weight;
-                if (edgeWeight > this.nodelink.filterWeightMin && edgeWeight < this.nodelink.filterWeightMax) {
+                if (edgeWeight >= this.nodelink.filterWeightMin && edgeWeight <= this.nodelink.filterWeightMax) {
                     this.canvas.push();
                     this.canvas.noFill();
                     if (solid) {
