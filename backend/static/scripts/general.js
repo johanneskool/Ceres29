@@ -121,11 +121,18 @@ function visReorder(element) {
 
 function updateLoadingState(isLoading) {
     Array.prototype.forEach.call(document.getElementsByClassName("disabled-when-loading"), function(element) {
-      if (isLoading == true) {
-        element.setAttribute("disabled", null);
-      } else {
-        element.removeAttribute("disabled");
-      }
+        if (isLoading == true) {
+            element.setAttribute("disabled", null);
+        } else {
+            element.removeAttribute("disabled");
+        }
+    });
+    Array.prototype.forEach.call(document.getElementsByClassName("loading-overlay"), function(element) {
+        if (isLoading == true) {
+            element.style.display = null;
+        } else {
+            element.style.display = "none";
+        }
     });
 }
 
