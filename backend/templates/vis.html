@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{{ url_for('static', filename='scripts/general.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/VisualizationHandler.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/p5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='p5/addons/p5.dom.min.js') }}"></script>
@@ -55,6 +56,7 @@
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-target="#collapseOne">
                         <div class="card-body">
                             <b>Filename: </b><span id='matrix-visualization-fileinfo-name'>{{ data }}</span><br>
+                            <b>File size: </b><span id='matrix-visualization-fileinfo-size'></span><br>
                             <b>Type: </b><span id='matrix-visualization-fileinfo-type'>/<!-- might as well just get it dynamically --></span><br>
 
                             <b>Minimum edge weight: </b><span id="minimumEdgeWeightInfo"></span><br>

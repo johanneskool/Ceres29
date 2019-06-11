@@ -31,9 +31,9 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    APP_VERSION = "v0.2e (development)"
+    APP_VERSION = "v0.2f (development)"
     DEVELOPMENT = True
     DEBUG = True
     TEMPLATES_AUTO_RELOAD = True
-    SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'dev-v0.2e.db')
+    SQLALCHEMY_DATABASE_PATH = os.path.join(basedir, 'dev-v0.2f.db')
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + SQLALCHEMY_DATABASE_PATH

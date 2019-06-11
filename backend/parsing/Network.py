@@ -82,6 +82,7 @@ class Network:
                                                                                          range(self.graph.vcount())]
         to_be_converted["minWeight"] = min(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
         to_be_converted["maxWeight"] = max(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
+        to_be_converted["fullyconnected"] = self.graph.vcount()**2 == self.graph.ecount()
         to_be_converted["weights"] = []
         matrix = self.graph.get_adjacency(attribute="weight")
         for row in range(self.graph.vcount()):

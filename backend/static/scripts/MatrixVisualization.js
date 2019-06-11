@@ -123,6 +123,7 @@ MatrixVisualization.prototype.useJSON = function (dataJSON) {
     this.load();
 
     document.getElementById('matrix-visualization-fileinfo-name').innerHTML = this.dataJSON.name;
+    document.getElementById('matrix-visualization-fileinfo-size').innerHTML = formatBytes(this.dataJSON.filesize);
     document.getElementById('matrix-visualization-fileinfo-type').innerHTML = this.dataJSON.type;
     console.groupEnd();
 };
@@ -147,10 +148,14 @@ MatrixVisualization.prototype.generateNodes = function () {
 MatrixVisualization.prototype.drawMatrix = function () {
     let min;
     let max;
-    let useLog = false; //because we need them outside the if-statement
 
-    min = Math.log(this.minWeight); //excend the range a little since we are not sure whether there is a 0
+    if (this.dataJSON.fullyconnected) {
+        min = Math.log(this.minWeight);
+    } else {
+        min = Math.log(this.minWeight) - 1;
+    }
     max = Math.log(this.maxWeight);
+
 
     this.matrix.fill(0, 0, 0);
     this.matrix.rect(0, 0, this.maxSize, this.maxSize);
