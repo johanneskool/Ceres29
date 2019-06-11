@@ -80,7 +80,6 @@ RoundNodeLink.prototype.useJSON = function (data) {
     this.minEdgeWeightFilterSlider.value(this.minWeight + (this.maxWeight-this.minWeight)/4);
     this.minEdgeWeightFilterSlider.parent(document.getElementById("minEdgeWeightFilter"));
     // max
-    console.log(this.minWeight, this.maxWeight)
     this.maxEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(3*(this.maxWeight-this.minWeight)/4), "any");
     this.maxEdgeWeightFilterSlider.value(this.minWeight + 3*(this.maxWeight-this.minWeight)/4);
     this.maxEdgeWeightFilterSlider.parent(document.getElementById("maxEdgeWeightFilter"));

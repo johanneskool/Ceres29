@@ -4,6 +4,7 @@
  *
  * @author Samuel Oosterholt
  * @author Rink Pieters
+ * @author Tristan Trouwen
  */
 
 
@@ -348,13 +349,3 @@ window.P$ = new p5(function (p) {
     }
 
 }, "global sketch");
-
-// set legend
-let minWeightE = 0; // should be gotton from somewhere
-let maxWeightE = 100;
-for (var x = 0; x < 5; x++) {
-    let color1 = P$.getWeightedColor(minWeightE + x/5 *(maxWeightE-minWeightE),minWeightE, maxWeightE);
-    let div = document.getElementById("legend"+x);
-    div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
-    div.innerText = " - " + minWeightE + (maxWeightE-minWeightE)*x/5 + " - "
-}

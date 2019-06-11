@@ -34,6 +34,24 @@ var VisualizationHandler = function () {
     this.data = null;
 
     /**
+     * Number that holds minimum edge weight
+     * @type {number}
+     */
+    this.minEdgeWeight = 0;
+
+    /**
+     * Number that holds minimum edge weight
+     * @type {number}
+     */
+    this.maxEdgeWeight = 0;
+
+    /**
+     * Number that holds size of data
+     * @type {number}
+     */
+    this.dataSize = 0;
+
+    /**
      * Dictionary mapping url to jsons to prevent double loading.
      * @type {dictionary}
      */
@@ -337,6 +355,26 @@ var VisualizationHandler = function () {
     this.resolveWaitingList = function (data) {
         //loop through all visualizations that were waiting on JSON
         if (this.jsonWaitingList.contains(data)) {
+
+            // set sidebar data
+            var data1 = this.jsonDictionary.get(data);
+
+            // set filesize data
+            this.dataSize = data1.filesize;
+            document.getElementById('dataFileSize').innerText = formatBytes(this.dataSize);
+
+            // set legend data
+            this.minEdgeWeight = data1.minWeight;
+            this.maxEdgeWeight = data1.maxWeight;
+
+            for (var x = 0; x < 5; x++) {
+                let color1 = P$.getWeightedColor(this.minEdgeWeight+ x/4 *(this.maxEdgeWeight-this.minEdgeWeight),this.minEdgeWeight, this.maxEdgeWeight);
+                let div = document.getElementById("legend"+x);
+                div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
+                console.log(x, ((this.maxEdgeWeight-this.minEdgeWeight)*x/4));
+                div.innerText = " - " + (this.minEdgeWeight+ (this.maxEdgeWeight-this.minEdgeWeight)*x/4) + " - "
+            }
+
             for (let i = 0; i < this.jsonWaitingList.get(data).length; i++) {
                 this.visDictionary.get(this.jsonWaitingList.get(data)[i]).useJSON(this.jsonDictionary.get(data));
             }
