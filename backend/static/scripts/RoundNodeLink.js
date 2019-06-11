@@ -132,7 +132,6 @@ RoundNodeLink.prototype.useJSON = function (data) {
  */
 RoundNodeLink.prototype.draw = function () {
     this.canvas.noFill();
-    this.canvas.background(144, 14, 144);
 
     try {
         this.filterWeightMin = this.minEdgeWeightFilterSlider.value();
@@ -244,12 +243,12 @@ function Node(id, name, number, angle, nodelink) {
     };
 
     this.drawNode = function () {
-        this.canvas.stroke(0, 0, 0);
+        this.canvas.stroke(255,255, 255);
         this.canvas.circle(this.locationX(), this.locationY(), this.radius);
         // draw label
         this.canvas.push();
         // black color
-        this.canvas.stroke(0, 0, 0);
+        this.canvas.stroke(255, 255, 255);
         this.canvas.translate(this.locationX(text = true), this.locationY(text = true));
         this.canvas.rotate(this.angle);
         this.canvas.text(this.name, 0, 0);
