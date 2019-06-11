@@ -146,17 +146,6 @@ MatrixVisualization.prototype.generateNodes = function () {
  * Draws a matrix to the graphics based of the input nodes
  */
 MatrixVisualization.prototype.drawMatrix = function () {
-    let min;
-    let max;
-
-    if (this.dataJSON.fullyconnected) {
-        min = Math.log(this.minWeight);
-    } else {
-        min = Math.log(this.minWeight) - 1;
-    }
-    max = Math.log(this.maxWeight);
-
-
     this.matrix.fill(0, 0, 0);
     this.matrix.rect(0, 0, this.maxSize, this.maxSize);
 
@@ -169,10 +158,10 @@ MatrixVisualization.prototype.drawMatrix = function () {
         for (let row = 0; row < this.nodeCount; row++) {
             if (this.dataJSON.weights[col][row] === 0) continue;
             let weight; //for use in the for-loop
-            weight = Math.log(this.dataJSON.weights[col][row]);
+            weight = this.dataJSON.weights[col][row];
 
             //use the weight to color the cell.
-            let fillColor = P$.getWeightedColor(weight, min, max);
+            let fillColor = P$.getWeightedColor(weight, this.dataJSON.minWeight, this.dataJSON.maxWeight, this.dataJSON.fullyconnected);
 
 
             let index = 4 * row * this.nodeCount + 4 * col

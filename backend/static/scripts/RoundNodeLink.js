@@ -17,6 +17,9 @@ var RoundNodeLink = function () {
     this.minWeight = 0;
     this.maxWeight = 1000;
 
+
+    this.fullyconnected = false;
+
     /**
      * Minimum weight for edge to be shown
      * @type {number}
@@ -71,7 +74,7 @@ RoundNodeLink.prototype.useJSON = function (data) {
     let weights = data["weights"];
     this.minWeight = data['minWeight'];
     this.maxWeight = data['maxWeight'];
-
+    this.fullyconnected = data['fullyconnected'];
     /**
      * Create sliders for filtering
      * @type {p5.slider}
@@ -272,7 +275,7 @@ function Node(id, name, number, angle, nodelink) {
                     this.canvas.noFill();
                     if (solid) {
                         this.canvas.stroke('#000000');
-                        this.canvas.stroke(P$.getWeightedColor(edgeWeight, this.nodelink.minWeight, this.nodelink.maxWeight))
+                        this.canvas.stroke(P$.getWeightedColor(edgeWeight, this.nodelink.minWeight, this.nodelink.maxWeight, this.nodelink.fullyconnected))
                     } else {
                         this.canvas.stroke('#CCCCCC');
                     }

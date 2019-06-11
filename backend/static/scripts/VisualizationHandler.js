@@ -367,8 +367,12 @@ var VisualizationHandler = function () {
             this.minEdgeWeight = data1.minWeight;
             this.maxEdgeWeight = data1.maxWeight;
 
+
             for (var x = 0; x < 5; x++) {
-                let color1 = P$.getWeightedColor(this.minEdgeWeight+ x/4 *(this.maxEdgeWeight-this.minEdgeWeight),this.minEdgeWeight, this.maxEdgeWeight);
+                let color1 = P$.getWeightedColor(this.minEdgeWeight+ x/4 *(this.maxEdgeWeight-this.minEdgeWeight),
+                    this.minEdgeWeight,
+                    this.maxEdgeWeight,
+                    data1.fullyconnected);
                 let div = document.getElementById("legend"+x);
                 div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
                 console.log(x, ((this.maxEdgeWeight-this.minEdgeWeight)*x/4));

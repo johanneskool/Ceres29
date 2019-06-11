@@ -322,14 +322,23 @@ window.P$ = new p5(function (p) {
      * @param weight
      * @param minWeight
      * @param maxWeight
+     * @param fullyconnected
      * @return {p5.Color}
      */
-    p.getWeightedColor = function (weight, minWeight, maxWeight) {
-        var ratio = P$.map(weight, minWeight, maxWeight, 0, 1);
+    p.getWeightedColor = function (weight, minWeight, maxWeight, fullyconnected) {
+        let weight1 = Math.log(weight);
+        let min;
+        let max;
+        if (fullyconnected) {
+            min = Math.log(minWeight);
+        } else {
+            min = Math.log(minWeight) - 1;
+        }
+        max = Math.log(maxWeight);
+        var ratio = P$.map(weight1, min, max, 0, 1);
 
         //use the weight to color the cell.
-        let weightedColor = P$.lerpColor(p.PRIMARY_COLOR, p.SECONDARY_COLOR, ratio);
-        return weightedColor;
+        return P$.lerpColor(p.PRIMARY_COLOR, p.SECONDARY_COLOR, ratio);
     };
 
     /**
