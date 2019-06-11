@@ -1,9 +1,9 @@
 /**
  * @fileoverview Contains the force link diagram visualization class and the functions needed to draw it to the sigma canvas
  * @author Akam Bilbas
+ * @author Tristan Trouwen
  */
 
-var s;
 
 var ForceLink = function () {
     Visualization.call(this, arguments);
@@ -12,7 +12,8 @@ var ForceLink = function () {
      * @type {boolean}
      */
     this.loaded = false;
-    console.log("ok");
+
+    this.s = null;
 };
 
 ForceLink.prototype = Object.create(Visualization.prototype);
@@ -46,16 +47,16 @@ MatrixVisualization.prototype.setData = function (url) {
  * @param {url} url the json url of the data
  */
 ForceLink.prototype.useJSON = function (data) {
-    if (s !== undefined) {
-        s.graph.clear();
-        s.refresh();
+    if (this.s !== undefined && this.s !== null) {
+        this.s.graph.clear();
+        this.s.refresh();
     }
     this.graph = {
         nodes: [],
         edges: []
     };
     //setup for sigma with setting for the graph
-    s = new sigma(
+    this.s = new sigma(
         {
             graph: data,
             renderer: {
@@ -115,13 +116,12 @@ ForceLink.prototype.useJSON = function (data) {
         parentElement.appendChild(this.canvas.canvas);
         this.loaded = true;
     }
-
-    bindEvents();
+    this.bindEvents();
 
     // Load the graph in sigma to draw
-    s.graph.read(this.graph);
+    this.s.graph.read(this.graph);
     // Ask sigma to draw it and refresh
-    s.refresh();
+    this.s.refresh();
 
     //configuring Force Atlas
     const forceAtlas2Config = {
@@ -135,32 +135,32 @@ ForceLink.prototype.useJSON = function (data) {
         nodeSize: 'original',
         autoStop: true
     };
-    s.configForceAtlas2(forceAtlas2Config);
+    this.s.configForceAtlas2(forceAtlas2Config);
 
     //Starting Force Atlas and stops after 8 seconds
-    s.startForceAtlas2(forceAtlas2Config);
+    this.s.startForceAtlas2(forceAtlas2Config);
     window.setTimeout(function () {
-        s.killForceAtlas2();
+        this.s.killForceAtlas2();
     }, 12000);
 };
 
-function bindEvents() {
+ForceLink.prototype.bindEvents = function()  {
     let nodeId = "0";
     let oldNode;
     // Bind the events:
-    s.bind('overNode outNode rightClickNode', function (e) {
+    this.s.bind('overNode outNode rightClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
     });
-    s.bind('clickNode', function (e) {
+    this.s.bind('clickNode', function (e) {
         //colors the edges when clicked on a node
-        s.graph.adjacentEdgesOut(nodeId).forEach(
+        this.s.graph.adjacentEdgesOut(nodeId).forEach(
             function (ee) {
                 ee.color = "#FFFFFF";
             }
         );
         console.log(e.type, e.data.node.label, e.data.captor);
         nodeId = e.data.node.id;
-        s.graph.adjacentEdgesOut(nodeId).forEach(
+        this.s.graph.adjacentEdgesOut(nodeId).forEach(
             function (ee) {
                 if (ee.color === '#ff9900' && ee.source === nodeId) {
                     ee.color = "#FFFFFF";
@@ -183,25 +183,25 @@ function bindEvents() {
             oldNode = e.data.node;
             e.data.node.isSelected = true;
         }
-        s.refresh();
+        this.s.refresh();
     });
-    s.bind('doubleClickNode', function (e) {
+    this.s.bind('doubleClickNode', function (e) {
         //show the neighbors of the node double clicked on
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-        s.killForceAtlas2();
+        this.s.killForceAtlas2();
         let filter = new sigma.plugins.filter(s);
         filter.neighborsOf(e.data.node.id);
         filter.apply();
         filter.undo();
-        s.refresh();
+        this.s.refresh();
     });
-    s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
+    this.s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
     });
-    s.bind('clickStage', function (e) {
+    this.s.bind('clickStage', function (e) {
         console.log(e.type, e.data.captor);
     });
-    s.bind('doubleClickStage rightClickStage', function (e) {
+    this.s.bind('doubleClickStage rightClickStage', function (e) {
         console.log(e.type, e.data.captor);
     });
 };
