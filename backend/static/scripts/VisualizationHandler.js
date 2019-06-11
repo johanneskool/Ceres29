@@ -375,7 +375,6 @@ var VisualizationHandler = function () {
                     data1.fullyconnected);
                 let div = document.getElementById("legend"+x);
                 div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
-                console.log(x, ((this.maxEdgeWeight-this.minEdgeWeight)*x/4));
                 div.innerText = " - " + (this.minEdgeWeight+ (this.maxEdgeWeight-this.minEdgeWeight)*x/4) + " - "
             }
 
