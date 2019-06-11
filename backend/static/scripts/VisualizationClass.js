@@ -95,6 +95,7 @@ Visualization.prototype.zoom = function (zoomIn, mouseX, mouseY) {
  * @param yOff
  */
 Visualization.prototype.drag = function (xOff, yOff) {
+    console.log("drag");
     this.moveVisualization(xOff, yOff);
 };
 
@@ -162,6 +163,7 @@ Visualization.prototype.draw = function () {
  * @param {p5.Vector} position vector
  */
 Visualization.prototype.setPosition = function (position) {
+    console.log("set position");
     this.position.set(position);
 };
 
@@ -203,6 +205,7 @@ Visualization.prototype.setVH = function (vH) {
  * @param yOff
  */
 Visualization.prototype.moveVisualization = function (xOff, yOff) {
+    console.log("move vis");
     let offset = P$.createVector(xOff, yOff);
     this.position.add(offset);
 };

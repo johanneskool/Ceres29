@@ -18,7 +18,7 @@ var ForceLink = function () {
 ForceLink.prototype = Object.create(Visualization.prototype);
 ForceLink.prototype.constructor = ForceLink;
 
-MatrixVisualization.prototype.setData = function (url) {
+ForceLink.prototype.setData = function (url) {
     P$.print(url);
     P$.loadJSON(url, loadForce, loadFailed);
 
@@ -66,7 +66,7 @@ ForceLink.prototype.useJSON = function (data) {
                 minEdgeSize: 0.2,
                 maxEdgeSize: 1,
                 minNodeSize: 2,
-                maxNodeSize: 5,
+                maxNodeSize: 7,
                 animationTime: 1000,
                 defaultNodeColor: '#0099ff',
                 minArrowSize: 6,
@@ -84,7 +84,7 @@ ForceLink.prototype.useJSON = function (data) {
             label: data.tags[index],
             x: P$.random(-2000, 2000),
             y: P$.random(-1000, 1000),
-            size: P$.random(2, 4)
+            size: P$.random(5, 6)
         });
     }
 
@@ -117,6 +117,21 @@ ForceLink.prototype.useJSON = function (data) {
     }
 
     bindEvents();
+
+// Initialize the dragNodes plugin:
+/*    var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+    dragListener.bind('startdrag', function(event) {
+        console.log(event);
+    });
+    dragListener.bind('drag', function(event) {
+        console.log(event);
+    });
+    dragListener.bind('drop', function(event) {
+        console.log(event);
+    });
+    dragListener.bind('dragend', function(event) {
+        console.log(event);
+    });*/
 
     // Load the graph in sigma to draw
     s.graph.read(this.graph);
@@ -186,7 +201,7 @@ function bindEvents() {
         s.refresh();
     });
     s.bind('doubleClickNode', function (e) {
-        //show the neighbors of the node double clicked on
+        //show the neighbours of the node double clicked on
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
         s.killForceAtlas2();
         let filter = new sigma.plugins.filter(s);
@@ -198,11 +213,24 @@ function bindEvents() {
     s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
     });
-    s.bind('clickStage', function (e) {
+    s.bind('clickStage, rightClickStage', function (e) {
         console.log(e.type, e.data.captor);
     });
-    s.bind('doubleClickStage rightClickStage', function (e) {
-        console.log(e.type, e.data.captor);
+    s.bind('doubleClickStage', function (e) {
+        s.graph.nodes().forEach(
+            function(n, i, a) {
+                n.color = '#0099ff';
+                n.hidden = false;
+            });
+
+        //Show all edges
+        s.graph.edges().forEach(
+            function(ee) {
+                ee.hidden = false;
+                ee.color = "#FFFFFF";
+            }
+        );
+        s.refresh();
     });
 };
 
@@ -221,3 +249,17 @@ sigma.classes.graph.addMethod('adjacentEdgesOut', function(id) {
     }
     return edges;
 });
+
+/**
+ * Moves this visualization by the given offset.
+ * @param xOff
+ * @param yOff
+ */
+ForceLink.prototype.moveVisualization = function (xOff, yOff) {
+};
+
+ForceLink.prototype.setPosition = function (position) {
+};
+
+ForceLink.prototype.drag = function (xOff, yOff) {
+};
