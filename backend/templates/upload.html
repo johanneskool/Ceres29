@@ -59,14 +59,14 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <select required class="custom-select" id="sel_vistype" name="vistype" onchange="updateOrderingOptions(this);">
+                        <select required class="custom-select is-valid" id="sel_vistype" name="vistype" onchange="updateOrderingOptions(this);">
                             <option value="" disabled>Choose a visualization</option>
                             <option selected value="matrix">&nbsp;&nbsp;Adjacency Matrix</option>
                             <option value="forceLink">&nbsp;&nbsp;Force-directed node-link</option>
                             <option value="roundNodeLink">&nbsp;&nbsp;Round node-link</option>
                             <option value="treeNodeLink">&nbsp;&nbsp;Tree node-link</option>
                         </select>
-                        <select class="custom-select" id="sel_clustering" name="clustering">
+                        <select class="custom-select is-valid" id="sel_clustering" name="clustering">
                             <option value="" disabled>Choose a ordering</option>
                             <option value="n/a" disabled hidden>Not applicable</option>
                             <option value="default">&nbsp;&nbsp;As uploaded</option>
