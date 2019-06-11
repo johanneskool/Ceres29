@@ -149,7 +149,7 @@ MatrixVisualization.prototype.drawMatrix = function () {
     let max;
     let useLog = false; //because we need them outside the if-statement
 
-    min = Math.log(this.minWeight / 1.5); //excend the range a little since we are not sure whether there is a 0
+    min = Math.log(this.minWeight); //excend the range a little since we are not sure whether there is a 0
     max = Math.log(this.maxWeight);
 
     this.matrix.fill(0, 0, 0);
