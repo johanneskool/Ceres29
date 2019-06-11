@@ -33,9 +33,10 @@ class Network:
     """
 
     @abstractmethod
-    def __init__(self, name):
+    def __init__(self, name, filesize):
         self.name = name
         self.type = "Ordered as uploaded"
+        self.filesize = filesize
 
     @staticmethod
     def __parse__(filename):
@@ -76,6 +77,7 @@ class Network:
         to_be_converted = {}
         to_be_converted["name"] = self.name
         to_be_converted["type"] = self.type
+        to_be_converted["filesize"] = self.filesize
         to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
                                                                                          range(self.graph.vcount())]
         to_be_converted["minWeight"] = min(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
@@ -217,7 +219,7 @@ class Network:
 
         subgraph = self.communities.subgraph(index)
 
-        return SubNetwork(self.name + "." + str(index), subgraph)
+        return SubNetwork(self.name + "." + str(index), subgraph, self.filesize)
 
 
 class TopNetwork(Network):
@@ -230,8 +232,8 @@ class TopNetwork(Network):
     @return nothing
     """
 
-    def __init__(self, name, filename, directory_name):
-        super().__init__(name)
+    def __init__(self, name, filename, directory_name, filesize):
+        super().__init__(name, filesize)
 
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         self.graph = self.__parse__(filepath)
@@ -290,7 +292,7 @@ class TopNetwork(Network):
         # make cluster graph if there are multiple clusters
         if len(self.communities) > 1:
             cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
-            cluster_network = SubNetwork(name, cluster_graph)
+            cluster_network = SubNetwork(name, cluster_graph, self.filesize)
             cluster_network.type = 'Cluster graph'
             cluster_network.save_as_json(
                 os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster_graph'])
@@ -299,8 +301,8 @@ class TopNetwork(Network):
 
 class SubNetwork(Network):
 
-    def __init__(self, name, graph):
-        super().__init__(name)
+    def __init__(self, name, graph, filesize):
+        super().__init__(name, filesize)
         self.graph = graph
 
         self.find_communities()
