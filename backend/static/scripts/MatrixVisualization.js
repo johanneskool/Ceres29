@@ -211,9 +211,10 @@ MatrixVisualization.prototype.draw = function () {
  * @param y the y cords of the matrix
  * @override
  */
-MatrixVisualization.prototype.colorActiveCell = function (x, y) {
+MatrixVisualization.prototype.select = function (x, y) {
     this.overlayGraphics.clear();
     this.overlayGraphics.fill(50, 75, 75);
+    console.log("draw at " + x + y)
     this.overlayGraphics.rect(x * this.overlayRatio * this.nodeSize, y * this.overlayRatio * this.nodeSize, this.overlayRatio * this.nodeSize, this.overlayRatio * this.nodeSize);
 
 };
@@ -236,13 +237,12 @@ MatrixVisualization.prototype.getCell = function (xCord, yCord) {
     var nodeSize = (this.drawWidth / this.zoomScale) / this.nodeCount;
     var x = P$.floor(cell.x / nodeSize);
     var y = P$.floor(cell.y / nodeSize);
-    var cellVector = P$.createVector(x, y);
 
     if (x < 0 || y < 0 || x > this.nodeCount || y > this.nodeCount) {
         throw new RangeError("clicked outside of visualization");
     }
 
-    return cellVector
+    return [x, y];
 };
 
 /**
@@ -256,15 +256,12 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     // function gets executed when an edge is pressed
     try {
         var cellVector = this.getCell(xCord, yCord);
-        var y = cellVector.y;
-        var x = cellVector.x;
+        var x = cellVector[0];
+        var y = cellVector[1];
     } catch (error) {
         document.getElementById('matrix-visualization-edge-info').style.display = 'none';
         throw error;
     }
-
-    // mark this cell
-    this.colorActiveCell(x, y);
 
     let from = "cluster #" + x;
     from = from.replace(/_/g, ' ');
@@ -319,6 +316,6 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
  * Function that deselects the cell by coloring the cell -1, -1
  * @override
  */
-MatrixVisualization.prototype.deselectCell = function () {
-    this.colorActiveCell(-1, -1);
+MatrixVisualization.prototype.deselect = function () {
+    this.select(-1, -1);
 };

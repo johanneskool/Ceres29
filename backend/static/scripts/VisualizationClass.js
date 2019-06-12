@@ -68,7 +68,7 @@ Visualization.prototype.setCanvas = function (p5canvas) {
  * @abstract
  */
 Visualization.prototype.getCell = function (xPos, yPos) {
-
+    return list;
 };
 
 /**
@@ -95,7 +95,6 @@ Visualization.prototype.zoom = function (zoomIn, mouseX, mouseY) {
  * @param yOff
  */
 Visualization.prototype.drag = function (xOff, yOff) {
-    console.log("drag");
     this.moveVisualization(xOff, yOff);
 };
 
@@ -163,7 +162,6 @@ Visualization.prototype.draw = function () {
  * @param {p5.Vector} position vector
  */
 Visualization.prototype.setPosition = function (position) {
-    console.log("set position");
     this.position.set(position);
 };
 
@@ -205,7 +203,6 @@ Visualization.prototype.setVH = function (vH) {
  * @param yOff
  */
 Visualization.prototype.moveVisualization = function (xOff, yOff) {
-    console.log("move vis");
     let offset = P$.createVector(xOff, yOff);
     this.position.add(offset);
 };
@@ -214,7 +211,7 @@ Visualization.prototype.moveVisualization = function (xOff, yOff) {
  * Function that should be able to handle a click to the canvas with the given coords.
  * @param posX
  * @param posY
- * @throws RangeError if you click outside the visualization. !important.
+ * @throws RangeError if you click outside the visualization. !important
  */
 Visualization.prototype.click = function (posX, posY) {
 
@@ -224,7 +221,7 @@ Visualization.prototype.click = function (posX, posY) {
  * Function that should be able to deselect / decolor any selected nodes in the visualization.
  * @abstract
  */
-Visualization.prototype.deselectCell = function () {
+Visualization.prototype.deselect = function () {
 };
 
 
@@ -235,4 +232,9 @@ Visualization.prototype.deselectCell = function () {
  */
 Visualization.prototype.useJSON = function (JSON) {
     console.log("Absract call");
+};
+
+
+Visualization.prototype.select = function (x, y) {
+
 };

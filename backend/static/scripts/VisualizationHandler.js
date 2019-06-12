@@ -114,16 +114,21 @@ var VisualizationHandler = function () {
         try {
             let vis = this.visDictionary.get(v);
             vis.click(xPos, yPos);
-            this.colorActiveCell(vis.getCell(xPos, yPos));
+            let selected = vis.getCell(xPos, yPos);
+            console.log(selected);
+            for (let i = 0; i < this.visualizations.length; i++) {
+                this.visualizations[i].select(selected[0], selected[1]);
+            }
+
         } catch (e) {
             console.error(e);
-            this.activeCell = null;
             //clicked nothing, unload active cell and clear overlay.
             for (let i = 0; i < this.visualizations.length; i++) {
-                this.visualizations[i].deselectCell();
+                this.visualizations[i].deselect();
             }
         }
     };
+
 
     /**
      * Function that handles a click on a canvas.
@@ -173,21 +178,19 @@ var VisualizationHandler = function () {
         }
         //clicked nothing, unload active cell and clear overlay.
         for (let i = 0; i < this.visualizations.length; i++) {
-            this.visualizations[i].colorActiveCell(-1, -1);
+            this.visualizations[i].colorSelect(-1, -1);
         }
-        this.activeCell = null;
     };
 
     /**
      * Color a cell in all the visualization in the VH
      * @param {p5.Vector} vector the vector of the cell.
      */
-    this.colorActiveCell = function (vector) {
-        this.activeCell = vector;
+    this.colorSelect = function (x, y) {
         for (let i = 0; i < this.visualizations.length; i++) {
-            this.visualizations[i].colorActiveCell(vector.x, vector.y);
+            this.visualizations[i].select(x, y);
         }
-        window.history.replaceState({}, data_id, "/vis/" + data_id + "?vistype=" + GVH.mainvis_type + "&clustering=" + this.clustering_type + "&x=" + vector.x + "&y=" + vector.y);
+        window.history.replaceState({}, data_id, "/vis/" + data_id + "?vistype=" + GVH.mainvis_type + "&clustering=" + this.clustering_type + "&x=" + x + "&y=" + y);
     };
 
 
