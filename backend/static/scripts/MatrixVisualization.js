@@ -147,11 +147,13 @@ MatrixVisualization.prototype.generateNodes = function () {
  */
 MatrixVisualization.prototype.drawMatrix = function () {
     this.matrix.fill(0, 0, 0);
-    this.matrix.rect(0, 0, this.maxSize, this.maxSize);
+    this.matrix.rect(0, 0, this.nodeCount * this.nodeSize, this.nodeCount * this.nodeSize);
 
     P$.colorMode(P$.HSB, 100);
     this.matrix.loadPixels();
-    console.log(this.matrix.pixels)
+    console.log(this.matrix.pixels);
+
+    let d = P$.pixelDensity();
 
     //loop through all the edges and create a rectangle.
     for (let col = 0; col < this.nodeCount; col++) {
@@ -164,12 +166,15 @@ MatrixVisualization.prototype.drawMatrix = function () {
             let fillColor = P$.getWeightedColor(weight, this.dataJSON.minWeight, this.dataJSON.maxWeight, this.dataJSON.fullyconnected);
 
 
-            let index = 4 * row * this.nodeCount + 4 * col
-
-            this.matrix.pixels[index] = P$.red(fillColor);
-            this.matrix.pixels[index + 1] = P$.green(fillColor);
-            this.matrix.pixels[index + 2] = P$.blue(fillColor);
-            this.matrix.pixels[index + 3] = 1000;
+            for (let i = 0; i < d; i++) {
+                for (let j = 0; j < d; j++) {
+                    let index = 4 * ((row * d + j) * this.nodeCount * d + (col * d + i));
+                    this.matrix.pixels[index] = P$.red(fillColor);
+                    this.matrix.pixels[index + 1] = P$.green(fillColor);
+                    this.matrix.pixels[index + 2] = P$.blue(fillColor);
+                    this.matrix.pixels[index + 3] = 1000;
+                }
+            }
 
 
             // this.matrix.rect(this.nodeSize * col, this.nodeSize * row, this.nodeSize, this.nodeSize);
