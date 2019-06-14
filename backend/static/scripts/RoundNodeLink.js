@@ -27,15 +27,14 @@ var RoundNodeLink = function () {
     this.filterWeightMin = 0.5;
     this.filterWeightMax = 10000;
 
+    this.nodes = {};
+    this.tags = [];
 
     /**
      * Where the drawRoundNodeLink should start drawing.
      * @type {number}
      */
     this.startPosition = 0;
-
-    this.nodes = [];
-    this.tags = [];
 
     /**
      * Determines how fast to spin and in which direction
@@ -51,16 +50,21 @@ var RoundNodeLink = function () {
 
 
     this.currentActive = null; // node which is clicked
-    this.limit = 100; // at most 100 nodes can be put on the circle
+    this.limit = 200; // at most 100 nodes can be put on the circle
     console.log("Constructor finished.")
 };
 
 RoundNodeLink.prototype = Object.create(Visualization.prototype);
 RoundNodeLink.prototype.constructor = RoundNodeLink;
 
+RoundNodeLink.prototype.select = (x,y) => {
+    console.log(x);
+    node.makeActive(x);
+};
+
 RoundNodeLink.prototype.useJSON = function (data) {
     // make sure everything resets
-    this.nodes = [];
+    this.nodes = {};
     this.tags = [];
     try {
         this.minEdgeWeightFilterSlider.remove();
@@ -80,11 +84,11 @@ RoundNodeLink.prototype.useJSON = function (data) {
      * @type {p5.slider}
      */
     this.minEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(this.maxWeight-this.minWeight)/4, "any");
-    this.minEdgeWeightFilterSlider.value(this.minWeight + (this.maxWeight-this.minWeight)/4);
+    this.minEdgeWeightFilterSlider.value(this.minWeight + 50*(this.maxWeight-this.minWeight)/100);
     this.minEdgeWeightFilterSlider.parent(document.getElementById("minEdgeWeightFilter"));
     // max
     this.maxEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(3*(this.maxWeight-this.minWeight)/4), "any");
-    this.maxEdgeWeightFilterSlider.value(this.minWeight + 3*(this.maxWeight-this.minWeight)/4);
+    this.maxEdgeWeightFilterSlider.value(this.minWeight + 51*(this.maxWeight-this.minWeight)/100);
     this.maxEdgeWeightFilterSlider.parent(document.getElementById("maxEdgeWeightFilter"));
 
     let number = 0;
@@ -97,7 +101,7 @@ RoundNodeLink.prototype.useJSON = function (data) {
             number * 2 * Math.PI / (Math.min(Object.keys(weights).length, this.limit) + 1),
             this,
         );
-        this.nodes.push(new_node); // put in array
+        this.nodes[node_index] = new_node; // put in array
         number++;
         if (number > this.limit) {
             break; // stop adding nodes if the limit of nodes is reached
@@ -105,28 +109,26 @@ RoundNodeLink.prototype.useJSON = function (data) {
     }
 
     // create the outgoing edges
-    this.nodes.forEach((node) => {
+    Object.values(this.nodes).forEach((node) => {
         let outgoing = weights[node.id];
         for (let i = 0; i < outgoing.length; i++) {
             let weight = outgoing[i];
-            let toNode;
+            let toNodeIndex;
             // find corresponding node (not optimal)
             if (weight > 0) {
-                this.nodes.forEach((some_node) => {
-                    if(some_node.number === i
-            )
-                {
-                    toNode = some_node;
-                }
-            });
-                let edge = new OutGoingEdge(weight, toNode);
+                Object.values(this.nodes).forEach((some_node) => {
+                    if (some_node.number === i) {
+                        toNodeIndex = some_node.id;
+                    }
+                });
+                let edge = new OutGoingEdge(weight, toNodeIndex);
                 node.outGoingEdges.push(edge);
             }
         }
     });
     this.currentActive = this.nodes[0];
     this.nodes[0].active = true;
-
+    console.log(this.currentActive);
 };
 
 
@@ -144,14 +146,15 @@ RoundNodeLink.prototype.draw = function () {
     }
 
     // draw each node
-    this.nodes.forEach(node => {
-        node.drawNode();
-    });
+    var nodes1 = Object.values(this.nodes);
+    for (var x=0; x < nodes1.length; x++) {
+        nodes1[x].drawNode();
+    }
     // rotate all nodes if needed
     if (this.currentActive && this.currentActive.angle > 0.1) {
-        this.nodes.forEach(node => {
-            node.angle = ((node.angle + this.rotationVector) % (Math.PI * 2) + Math.PI*2) % (Math.PI*2);
-        })
+        for (var x=0; x < nodes1.length; x++) {
+            nodes1[x].angle = ((nodes1[x].angle + this.rotationVector) % (Math.PI * 2) + Math.PI*2) % (Math.PI*2);
+        }
     }
 };
 
@@ -177,23 +180,29 @@ RoundNodeLink.prototype.getCell = function (xCord, yCord) {
  * @throws RangeError if you click outside of the matrix.
  */
 RoundNodeLink.prototype.click = function (xCord, yCord) {
-    this.nodes.forEach( (node) => {
-        if (P$.dist(node.locationX(), node.locationY(), xCord, yCord) < node.radius) {
-            // set new node active
-            this.currentActive.active = false;
-            this.currentActive = node;
-            this.currentActive.active = true;
-
-            // update rotationVector direction
-            if (this.currentActive.isOnBottom()) {
-                this.rotationVector = -Math.abs(this.rotationVector);
-            } else {
-                this.rotationVector = Math.abs(this.rotationVector);
-            }
+    var nodes1 = Object.values(this.nodes);
+    for (var x=0; x < nodes1.length; x++) {
+        if (P$.dist(nodes1[x].locationX(), nodes1[x].locationY(), xCord, yCord) < nodes1[x].radius) {
+            this.makeActive(nodes1[x].id);
         }
-    });
+    }
 };
 
+/**
+ * Make active
+ * @param nodeIndex
+ */
+RoundNodeLink.prototype.makeActive = function (nodeIndex) {
+    this.currentActive.active = false;
+    this.currentActive = this.nodes[nodeIndex];
+    this.currentActive.active = true;
+    // update rotationVector direction
+    if (this.currentActive.isOnBottom()) {
+        this.rotationVector = -Math.abs(this.rotationVector);
+    } else {
+        this.rotationVector = Math.abs(this.rotationVector);
+    }
+};
 
 /**
  * The node which has to be drawn (This is kind of ugly right now)
@@ -214,26 +223,35 @@ function Node(id, name, number, angle, nodelink) {
 
     this.radius = 10; // radius of node
     this.active = false;
-    this.outGoingEdges = []; // set manually after making nodes
+    this.outGoingEdges = []; // array with node id's (set manually)
 
     this.canvas = nodelink.canvas;
     this.nodelink = nodelink;
 
+    this.outsideRad = (Math.min(this.canvas.width, this.canvas.height) / 4);
+
+    this.zoom = function(zoomIn = true) {
+        if (zoomIn) {
+            this.textSize += 1;
+            this.radius += 2;
+        }
+    };
 
     this.outsideRadius = function (text = false) {
         if (text === true) {
-            return (Math.min(this.canvas.width, this.canvas.height) / 4 + 10);
+            return this.outsideRad + 10;
         } else {
-            return Math.min(this.canvas.width, this.canvas.height) / 4;
+            return this.outsideRad;
         }
     };
+
 
     this.locationX = function (text = false) {
         return Math.cos(this.angle) * this.outsideRadius(text) + this.outsideCircleMiddle.x;
     };
     this.locationY = function (text = false) {
         return Math.sin(this.angle) * this.outsideRadius(text) + this.outsideCircleMiddle.y;
-    };
+};
 
     this.isOnBottom = function () {
         // returns true if node is on the bottom half of the circle
@@ -254,6 +272,7 @@ function Node(id, name, number, angle, nodelink) {
         this.canvas.stroke(255, 255, 255);
         this.canvas.translate(this.locationX(text = true), this.locationY(text = true));
         this.canvas.rotate(this.angle);
+        this.canvas.textSize(8);
         this.canvas.text(this.name, 0, 0);
         this.canvas.pop();
         // only draw edges of ac
@@ -280,7 +299,8 @@ function Node(id, name, number, angle, nodelink) {
                         this.canvas.stroke('#CCCCCC');
                     }
                     this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
-                        toNode.locationX(), toNode.locationY(), toNode.locationX(), toNode.locationY());
+                        this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY(),
+                        this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY());
                     this.canvas.pop();
                 }
             } catch (e) {
