@@ -41,6 +41,8 @@ var RoundNodeLink = function () {
      */
     this.rotationVector = 0.1;
 
+    this.zoomScale = 1;
+
     /**
      * All variables that describe the circle around which the nodes are drawn
      */
@@ -58,8 +60,34 @@ RoundNodeLink.prototype = Object.create(Visualization.prototype);
 RoundNodeLink.prototype.constructor = RoundNodeLink;
 
 RoundNodeLink.prototype.select = (x,y) => {
-    console.log(x);
     node.makeActive(x);
+};
+
+
+/**
+ * Setter for this zoomScale
+ * @param {number} zoomScale
+ */
+Visualization.prototype.setZoomScale = function (zoomScale) {
+    this.zoomScale = zoomScale/100+0.2;
+    this.zoomScale = Math.max(0.6, Math.min(15, zoomScale));
+    try {
+        var nodes1 = Object.values(this.nodes);
+        for (var x = 0; x < nodes1.length; x++) {
+            nodes1[x].zoom(this.zoomScale);
+        }
+    } catch (e) {
+        console.log(e)
+
+    }
+};
+
+/**
+ * getter for this zoomscale
+ * @return {number}
+ */
+Visualization.prototype.getZoomScale = function () {
+    return this.zoomScale;
 };
 
 RoundNodeLink.prototype.useJSON = function (data) {
@@ -167,10 +195,13 @@ RoundNodeLink.prototype.draw = function () {
  * @throws RangeError if you click a cell that is outside of the matrix, i.e. a bad click.
  */
 RoundNodeLink.prototype.getCell = function (xCord, yCord) {
-    // calculate which edge is pressed not implemented
-    throw new RangeError("clicked outside of visualization");
+    var nodes1 = Object.values(this.nodes);
+    for (var x=0; x < nodes1.length; x++) {
+        if (P$.dist(nodes1[x].locationX(), nodes1[x].locationY(), xCord, yCord) < nodes1[x].radius) {
+            return [nodes1[x].id, 0];
 
-    return cellVector;
+        }
+    }
 };
 
 /**
@@ -230,16 +261,15 @@ function Node(id, name, number, angle, nodelink) {
 
     this.outsideRad = (Math.min(this.canvas.width, this.canvas.height) / 4);
 
-    this.zoom = function(zoomIn = true) {
-        if (zoomIn) {
-            this.textSize += 1;
-            this.radius += 2;
-        }
+    this.zoom = function(zoomScale) {
+        this.textSize = 8*(1+zoomScale/2);
+        this.outsideRad = 100*zoomScale;
+        this.radius = 1 + (zoomScale*9)
     };
 
     this.outsideRadius = function (text = false) {
         if (text === true) {
-            return this.outsideRad + 10;
+            return this.outsideRad + this.radius;
         } else {
             return this.outsideRad;
         }
@@ -265,6 +295,10 @@ function Node(id, name, number, angle, nodelink) {
 
     this.drawNode = function () {
         this.canvas.stroke(255,255, 255);
+        this.canvas.fill(255,255,255);
+        if (this.active) {
+            this.canvas.fill(0,0,255);
+        }
         this.canvas.circle(this.locationX(), this.locationY(), this.radius);
         // draw label
         this.canvas.push();
@@ -272,7 +306,7 @@ function Node(id, name, number, angle, nodelink) {
         this.canvas.stroke(255, 255, 255);
         this.canvas.translate(this.locationX(text = true), this.locationY(text = true));
         this.canvas.rotate(this.angle);
-        this.canvas.textSize(8);
+        this.canvas.textSize(this.textSize);
         this.canvas.text(this.name, 0, 0);
         this.canvas.pop();
         // only draw edges of ac
