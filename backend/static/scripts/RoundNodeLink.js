@@ -1,6 +1,14 @@
 /**
  * @fileoverview Contains the round node link visualization class and the functions needed to draw it to the canvas
  * @author Tristan Trouwen
+ *
+ * Interactions
+ * zoom
+ * pan
+ * rotate when select
+ * filter edges
+ * choose between curved or straight edges (not implemented yet)
+ * select number of nodes to limit
  */
 
 var RoundNodeLink = function () {
@@ -46,13 +54,12 @@ var RoundNodeLink = function () {
     /**
      * All variables that describe the circle around which the nodes are drawn
      */
-    this.circleRadius = Math.min(P$.windowWidth / 3, P$.windowHeight / 3);
     this.setPosition(P$.createVector(P$.windowWidth / 2, P$.windowHeight / 2));
     this.circleLocation = this.getPosition();
 
 
     this.currentActive = null; // node which is clicked
-    this.limit = 200; // at most 100 nodes can be put on the circle
+    this.limit = 200; // at most 200 nodes can be put on the circle
     console.log("Constructor finished.")
 };
 
@@ -101,8 +108,6 @@ RoundNodeLink.prototype.useJSON = function (data) {
         console.log(e)
     }
 
-
-
     let weights = data["weights"];
     this.minWeight = data['minWeight'];
     this.maxWeight = data['maxWeight'];
@@ -138,6 +143,7 @@ RoundNodeLink.prototype.useJSON = function (data) {
 
     // create the outgoing edges
     Object.values(this.nodes).forEach((node) => {
+        node.zoom(1);
         let outgoing = weights[node.id];
         for (let i = 0; i < outgoing.length; i++) {
             let weight = outgoing[i];
@@ -259,12 +265,14 @@ function Node(id, name, number, angle, nodelink) {
     this.canvas = nodelink.canvas;
     this.nodelink = nodelink;
 
+    this.curvedLines = true;
+
     this.outsideRad = (Math.min(this.canvas.width, this.canvas.height) / 4);
 
     this.zoom = function(zoomScale) {
-        this.textSize = 8*(1+zoomScale/2);
-        this.outsideRad = 100*zoomScale;
-        this.radius = 1 + (zoomScale*9)
+        this.textSize = 5*(1+zoomScale/2);
+        this.outsideRad = 400*zoomScale;
+        this.radius = 1 + (zoomScale*6)
     };
 
     this.outsideRadius = function (text = false) {
@@ -307,7 +315,7 @@ function Node(id, name, number, angle, nodelink) {
         this.canvas.translate(this.locationX(text = true), this.locationY(text = true));
         this.canvas.rotate(this.angle);
         this.canvas.textSize(this.textSize);
-        this.canvas.text(this.name, 0, 0);
+        this.canvas.text(this.name, 0, 0, 0, 100);
         this.canvas.pop();
         // only draw edges of ac
         if (this.active) {
@@ -332,9 +340,15 @@ function Node(id, name, number, angle, nodelink) {
                     } else {
                         this.canvas.stroke('#CCCCCC');
                     }
-                    this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
-                        this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY(),
-                        this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY());
+                    if (this.curvedLines) {
+                        this.canvas.bezier(this.locationX(), this.locationY(), this.outsideCircleMiddle.x, this.outsideCircleMiddle.y,
+                            this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY(),
+                            this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY());
+
+                    } else {
+                        this.canvas.line(this.locationX(), this.locationY(),
+                            this.nodelink.nodes[toNode].locationX(), this.nodelink.nodes[toNode].locationY());
+                    }
                     this.canvas.pop();
                 }
             } catch (e) {

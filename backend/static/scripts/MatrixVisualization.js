@@ -123,7 +123,6 @@ MatrixVisualization.prototype.useJSON = function (dataJSON) {
     this.load();
 
     document.getElementById('matrix-visualization-fileinfo-name').innerHTML = this.dataJSON.name;
-    document.getElementById('matrix-visualization-fileinfo-size').innerHTML = formatBytes(this.dataJSON.filesize);
     document.getElementById('matrix-visualization-fileinfo-type').innerHTML = this.dataJSON.type;
     console.groupEnd();
 };

@@ -365,6 +365,8 @@ var VisualizationHandler = function () {
             // set filesize data
             this.dataSize = data1.filesize;
             document.getElementById('dataFileSize').innerText = formatBytes(this.dataSize);
+            document.getElementById('dataFileName').innerText = data1.name;
+            document.getElementById('dataFileType').innerText = data1.type;
 
             // set legend data
             this.minEdgeWeight = data1.minWeight;
