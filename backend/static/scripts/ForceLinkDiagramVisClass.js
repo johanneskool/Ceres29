@@ -154,9 +154,45 @@ ForceLink.prototype.useJSON = function (data) {
 
     //Starting Force Atlas and stops after 8 seconds
     this.s.startForceAtlas2(forceAtlas2Config);
-    window.setTimeout(function () {
-        this.s.killForceAtlas2();
+    var sl = this.s;
+    window.setTimeout(function (s=sl) {
+        s.killForceAtlas2();
     }, 12000);
+};
+
+ForceLink.prototype.select = function(nodeId,y) {
+    this.s.graph.adjacentEdgesOut(nodeId).forEach(
+        function (ee) {
+            ee.color = "#FFFFFF";
+        }
+    );
+    console.log(e.type, e.data.node.label, e.data.captor);
+    nodeId = e.data.node.id;
+    this.s.graph.adjacentEdgesOut(nodeId).forEach(
+        function (ee) {
+            if (ee.color === '#ff9900' && ee.source === nodeId) {
+                ee.color = "#FFFFFF";
+            } else if (ee.source === nodeId) {
+                ee.color = '#ff9900';
+            }
+        }
+    );
+
+    //colors the selected node orange
+    if (oldNode != null) {
+        oldNode.color = "#0099ff";
+    }
+
+    if (e.data.node.isSelected) {
+        e.data.node.color = "#0099ff";
+        e.data.node.isSelected = false;
+    } else {
+        e.data.node.color = "#ff9900";
+        oldNode = e.data.node;
+        e.data.node.isSelected = true;
+    }
+    this.s.refresh();
+
 };
 
 ForceLink.prototype.bindEvents = function()  {
@@ -166,16 +202,17 @@ ForceLink.prototype.bindEvents = function()  {
     this.s.bind('overNode outNode rightClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor);
     });
-    this.s.bind('clickNode', function (e) {
+    var sl = this.s;
+    this.s.bind('clickNode', function (e, s=sl) {
         //colors the edges when clicked on a node
-        this.s.graph.adjacentEdgesOut(nodeId).forEach(
+        s.graph.adjacentEdgesOut(nodeId).forEach(
             function (ee) {
                 ee.color = "#FFFFFF";
             }
         );
         console.log(e.type, e.data.node.label, e.data.captor);
         nodeId = e.data.node.id;
-        this.s.graph.adjacentEdgesOut(nodeId).forEach(
+        s.graph.adjacentEdgesOut(nodeId).forEach(
             function (ee) {
                 if (ee.color === '#ff9900' && ee.source === nodeId) {
                     ee.color = "#FFFFFF";
@@ -198,17 +235,17 @@ ForceLink.prototype.bindEvents = function()  {
             oldNode = e.data.node;
             e.data.node.isSelected = true;
         }
-        this.s.refresh();
+        s.refresh();
     });
-    this.s.bind('doubleClickNode', function (e) {
+    this.s.bind('doubleClickNode', function (e, s=sl) {
         //show the neighbors of the node double clicked on
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-        this.s.killForceAtlas2();
+        s.killForceAtlas2();
         let filter = new sigma.plugins.filter(s);
         filter.neighborsOf(e.data.node.id);
         filter.apply();
         filter.undo();
-        this.s.refresh();
+        s.refresh();
     });
     this.s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
@@ -216,21 +253,21 @@ ForceLink.prototype.bindEvents = function()  {
     this.s.bind('clickStage, rightClickStage', function (e) {
         console.log(e.type, e.data.captor);
     });
-    this.s.bind('doubleClickStage', function (e) {
-        this.s.graph.nodes().forEach(
+    this.s.bind('doubleClickStage', function (e, s=sl) {
+        s.graph.nodes().forEach(
             function(n, i, a) {
                 n.color = '#0099ff';
                 n.hidden = false;
             });
 
         //Show all edges
-        this.s.graph.edges().forEach(
+        s.graph.edges().forEach(
             function(ee) {
                 ee.hidden = false;
                 ee.color = "#FFFFFF";
             }
         );
-        this.s.refresh();
+        s.refresh();
     });
 };
 
