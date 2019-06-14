@@ -222,6 +222,7 @@ var VisualizationHandler = function () {
      */
     this.newVisualization = function (visualization, v) {
         console.log(visualization);
+        this.data = v;
         switch (visualization) {
             case "matrix":
                 let newMatrixVisualization = new MatrixVisualization();
@@ -314,6 +315,7 @@ var VisualizationHandler = function () {
      */
     this.updateData = function (url) {
         this.data = url;
+
         for (let i = 0; i < this.visualizations.length; i++) {
             this.visualizations[i].setData(url);
         }
@@ -359,38 +361,45 @@ var VisualizationHandler = function () {
         //loop through all visualizations that were waiting on JSON
         if (this.jsonWaitingList.contains(data)) {
 
-            // set sidebar data
-            var data1 = this.jsonDictionary.get(data);
-
-            // set filesize data
-            this.dataSize = data1.filesize;
-            document.getElementById('dataFileSize').innerText = formatBytes(this.dataSize);
-            document.getElementById('dataFileName').innerText = data1.name;
-            document.getElementById('dataFileType').innerText = data1.type;
-
-            // set legend data
-            this.minEdgeWeight = data1.minWeight;
-            this.maxEdgeWeight = data1.maxWeight;
-
-
-            for (var x = 0; x < 5; x++) {
-                let color1 = P$.getWeightedColor(this.minEdgeWeight+ x/4 *(this.maxEdgeWeight-this.minEdgeWeight),
-                    this.minEdgeWeight,
-                    this.maxEdgeWeight,
-                    data1.fullyconnected);
-                let div = document.getElementById("legend"+x);
-                div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
-                div.innerText = " - " + (this.minEdgeWeight+ (this.maxEdgeWeight-this.minEdgeWeight)*x/4) + " - "
-            }
-
             for (let i = 0; i < this.jsonWaitingList.get(data).length; i++) {
                 this.visDictionary.get(this.jsonWaitingList.get(data)[i]).useJSON(this.jsonDictionary.get(data));
             }
             //wipe waitinglist
             this.jsonWaitingList.remove(data);
         }
+        this.updateGeneralStatistics(this.jsonDictionary.get(data));
         updateLoadingState(false);
-    }
+    };
+
+    /**
+     *
+     * @param data actual json
+     */
+    this.updateGeneralStatistics = function(data) {
+        var data1 = data;
+
+        // set filesize data
+        this.dataSize = data1.filesize;
+        document.getElementById('dataFileSize').innerText = formatBytes(this.dataSize);
+        document.getElementById('dataFileName').innerText = data1.name;
+        document.getElementById('dataFileType').innerText = data1.type;
+
+        // set legend data
+        this.minEdgeWeight = data1.minWeight;
+        this.maxEdgeWeight = data1.maxWeight;
+
+
+        for (var x = 0; x < 5; x++) {
+            let color1 = P$.getWeightedColor(this.minEdgeWeight+ x/4 *(this.maxEdgeWeight-this.minEdgeWeight),
+                this.minEdgeWeight,
+                this.maxEdgeWeight,
+                data1.fullyconnected);
+            let div = document.getElementById("legend"+x);
+            div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
+            div.innerText = " - " + (this.minEdgeWeight+ (this.maxEdgeWeight-this.minEdgeWeight)*x/4) + " - "
+        }
+
+    };
 };
 
 /**

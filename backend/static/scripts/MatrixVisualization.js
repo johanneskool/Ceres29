@@ -122,8 +122,6 @@ MatrixVisualization.prototype.useJSON = function (dataJSON) {
     this.updateNodeSize();
     this.load();
 
-    document.getElementById('matrix-visualization-fileinfo-name').innerHTML = this.dataJSON.name;
-    document.getElementById('matrix-visualization-fileinfo-type').innerHTML = this.dataJSON.type;
     console.groupEnd();
 };
 
