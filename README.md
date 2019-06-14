@@ -6,6 +6,7 @@
 - Upload csv file automatically saves data and sorts data
 - Visualizes the data in a matrix
 - Zoom (scroll)
+- And more!
 
 
 ## Installation
