@@ -31,7 +31,7 @@ class File(db.Model):
                 break
 
         # check if name already present here
-        count = 0
+        count = 1
         actual_name = name
         while name in [file.name for file in File.query.all()]:
             # append (number) to end if already exists
@@ -40,7 +40,7 @@ class File(db.Model):
         self.name = name
 
         network = Network.TopNetwork(self.name, self.filename,
-                                     self.hash, self.filesize)  # converts to correct models and saves file in hash folder
+                                     self.hash, self.filesize, self.timestamp)  # converts to correct models and saves file in hash folder
 
         with open(os.path.join(app.config['JSON_FOLDER'], self.hash, "network.p"), "wb") as f:
             pickle.dump(network, f)
