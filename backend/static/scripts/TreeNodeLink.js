@@ -12,7 +12,9 @@ var TreeNodeLink = function () {
      */
     this.loaded = false;
 
-    this.s = null
+    this.s = null;
+
+    this.radius = 500;
 };
 
 TreeNodeLink.prototype = Object.create(Visualization.prototype);
@@ -41,7 +43,8 @@ TreeNodeLink.prototype.useJSON = function (data) {
                 animationsTime: 1000,
                 enableHovering: true,
                 doubleClickEnabled: false,
-                edgeHoverExtremities: true
+                edgeHoverExtremities: true,
+                autoRescale: false
             }
         }
     );
@@ -65,7 +68,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
             if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                 this.graph.edges.push({
                     id: i,
-                    size: 10,
+                    size: 2,
                     source: this.graph.nodes[indexNodes].id,
                     target: this.graph.nodes[indexEdges].id,
                     color: "#FFFFFF",
@@ -90,10 +93,12 @@ TreeNodeLink.prototype.useJSON = function (data) {
 
     // Load the graph in sigma to draw
     this.s.graph.read(this.graph);
+
     // Make circle lay-out
+    let tnl = this;
     this.s.graph.nodes().forEach(function(n, i, a) {
-        n.x = Math.cos(Math.PI * 2 * i / a.length);
-        n.y = Math.sin(Math.PI * 2 * i / a.length);
+        n.x = tnl.radius*Math.cos(Math.PI * 2 * i / a.length);
+        n.y = tnl.radius*Math.sin(Math.PI * 2 * i / a.length);
     });
     // Ask sigma to draw it and refresh
     this.s.refresh();
@@ -117,8 +122,8 @@ TreeNodeLink.prototype.bindEvents = function() {
         //Show all nodes in initial circle
         tnl.s.graph.nodes().forEach(
             function(n, i, a) {
-                n.x = Math.cos(Math.PI * 2 * i / a.length);
-                n.y = Math.sin(Math.PI * 2 * i / a.length);
+                n.x = tnl.radius*Math.cos(Math.PI * 2 * i / a.length);
+                n.y = tnl.radius*Math.sin(Math.PI * 2 * i / a.length);
                 n.color = '#0099ff';
                 n.hidden = false;
             });
@@ -157,34 +162,32 @@ TreeNodeLink.prototype.showNeighbors = function(e, generationCount, nodeID) {
     );
 
     //Show the first generation
-    let firstNode = this.s.graph.findNeighbors(nodeID);
-    firstNode[nodeID] = e.data.node;
-    this.showGeneration(e, firstNode, 0);
+    let firstGen = this.s.graph.findNeighbors(nodeID);
+    firstGen[nodeID] = e.data.node;
+    this.showGeneration(e, firstGen, 0);
 
-    let nextGeneration = firstNode;
-    let nodes;
+    let currGen = firstGen;
 
     for (let i = 1; i < generationCount; i++) {
-        let nextGenerationNext = {};
-        let nextGenerationNew = {};
+        let nextGen = {};
 
         //Search the nodes in next Generation and put their neighbors in nextGenerationNew
-        for (nodes in nextGeneration) {
-            nextGenerationNext = this.s.graph.findNeighbors(nextGeneration[nodes].id);
-            nextGenerationNew = Object.assign({}, nextGenerationNew, nextGenerationNext);
+        for (let nodes in currGen) {
+            let neighbors = this.s.graph.findNeighbors(currGen[nodes].id);
+            nextGen = Object.assign({}, nextGen, neighbors);
         }
 
         //Giving the nodes in nextGenerationNew the nodes (not sure if needed)
-        for (nodes in nextGenerationNew) {
-            nextGenerationNew[nextGenerationNew[nodes].id] = this.s.graph.nodes(nextGenerationNew[nodes].id);
+        for (let nodes in nextGen) {
+            nextGen[nextGen[nodes].id] = this.s.graph.nodes(nextGen[nodes].id);
         }
 
         //Show the generation
-        console.log(nextGenerationNew);
-        this.showGeneration(e, nextGenerationNew, i);
+        console.log(nextGen);
+        this.showGeneration(e, nextGen, i);
 
         //next generation will get the new nodes that are founded
-        nextGeneration = nextGenerationNew;
+        currGen = nextGen;
     }
 
     //Place selected node in centre
@@ -193,27 +196,25 @@ TreeNodeLink.prototype.showNeighbors = function(e, generationCount, nodeID) {
     centreNode.y = 0;
     centreNode.color = '#ff9900';
     e.data.node.id.hidden = false;
-}
 
-TreeNodeLink.prototype.showGeneration = function(e, generation, j) {
-    //Show all nodes in the generation
-    this.s.graph.nodes().forEach(function(n, i, a) {
-        if (generation[n.id]) {
-            n.hidden = false;
-            n.x = (0.3 + 0.3*j) * Math.cos(Math.PI * 2 * i / a.length);
-            n.y = (0.3 + 0.3*j) * Math.sin(Math.PI * 2 * i / a.length);
-            console.log("test");
+    //unhide all edges where both nodes are shown
+    this.s.graph.edges().forEach(function(ee){
+        if (!(ee.source.hidden) && !(ee.target.hidden)){
+            ee.hidden = false;
         }
     });
+}
 
-    //Unhide edges from centre to generation1
-    this.s.graph.adjacentEdgesOut(e.data.node.id).forEach(
-        function (ee) {
-            if (ee.source === e.data.node.id) {
-                ee.hidden = false;
-            }
+TreeNodeLink.prototype.showGeneration = function(e, nodes, generation) {
+    //Show all nodes in the generation
+    let tnl = this;
+    this.s.graph.nodes().forEach(function(n, i, a) {
+        if (nodes[n.id] && n.hidden) {
+            n.hidden = false;
+            n.x = tnl.radius*(0.3 + 0.3*generation) * Math.cos(Math.PI * 2 * i / a.length);
+            n.y = tnl.radius*(0.3 + 0.3*generation) * Math.sin(Math.PI * 2 * i / a.length);
         }
-    );
+    });
 };
 
 //finds and returns the neighbors of the given node ID
