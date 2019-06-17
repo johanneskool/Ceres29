@@ -49,18 +49,19 @@ def vis(data_id=None):
 
 
 #Get data endpoint
-@app.route('/data/<int:id>', methods=['GET'])
-def data(id):
+@app.route('/data/<data_id>', methods=['GET'])
+def data(data_id):
+    print(request.args)
     if request.args.get('trace'):
         trace = [int(i) for i in request.args.get('trace').split(',')]
-        file = File.query.get(id)
+        file = File.query.get(data_id)
         network = file.get_pickle()
         for i in trace:
             network = network.get_subnetwork(i)
         return network.json_string
     else:
         clustertype = request.args.get('type')
-        file = File.query.get(id)
+        file = File.query.get(data_id)
         # If unknown type do a 400 Bad Request; type does not exist
         if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'betweenness',
                                'default']: abort(400)
