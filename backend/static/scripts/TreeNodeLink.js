@@ -1,7 +1,9 @@
 /**
  * @fileoverview Contains the tree node link visualization
  * Sigma
- * @author Fabienne van der Weide, Akam Bilbas
+ * @author Fabienne van der Weide
+ * @author Akam Bilbas
+ * @author Rick Luiken
   */
 
 var TreeNodeLink = function () {
@@ -14,6 +16,7 @@ var TreeNodeLink = function () {
 
     this.s = null;
 
+    //initial circle radius
     this.radius = 500;
 };
 
@@ -161,9 +164,15 @@ TreeNodeLink.prototype.showNeighbors = function(e, generationCount, nodeID) {
         }
     );
 
+    //Place selected node in centre
+    let centreNode = e.data.node;
+    centreNode.x = 0;
+    centreNode.y = 0;
+    centreNode.color = '#ff9900';
+    centreNode.hidden = false;
+
     //Show the first generation
     let firstGen = this.s.graph.findNeighbors(nodeID);
-    firstGen[nodeID] = e.data.node;
     this.showGeneration(e, firstGen, 0);
 
     let currGen = firstGen;
@@ -183,31 +192,36 @@ TreeNodeLink.prototype.showNeighbors = function(e, generationCount, nodeID) {
         }
 
         //Show the generation
-        console.log(nextGen);
         this.showGeneration(e, nextGen, i);
 
         //next generation will get the new nodes that are founded
         currGen = nextGen;
     }
 
-    //Place selected node in centre
-    let centreNode = this.s.graph.nodes(e.data.node.id);
-    centreNode.x = 0;
-    centreNode.y = 0;
-    centreNode.color = '#ff9900';
-    e.data.node.id.hidden = false;
-
-    //unhide all edges where both nodes are shown
-    this.s.graph.edges().forEach(function(ee){
-        if (!(ee.source.hidden) && !(ee.target.hidden)){
-            ee.hidden = false;
-        }
-    });
 }
 
 TreeNodeLink.prototype.showGeneration = function(e, nodes, generation) {
     //Show all nodes in the generation
     let tnl = this;
+
+    for (let id in nodes) {
+        if (tnl.s.graph.nodes(id).hidden) {
+            tnl.s.graph.adjacentEdgesOut(id).forEach(function (ee) {
+                let source = tnl.s.graph.nodes(ee.source);
+                let target = tnl.s.graph.nodes(ee.target);
+                if (source.id === id) {
+                    if (!(target.hidden)) {
+                        ee.hidden = false;
+                    }
+                } else {
+                    if (!(source.hidden)) {
+                        ee.hidden = false;
+                    }
+                }
+            });
+        }
+    }
+
     this.s.graph.nodes().forEach(function(n, i, a) {
         if (nodes[n.id] && n.hidden) {
             n.hidden = false;
