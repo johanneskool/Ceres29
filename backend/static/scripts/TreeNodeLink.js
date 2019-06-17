@@ -101,6 +101,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
 };
 
 TreeNodeLink.prototype.bindEvents = function() {
+    let tnl = this;
     let generationCount = 3;
     // Bind the events:
     this.s.bind('overNode outNode clickNode rightClickNode', function (e) {
@@ -108,13 +109,13 @@ TreeNodeLink.prototype.bindEvents = function() {
     });
     this.s.bind('doubleClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-        this.showNeighbors(e, generationCount, e.data.node.id);
-        this.s.refresh();
+        tnl.showNeighbors(e, generationCount, e.data.node.id);
+        tnl.s.refresh();
     });
     this.s.bind('doubleClickStage', function (e) {
         console.log(e.type, e.data.captor);
         //Show all nodes in initial circle
-        this.s.graph.nodes().forEach(
+        tnl.s.graph.nodes().forEach(
             function(n, i, a) {
                 n.x = Math.cos(Math.PI * 2 * i / a.length);
                 n.y = Math.sin(Math.PI * 2 * i / a.length);
@@ -123,12 +124,12 @@ TreeNodeLink.prototype.bindEvents = function() {
             });
 
         //Show all edges
-        this.s.graph.edges().forEach(
+        tnl.s.graph.edges().forEach(
             function(ee) {
                 ee.hidden = false;
             }
         );
-        s.refresh();
+        tnl.s.refresh();
     });
     this.s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
@@ -187,7 +188,7 @@ TreeNodeLink.prototype.showNeighbors = function(e, generationCount, nodeID) {
     }
 
     //Place selected node in centre
-    let centreNode = s.graph.nodes(e.data.node.id);
+    let centreNode = this.s.graph.nodes(e.data.node.id);
     centreNode.x = 0;
     centreNode.y = 0;
     centreNode.color = '#ff9900';
