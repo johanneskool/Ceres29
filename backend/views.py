@@ -47,15 +47,25 @@ def vis(data_id=None):
         return render_template("vis.html", files_available=get_available_files(), data=data_name, title=data_name,
                                data_id=data_id)
 
+
 #Get data endpoint
 @app.route('/data/<int:id>', methods=['GET'])
 def data(id):
-    clustertype = request.args.get('type')
-    file = File.query.get(id)
-    #If unknown type do a 400 Bad Request; type does not exist
-    if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'betweenness', 'default']: abort(400)
+    if request.args.get('trace'):
+        trace = [int(i) for i in request.args.get('trace').split(',')]
+        file = File.query.get(id)
+        network = file.get_pickle()
+        for i in trace:
+            network = network.get_subnetwork(i)
+        return network.json_string
+    else:
+        clustertype = request.args.get('type')
+        file = File.query.get(id)
+        # If unknown type do a 400 Bad Request; type does not exist
+        if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'betweenness',
+                               'default']: abort(400)
 
-    return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), clustertype + ".json")
+        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), clustertype + ".json")
 
 #Block some requests to static
 @app.before_request
@@ -66,13 +76,13 @@ def a_little_bit_of_security_is_allowed():
     if '/static/json' in request.path:
         abort(403)
 
-
-# Endpoint for different visualizations
-@app.route('/subgraphs/<int:id>', methods=['GET'])
-def subgraph(id):
-    trace = [int(i) for i in request.args.get('trace').split(',')]
-    file = File.query.get(id)
-    network = file.get_pickle()
-    for i in trace:
-        network = network.get_subnetwork(i)
-    return network.json_string
+# # Endpoint for different visualizations
+# @app.route('/subgraphs/<int:id>', methods=['GET'])
+# def subgraph(id):
+#     if request.args.get('trace'):
+#         trace = [int(i) for i in request.args.get('trace').split(',')]
+#         file = File.query.get(id)
+#         network = file.get_pickle()
+#         for i in trace:
+#             network = network.get_subnetwork(i)
+#         return network.json_string

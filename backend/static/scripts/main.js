@@ -13,6 +13,7 @@
  * @type {VisualizationHandler}
  */
 
+
 var GVH = new VisualizationHandler();
 
 
@@ -76,8 +77,14 @@ var visualizationSketch = function (v) {
         if (v.current_URL.searchParams.get("x") != null && v.current_URL.searchParams.get("y") != null) v.visualizationHandler.activeCell = P$.createVector(v.current_URL.searchParams.get("x"), v.current_URL.searchParams.get("y"));
 
         //update the VH data
-        let data_identifier = '/data/' + v.data_id + "?type=" + v.visualizationHandler.clustering_type;
-        v.visualizationHandler.setData(data_identifier, v);
+        v.visualizationHandler.trace = v.current_URL.searchParams.get("trace");
+        if (v.visualizationHandler.trace == null) {
+            let data_identifier = '/data/' + v.data_id + "?type=" + v.visualizationHandler.clustering_type;
+            v.visualizationHandler.setData(data_identifier, v);
+        } else {
+            let data_identifier = '/data/' + v.data_id + "?type=" + v.visualizationHandler.clustering_type + "&trace=" + v.visualizationHandler.trace;
+            v.visualizationHandler.setData(data_identifier, v);
+        }
         //makes the current matrix the one to show.
 
         //disable the anti-aliasing.
@@ -273,7 +280,7 @@ var pipeline = [];
  */
 var addVisualization = function (type, name) {
     new createVisCanvas(type, name)
-}
+};
 
 
 /**

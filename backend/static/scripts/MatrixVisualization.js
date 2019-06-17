@@ -211,7 +211,7 @@ MatrixVisualization.prototype.draw = function () {
 MatrixVisualization.prototype.select = function (x, y) {
     this.overlayGraphics.clear();
     this.overlayGraphics.fill(50, 75, 75);
-    console.log("draw at " + x + y)
+    console.log("draw at " + x + y);
     this.overlayGraphics.rect(x * this.overlayRatio * this.nodeSize, y * this.overlayRatio * this.nodeSize, this.overlayRatio * this.nodeSize, this.overlayRatio * this.nodeSize);
 
 };
@@ -256,13 +256,13 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
         var x = cellVector[0];
         var y = cellVector[1];
     } catch (error) {
-        document.getElementById('matrix-visualization-edge-info').style.display = 'none';
+        // document.getElementById('matrix-visualization-edge-info').style.display = 'none';
         throw error;
     }
 
-    let from = "cluster #" + x;
+    from = this.dataJSON.tags[x];
     from = from.replace(/_/g, ' ');
-    let to = "cluster #" + y;
+    to = this.dataJSON.tags[y];
     to = to.replace(/_/g, ' ');
     let weight = this.dataJSON.weights[x][y];  //we store it as weights[col][row], so get correct weight
     // show debugging info in console
@@ -271,11 +271,12 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     console.log('x cord: ' + x + ', y cord: ' + y);
     console.groupEnd();
 
-    from = '<button type="button" id="cluster0" value="' + from + '">' + from + '</button>';
-    to = '<button type="button" id="cluster1" value="' + to + '">' + to + '</button>';
-
     //make this a scope variable
     let currentMatrix = this;
+    if (currentMatrix.vH.clustering_type === 'cluster_graph') {
+        from = '<button type="button" id="cluster0" value="' + "cluster #" + x + '">' + "cluster #" + x + '</button>';
+        to = '<button type="button" id="cluster1" value="' + "cluster #" + y + '">' + "cluster #" + y + '</button>';
+    }
 
     // update sidebar with information
     document.getElementById('matrix-visualization-edge-info').style.display = 'inherit';
@@ -283,16 +284,15 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
     document.getElementById('matrix-visualization-edge-info-to').innerHTML = to;
     document.getElementById('matrix-visualization-edge-info-weight').innerHTML = weight;
     // Handle the buttons for the clusters
-    if (currentMatrix.vH.clustering_type == 'cluster_graph') {
+    if (currentMatrix.vH.clustering_type === 'cluster_graph') {
         var clusterbutton0 = document.getElementById('cluster0');
         clusterbutton0.addEventListener('click', function (event) {
             // currentMatrix.vH.setData("/data/1?type=default", currentMatrix.canvas);
             let id = data_id;
             let vistype = currentMatrix.vH.mainvis_type;
             let clustering = currentMatrix.vH.clustering_type;
-            let trace = x;
-            url = "/subgraphs/" + id + "?type=" + vistype + "&clustering=" + clustering + "&trace=" + trace
-            history.pushState({}, "", url);
+            let url = "/data/" + id + "&type=" + clustering + "&trace=" + x;
+            history.pushState({}, "", currentMatrix.current_URL + "&trace=" + x);
             currentMatrix.vH.setData(url, currentMatrix.canvas);
         });
         var clusterbutton1 = document.getElementById('cluster1');
@@ -300,9 +300,8 @@ MatrixVisualization.prototype.click = function (xCord, yCord) {
             let id = data_id;
             let vistype = currentMatrix.vH.mainvis_type;
             let clustering = currentMatrix.vH.clustering_type;
-            let trace = y;
-            url = "/subgraphs/" + id + "?type=" + vistype + "&clustering=" + clustering + "&trace=" + trace
-            history.pushState({}, "", url);
+            let url = "/data/" + id + "&type=" + clustering + "&trace=" + y;
+            history.pushState({}, "", currentMatrix.current_URL + "&trace=" + x);
             currentMatrix.vH.setData(url, currentMatrix.canvas);
 
         });
