@@ -28,7 +28,7 @@
     <script src="{{ url_for('static', filename='scripts/TreeNodeLink.js') }}"></script>
     <script type="text/javascript">parentLoad();
       $(window).on('load', function() {
-          if (document.fullscreenEnabled == true) { //we can enable full screen
+          if (document.fullscreenEnabled === true) { //we can enable full screen
               document.getElementById("divViewOptions").style.display = "inherit";
               toggleFullScreen(false); //exit full screen if we have it opened somewhere
           }
@@ -59,16 +59,19 @@
                             <b>Type: </b><span id='dataFileType'>/<!-- might as well just get it dynamically --></span><br>
                             <b>Filesize: </b><span id="dataFileSize"></span><br>
 
-                            <b>Minimum edge weight: </b><span id="minimumEdgeWeightInfo"></span><br>
-                            <b>Maximum edge weight: </b><span id="maximumEdgeWeightInfo"></span><br>
-                            <h6>Edge Weight Legend</h6>
-                            <span>
+                            <div id="legendwrapper">
+                                <b>Minimum edge weight: </b><span id="minimumEdgeWeightInfo"></span><br>
+                                <b>Maximum edge weight: </b><span id="maximumEdgeWeightInfo"></span><br>
+                                <h6>Edge Weight Legend</h6>
+                                <div>
                                 <p class="legend" id="legend0" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
                                 <p class="legend" id="legend1" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
                                 <p class="legend" id="legend2" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
                                 <p class="legend" id="legend3" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
                                 <p class="legend" id="legend4" style="display: inline-block;background-color: rgb(255, 78, 0);"> - / - </p>
-                            </span><br>
+                                </div>
+                                <br>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,7 +85,7 @@
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-target="#collapseTwo">
                         <div class="card-body">
-                            <h6>Reorder</h6>
+                            <h6><label for="vis_sel_clustering">Reorder</label></h6>
                             <div class="input-group">
                                 <select class="custom-select disabled-when-loading is-valid" id="vis_sel_clustering" name="clustering" onchange="visReorder(this);">
                                     <option value="" disabled>Choose a ordering</option>
@@ -96,7 +99,7 @@
                                     <option value="betweenness">&nbsp;&nbsp;Betweenness</option>
                                 </select>
                             </div>
-                            <h6>Add visualization</h6>
+                            <h6><label for="selectToAdd">Add visualization</label></h6>
                             <div class="input-group">
                                 <form id="addvis" onsubmit="addVisualization(document.getElementById('selectToAdd').value, 'hey');return false">
                                     <select id="selectToAdd" required class="custom-select is-valid">
