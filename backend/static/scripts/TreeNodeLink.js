@@ -1,7 +1,9 @@
 /**
  * @fileoverview Contains the tree node link visualization
  * Sigma
- * @author Fabienne van der Weide, Akam Bilbas
+ * @author Fabienne van der Weide
+ * @author Akam Bilbas
+ * @author Rick Luiken
   */
 
 var TreeNodeLink = function () {
