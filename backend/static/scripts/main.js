@@ -228,6 +228,8 @@ var visualizationSketch = function (v) {
 
 };
 
+var firstdiv = true;
+
 /**
  * Create a new visualization and add it to a div
  * @param {div} div to add the visualization to.
@@ -237,6 +239,14 @@ var createVisCanvas = function (type, div) {
     console.log(gType);
     gType.push(type);
     canvasContainer = document.createElement("div");
+    if (firstdiv){
+        canvasContainer.className += canvasContainer.className ? " col" : "col";
+        firstdiv = false;
+    } else{
+        canvasContainer.className += canvasContainer.className ? " col-md-6" : "col-md-6";
+    }
+    canvasContainer.minWidth = "30vw";
+
     canvasContainer.id = div;
 
     pipeline.push(canvasContainer);
