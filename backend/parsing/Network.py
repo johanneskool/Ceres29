@@ -33,10 +33,11 @@ class Network:
     """
 
     @abstractmethod
-    def __init__(self, name, filesize):
+    def __init__(self, name, filesize, timestamp):
         self.name = name
         self.type = "Ordered as uploaded"
         self.filesize = filesize
+        self.timestamp = timestamp
 
     @staticmethod
     def __parse__(filename):
@@ -75,18 +76,32 @@ class Network:
         """
 
         to_be_converted = {}
-        to_be_converted["name"] = self.name
-        to_be_converted["type"] = self.type
-        to_be_converted["filesize"] = self.filesize
+
+        # node tags or index if there are no labels
         to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
                                                                                          range(self.graph.vcount())]
-        to_be_converted["minWeight"] = min(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
-        to_be_converted["maxWeight"] = max(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
-        to_be_converted["fullyconnected"] = self.graph.vcount()**2 == self.graph.ecount()
+        # edge weights in a adjacency matrix
         to_be_converted["weights"] = []
         matrix = self.graph.get_adjacency(attribute="weight")
         for row in range(self.graph.vcount()):
             to_be_converted["weights"].append(list(matrix[row]))
+
+        # general file information
+        to_be_converted["name"] = self.name
+        to_be_converted["type"] = self.type
+        to_be_converted["filesize"] = self.filesize
+
+        # graph statistics
+        to_be_converted["density"] = self.density
+        to_be_converted["nodecount"] = self.graph.vcount()
+        to_be_converted["edgecount"] = self.graph.ecount()
+        to_be_converted["modularity"] = self.modularity
+        to_be_converted["clustercount"] = self.num_of_clusters
+        to_be_converted["avgweight"] = sum(self.graph.es["weight"])/self.graph.ecount() if self.graph.ecount == 0 else 0.0
+        to_be_converted["timestamp"] = self.timestamp.strftime('%H:%M:%S, %A %B %d, %Y')
+        to_be_converted["minWeight"] = min(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
+        to_be_converted["maxWeight"] = max(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
+        to_be_converted["fullyconnected"] = self.graph.vcount()**2 == self.graph.ecount()
 
         return ujson.dumps(to_be_converted)
 
@@ -102,6 +117,37 @@ class Network:
         jsonstring = self.json_string
         with open(filename, "w+", encoding='utf-8') as f:
             f.write(jsonstring)
+
+    @property
+    def density(self):
+        """
+        Calculates the density of the network
+
+        @:returns density of the network
+        """
+        return self.graph.density()
+
+    @property
+    def modularity(self):
+        """
+        Calculates the modularity of the clustering in self.communities
+
+        @:returns the modularity of the clustering on this graph
+        """
+        return self.communities.modularity
+
+    @property
+    def num_of_clusters(self):
+        """
+        Gives the number of clusters in self.communities
+
+        @:returns number of clusters in self.communities or 1 if self.communities doesn't exist
+        """
+
+        try:
+            return len(self.communities)
+        except NameError:
+            return 1
 
     def reorder_lexicographic(self):
         """"
@@ -220,7 +266,7 @@ class Network:
 
         subgraph = self.communities.subgraph(index)
 
-        return SubNetwork(self.name + "." + str(index), subgraph, self.filesize)
+        return SubNetwork(self.name + "." + str(index), subgraph, self.filesize, self.timestamp)
 
 
 class TopNetwork(Network):
@@ -233,8 +279,8 @@ class TopNetwork(Network):
     @return nothing
     """
 
-    def __init__(self, name, filename, directory_name, filesize):
-        super().__init__(name, filesize)
+    def __init__(self, name, filename, directory_name, filesize, timestamp):
+        super().__init__(name, filesize, timestamp)
 
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         self.graph = self.__parse__(filepath)
@@ -244,11 +290,22 @@ class TopNetwork(Network):
         # create folder to save all files in
         os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
 
+        # find communities (based on the indices made by last ordering)
+        self.find_communities()
+
         # processing and saving files
 
         # save default json
         self.save_as_json(
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
+        )
+
+        # convert to sorted by cluster
+
+        self.reorder_with_clustering()
+        self.type = 'Reordered using clustering of vertices'
+        self.save_as_json(
+            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
         )
 
         # convert to alphabetically sorted json
@@ -279,21 +336,10 @@ class TopNetwork(Network):
             os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
         )
 
-        # convert to sorted by cluster
-
-        # find communities (based on the indices made by last ordering)
-        self.find_communities()
-
-        self.reorder_with_clustering()
-        self.type = 'Reordered using clustering of vertices'
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
-        )
-
         # make cluster graph if there are multiple clusters
         if len(self.communities) > 1:
             cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
-            cluster_network = SubNetwork(name, cluster_graph, self.filesize)
+            cluster_network = SubNetwork(name, cluster_graph, self.filesize, self.timestamp)
             cluster_network.type = 'Cluster graph'
             cluster_network.save_as_json(
                 os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster_graph'])
@@ -302,8 +348,8 @@ class TopNetwork(Network):
 
 class SubNetwork(Network):
 
-    def __init__(self, name, graph, filesize):
-        super().__init__(name, filesize)
+    def __init__(self, name, graph, filesize, timestamp):
+        super().__init__(name, filesize, timestamp)
         self.graph = graph
 
         self.find_communities()

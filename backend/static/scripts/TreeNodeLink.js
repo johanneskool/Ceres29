@@ -1,7 +1,9 @@
 /**
  * @fileoverview Contains the tree node link visualization
  * Sigma
- * @author Fabienne van der Weide, Akam Bilbas
+ * @author Fabienne van der Weide
+ * @author Akam Bilbas
+ * @author Rick Luiken
   */
 
 var TreeNodeLink = function () {
@@ -12,7 +14,10 @@ var TreeNodeLink = function () {
      */
     this.loaded = false;
 
-    this.s = null
+    this.s = null;
+
+    //initial circle radius
+    this.radius = 500;
 };
 
 TreeNodeLink.prototype = Object.create(Visualization.prototype);
@@ -41,7 +46,8 @@ TreeNodeLink.prototype.useJSON = function (data) {
                 animationsTime: 1000,
                 enableHovering: true,
                 doubleClickEnabled: false,
-                edgeHoverExtremities: true
+                edgeHoverExtremities: true,
+                autoRescale: false
             }
         }
     );
@@ -65,7 +71,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
             if ((data.weights[indexNodes][indexEdges]) > 0.6) {
                 this.graph.edges.push({
                     id: i,
-                    size: 10,
+                    size: 2,
                     source: this.graph.nodes[indexNodes].id,
                     target: this.graph.nodes[indexEdges].id,
                     color: "#FFFFFF",
@@ -90,10 +96,12 @@ TreeNodeLink.prototype.useJSON = function (data) {
 
     // Load the graph in sigma to draw
     this.s.graph.read(this.graph);
+
     // Make circle lay-out
+    let tnl = this;
     this.s.graph.nodes().forEach(function(n, i, a) {
-        n.x = Math.cos(Math.PI * 2 * i / a.length);
-        n.y = Math.sin(Math.PI * 2 * i / a.length);
+        n.x = tnl.radius*Math.cos(Math.PI * 2 * i / a.length);
+        n.y = tnl.radius*Math.sin(Math.PI * 2 * i / a.length);
     });
     // Ask sigma to draw it and refresh
     this.s.refresh();
@@ -101,6 +109,7 @@ TreeNodeLink.prototype.useJSON = function (data) {
 };
 
 TreeNodeLink.prototype.bindEvents = function() {
+    let tnl = this;
     let generationCount = 3;
     // Bind the events:
     this.s.bind('overNode outNode clickNode rightClickNode', function (e) {
@@ -108,27 +117,27 @@ TreeNodeLink.prototype.bindEvents = function() {
     });
     this.s.bind('doubleClickNode', function (e) {
         console.log(e.type, e.data.node.label, e.data.captor, e.data.node.id);
-        this.showNeighbors(e, generationCount, e.data.node.id);
-        this.s.refresh();
+        tnl.showNeighbors(e, generationCount, e.data.node.id);
+        tnl.s.refresh();
     });
     this.s.bind('doubleClickStage', function (e) {
         console.log(e.type, e.data.captor);
         //Show all nodes in initial circle
-        this.s.graph.nodes().forEach(
+        tnl.s.graph.nodes().forEach(
             function(n, i, a) {
-                n.x = Math.cos(Math.PI * 2 * i / a.length);
-                n.y = Math.sin(Math.PI * 2 * i / a.length);
+                n.x = tnl.radius*Math.cos(Math.PI * 2 * i / a.length);
+                n.y = tnl.radius*Math.sin(Math.PI * 2 * i / a.length);
                 n.color = '#0099ff';
                 n.hidden = false;
             });
 
         //Show all edges
-        this.s.graph.edges().forEach(
+        tnl.s.graph.edges().forEach(
             function(ee) {
                 ee.hidden = false;
             }
         );
-        s.refresh();
+        tnl.s.refresh();
     });
     this.s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function (e) {
         console.log(e.type, e.data.edge, e.data.captor);
@@ -155,64 +164,71 @@ TreeNodeLink.prototype.showNeighbors = function(e, generationCount, nodeID) {
         }
     );
 
-    //Show the first generation
-    let firstNode = this.s.graph.findNeighbors(nodeID);
-    firstNode[nodeID] = e.data.node;
-    this.showGeneration(e, firstNode, 0);
-
-    let nextGeneration = firstNode;
-    let nodes;
-
-    for (let i = 1; i < generationCount; i++) {
-        let nextGenerationNext = {};
-        let nextGenerationNew = {};
-
-        //Search the nodes in next Generation and put their neighbors in nextGenerationNew
-        for (nodes in nextGeneration) {
-            nextGenerationNext = this.s.graph.findNeighbors(nextGeneration[nodes].id);
-            nextGenerationNew = Object.assign({}, nextGenerationNew, nextGenerationNext);
-        }
-
-        //Giving the nodes in nextGenerationNew the nodes (not sure if needed)
-        for (nodes in nextGenerationNew) {
-            nextGenerationNew[nextGenerationNew[nodes].id] = this.s.graph.nodes(nextGenerationNew[nodes].id);
-        }
-
-        //Show the generation
-        console.log(nextGenerationNew);
-        this.showGeneration(e, nextGenerationNew, i);
-
-        //next generation will get the new nodes that are founded
-        nextGeneration = nextGenerationNew;
-    }
-
     //Place selected node in centre
-    let centreNode = s.graph.nodes(e.data.node.id);
+    let centreNode = e.data.node;
     centreNode.x = 0;
     centreNode.y = 0;
     centreNode.color = '#ff9900';
-    e.data.node.id.hidden = false;
+    centreNode.hidden = false;
+
+    //Show the first generation
+    let firstGen = this.s.graph.findNeighbors(nodeID);
+    this.showGeneration(e, firstGen, 0);
+
+    let currGen = firstGen;
+
+    for (let i = 1; i < generationCount; i++) {
+        let nextGen = {};
+
+        //Search the nodes in next Generation and put their neighbors in nextGenerationNew
+        for (let nodes in currGen) {
+            let neighbors = this.s.graph.findNeighbors(currGen[nodes].id);
+            nextGen = Object.assign({}, nextGen, neighbors);
+        }
+
+        //Giving the nodes in nextGenerationNew the nodes (not sure if needed)
+        for (let nodes in nextGen) {
+            nextGen[nextGen[nodes].id] = this.s.graph.nodes(nextGen[nodes].id);
+        }
+
+        //Show the generation
+        this.showGeneration(e, nextGen, i);
+
+        //next generation will get the new nodes that are founded
+        currGen = nextGen;
+    }
+
 }
 
-TreeNodeLink.prototype.showGeneration = function(e, generation, j) {
+TreeNodeLink.prototype.showGeneration = function(e, nodes, generation) {
     //Show all nodes in the generation
+    let tnl = this;
+
+    for (let id in nodes) {
+        if (tnl.s.graph.nodes(id).hidden) {
+            tnl.s.graph.adjacentEdgesOut(id).forEach(function (ee) {
+                let source = tnl.s.graph.nodes(ee.source);
+                let target = tnl.s.graph.nodes(ee.target);
+                if (source.id === id) {
+                    if (!(target.hidden)) {
+                        ee.hidden = false;
+                    }
+                } else {
+                    if (!(source.hidden)) {
+                        ee.hidden = false;
+                    }
+                }
+            });
+        }
+    }
+
     this.s.graph.nodes().forEach(function(n, i, a) {
-        if (generation[n.id]) {
+        if (nodes[n.id] && n.hidden) {
             n.hidden = false;
-            n.x = (0.3 + 0.3*j) * Math.cos(Math.PI * 2 * i / a.length);
-            n.y = (0.3 + 0.3*j) * Math.sin(Math.PI * 2 * i / a.length);
-            console.log("test");
+            n.x = tnl.radius*(0.3 + 0.3*generation) * Math.cos(Math.PI * 2 * i / a.length);
+            n.y = tnl.radius*(0.3 + 0.3*generation) * Math.sin(Math.PI * 2 * i / a.length);
         }
     });
-
-    //Unhide edges from centre to generation1
-    this.s.graph.adjacentEdgesOut(e.data.node.id).forEach(
-        function (ee) {
-            if (ee.source === e.data.node.id) {
-                ee.hidden = false;
-            }
-        }
-    );
 };
 
 //finds and returns the neighbors of the given node ID

@@ -31,7 +31,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    APP_VERSION = "v0.2f (development)"
+    APP_VERSION = "v0.2g (development)"
     DEVELOPMENT = True
     DEBUG = True
     TEMPLATES_AUTO_RELOAD = True

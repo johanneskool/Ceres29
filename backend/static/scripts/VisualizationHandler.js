@@ -25,7 +25,8 @@ var VisualizationHandler = function () {
      * The vector of the currently selected node, vector representation in the matrix.
      * @type {p5.Vector}
      */
-    this.activeCell;
+    // What does this do?
+    // this.activeCell;
 
     /**
      * Url of the current json usd by this VH
@@ -184,7 +185,9 @@ var VisualizationHandler = function () {
 
     /**
      * Color a cell in all the visualization in the VH
-     * @param {p5.Vector} vector the vector of the cell.
+     * @param x
+     * @param y
+     * x and y of vector
      */
     this.colorSelect = function (x, y) {
         for (let i = 0; i < this.visualizations.length; i++) {
@@ -334,7 +337,7 @@ var VisualizationHandler = function () {
         for (let i = 0; i < this.visDictionary.size(); i++) {
             this.centerSelected(this.visDictionary.keys()[i]);
         }
-    }
+    };
 
     /**
      * Draw visualization mapped to the canvas
@@ -387,16 +390,24 @@ var VisualizationHandler = function () {
         // set legend data
         this.minEdgeWeight = data1.minWeight;
         this.maxEdgeWeight = data1.maxWeight;
-
-
-        for (var x = 0; x < 5; x++) {
-            let color1 = P$.getWeightedColor(this.minEdgeWeight+ x/4 *(this.maxEdgeWeight-this.minEdgeWeight),
+        if (this.minEdgeWeight !== this.maxEdgeWeight) {
+            let minimumEdgeWeightInfo = document.getElementById("minimumEdgeWeightInfo");
+            let maximumEdgeWeightInfo = document.getElementById("maximumEdgeWeightInfo");
+            minimumEdgeWeightInfo.innerText = this.minEdgeWeight;
+            maximumEdgeWeightInfo.innerText = this.maxEdgeWeight;
+            for (let x = 0; x < 5; x++) {
+                let color1 = P$.getWeightedColor(this.minEdgeWeight + x / 4 * (this.maxEdgeWeight - this.minEdgeWeight),
                 this.minEdgeWeight,
                 this.maxEdgeWeight,
                 data1.fullyconnected);
-            let div = document.getElementById("legend"+x);
+                let div = document.getElementById("legend" + x);
             div.style = "text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display:inline-block;color:white;background-color:" + color1.toString();
-            div.innerText = " - " + (this.minEdgeWeight+ (this.maxEdgeWeight-this.minEdgeWeight)*x/4) + " - "
+                div.innerText = " - " + (this.minEdgeWeight + (this.maxEdgeWeight - this.minEdgeWeight) * x / 4) + " - "
+            }
+        } else {
+            //hide legend if there are no multiple weights
+            let legendwrapper = document.getElementById("legendwrapper");
+            legendwrapper.style = "display: none;";
         }
 
     };
