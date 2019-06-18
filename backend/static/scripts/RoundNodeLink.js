@@ -270,7 +270,7 @@ function Node(id, name, number, angle, nodelink) {
     this.outsideRad = (Math.min(this.canvas.width, this.canvas.height) / 4);
 
     this.zoom = function(zoomScale) {
-        this.textSize = 5*(1+zoomScale/2);
+        this.textSize = 7*(1+zoomScale/2);
         this.outsideRad = 400*zoomScale;
         this.radius = 1 + (zoomScale*6)
     };
@@ -315,7 +315,7 @@ function Node(id, name, number, angle, nodelink) {
         this.canvas.translate(this.locationX(text = true), this.locationY(text = true));
         this.canvas.rotate(this.angle);
         this.canvas.textSize(this.textSize);
-        this.canvas.text(this.name, 0, 0, 0, 100);
+        this.canvas.text(this.name, 0, 0);
         this.canvas.pop();
         // only draw edges of ac
         if (this.active) {
