@@ -228,7 +228,8 @@ var visualizationSketch = function (v) {
 
 };
 
-var firstdiv = true;
+
+var visualizationNumber = 1;
 
 /**
  * Create a new visualization and add it to a div
@@ -238,23 +239,40 @@ var firstdiv = true;
 var createVisCanvas = function (type, div) {
     console.log(gType);
     gType.push(type);
+
+    outsideCanvasContainer = document.createElement("div");
     canvasContainer = document.createElement("div");
-    if (firstdiv){
-        canvasContainer.className += canvasContainer.className ? " col" : "col";
+    if (visualizationNumber===1){
+        outsideCanvasContainer.className += outsideCanvasContainer.className ? " col" : "col";
         firstdiv = false;
     } else{
-        canvasContainer.className += canvasContainer.className ? " col-md-6" : "col-md-6";
+        outsideCanvasContainer.className += outsideCanvasContainer.className ? " col-md-6" : "col-md-6";
     }
-    canvasContainer.minWidth = "30vw";
+    outsideCanvasContainer.appendChild(canvasContainer);
 
-    canvasContainer.id = div;
+    var canvasId = "canvas" + visualizationNumber;
+    visualizationNumber++;
+    canvasContainer.id = canvasId;
+
+    var screenshotButton = document.createElement("input");
+    screenshotButton.setAttribute("type", "button");
+    screenshotButton.setAttribute("value", "save visualization");
+    screenshotButton.setAttribute("onclick", "screenshotVisualization('"+canvasId+"')" );
+    screenshotButton.setAttribute("class", "btn btn-primary" );
+    outsideCanvasContainer.prepend(screenshotButton);
+    var deleteButton = document.createElement("input");
+    deleteButton.setAttribute("type", "button");
+    deleteButton.setAttribute("value", "delete visualization");
+    deleteButton.setAttribute("onclick", "removeVisualization('"+canvasId+"')" );
+    deleteButton.setAttribute("class", "btn btn-primary" );
+    outsideCanvasContainer.prepend(deleteButton);
 
     pipeline.push(canvasContainer);
 
     var sketch = new p5(visualizationSketch);
 
     let parent = document.getElementById("parentofcanvas");
-    parent.appendChild(canvasContainer);
+    parent.appendChild(outsideCanvasContainer);
     canvasContainer.style.overflow = "hidden";
     GVH.centerAll();
 };
@@ -316,6 +334,19 @@ var removeVisualization = function (name) {
     GVH.centerAll();
 };
 
+
+var screenshotVisualization = function(name) {
+    let node = document.getElementById(name);
+
+    let canvas = node.lastChild;
+    for (let i = 0; i < GVH.visDictionary.size(); i++) {
+        let key = GVH.visDictionary.keys()[i];
+        if (key.canvas == canvas) {
+            console.log(canvas)
+            window.open(canvas.toDataURL("image/png"));
+        }
+    }
+}
 
 /**
  * Global namespace for p5 functions.
