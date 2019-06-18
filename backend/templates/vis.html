@@ -157,23 +157,10 @@
                 <div class="card">
                     <div class="card-header" id="headingFour">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                Controls
+                            <button class="btn btn-link collapsed" type="button" data-toggle="modal" data-target="#modalControls" aria-expanded="false" aria-controls="modalControls">
+                                Help with the controls
                             </button>
                         </h5>
-                    </div>
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-target="#collapseFour">
-                        <div class="card-body">
-                            <p>All visualizations support dragging and zooming using the scroll functionality</p>
-                            <h6>Adjacency matrix</h6>
-                            <p><b>Click</b> on an edge to see <b>edge information</b> (from, to, weight) appear in the interactions sidebar.</p>
-                            <h6>Force-directed node-link</h6>
-                            <p><b>Hover</b> over a node to see it's name</p>
-                            <h6>Radial node-link</h6>
-                            <p><b>Click</b> on a node to highlight all edges from and to that node</p>
-                            <h6>Tree node-link</h6>
-                            <p><b>Hover</b> over a node to see it's name</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -182,6 +169,48 @@
             <div class="loading-overlay">
             </div>
         </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalControls" tabindex="-1" role="dialog" aria-labelledby="modalControlsTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalControlsTitle">Help with the controls</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                      All visualizations support dragging and zooming using the scroll functionality
+                    </p>
+                    <h6>Adjacency matrix</h6>
+                    <p>
+                      <b>Click</b> on an edge to see <b>edge information</b> (from, to, weight) appear in the interactions sidebar.
+                    </p>
+                    <h6>Force-directed node-link</h6>
+                    <p>
+                      <b>Hover</b> over a node to see it's name<br>
+                      <b>Click</b> on a node to color all outgoing edges from that node and highlight the node itself<br>
+                      <b>Double click</b> on a node to show the neighbors of the node you clicked<br>
+                      <b>Double click on an empty spot</b> to return to the entire graph
+                    </p>
+                    <h6>Radial node-link</h6>
+                    <p>
+                      <b>Click</b> on a node to highlight all edges from and to that node
+                    </p>
+                    <h6>Tree node-link</h6>
+                    <p>
+                      <b>Hover</b> over a node to see it's name<br>
+                      <b>Double click on a node</b> to show the descendants upto the n-th generation (customizable)<br>
+                      <b>Double click on an empty spot</b> to return to the entire graph
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">I get it</button>
+                </div>
+            </div>
         </div>
     </div>
 
