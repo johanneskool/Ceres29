@@ -115,3 +115,8 @@ footer > p {
     font-style: italic;
 
 }
+
+/* demo images */
+.row-demoimages > div > p > img { /*als je nagedacht had, had je die p of die img een class gegeven*/
+  width: 100%;
+}
