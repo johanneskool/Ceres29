@@ -51,21 +51,37 @@ def vis(data_id=None):
 #Get data endpoint
 @app.route('/data/<data_id>', methods=['GET'])
 def data(data_id):
+    file = File.query.get(data_id)
     if request.args.get('trace'):
         trace = int(request.args.get('trace'))
-        file = File.query.get(data_id)
         network = file.get_pickle().get_subnetwork(trace)
         return network.json_string
     else:
         clustertype = request.args.get('type')
-        file = File.query.get(data_id)
         # If unknown type do a 400 Bad Request; type does not exist
         if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'betweenness',
                                'default']: abort(400)
 
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), clustertype + ".json")
+        # load the graph either from an already generated json or create the json
+        graph_path = os.path.join(app.config["JSON_FOLDER"], file.hash)
+        filename = clustertype + ".json"
 
-#Block some requests to static
+        if os.path.exists(os.path.join(graph_path, filename)):
+            return send_from_directory(graph_path, filename)
+        else:
+            # get serialized data
+            network = file.get_pickle()
+
+            if clustertype == "cluster_graph":
+                cluster_network = network.get_cluster_graph()
+                cluster_network.save_as_json(os.path.join(graph_path, filename))
+            else:
+                network.reorder(clustertype)
+                network.save_as_json(os.path.join(graph_path, filename))
+            return send_from_directory(graph_path, filename)
+
+
+# Block some requests to static
 @app.before_request
 def a_little_bit_of_security_is_allowed():
     if '/static/uploads' in request.path \
