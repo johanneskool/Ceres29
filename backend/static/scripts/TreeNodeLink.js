@@ -204,24 +204,20 @@ TreeNodeLink.prototype.showGeneration = function(e, nodes, generation) {
     //Show all nodes in the generation
     let tnl = this;
 
+    //show edges
     for (let id in nodes) {
         if (tnl.s.graph.nodes(id).hidden) {
             tnl.s.graph.adjacentEdgesOut(id).forEach(function (ee) {
                 let source = tnl.s.graph.nodes(ee.source);
                 let target = tnl.s.graph.nodes(ee.target);
-                if (source.id === id) {
-                    if (!(target.hidden)) {
-                        ee.hidden = false;
-                    }
-                } else {
-                    if (!(source.hidden)) {
-                        ee.hidden = false;
-                    }
+                if (target.id === id && !(source.hidden)) {
+                    ee.hidden = false;
                 }
             });
         }
     }
 
+    //show nodes
     this.s.graph.nodes().forEach(function(n, i, a) {
         if (nodes[n.id] && n.hidden) {
             n.hidden = false;

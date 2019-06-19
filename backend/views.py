@@ -2,14 +2,14 @@ __author__ = 'Tristan Trouwen, Johannes Kool, Rick Luiken, Rink Pieters'
 
 import os
 
-from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort
+from flask import render_template, request, redirect, flash, url_for, send_from_directory, abort, jsonify
 
 from backend import app
 from backend.functions_file import get_available_files, handle_file_upload
 from backend.orm.models import File
 
 
-#Index page
+# Index page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     data_id = request.args.get('data')
@@ -22,7 +22,7 @@ def index():
     if request.method == 'POST':
         return handle_file_upload(request)
 
-#Choose file page
+# Choose file page
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     data_id = request.args.get('data')
@@ -33,7 +33,7 @@ def upload():
     if request.method == 'POST':
         return handle_file_upload(request)
 
-#Visualization page
+# Visualization page
 @app.route('/vis', methods=['GET'])
 @app.route('/vis/<int:data_id>', methods=['GET'])
 def vis(data_id=None):
@@ -48,27 +48,39 @@ def vis(data_id=None):
                                data_id=data_id)
 
 
-#Get data endpoint
+# Get data endpoint
 @app.route('/data/<data_id>', methods=['GET'])
 def data(data_id):
-    print(request.args)
+    file = File.query.get(data_id)
     if request.args.get('trace'):
-        trace = [int(i) for i in request.args.get('trace').split(',')]
-        file = File.query.get(data_id)
-        network = file.get_pickle()
-        for i in trace:
-            network = network.get_subnetwork(i)
+        trace = int(request.args.get('trace'))
+        network = file.get_pickle().get_subnetwork(trace)
         return network.json_string
     else:
         clustertype = request.args.get('type')
-        file = File.query.get(data_id)
         # If unknown type do a 400 Bad Request; type does not exist
         if clustertype not in ['pagerank', 'cluster', 'degrees', 'lexicographic', 'cluster_graph', 'betweenness',
-                               'default']: abort(400)
+                               'fiedler', 'default']: abort(400)
 
-        return send_from_directory(os.path.join(app.config["JSON_FOLDER"], file.hash), clustertype + ".json")
+        # load the graph either from an already generated json or create the json
+        graph_path = os.path.join(app.config["JSON_FOLDER"], file.hash)
+        filename = clustertype + ".json"
 
-#Block some requests to static
+        if os.path.exists(os.path.join(graph_path, filename)):
+            return send_from_directory(graph_path, filename)
+        else:
+            # get serialized data
+            network = file.get_pickle()
+
+            if clustertype == "cluster_graph":
+                cluster_network = network.get_cluster_graph()
+                cluster_network.save_as_json(os.path.join(graph_path, filename))
+            else:
+                network.reorder(clustertype)
+                network.save_as_json(os.path.join(graph_path, filename))
+            return send_from_directory(graph_path, filename)
+
+# Block some requests to static
 @app.before_request
 def a_little_bit_of_security_is_allowed():
     if '/static/uploads' in request.path \

@@ -47,9 +47,9 @@ function updateOrderingOptions(vistype_select) {
     if (type == "matrix") {
         enableOrderings();
     } else if (type == "forceLink") {
-        enableOrderings(['default', 'pagerank', 'cluster', 'cluster_graph']);
+        enableOrderings(['default', 'cluster_graph']);
     } else if (type == "roundNodeLink") {
-        enableOrderings(['default', 'pagerank', 'cluster', 'cluster_graph', 'degrees', 'betweenness']);
+        enableOrderings(['default', 'pagerank', 'cluster', 'cluster_graph', 'degrees', 'betweenness', 'fiedler']);
     } else if (type == "treeNodeLink") {
         enableOrderings(['n/a']);
     } else {

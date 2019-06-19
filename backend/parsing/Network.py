@@ -1,5 +1,6 @@
 __author__ = "Rick Luiken, Tristan Trouwen"
 
+import math
 import os
 from abc import abstractmethod
 
@@ -80,6 +81,10 @@ class Network:
         # node tags or index if there are no labels
         to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
                                                                                          range(self.graph.vcount())]
+
+        # original (default ordering) node ids
+        to_be_converted["cluster"] = self.graph.vs["cluster"]
+
         # edge weights in a adjacency matrix
         to_be_converted["weights"] = []
         matrix = self.graph.get_adjacency(attribute="weight")
@@ -125,7 +130,11 @@ class Network:
 
         @:returns density of the network
         """
-        return self.graph.density()
+        density = self.graph.density()
+        if math.isnan(density):
+            return 0
+        else:
+            return density
 
     @property
     def modularity(self):
@@ -148,6 +157,34 @@ class Network:
             return len(self.communities)
         except NameError:
             return 1
+
+    def reorder(self, reordering):
+        """
+        Convenience function, calls the reordering that the string reordering is referring to
+
+        @:parameter reordering: string with the name of the reordering
+
+        @:returns nothing
+        """
+
+        reordering_lower = reordering.lower()
+
+        if reordering_lower == "default":
+            pass
+        elif reordering_lower == "lexicographic":
+            self.reorder_lexicographic()
+        elif reordering_lower == "fiedler":
+            self.reorder_with_fiedler()
+        elif reordering_lower == "degrees":
+            self.reorder_with_degrees()
+        elif reordering_lower == "pagerank":
+            self.reorder_with_pagerank()
+        elif reordering_lower == "betweenness":
+            self.reorder_with_betweenness()
+        elif reordering_lower == "cluster":
+            self.reorder_with_clustering()
+        else:
+            raise ValueError("The requested reordering '{}' does not exist".format(reordering))
 
     def reorder_lexicographic(self):
         """"
@@ -234,6 +271,7 @@ class Network:
 
         @:returns nothing
         """
+
         clusters = list(self.communities)
         clusters.sort(key=len, reverse=True)
         vertices = [vtx for cluster in clusters for vtx in cluster]
@@ -268,6 +306,24 @@ class Network:
 
         return SubNetwork(self.name + "." + str(index), subgraph, self.filesize, self.timestamp)
 
+    def get_cluster_graph(self):
+        """
+        Get a graph with all clusters concatenated into one vertex, showing edges between clusters
+
+        :@returns subnetwork with the cluster graph
+        """
+
+        if len(self.communities) > 1:
+            cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
+            cluster_network = SubNetwork(self.name, cluster_graph, self.filesize, self.timestamp)
+            cluster_network.type = 'Cluster graph'
+            return cluster_network
+        else:
+            raise ValueError("This network does not contain any communities")
+
+    def find_cluster(self, node_id):
+        return self.communities.membership[node_id]
+
 
 class TopNetwork(Network):
     """
@@ -287,63 +343,12 @@ class TopNetwork(Network):
 
         self.directory_name = directory_name
 
-        # create folder to save all files in
-        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
-
         # find communities (based on the indices made by last ordering)
         self.find_communities()
+        self.graph.vs["cluster"] = self.communities.membership
 
-        # processing and saving files
-
-        # save default json
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['default'])
-        )
-
-        # convert to sorted by cluster
-
-        self.reorder_with_clustering()
-        self.type = 'Reordered using clustering of vertices'
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster'])
-        )
-
-        # convert to alphabetically sorted json
-        self.reorder_lexicographic()
-        self.type = 'Lexicographically reordered'
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['lexicographic'])
-        )
-
-        # convert to degrees
-        self.reorder_with_degrees()
-        self.type = 'Reordered using the degree distribution'
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['degrees'])
-        )
-
-        # convert to betweenness
-        self.reorder_with_betweenness()
-        self.type = 'Reordered using betweenness'
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['betweenness'])
-        )
-
-        # convert to pagerank
-        self.reorder_with_pagerank()
-        self.type = 'Reordered using pagerank-vector'
-        self.save_as_json(
-            os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['pagerank'])
-        )
-
-        # make cluster graph if there are multiple clusters
-        if len(self.communities) > 1:
-            cluster_graph = self.communities.cluster_graph(combine_vertices="concat", combine_edges="mean")
-            cluster_network = SubNetwork(name, cluster_graph, self.filesize, self.timestamp)
-            cluster_network.type = 'Cluster graph'
-            cluster_network.save_as_json(
-                os.path.join(app.config['JSON_FOLDER'], self.directory_name, filenames['cluster_graph'])
-            )
+        # create folder to save all files in
+        os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
 
 
 class SubNetwork(Network):
