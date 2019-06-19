@@ -81,6 +81,10 @@ class Network:
         # node tags or index if there are no labels
         to_be_converted["tags"] = self.graph.vs["label"] if self.graph.vs["label"] else [i for i in
                                                                                          range(self.graph.vcount())]
+
+        # original (default ordering) node ids
+        to_be_converted["cluster"] = self.graph.vs["cluster"]
+
         # edge weights in a adjacency matrix
         to_be_converted["weights"] = []
         matrix = self.graph.get_adjacency(attribute="weight")
@@ -317,6 +321,9 @@ class Network:
         else:
             raise ValueError("This network does not contain any communities")
 
+    def find_cluster(self, node_id):
+        return self.communities.membership[node_id]
+
 
 class TopNetwork(Network):
     """
@@ -338,6 +345,7 @@ class TopNetwork(Network):
 
         # find communities (based on the indices made by last ordering)
         self.find_communities()
+        self.graph.vs["cluster"] = self.communities.membership
 
         # create folder to save all files in
         os.mkdir(os.path.join(app.config['JSON_FOLDER'], directory_name))
