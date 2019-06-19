@@ -337,8 +337,7 @@ var removeVisualization = function (name) {
     }
     let parent_ = $(node.parentElement);
     parent_.empty();
-
-    parent_.parentElement.removeChild(node);
+    parent_.remove();
 
     GVH.centerAll();
 };
