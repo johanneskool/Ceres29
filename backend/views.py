@@ -51,13 +51,10 @@ def vis(data_id=None):
 #Get data endpoint
 @app.route('/data/<data_id>', methods=['GET'])
 def data(data_id):
-    print(request.args)
     if request.args.get('trace'):
-        trace = [int(i) for i in request.args.get('trace').split(',')]
+        trace = int(request.args.get('trace'))
         file = File.query.get(data_id)
-        network = file.get_pickle()
-        for i in trace:
-            network = network.get_subnetwork(i)
+        network = file.get_pickle().get_subnetwork(trace)
         return network.json_string
     else:
         clustertype = request.args.get('type')

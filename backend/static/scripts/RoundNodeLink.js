@@ -66,7 +66,7 @@ var RoundNodeLink = function () {
 RoundNodeLink.prototype = Object.create(Visualization.prototype);
 RoundNodeLink.prototype.constructor = RoundNodeLink;
 
-RoundNodeLink.prototype.select = (x,y) => {
+RoundNodeLink.prototype.select = (x) => {
     node.makeActive(x);
 };
 
@@ -117,24 +117,33 @@ RoundNodeLink.prototype.useJSON = function (data) {
      * @type {p5.slider}
      */
     this.minEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(this.maxWeight-this.minWeight)/4, "any");
-    this.minEdgeWeightFilterSlider.value(this.minWeight + 50*(this.maxWeight-this.minWeight)/100);
+    if (new URL(window.location.href).searchParams.get("trace") != null) {
+        this.minEdgeWeightFilterSlider.value(this.minWeight);
+    } else {
+        this.minEdgeWeightFilterSlider.value(this.minWeight + 50 * (this.maxWeight - this.minWeight) / 100);
+    }
+
     this.minEdgeWeightFilterSlider.parent(document.getElementById("minEdgeWeightFilter"));
     // max
     this.maxEdgeWeightFilterSlider = P$.createSlider(this.minWeight,this.maxWeight,(3*(this.maxWeight-this.minWeight)/4), "any");
-    this.maxEdgeWeightFilterSlider.value(this.minWeight + 51*(this.maxWeight-this.minWeight)/100);
+    if (new URL(window.location.href).searchParams.get("trace") != null) {
+        this.maxEdgeWeightFilterSlider.value(this.maxWeight);
+    } else {
+        this.maxEdgeWeightFilterSlider.value(this.minWeight + 51 * (this.maxWeight - this.minWeight) / 100);
+    }
+
     this.maxEdgeWeightFilterSlider.parent(document.getElementById("maxEdgeWeightFilter"));
 
     let number = 0;
 
     for (let node_index in weights) {
-        let new_node = new Node(
+        this.nodes[node_index] = new Node(
             node_index, // node id
             data['tags'][node_index], // node name/label
             number,    // number in circle
             number * 2 * Math.PI / (Math.min(Object.keys(weights).length, this.limit) + 1),
             this,
         );
-        this.nodes[node_index] = new_node; // put in array
         number++;
         if (number > this.limit) {
             break; // stop adding nodes if the limit of nodes is reached
@@ -147,7 +156,7 @@ RoundNodeLink.prototype.useJSON = function (data) {
         let outgoing = weights[node.id];
         for (let i = 0; i < outgoing.length; i++) {
             let weight = outgoing[i];
-            let toNodeIndex;
+            let toNodeIndex = 0;
             // find corresponding node (not optimal)
             if (weight > 0) {
                 Object.values(this.nodes).forEach((some_node) => {
@@ -180,13 +189,13 @@ RoundNodeLink.prototype.draw = function () {
     }
 
     // draw each node
-    var nodes1 = Object.values(this.nodes);
-    for (var x=0; x < nodes1.length; x++) {
+    let nodes1 = Object.values(this.nodes);
+    for (let x = 0; x < nodes1.length; x++) {
         nodes1[x].drawNode();
     }
     // rotate all nodes if needed
     if (this.currentActive && this.currentActive.angle > 0.1) {
-        for (var x=0; x < nodes1.length; x++) {
+        for (let x = 0; x < nodes1.length; x++) {
             nodes1[x].angle = ((nodes1[x].angle + this.rotationVector) % (Math.PI * 2) + Math.PI*2) % (Math.PI*2);
         }
     }

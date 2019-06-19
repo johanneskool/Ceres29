@@ -1,5 +1,6 @@
 __author__ = "Rick Luiken, Tristan Trouwen"
 
+import math
 import os
 from abc import abstractmethod
 
@@ -125,7 +126,11 @@ class Network:
 
         @:returns density of the network
         """
-        return self.graph.density()
+        density = self.graph.density()
+        if math.isnan(density):
+            return 0
+        else:
+            return density
 
     @property
     def modularity(self):
