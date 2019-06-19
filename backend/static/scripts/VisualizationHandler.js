@@ -364,7 +364,7 @@ var VisualizationHandler = function () {
         //loop through all visualizations that were waiting on JSON
         if (this.jsonWaitingList.contains(data)) {
 
-            for (let i = 0; i < this.jsonWaitingList.get(data).length; i++) {
+           for (let i = 0; i < this.jsonWaitingList.get(data).length; i++) {
                 this.visDictionary.get(this.jsonWaitingList.get(data)[i]).useJSON(this.jsonDictionary.get(data));
             }
             //wipe waitinglist
@@ -386,6 +386,15 @@ var VisualizationHandler = function () {
         document.getElementById('dataFileSize').innerText = formatBytes(this.dataSize);
         document.getElementById('dataFileName').innerText = data1.name;
         document.getElementById('dataFileType').innerText = data1.type;
+        document.getElementById('dataUploadedTimeStamp').innerText = data1.timestamp;
+        document.getElementById('dataDensity').innerText = data1.density;
+        document.getElementById('dataNodeCount').innerText = data1.nodecount;
+        document.getElementById('dataEdgeCount').innerText = data1.edgecount;
+        document.getElementById('dataModularity').innerText = data1.modularity;
+        document.getElementById('dataClusterCount').innerText = data1.clustercount;
+        document.getElementById('dataAvgWeight').innerText = data1.avgweight;
+        document.getElementById('dataFullyConnected').innerText = data1.fullyconnected ? 'yes' : 'no';
+
 
         // set legend data
         this.minEdgeWeight = data1.minWeight;
