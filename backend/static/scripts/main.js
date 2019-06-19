@@ -243,10 +243,10 @@ var createVisCanvas = function (type, div) {
     outsideCanvasContainer = document.createElement("div");
     canvasContainer = document.createElement("div");
     if (visualizationNumber===1){
-        outsideCanvasContainer.className += outsideCanvasContainer.className ? " col" : "col";
+        outsideCanvasContainer.className += outsideCanvasContainer.className ? " col-12" : "col-12";
         firstdiv = false;
     } else{
-        outsideCanvasContainer.className += outsideCanvasContainer.className ? " col-md-6" : "col-md-6";
+        outsideCanvasContainer.className += outsideCanvasContainer.className ? " col-6" : "col-6";
     }
     outsideCanvasContainer.appendChild(canvasContainer);
 
@@ -267,6 +267,12 @@ var createVisCanvas = function (type, div) {
     deleteButton.setAttribute("class", "btn btn-primary" );
     outsideCanvasContainer.prepend(deleteButton);
 
+    var fullWidthButton = document.createElement("input");
+    fullWidthButton.setAttribute("type", "button");
+    fullWidthButton.setAttribute("value", "Toggle Full Width");
+    fullWidthButton.setAttribute("onclick", "fullWidth('"+canvasId+"')" );
+    fullWidthButton.setAttribute("class", "btn btn-primary" );
+    outsideCanvasContainer.prepend(fullWidthButton);
     pipeline.push(canvasContainer);
 
     var sketch = new p5(visualizationSketch);
@@ -329,11 +335,24 @@ var removeVisualization = function (name) {
         }
         node.removeChild(node.lastChild);
     }
-    node.parentElement.removeChild(node);
+    let parent_ = $(node.parentElement);
+    parent_.empty();
+
+    parent_.parentElement.removeChild(node);
 
     GVH.centerAll();
 };
 
+
+var fullWidth = function(name) {
+    let node = document.getElementById(name);
+    if (node.parentElement.className === "col-6") {
+        node.parentElement.className = "col-12";
+    } else {
+        node.parentElement.className = "col-6";
+    }
+    GVH.centerAll();
+};
 
 var screenshotVisualization = function(name) {
     let node = document.getElementById(name);
@@ -342,11 +361,13 @@ var screenshotVisualization = function(name) {
     for (let i = 0; i < GVH.visDictionary.size(); i++) {
         let key = GVH.visDictionary.keys()[i];
         if (key.canvas == canvas) {
-            console.log(canvas)
-            window.open(canvas.toDataURL("image/png"));
+            var link = document.getElementById("link12321");
+            link.setAttribute('download', name +'.png');
+            link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+            link.click();
         }
     }
-}
+};
 
 /**
  * Global namespace for p5 functions.
