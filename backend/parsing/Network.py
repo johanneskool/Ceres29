@@ -102,7 +102,7 @@ class Network:
         to_be_converted["edgecount"] = self.graph.ecount()
         to_be_converted["modularity"] = self.modularity
         to_be_converted["clustercount"] = self.num_of_clusters
-        to_be_converted["avgweight"] = sum(self.graph.es["weight"])/self.graph.ecount() if self.graph.ecount == 0 else 0.0
+        to_be_converted["avgweight"] = sum(self.graph.es["weight"])/self.graph.ecount() if self.graph.ecount() > 0 else 0.0
         to_be_converted["timestamp"] = self.timestamp.strftime('%H:%M:%S, %A %B %d, %Y')
         to_be_converted["minWeight"] = min(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
         to_be_converted["maxWeight"] = max(self.graph.es["weight"]) if self.graph.es["weight"] else 0.0
@@ -358,3 +358,4 @@ class SubNetwork(Network):
         self.graph = graph
 
         self.find_communities()
+        self.graph.vs["cluster"] = self.communities.membership
