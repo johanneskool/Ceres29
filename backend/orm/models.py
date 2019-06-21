@@ -43,7 +43,7 @@ class File(db.Model):
                                      self.hash, self.filesize, self.timestamp)  # converts to correct models and saves file in hash folder
 
         with open(os.path.join(app.config['JSON_FOLDER'], self.hash, "network.p"), "wb") as f:
-            pickle.dump(network, f)
+            pickle.dump(network, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 
     @property
