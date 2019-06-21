@@ -2,6 +2,7 @@
  * @fileoverview Handler that serves as the communication between the canvasses and all the visualizations.
  * @author Samuel Oosterholt
  * @author Rink Pieters
+ * @author Tristan Trouwen
  */
 
 /**
