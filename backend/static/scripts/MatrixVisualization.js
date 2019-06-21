@@ -45,24 +45,23 @@ MatrixVisualization.prototype.load = function () {
     this.startPositon = 0;
     this.updateNodeSize();
 
-    if (this.matrix === undefined) {
-        //create a matrix and the buffer graphics
-        const matrixSize = this.nodeCount * this.nodeSize;
-        this.matrix = P$.createGraphics(matrixSize, matrixSize);
-        this.matrix.colorMode(P$.HSL, 100);
-        this.matrix.textSize(this.nodeSize / 2);
-        this.matrix.imageMode(P$.CENTER);
-        this.matrix.noStroke();
+    //create a matrix and the buffer graphics
+    const matrixSize = this.nodeCount * this.nodeSize;
+    this.matrix = P$.createGraphics(matrixSize, matrixSize);
+    this.matrix.colorMode(P$.HSL, 100);
+    this.matrix.textSize(this.nodeSize / 2);
+    this.matrix.imageMode(P$.CENTER);
+    this.matrix.noStroke();
 
-        //where we can show selected nodes.
-        this.overlayGraphics = P$.createGraphics(matrixSize, matrixSize);
-        this.overlayGraphics.imageMode(P$.CORNER);
-        this.overlayGraphics.colorMode(P$.HSL, 100);
-        this.overlayGraphics.noStroke();
+    //where we can show selected nodes.
+    this.overlayGraphics = P$.createGraphics(matrixSize, matrixSize);
+    this.overlayGraphics.imageMode(P$.CORNER);
+    this.overlayGraphics.colorMode(P$.HSL, 100);
+    this.overlayGraphics.noStroke();
 
-        //unused since the later updates.
-        this.overlayRatio = 1;
-    }
+    //unused since the later updates.
+    this.overlayRatio = 1;
+
 
     console.log(this.position);
 
