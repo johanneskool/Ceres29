@@ -120,3 +120,8 @@ footer > p {
 .row-demoimages > div > p > img { /*als je nagedacht had, had je die p of die img een class gegeven*/
   width: 100%;
 }
+
+.overflow-scroll {
+    overflow-y: scroll;
+    max-height: 100vh;
+}
